@@ -2,6 +2,7 @@
 #include "AmsServer.h"
 #include "AmsServerThread.h"
 #include "OperationInfo.h"
+#include "TableHeader.h"
 
 #include <QtWidgets/QtWidgets>
 
@@ -25,8 +26,7 @@ AmsFrame::~AmsFrame()
 void AmsFrame::createWidgets()
 {
 	tableWidget = new QTableWidget();
-	QStringList labels;
-	labels << "服务器类型" << "操作" << "结果" << "失败原因";
+	QStringList labels = TableHeader::getTableHeaderLabels();
 	tableWidget->setColumnCount(labels.count());
 	tableWidget->setHorizontalHeaderLabels(labels);
 	tableWidget->setShowGrid(true);
@@ -98,9 +98,9 @@ void AmsFrame::updateTableWidget( const OperationInfo& info )
 	{
 		int count = tableWidget->rowCount();
 		tableWidget->insertRow(count);
-		tableWidget->setItem(count, 0, new QTableWidgetItem(info.getServiceType()));
-		tableWidget->setItem(count, 1, new QTableWidgetItem(info.getOperation()));
-		tableWidget->setItem(count, 2, new QTableWidgetItem(info.getResult()));
-		tableWidget->setItem(count, 3, new QTableWidgetItem(info.getReason()));
+		for (int i = 0; i < Header_Count; ++i)
+		{
+			tableWidget->setItem(count, i, new QTableWidgetItem(info.getContent(i)));
+		}
 	}
 }

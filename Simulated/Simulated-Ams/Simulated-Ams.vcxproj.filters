@@ -77,6 +77,9 @@
     <ClCompile Include="GeneratedFiles\Release\moc_AmsServerThread.cpp">
       <Filter>Generated Files\Release</Filter>
     </ClCompile>
+    <ClCompile Include="..\common\basic\TableHeader.cpp">
+      <Filter>basic</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <CustomBuild Include="amsframe.h">
@@ -105,8 +108,11 @@
     <ClInclude Include="AmsSrvI.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="OperationInfo.h">
-      <Filter>Header Files</Filter>
+    <ClInclude Include="..\common\basic\OperationInfo.h">
+      <Filter>basic</Filter>
+    </ClInclude>
+    <ClInclude Include="..\common\basic\TableHeader.h">
+      <Filter>basic</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>
