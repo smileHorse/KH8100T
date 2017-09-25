@@ -1,0 +1,16 @@
+<RCC>
+    <qresource prefix="/">
+        <file>images/workstation.png</file>
+        <file>images/startServer.png</file>
+        <file>images/stopServer.png</file>
+        <file>images/exit.png</file>
+        <file>images/icestormmenu.png</file>
+        <file>images/icemenu.png</file>
+        <file>images/requestStormRdb.png</file>
+        <file>images/requestStormTopo.png</file>
+        <file>images/requestRdb.png</file>
+        <file>images/requestTopo.png</file>
+        <file>images/about.png</file>
+    </qresource>
+</RCC>
+
