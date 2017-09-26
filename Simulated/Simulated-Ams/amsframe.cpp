@@ -102,5 +102,6 @@ void AmsFrame::updateTableWidget( const OperationInfo& info )
 		{
 			tableWidget->setItem(count, i, new QTableWidgetItem(info.getContent(i)));
 		}
+		tableWidget->resizeColumnToContents(Header_OperTime);
 	}
 }

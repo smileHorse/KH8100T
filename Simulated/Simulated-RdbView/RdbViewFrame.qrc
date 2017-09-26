@@ -1,0 +1,13 @@
+<RCC>
+  <qresource prefix="/">
+    <file>images/rdbview.png</file>
+    <file>images/open.png</file>
+    <file>images/close.png</file>
+    <file>images/exit.png</file>
+    <file>images/add.png</file>
+    <file>images/delete.png</file>
+    <file>images/update.png</file>
+    <file>images/refresh.png</file>
+    <file>images/about.png</file>
+  </qresource>
+</RCC>

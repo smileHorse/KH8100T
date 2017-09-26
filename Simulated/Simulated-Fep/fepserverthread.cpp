@@ -1,5 +1,6 @@
 #include "fepserverthread.h"
 #include "BaseIceStorm.h"
+#include "OperationInfo.h"
 
 #include <string>
 
@@ -13,25 +14,6 @@ void FepServerThread::setCommunicatorPtr( Ice::CommunicatorPtr ptr )
 void FepServerThread::run()
 {
 
-}
-
-void FepServerThread::processData()
-{
-	// 获取发布者对象
-	if (!getFepDataPublisher())
-	{
-		return;
-	}
-
-	FepData::DataPacket packet;
-	packet.id = 1000;
-	packet.fepNode = "主前置机";
-	packet.type = FepData::AllDataType;
-	packet.unitNo = 1;
-
-	m_fepDataManagerPrx->processData(packet);
-
-	emit executeOperation("发布数据成功");
 }
 
 bool FepServerThread::getFepDataPublisher()
@@ -49,7 +31,12 @@ bool FepServerThread::getFepDataPublisher()
 		Ice::ObjectPrx proxy = BaseIceStorm::GetPublisher(m_communicatorPtr, topicName, strDeliverModel);
 		if (!proxy)
 		{
-			emit executeOperation("获取前置机数据的发布对象失败");
+			OperationInfo info(TYPE_FEP);
+			info.setOperation(QStringLiteral("获取前置机数据的发布对象"));
+			info.setOperTime();
+			info.setResult(false);
+			info.setReason(QStringLiteral("未知"));
+			emit executeOperation(info);
 			return false;
 		}
 		else
@@ -59,17 +46,94 @@ bool FepServerThread::getFepDataPublisher()
 	}
 	catch(const Ice::Exception& ex)
 	{
-		QString error = "获取前置机数据的发布对象失败: ";
-		emit executeOperation(error + ex.what());
+		OperationInfo info(TYPE_FEP);
+		info.setOperation(QStringLiteral("获取前置机数据的发布对象"));
+		info.setOperTime();
+		info.setResult(false);
+		info.setReason(ex.what());
+		emit executeOperation(info);
 		return false;
 	}
 	catch(...)
 	{
-		QString error = "获取前置机数据的发布对象失败: ";
-		emit executeOperation("未知异常");
+		OperationInfo info(TYPE_FEP);
+		info.setOperation(QStringLiteral("获取前置机数据的发布对象"));
+		info.setOperTime();
+		info.setResult(false);
+		info.setReason(QStringLiteral("未知"));
+		emit executeOperation(info);
 		return false;
 	}
 
-	emit executeOperation("获取前置机数据发布对象成功");
+	OperationInfo info(TYPE_FEP);
+	info.setOperation(QStringLiteral("获取前置机数据的发布对象"));
+	info.setOperTime();
+	info.setResult(true);
+	emit executeOperation(info);
 	return true;
+}
+
+void FepServerThread::processData()
+{
+	// 获取发布者对象
+	if (!getFepDataPublisher())
+	{
+		return;
+	}
+
+	// 发布全数据
+	FepData::DataPacket packet;
+	packet.id = 15;
+	packet.fepNode = "fep36";
+	packet.type = FepData::AllDataType;
+	packet.unitNo = 1;
+	for (int i = 0; i < 128; ++i)
+	{
+		packet.analogs.push_back(i);
+		packet.discretes.push_back(i % 2);
+		packet.accmulators.push_back(i+1);
+	}
+	m_fepDataManagerPrx->processData(packet);
+
+	OperationInfo info(TYPE_FEP);
+	info.setOperation(QStringLiteral("发布数据"));
+	info.setOperTime();
+	info.setResult(true);
+	emit executeOperation(info);
+}
+
+void FepServerThread::processFault()
+{
+	// 获取发布者对象
+	if (!getFepDataPublisher())
+	{
+		return;
+	}
+
+	// 发布故障事项
+	FepData::FaultPacket packet;
+	packet.id = 15;
+	packet.fepNode = "fep36";
+	for (int i = 1; i < 5; ++i)
+	{
+		FepData::FaultEvent event;
+		event.unitNo = i;
+	}
+	m_fepDataManagerPrx->processFault(packet);
+
+	OperationInfo info(TYPE_FEP);
+	info.setOperation(QStringLiteral("发布故障事项"));
+	info.setOperTime();
+	info.setResult(true);
+	emit executeOperation(info);
+}
+
+void FepServerThread::processEvent()
+{
+
+}
+
+void FepServerThread::processWave()
+{
+
 }

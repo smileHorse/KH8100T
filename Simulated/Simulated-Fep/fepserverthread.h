@@ -8,6 +8,8 @@
 #include <IceUtil/IceUtil.h>
 #include <IceStorm/IceStorm.h>
 
+class OperationInfo;
+
 #pragma execution_character_set("utf-8")
 
 class FepServerThread : public QThread
@@ -24,10 +26,13 @@ private:
 	bool getFepDataPublisher();
 
 signals:
-	void executeOperation(const QString& text);
+	void executeOperation(const OperationInfo& text);
 
 private slots:
 	void processData();
+	void processFault();
+	void processEvent();
+	void processWave();
 
 private:
 	Ice::CommunicatorPtr m_communicatorPtr;

@@ -33,6 +33,7 @@ int AmsServer::run( int argc, char* argv[] )
 		Ice::ObjectAdapterPtr adapter = communicator()->createObjectAdapterWithEndpoints("AmsAdapter", 
 			endPoints.toStdString());
 		info.setOperation("获取对象适配器");
+		info.setOperTime();
 		info.setResult(true);
 		m_threadPtr->putMessage(info);
 
@@ -41,6 +42,7 @@ int AmsServer::run( int argc, char* argv[] )
 
 		adapter->activate();
 		info.setOperation("激活对象适配器");
+		info.setOperTime();
 		info.setResult(true);
 		m_threadPtr->putMessage(info);
 	}
@@ -48,6 +50,7 @@ int AmsServer::run( int argc, char* argv[] )
 	{
 		OperationInfo info(TYPE_AMS);
 		info.setOperation("启动Ice服务");
+		info.setOperTime();
 		info.setResult(false);
 		info.setReason(ex.what());
 		m_threadPtr->putMessage(info);
@@ -57,6 +60,7 @@ int AmsServer::run( int argc, char* argv[] )
 	communicator()->waitForShutdown();
 	OperationInfo info(TYPE_AMS);
 	info.setOperation("AmsServer服务退出!");
+	info.setOperTime();
 	info.setResult(true);
 	m_threadPtr->putMessage(info);
 	

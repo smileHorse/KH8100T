@@ -78,6 +78,7 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="..\common\basic\BaseIceStorm.cpp" />
+    <ClCompile Include="..\common\basic\TableHeader.cpp" />
     <ClCompile Include="..\common\slice\cpp\fepdata.cpp" />
     <ClCompile Include="fepframe.cpp" />
     <ClCompile Include="fepserver.cpp" />
@@ -149,6 +150,8 @@
   <ItemGroup>
     <ClInclude Include="..\common\basic\AmlConst.h" />
     <ClInclude Include="..\common\basic\BaseIceStorm.h" />
+    <ClInclude Include="..\common\basic\OperationInfo.h" />
+    <ClInclude Include="..\common\basic\TableHeader.h" />
     <ClInclude Include="..\common\slice\cpp\fepdata.h" />
     <CustomBuild Include="fepserverthread.h">
       <AdditionalInputs Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">$(QTDIR)\bin\moc.exe;%(FullPath)</AdditionalInputs>

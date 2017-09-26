@@ -3,6 +3,7 @@
 #include "BaseIceStorm.h"
 #include "fepdata.h"
 #include "AmlConst.h"
+#include "OperationInfo.h"
 
 #include <string>
 using namespace std;
@@ -18,30 +19,47 @@ int FepServer::run( int argc, char* argv[] )
 	try 
 	{
 		m_communicatorPtr = communicator();
-		emit executeOperation("创建连接器成功");
+		OperationInfo info(TYPE_FEP);
+		info.setOperation(QStringLiteral("创建连接器"));
+		info.setOperTime();
+		info.setResult(true);
+		emit executeOperation(info);
 
 		QString endPoints("default -h localhost -p %1");
 		endPoints = endPoints.arg(FEP_ADAPTER_PORT);
 		Ice::ObjectAdapterPtr adapter = m_communicatorPtr->createObjectAdapterWithEndpoints("fepAdatpter", 
 			endPoints.toStdString());
-		emit executeOperation("获取适配器成功");
+		info.setOperation(QStringLiteral("获取适配器成功"));
+		info.setOperTime();
+		info.setResult(true);
+		emit executeOperation(info);
 
 		// 建立子线程用于发送事项和数据
 		m_threadPtr->setCommunicatorPtr(m_communicatorPtr);
 
 		adapter->activate();
-		emit executeOperation("激活适配器");
+		info.setOperation(QStringLiteral("激活适配器"));
+		info.setOperTime();
+		info.setResult(true);
+		emit executeOperation(info);
 
 		m_communicatorPtr->waitForShutdown();
-		emit executeOperation("关闭Ice服务");
+		info.setOperation(QStringLiteral("关闭Ice服务"));
+		info.setOperTime();
+		info.setResult(true);
+		emit executeOperation(info);
 
 		communicator()->shutdown();
 		communicator()->destroy();
 	}
 	catch(const Ice::Exception& ex)
 	{
-		QString error = "启动Ice服务失败：";
-		emit executeOperation(error + ex.what());
+		OperationInfo info(TYPE_FEP);
+		info.setOperation(QStringLiteral("启动Ice服务"));
+		info.setOperTime();
+		info.setResult(false);
+		info.setReason(ex.what());
+		emit executeOperation(info);
 		return EXIT_FAILURE;
 	}
 

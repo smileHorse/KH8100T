@@ -7,6 +7,7 @@
 #include <QObject>
 
 class FepServerThread;
+class OperationInfo;
 
 #pragma execution_character_set("utf-8")
 
@@ -25,7 +26,7 @@ private slots:
 	void startServer();
 	
 signals:
-	void executeOperation(const QString& text);
+	void executeOperation(const OperationInfo& text);
 
 private:
 	int	m_argc;

@@ -3,13 +3,15 @@
 
 #include <QtWidgets/QMainWindow>
 
-class QListWidget;
+class QTableWidget;
 class QAction;
 class QMenu;
 class QToolBar;
 
 class FepServer;
 class FepServerThread;
+
+class OperationInfo;
 
 #pragma execution_character_set("utf-8")
 
@@ -34,17 +36,20 @@ private:
 
 private slots:
 	void about();
-	void updateListWidget(const QString& text);
+	void updateTableWidget(const OperationInfo& text);
 
 private:
 	FepServer*	m_fepServerPtr;
 	FepServerThread*	m_fepServerThreadPtr;
 
 
-	QListWidget*	listWidget;
+	QTableWidget*	tableWidget;
 
 	QAction*	exitAction;
 	QAction*	processDataAction;
+	QAction*	processFaultAction;
+	QAction*	processEventAction;
+	QAction*	processWaveAction;
 	QAction*	helpAction;
 
 	QMenu*		fileMenu;
