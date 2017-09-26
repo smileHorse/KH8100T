@@ -38,6 +38,8 @@ private:
 
 	bool getCurrentTableName(QString& tableName);
 	bool getCurrentMRID(QString& mRID);
+	bool getCurrentTableItemValue(QString& value);
+	bool getCurrentTableHeaderLabel(QString& value);
 
 signals:
 	void databaseOpenState(bool opened);
@@ -70,7 +72,7 @@ private:
 	QAction*	exitAction;
 	QAction*	addAction;
 	QAction*	deleteAction;
-	QAction*	updateAction;
+	QAction*	saveAction;
 	QAction*	refreshAction;
 	QAction*	aboutAction;
 

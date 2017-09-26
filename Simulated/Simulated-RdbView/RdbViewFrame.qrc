@@ -6,7 +6,7 @@
     <file>images/exit.png</file>
     <file>images/add.png</file>
     <file>images/delete.png</file>
-    <file>images/update.png</file>
+    <file>images/save.png</file>
     <file>images/refresh.png</file>
     <file>images/about.png</file>
   </qresource>

@@ -74,10 +74,10 @@ void RdbViewFrame::createActions()
 	deleteAction->setEnabled(false);
 	connect(deleteAction, SIGNAL(triggered()), this, SLOT(deleteData()));
 
-	updateAction = new QAction(QIcon(":/images/update.png"), QStringLiteral("修改"), this);
-	updateAction->setStatusTip(QStringLiteral("修改数据"));
-	updateAction->setEnabled(false);
-	connect(updateAction, SIGNAL(triggered()), this, SLOT(updateData()));
+	saveAction = new QAction(QIcon(":/images/save.png"), QStringLiteral("修改"), this);
+	saveAction->setStatusTip(QStringLiteral("修改数据"));
+	saveAction->setEnabled(false);
+	connect(saveAction, SIGNAL(triggered()), this, SLOT(updateData()));
 
 	refreshAction = new QAction(QIcon(":/images/refresh.png"), QStringLiteral("刷新"), this);
 	refreshAction->setStatusTip(QStringLiteral("刷新数据"));
@@ -100,7 +100,7 @@ void RdbViewFrame::createMenus()
 	editMenu = menuBar()->addMenu(QStringLiteral("编辑"));
 	editMenu->addAction(addAction);
 	editMenu->addAction(deleteAction);
-	editMenu->addAction(updateAction);
+	editMenu->addAction(saveAction);
 	editMenu->addAction(refreshAction);
 
 	helpMenu = menuBar()->addMenu(QStringLiteral("帮助"));
@@ -118,7 +118,7 @@ void RdbViewFrame::createToolbars()
 	editToolBar = addToolBar(QStringLiteral("编辑"));
 	editToolBar->addAction(addAction);
 	editToolBar->addAction(deleteAction);
-	editToolBar->addAction(updateAction);
+	editToolBar->addAction(saveAction);
 	editToolBar->addAction(refreshAction);
 }
 
@@ -137,7 +137,6 @@ void RdbViewFrame::createConnects()
 		SLOT(treeItemChanged(QTreeWidgetItem*, QTreeWidgetItem*)));
 	connect(m_rdbTableWidget,SIGNAL(currentItemChanged(QTableWidgetItem*,QTableWidgetItem*)), this, 
 		SLOT(tableItemChanged(QTableWidgetItem*,QTableWidgetItem*)));
-	connect(m_rdbTableWidget, SIGNAL(cellChanged(int, int)), this, SLOT(updateData()));
 }
 
 void RdbViewFrame::refreshDatas( QTreeWidgetItem* item )
@@ -201,6 +200,46 @@ bool RdbViewFrame::getCurrentMRID( QString& mRID )
 	}
 
 	mRID = item->text();
+	return true;
+}
+
+bool RdbViewFrame::getCurrentTableItemValue( QString& value )
+{
+	QTableWidgetItem* item = m_rdbTableWidget->currentItem();
+	if (item)
+	{
+		value = item->text();
+		return true;
+	}
+	else
+	{
+		QMessageBox::critical(this, QStringLiteral("实时库操作"), QStringLiteral("当前选中项无效"));
+		return false;
+	}
+}
+
+bool RdbViewFrame::getCurrentTableHeaderLabel( QString& value )
+{
+	QTableWidgetItem* item = m_rdbTableWidget->currentItem();
+	if (item)
+	{
+		int column = item->column();
+		QTableWidgetItem* headerItem = m_rdbTableWidget->horizontalHeaderItem(column);
+		if (headerItem)
+		{
+			value = headerItem->text();
+		}
+		else
+		{
+			QMessageBox::critical(this, QStringLiteral("实时库操作"), QStringLiteral("当前选中项无效"));
+			return false;
+		}
+	}
+	else
+	{
+		QMessageBox::critical(this, QStringLiteral("实时库操作"), QStringLiteral("当前选中项无效"));
+		return false;
+	}
 	return true;
 }
 
@@ -270,12 +309,12 @@ void RdbViewFrame::tableItemChanged( QTableWidgetItem* current, QTableWidgetItem
 	if (current)
 	{
 		deleteAction->setEnabled(true);
-		updateAction->setEnabled(true);
+		saveAction->setEnabled(true);
 	}
 	else
 	{
 		deleteAction->setEnabled(false);
-		updateAction->setEnabled(false);
+		saveAction->setEnabled(false);
 	}
 }
 
@@ -362,7 +401,50 @@ bool RdbViewFrame::deleteData()
 
 bool RdbViewFrame::updateData()
 {
+	if (m_tableOperPtr)
+	{
+		// 获取数据表名
+		QString tableName;
+		if (!getCurrentTableName(tableName))
+		{
+			return false;
+		}
 
+		// 获取当前数据的mRID
+		QString mRID;
+		if (!getCurrentMRID(mRID))
+		{
+			return false;
+		}
+
+		//获取当前字段名
+		QString fieldName;
+		if (!getCurrentTableHeaderLabel(fieldName))
+		{
+			return false;
+		}
+
+		// 获取当前数据
+		QString value;
+		if (!getCurrentTableItemValue(value))
+		{
+			return false;
+		}
+
+		if (m_tableOperPtr->updateData(tableName, mRID, fieldName, value))
+		{
+			refreshData();
+		}
+		else
+		{
+			QMessageBox::critical(this, QStringLiteral("实时库操作"), QStringLiteral("删除数据失败"));
+		}
+	}
+	else
+	{
+		QMessageBox::critical(this, QStringLiteral("实时库操作"), QStringLiteral("实时库操作指针为空"));
+		return false;
+	}
 	return true;
 }
 

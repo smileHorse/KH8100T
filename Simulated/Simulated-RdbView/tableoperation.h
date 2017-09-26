@@ -27,7 +27,8 @@ public:
 	bool	deleteData(const QString& tableName, const QString& mRID);
 
 	// 修改指定的数据
-	bool	updateData();
+	bool	updateData(const QString& tableName, const QString& mRID, const QString& fieldName, 
+		const QString& value);
 
 private:
 

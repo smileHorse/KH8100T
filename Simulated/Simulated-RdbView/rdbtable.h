@@ -20,6 +20,9 @@ public:
 	virtual bool	updateData(const string& mRID, const string& fieldName, const string& value) = 0;
 	virtual QList<QStringList>	selectDatas() = 0;
 	
+protected:
+	bool	deleteDataByCursor(dbAnyCursor& cursor, const string& mRID);
+	
 public:
 	dbDatabase* m_dbPtr;
 };
@@ -33,6 +36,7 @@ public:
 	virtual bool insertData();
 	virtual bool deleteData(const string& mRID);
 	virtual bool updateData(const string& mRID, const string& fieldName, const string& value);
+
 };
 
 class AnalogUnitPointTable : public BaseTable

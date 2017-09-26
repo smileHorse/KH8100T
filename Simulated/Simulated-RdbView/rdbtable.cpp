@@ -54,6 +54,30 @@ QStringList BaseTable::getTableFieldNames( const string& tableName )
 	}
 }
 
+bool BaseTable::deleteDataByCursor( dbAnyCursor& cursor, const string& mRID )
+{
+	dbQuery query;
+	query = "mRID=", mRID;
+	try 
+	{
+		if (cursor.select(query) == 1)
+		{
+			cursor.remove();
+			m_dbPtr->commit();
+			return true;
+		}
+		else
+		{
+			return false;
+		}
+	}
+	catch(const dbException& ex)
+	{
+		string error = ex.what();
+	}
+	return true;
+}
+
 RemoteUnitTable::RemoteUnitTable( dbDatabase* dbPtr )
 	: BaseTable(dbPtr)
 {}
@@ -106,26 +130,7 @@ bool RemoteUnitTable::insertData()
 bool RemoteUnitTable::deleteData( const string& mRID )
 {
 	dbCursor<RemoteUnit> cursor(dbCursorForUpdate);
-	dbQuery query;
-	query = "mRID=", mRID;
-	try 
-	{
-		if (cursor.select(query) == 1)
-		{
-			cursor.remove();
-			m_dbPtr->commit();
-			return true;
-		}
-		else
-		{
-			return false;
-		}
-	}
-	catch(const dbException& ex)
-	{
-		string error = ex.what();
-	}
-	return true;
+	return deleteDataByCursor(cursor, mRID);
 }
 
 bool RemoteUnitTable::updateData(const string& mRID, const string& fieldName, const string& value )
@@ -149,6 +154,7 @@ bool RemoteUnitTable::updateData(const string& mRID, const string& fieldName, co
 			{
 				cursor->IEDType = transferType<int4, string>(value);
 			}
+			cursor.update();
 			m_dbPtr->commit();
 			return true;
 		}
@@ -170,13 +176,33 @@ AnalogUnitPointTable::AnalogUnitPointTable( dbDatabase* dbPtr )
 
 QList<QStringList> AnalogUnitPointTable::selectDatas()
 {
-	return QList<QStringList>();
+	QList<QStringList> result;
+
+	dbCursor<AnalogUnitPoint> cursor;
+	if (cursor.select() > 0)
+	{
+		do 
+		{
+			std::ostringstream str;
+			str << cursor->mRID << "," << cursor->IEDID << "," << cursor->YcIndex << "," << cursor->YcName;
+
+			QString value = QString().fromStdString(str.str());
+
+			QStringList values = value.split(",");
+			result.push_back(values);
+		} while (cursor.next());
+	}
+
+	return result;
 }
 
 bool AnalogUnitPointTable::insertData()
 {
 	AnalogUnitPoint info;
 	info.mRID = QUuid::createUuid().toString().toStdString();
+	info.IEDID = 0;
+	info.YcIndex = 0;
+	info.YcName = "";
 	insert(info);
 	m_dbPtr->commit();
 	return true;
@@ -184,11 +210,44 @@ bool AnalogUnitPointTable::insertData()
 
 bool AnalogUnitPointTable::deleteData( const string& mRID )
 {
-	return true;
+	dbCursor<AnalogUnitPoint> cursor(dbCursorForUpdate);
+	return deleteDataByCursor(cursor, mRID);
 }
 
 bool AnalogUnitPointTable::updateData( const string& mRID, const string& fieldName, const string& value )
 {
+	dbCursor<AnalogUnitPoint> cursor(dbCursorForUpdate);
+	dbQuery query;
+	query = "mRID=", mRID;
+	try 
+	{
+		if (cursor.select(query) == 1)
+		{
+			if (fieldName == "IEDID")
+			{
+				cursor->IEDID = transferType<int, string>(value);
+			}
+			else if (fieldName == "YcIndex")
+			{
+				cursor->YcIndex = transferType<int, string>(value);
+			}
+			else if (fieldName == "YcName")
+			{
+				cursor->YcName = value;
+			}
+			cursor.update();
+			m_dbPtr->commit();
+			return true;
+		}
+		else
+		{
+			return false;
+		}
+	}
+	catch(const dbException& ex)
+	{
+		string error = ex.what();
+	}
 	return true;
 }
 
@@ -198,13 +257,33 @@ DiscreteUnitPointTable::DiscreteUnitPointTable( dbDatabase* dbPtr )
 
 QList<QStringList> DiscreteUnitPointTable::selectDatas()
 {
-	return QList<QStringList>();
+	QList<QStringList> result;
+
+	dbCursor<DiscreteUnitPoint> cursor;
+	if (cursor.select() > 0)
+	{
+		do 
+		{
+			std::ostringstream str;
+			str << cursor->mRID << "," << cursor->IEDID << "," << cursor->YxIndex << "," << cursor->YxName;
+
+			QString value = QString().fromStdString(str.str());
+
+			QStringList values = value.split(",");
+			result.push_back(values);
+		} while (cursor.next());
+	}
+
+	return result;
 }
 
 bool DiscreteUnitPointTable::insertData()
 {
 	DiscreteUnitPoint info;
 	info.mRID = QUuid::createUuid().toString().toStdString();
+	info.IEDID = 0;
+	info.YxIndex = 0;
+	info.YxName = "";
 	insert(info);
 	m_dbPtr->commit();
 	return true;
@@ -212,11 +291,44 @@ bool DiscreteUnitPointTable::insertData()
 
 bool DiscreteUnitPointTable::deleteData( const string& mRID )
 {
-	return true;
+	dbCursor<DiscreteUnitPoint> cursor(dbCursorForUpdate);
+	return deleteDataByCursor(cursor, mRID);
 }
 
 bool DiscreteUnitPointTable::updateData( const string& mRID, const string& fieldName, const string& value )
 {
+	dbCursor<DiscreteUnitPoint> cursor(dbCursorForUpdate);
+	dbQuery query;
+	query = "mRID=", mRID;
+	try 
+	{
+		if (cursor.select(query) == 1)
+		{
+			if (fieldName == "IEDID")
+			{
+				cursor->IEDID = transferType<int, string>(value);
+			}
+			else if (fieldName == "YxIndex")
+			{
+				cursor->YxIndex = transferType<int, string>(value);
+			}
+			else if (fieldName == "YxName")
+			{
+				cursor->YxName = value;
+			}
+			cursor.update();
+			m_dbPtr->commit();
+			return true;
+		}
+		else
+		{
+			return false;
+		}
+	}
+	catch(const dbException& ex)
+	{
+		string error = ex.what();
+	}
 	return true;
 }
 
@@ -226,13 +338,32 @@ ControlUnitPointTable::ControlUnitPointTable( dbDatabase* dbPtr )
 
 QList<QStringList> ControlUnitPointTable::selectDatas()
 {
-	return QList<QStringList>();
+	QList<QStringList> result;
+
+	dbCursor<ControlUnitPoint> cursor;
+	if (cursor.select() > 0)
+	{
+		do 
+		{
+			std::ostringstream str;
+			str << cursor->mRID << "," << cursor->IEDID << "," << cursor->CommandID << "," << cursor->CommandName;
+
+			QString value = QString().fromStdString(str.str());
+
+			QStringList values = value.split(",");
+			result.push_back(values);
+		} while (cursor.next());
+	}
+
+	return result;
 }
 
 bool ControlUnitPointTable::insertData()
 {
 	ControlUnitPoint info;
 	info.mRID = QUuid::createUuid().toString().toStdString();
+	info.CommandID = 0;
+	info.CommandName = "";
 	insert(info);
 	m_dbPtr->commit();
 	return true;
@@ -240,11 +371,44 @@ bool ControlUnitPointTable::insertData()
 
 bool ControlUnitPointTable::deleteData( const string& mRID )
 {
-	return true;
+	dbCursor<ControlUnitPoint> cursor(dbCursorForUpdate);
+	return deleteDataByCursor(cursor, mRID);
 }
 
 bool ControlUnitPointTable::updateData( const string& mRID, const string& fieldName, const string& value )
 {
+	dbCursor<ControlUnitPoint> cursor(dbCursorForUpdate);
+	dbQuery query;
+	query = "mRID=", mRID;
+	try 
+	{
+		if (cursor.select(query) == 1)
+		{
+			if (fieldName == "IEDID")
+			{
+				cursor->IEDID = transferType<int, string>(value);
+			}
+			else if (fieldName == "CommandID")
+			{
+				cursor->CommandID = transferType<int, string>(value);
+			}
+			else if (fieldName == "CommandName")
+			{
+				cursor->CommandName = value;
+			}
+			cursor.update();
+			m_dbPtr->commit();
+			return true;
+		}
+		else
+		{
+			return false;
+		}
+	}
+	catch(const dbException& ex)
+	{
+		string error = ex.what();
+	}
 	return true;
 }
 
@@ -254,7 +418,24 @@ SubstationTable::SubstationTable( dbDatabase* dbPtr )
 
 QList<QStringList> SubstationTable::selectDatas()
 {
-	return QList<QStringList>();
+	QList<QStringList> result;
+
+	dbCursor<Substation> cursor;
+	if (cursor.select() > 0)
+	{
+		do 
+		{
+			std::ostringstream str;
+//			str << cursor->mRID << "," << cursor->IEDID << "," << cursor->CommandID << "," << cursor->CommandName;
+
+			QString value = QString().fromStdString(str.str());
+
+			QStringList values = value.split(",");
+			result.push_back(values);
+		} while (cursor.next());
+	}
+
+	return result;
 }
 
 bool SubstationTable::insertData()

@@ -75,3 +75,13 @@ bool TableOperation::deleteData( const QString& tableName, const QString& mRID )
 
 	return m_tablePtr->deleteData(mRID.toStdString());
 }
+
+bool TableOperation::updateData( const QString& tableName, const QString& mRID, const QString& fieldName, const QString& value )
+{
+	if (!getTablePtrByTableName(tableName))
+	{
+		return false;
+	}
+
+	return m_tablePtr->updateData(mRID.toStdString(), fieldName.toStdString(), value.toStdString());
+}
