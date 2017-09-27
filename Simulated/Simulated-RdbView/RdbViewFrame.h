@@ -51,8 +51,9 @@ private slots:
 	bool closeRdbDatabase();
 	bool addData();
 	bool deleteData();
-	bool updateData();
+	bool saveData();
 	bool refreshData();
+	void hideTableColumn();
 	void about();
 	void updateDatabaseActions(bool opened);
 	void updateTreeWidget();
@@ -74,6 +75,7 @@ private:
 	QAction*	deleteAction;
 	QAction*	saveAction;
 	QAction*	refreshAction;
+	QAction*	hideTableColumnAction;
 	QAction*	aboutAction;
 
 	QMenu*	fileMenu;

@@ -102,6 +102,14 @@ public:
 		return reason;
 	}
 
+	void setOperationInfo(const QString& operation, const QDateTime& time = QDateTime(), bool result = true, 
+		const QString& reason = "")
+	{
+		setOperation(operation);
+		setOperTime(time);
+		setResult(result);
+		setReason(reason);
+	}
 private:
 	int			serviceType;	// 服务器类型
 	QString		operation;		// 操作信息

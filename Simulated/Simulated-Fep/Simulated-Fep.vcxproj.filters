@@ -83,6 +83,9 @@
     <ClCompile Include="..\common\basic\TableHeader.cpp">
       <Filter>basic</Filter>
     </ClCompile>
+    <ClCompile Include="..\common\basic\textelement.cpp">
+      <Filter>basic</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <CustomBuild Include="fepframe.h">
@@ -112,6 +115,9 @@
       <Filter>basic</Filter>
     </ClInclude>
     <ClInclude Include="..\common\basic\TableHeader.h">
+      <Filter>basic</Filter>
+    </ClInclude>
+    <ClInclude Include="..\common\basic\textelement.h">
       <Filter>basic</Filter>
     </ClInclude>
   </ItemGroup>

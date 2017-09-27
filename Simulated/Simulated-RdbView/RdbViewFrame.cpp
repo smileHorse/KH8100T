@@ -1,6 +1,7 @@
 #include "rdbviewframe.h"
 #include "FdbTableDefine.h"
 #include "tableoperation.h"
+#include "hidecolumndialog.h"
 
 #include <QtWidgets/QtWidgets>
 
@@ -33,17 +34,19 @@ void RdbViewFrame::createWidgets()
 
 	m_rdbTableWidget = new QTableWidget;
 	m_rdbTableWidget->setWindowTitle(QStringLiteral("实时库内容"));
+	m_rdbTableWidget->setShowGrid(true);
+	m_rdbTableWidget->setAlternatingRowColors(true);
 
 	QSplitter* splitter = new QSplitter;
 	splitter->addWidget(m_rdbTreeWidget);
 	splitter->addWidget(m_rdbTableWidget);
 	splitter->setStretchFactor(0, 1);
-	splitter->setStretchFactor(1, 4);
+	splitter->setStretchFactor(1, 6);
 
 	setCentralWidget(splitter);
 	setWindowTitle(QStringLiteral("实时库操作"));
 	setWindowIcon(QIcon(":/images/rdbview.png"));
-	resize(800, 600);
+	resize(1400, 800);
 }
 
 void RdbViewFrame::createActions()
@@ -74,15 +77,20 @@ void RdbViewFrame::createActions()
 	deleteAction->setEnabled(false);
 	connect(deleteAction, SIGNAL(triggered()), this, SLOT(deleteData()));
 
-	saveAction = new QAction(QIcon(":/images/save.png"), QStringLiteral("修改"), this);
-	saveAction->setStatusTip(QStringLiteral("修改数据"));
+	saveAction = new QAction(QIcon(":/images/save.png"), QStringLiteral("保存"), this);
+	saveAction->setStatusTip(QStringLiteral("保存数据"));
 	saveAction->setEnabled(false);
-	connect(saveAction, SIGNAL(triggered()), this, SLOT(updateData()));
+	connect(saveAction, SIGNAL(triggered()), this, SLOT(saveData()));
 
 	refreshAction = new QAction(QIcon(":/images/refresh.png"), QStringLiteral("刷新"), this);
 	refreshAction->setStatusTip(QStringLiteral("刷新数据"));
 	refreshAction->setEnabled(false);
 	connect(refreshAction, SIGNAL(triggered()), this, SLOT(refreshData()));
+
+	hideTableColumnAction = new QAction(QIcon(":/images/hideColumn.png"), QStringLiteral("隐藏列"), this);
+	hideTableColumnAction->setStatusTip(QStringLiteral("隐藏表格中的指定列"));
+	hideTableColumnAction->setEnabled(true);
+	connect(hideTableColumnAction, SIGNAL(triggered()), this, SLOT(hideTableColumn()));
 
 	aboutAction = new QAction(QIcon(":/images/about.png"), QStringLiteral("关于"), this);
 	aboutAction->setStatusTip(QStringLiteral("关于程序"));
@@ -102,6 +110,8 @@ void RdbViewFrame::createMenus()
 	editMenu->addAction(deleteAction);
 	editMenu->addAction(saveAction);
 	editMenu->addAction(refreshAction);
+	editMenu->addSeparator();
+	editMenu->addAction(hideTableColumnAction);
 
 	helpMenu = menuBar()->addMenu(QStringLiteral("帮助"));
 	helpMenu->addAction(aboutAction);
@@ -120,6 +130,8 @@ void RdbViewFrame::createToolbars()
 	editToolBar->addAction(deleteAction);
 	editToolBar->addAction(saveAction);
 	editToolBar->addAction(refreshAction);
+	editToolBar->addSeparator();
+	editToolBar->addAction(hideTableColumnAction);
 }
 
 void RdbViewFrame::createStatusBar()
@@ -150,14 +162,14 @@ void RdbViewFrame::refreshDatas( QTreeWidgetItem* item )
 
 	if (item)
 	{
-		QString text = item->text(0);
+		QString tableName = item->text(0);
 		// 填写表头
-		tableHeaders = m_tableOperPtr->getTableFieldNames(text);
+		tableHeaders = m_tableOperPtr->getTableFieldNames(tableName);
 		m_rdbTableWidget->setColumnCount(tableHeaders.count());
 		m_rdbTableWidget->setHorizontalHeaderLabels(tableHeaders);
 
 		// 填写表数据
-		QList<QStringList> datas = m_tableOperPtr->selectDatas(text);
+		QList<QStringList> datas = m_tableOperPtr->selectDatas(tableName);
 		for (int i = 0; i < datas.count(); ++i)
 		{
 			int count = m_rdbTableWidget->rowCount();
@@ -166,6 +178,14 @@ void RdbViewFrame::refreshDatas( QTreeWidgetItem* item )
 			{
 				m_rdbTableWidget->setItem(count, j, new QTableWidgetItem(datas.at(i).at(j)));
 			}
+		}
+
+		// 自动隐藏不重要的字段
+		QList<int> hideColumns;
+		m_tableOperPtr->getHidedColumns(tableName, hideColumns);
+		foreach(int i, hideColumns)
+		{
+			m_rdbTableWidget->hideColumn(i);
 		}
 	}
 }
@@ -399,7 +419,7 @@ bool RdbViewFrame::deleteData()
 	return true;
 }
 
-bool RdbViewFrame::updateData()
+bool RdbViewFrame::saveData()
 {
 	if (m_tableOperPtr)
 	{
@@ -417,27 +437,22 @@ bool RdbViewFrame::updateData()
 			return false;
 		}
 
-		//获取当前字段名
-		QString fieldName;
-		if (!getCurrentTableHeaderLabel(fieldName))
+		// 获取当前行的所有记录
+		QTableWidgetItem* item = m_rdbTableWidget->currentItem();
+		if (item)
 		{
-			return false;
-		}
-
-		// 获取当前数据
-		QString value;
-		if (!getCurrentTableItemValue(value))
-		{
-			return false;
-		}
-
-		if (m_tableOperPtr->updateData(tableName, mRID, fieldName, value))
-		{
-			refreshData();
-		}
-		else
-		{
-			QMessageBox::critical(this, QStringLiteral("实时库操作"), QStringLiteral("删除数据失败"));
+			QMap<QString, QString> values;
+			for (int i = 0; i < m_rdbTableWidget->columnCount(); ++i)
+			{
+				QString fieldName = m_rdbTableWidget->horizontalHeaderItem(i)->text();
+				QString value = m_rdbTableWidget->item(item->row(), i)->text();
+				values.insert(fieldName, value);
+			}
+			if (!m_tableOperPtr->saveData(tableName, mRID, values))
+			{
+				QMessageBox::critical(this, QStringLiteral("实时库操作"), QStringLiteral("删除数据失败"));
+				refreshData();
+			}
 		}
 	}
 	else
@@ -453,6 +468,24 @@ bool RdbViewFrame::refreshData()
 	QTreeWidgetItem* item = m_rdbTreeWidget->currentItem();
 	refreshDatas(item);
 	return true;
+}
+
+void RdbViewFrame::hideTableColumn()
+{
+	if (!m_rdbTableWidget)
+	{
+		return;
+	}
+
+	HideColumnDialog hideDlg(m_rdbTableWidget, this);
+	if(hideDlg.exec() == QDialog::Accepted)
+	{
+		QList<int> hideColumns = hideDlg.getHideColumns();
+		foreach(int i, hideColumns)
+		{
+			m_rdbTableWidget->hideColumn(i);
+		}
+	}
 }
 
 void RdbViewFrame::about()

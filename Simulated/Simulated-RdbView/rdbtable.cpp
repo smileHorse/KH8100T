@@ -78,6 +78,37 @@ bool BaseTable::deleteDataByCursor( dbAnyCursor& cursor, const string& mRID )
 	return true;
 }
 
+bool BaseTable::updateDataByCursor( dbAnyCursor& cursor, const string& mRID, const QMap<QString,QString>& values )
+{
+	dbQuery query;
+	query = "mRID=", mRID;
+	try 
+	{
+		if (cursor.select(query) == 1)
+		{
+			QMap<QString,QString>::const_iterator iter = values.begin();
+			for (; iter != values.end(); ++iter)
+			{
+				string fieldName = iter.key().toStdString();
+				string value = iter.value().toStdString();
+				setFieldValue(cursor, fieldName, value);
+			}			
+			cursor.update();
+			m_dbPtr->commit();
+			return true;
+		}
+		else
+		{
+			return false;
+		}
+	}
+	catch(const dbException& ex)
+	{
+		string error = ex.what();
+	}
+	return true;
+}
+
 RemoteUnitTable::RemoteUnitTable( dbDatabase* dbPtr )
 	: BaseTable(dbPtr)
 {}
@@ -133,41 +164,32 @@ bool RemoteUnitTable::deleteData( const string& mRID )
 	return deleteDataByCursor(cursor, mRID);
 }
 
-bool RemoteUnitTable::updateData(const string& mRID, const string& fieldName, const string& value )
+bool RemoteUnitTable::updateDatas( const string& mRID, const QMap<QString,QString>& values )
 {
 	dbCursor<RemoteUnit> cursor(dbCursorForUpdate);
-	dbQuery query;
-	query = "mRID=", mRID;
-	try 
+	return updateDataByCursor(cursor, mRID, values);
+}
+
+void RemoteUnitTable::setFieldValue( dbAnyCursor& anyCursor, const string& fieldName, const string& value )
+{
+	dbCursor<RemoteUnit>& cursor = static_cast< dbCursor<RemoteUnit>& >(anyCursor);
+	if (fieldName == "IEDID")
 	{
-		if (cursor.select(query) == 1)
-		{
-			if (fieldName == "IEDID")
-			{
-				cursor->IEDID = transferType<int4, string>(value);
-			}
-			else if (fieldName == "IEDName")
-			{
-				cursor->IEDName = value;
-			}
-			else if (fieldName == "IEDType")
-			{
-				cursor->IEDType = transferType<int4, string>(value);
-			}
-			cursor.update();
-			m_dbPtr->commit();
-			return true;
-		}
-		else
-		{
-			return false;
-		}
+		cursor->IEDID = transferType<int4, string>(value);
 	}
-	catch(const dbException& ex)
+	else if (fieldName == "IEDName")
 	{
-		string error = ex.what();
+		cursor->IEDName = value;
 	}
-	return true;
+	else if (fieldName == "IEDType")
+	{
+		cursor->IEDType = transferType<int4, string>(value);
+	}
+}
+
+void RemoteUnitTable::getHidedColumns( QList<int>& hideColumns )
+{
+	
 }
 
 AnalogUnitPointTable::AnalogUnitPointTable( dbDatabase* dbPtr )
@@ -214,41 +236,32 @@ bool AnalogUnitPointTable::deleteData( const string& mRID )
 	return deleteDataByCursor(cursor, mRID);
 }
 
-bool AnalogUnitPointTable::updateData( const string& mRID, const string& fieldName, const string& value )
+bool AnalogUnitPointTable::updateDatas( const string& mRID, const QMap<QString,QString>& values )
 {
 	dbCursor<AnalogUnitPoint> cursor(dbCursorForUpdate);
-	dbQuery query;
-	query = "mRID=", mRID;
-	try 
+	return updateDataByCursor(cursor, mRID, values);
+}
+
+void AnalogUnitPointTable::setFieldValue( dbAnyCursor& anyCursor, const string& fieldName, const string& value )
+{
+	dbCursor<AnalogUnitPoint>& cursor = static_cast< dbCursor<AnalogUnitPoint>& >(anyCursor);
+	if (fieldName == "IEDID")
 	{
-		if (cursor.select(query) == 1)
-		{
-			if (fieldName == "IEDID")
-			{
-				cursor->IEDID = transferType<int, string>(value);
-			}
-			else if (fieldName == "YcIndex")
-			{
-				cursor->YcIndex = transferType<int, string>(value);
-			}
-			else if (fieldName == "YcName")
-			{
-				cursor->YcName = value;
-			}
-			cursor.update();
-			m_dbPtr->commit();
-			return true;
-		}
-		else
-		{
-			return false;
-		}
+		cursor->IEDID = transferType<int, string>(value);
 	}
-	catch(const dbException& ex)
+	else if (fieldName == "YcIndex")
 	{
-		string error = ex.what();
+		cursor->YcIndex = transferType<int, string>(value);
 	}
-	return true;
+	else if (fieldName == "YcName")
+	{
+		cursor->YcName = value;
+	}
+}
+
+void AnalogUnitPointTable::getHidedColumns( QList<int>& hideColumns )
+{
+
 }
 
 DiscreteUnitPointTable::DiscreteUnitPointTable( dbDatabase* dbPtr )
@@ -295,41 +308,32 @@ bool DiscreteUnitPointTable::deleteData( const string& mRID )
 	return deleteDataByCursor(cursor, mRID);
 }
 
-bool DiscreteUnitPointTable::updateData( const string& mRID, const string& fieldName, const string& value )
+bool DiscreteUnitPointTable::updateDatas( const string& mRID, const QMap<QString,QString>& values )
 {
 	dbCursor<DiscreteUnitPoint> cursor(dbCursorForUpdate);
-	dbQuery query;
-	query = "mRID=", mRID;
-	try 
+	return updateDataByCursor(cursor, mRID, values);
+}
+
+void DiscreteUnitPointTable::setFieldValue( dbAnyCursor& anyCursor, const string& fieldName, const string& value )
+{
+	dbCursor<DiscreteUnitPoint>& cursor = static_cast< dbCursor<DiscreteUnitPoint>& >(anyCursor);
+	if (fieldName == "IEDID")
 	{
-		if (cursor.select(query) == 1)
-		{
-			if (fieldName == "IEDID")
-			{
-				cursor->IEDID = transferType<int, string>(value);
-			}
-			else if (fieldName == "YxIndex")
-			{
-				cursor->YxIndex = transferType<int, string>(value);
-			}
-			else if (fieldName == "YxName")
-			{
-				cursor->YxName = value;
-			}
-			cursor.update();
-			m_dbPtr->commit();
-			return true;
-		}
-		else
-		{
-			return false;
-		}
+		cursor->IEDID = transferType<int, string>(value);
 	}
-	catch(const dbException& ex)
+	else if (fieldName == "YxIndex")
 	{
-		string error = ex.what();
+		cursor->YxIndex = transferType<int, string>(value);
 	}
-	return true;
+	else if (fieldName == "YxName")
+	{
+		cursor->YxName = value;
+	}
+}
+
+void DiscreteUnitPointTable::getHidedColumns( QList<int>& hideColumns )
+{
+
 }
 
 ControlUnitPointTable::ControlUnitPointTable( dbDatabase* dbPtr )
@@ -375,41 +379,32 @@ bool ControlUnitPointTable::deleteData( const string& mRID )
 	return deleteDataByCursor(cursor, mRID);
 }
 
-bool ControlUnitPointTable::updateData( const string& mRID, const string& fieldName, const string& value )
+bool ControlUnitPointTable::updateDatas( const string& mRID, const QMap<QString,QString>& values )
 {
 	dbCursor<ControlUnitPoint> cursor(dbCursorForUpdate);
-	dbQuery query;
-	query = "mRID=", mRID;
-	try 
+	return updateDataByCursor(cursor, mRID, values);
+}
+
+void ControlUnitPointTable::setFieldValue( dbAnyCursor& anyCursor, const string& fieldName, const string& value )
+{
+	dbCursor<ControlUnitPoint>& cursor = static_cast< dbCursor<ControlUnitPoint>& >(anyCursor);
+	if (fieldName == "IEDID")
 	{
-		if (cursor.select(query) == 1)
-		{
-			if (fieldName == "IEDID")
-			{
-				cursor->IEDID = transferType<int, string>(value);
-			}
-			else if (fieldName == "CommandID")
-			{
-				cursor->CommandID = transferType<int, string>(value);
-			}
-			else if (fieldName == "CommandName")
-			{
-				cursor->CommandName = value;
-			}
-			cursor.update();
-			m_dbPtr->commit();
-			return true;
-		}
-		else
-		{
-			return false;
-		}
+		cursor->IEDID = transferType<int, string>(value);
 	}
-	catch(const dbException& ex)
+	else if (fieldName == "CommandID")
 	{
-		string error = ex.what();
+		cursor->CommandID = transferType<int, string>(value);
 	}
-	return true;
+	else if (fieldName == "CommandName")
+	{
+		cursor->CommandName = value;
+	}
+}
+
+void ControlUnitPointTable::getHidedColumns( QList<int>& hideColumns )
+{
+	
 }
 
 SubstationTable::SubstationTable( dbDatabase* dbPtr )
@@ -426,7 +421,10 @@ QList<QStringList> SubstationTable::selectDatas()
 		do 
 		{
 			std::ostringstream str;
-//			str << cursor->mRID << "," << cursor->IEDID << "," << cursor->CommandID << "," << cursor->CommandName;
+			str << cursor->mRID << "," << cursor->name << "," << cursor->localName << "," << cursor->pathName 
+				<< "," << cursor->aliasName << "," << cursor->description 
+				<< "," << cursor->psrType 
+				<< "," << cursor->ec_type << "," << cursor->ec_rid;
 
 			QString value = QString().fromStdString(str.str());
 
@@ -449,12 +447,40 @@ bool SubstationTable::insertData()
 
 bool SubstationTable::deleteData( const string& mRID )
 {
-	return true;
+	dbCursor<Substation> cursor(dbCursorForUpdate);
+	return deleteDataByCursor(cursor, mRID);
 }
 
-bool SubstationTable::updateData( const string& mRID, const string& fieldName, const string& value )
+bool SubstationTable::updateDatas( const string& mRID, const QMap<QString,QString>& values )
 {
-	return true;
+	dbCursor<Substation> cursor(dbCursorForUpdate);
+	return updateDataByCursor(cursor, mRID, values);
+}
+
+void SubstationTable::getHidedColumns( QList<int>& hideColumns )
+{
+	hideColumns << 2 << 3 << 4 << 5;
+}
+
+void SubstationTable::setFieldValue( dbAnyCursor& anyCursor, const string& fieldName, const string& value )
+{
+	dbCursor<Substation>& cursor = static_cast< dbCursor<Substation>& >(anyCursor);
+	if (fieldName == "name")
+	{
+		cursor->name = value;
+	}
+	else if (fieldName == "psrType")
+	{
+		cursor->psrType = value;
+	}
+	else if (fieldName == "ec_type")
+	{
+		cursor->ec_type = value;
+	}
+	else if (fieldName == "ec_rid")
+	{
+		cursor->ec_rid = value;
+	}
 }
 
 VoltageLevelTable::VoltageLevelTable( dbDatabase* dbPtr )
@@ -463,13 +489,36 @@ VoltageLevelTable::VoltageLevelTable( dbDatabase* dbPtr )
 
 QList<QStringList> VoltageLevelTable::selectDatas()
 {
-	return QList<QStringList>();
+	QList<QStringList> result;
+
+	dbCursor<VoltageLevel> cursor;
+	if (cursor.select() > 0)
+	{
+		do 
+		{
+			std::ostringstream str;
+			str << cursor->mRID << "," << cursor->name << "," << cursor->localName << "," << cursor->pathName 
+				<< "," << cursor->aliasName << "," << cursor->description 
+				<< "," << cursor->psrType 
+				<< "," << cursor->highVoltageLimit << "," << cursor->lowVoltageLimit << "," << cursor->ec_type 
+				<< "," << cursor->ec_rid << "," << cursor->base_voltage.getOid();
+
+			QString value = QString().fromStdString(str.str());
+
+			QStringList values = value.split(",");
+			result.push_back(values);
+		} while (cursor.next());
+	}
+
+	return result;
 }
 
 bool VoltageLevelTable::insertData()
 {
 	VoltageLevel info;
 	info.mRID = QUuid::createUuid().toString().toStdString();
+	info.highVoltageLimit = 0;
+	info.lowVoltageLimit = 0;
 	insert(info);
 	m_dbPtr->commit();
 	return true;
@@ -477,12 +526,48 @@ bool VoltageLevelTable::insertData()
 
 bool VoltageLevelTable::deleteData( const string& mRID )
 {
-	return true;
+	dbCursor<VoltageLevel> cursor(dbCursorForUpdate);
+	return deleteDataByCursor(cursor, mRID);
 }
 
-bool VoltageLevelTable::updateData( const string& mRID, const string& fieldName, const string& value )
+bool VoltageLevelTable::updateDatas( const string& mRID, const QMap<QString,QString>& values )
 {
-	return true;
+	dbCursor<VoltageLevel> cursor(dbCursorForUpdate);
+	return updateDataByCursor(cursor, mRID, values);
+}
+
+void VoltageLevelTable::getHidedColumns( QList<int>& hideColumns )
+{
+	hideColumns << 2 << 3 << 4 << 5;
+}
+
+void VoltageLevelTable::setFieldValue( dbAnyCursor& anyCursor, const string& fieldName, const string& value )
+{
+	dbCursor<VoltageLevel>& cursor = static_cast< dbCursor<VoltageLevel>& >(anyCursor);
+	if (fieldName == "name")
+	{
+		cursor->name = value;
+	}
+	else if (fieldName == "psrType")
+	{
+		cursor->psrType = value;
+	}
+	else if (fieldName == "highVoltageLimit")
+	{
+		cursor->highVoltageLimit = transferType<real8, string>(value);
+	}
+	else if (fieldName == "lowVoltageLimit")
+	{
+		cursor->lowVoltageLimit = transferType<real8, string>(value);
+	}
+	else if (fieldName == "ec_type")
+	{
+		cursor->ec_type = value;
+	}
+	else if (fieldName == "ec_rid")
+	{
+		cursor->ec_rid = value;
+	}
 }
 
 AnalogTable::AnalogTable( dbDatabase* dbPtr )
@@ -491,13 +576,83 @@ AnalogTable::AnalogTable( dbDatabase* dbPtr )
 
 QList<QStringList> AnalogTable::selectDatas()
 {
-	return QList<QStringList>();
+	QList<QStringList> result;
+
+	dbCursor<Analog> cursor;
+	if (cursor.select() > 0)
+	{
+		do 
+		{
+			std::ostringstream str;
+			str << cursor->mRID << "," << cursor->name << "," << cursor->localName << "," << cursor->pathName 
+				<< "," << cursor->aliasName << "," << cursor->description 
+				<< "," << cursor->measurementType << "," << cursor->unitMultiplier << "," << cursor->unitSymbol 
+				<< "," << cursor->badReference << "," << cursor->estimatorReplaced << "," << cursor->failure 
+				<< "," << cursor->oldData << "," << cursor->operatorBlocked << "," << cursor->oscillatory 
+				<< "," << cursor->outOfRange << "," << cursor->overFlow << "," << cursor->source 
+				<< "," << cursor->suspect << "," << cursor->test << "," << cursor->validity 
+				<< "," << cursor->valueSource << "," << cursor->sensorAccuracy << "," << cursor->timeStamp 
+				<< "," << cursor->saveSection << "," << cursor->lockFlag << "," << cursor->holdFlag 
+				<< "," << cursor->psr_type << "," << cursor->psr_rid 
+				<< "," << cursor->saveReport << "," << cursor->maxValue << "," << cursor->minValue 
+				<< "," << cursor->normalValue << "," << cursor->positiveFlowIn << "," << cursor->ratioFactor 
+				<< "," << cursor->value << "," << cursor->checkLimit << "," << cursor->hhLimitValue 
+				<< "," << cursor->hLimitValue << "," << cursor->lLimitValue << "," << cursor->llLimitValue 
+				<< "," << cursor->hlimitDead << "," << cursor->llimitDead << "," << cursor->isPercentageLimits 
+				<< "," << cursor->limitStatus << "," << cursor->ftuUnitId << "," << cursor->ftuPointId 
+				<< "," << cursor->ftuVlDesc << "," << cursor->analog_formula.getOid();
+
+			QString value = QString().fromStdString(str.str());
+
+			QStringList values = value.split(",");
+			result.push_back(values);
+		} while (cursor.next());
+	}
+
+	return result;
 }
 
 bool AnalogTable::insertData()
 {
 	Analog info;
 	info.mRID = QUuid::createUuid().toString().toStdString();
+	info.measurementType = 0;
+	info.unitMultiplier = 0;
+	info.unitSymbol = 0;
+	info.badReference = false;
+	info.estimatorReplaced = false;
+	info.failure = false;
+	info.oldData = false;
+	info.operatorBlocked = false;
+	info.oscillatory = false;
+	info.outOfRange = false;
+	info.overFlow = false;
+	info.source = false;
+	info.suspect = false;
+	info.test = false;
+	info.validity = false;
+	info.sensorAccuracy = 0;
+	info.saveSection = false;
+	info.lockFlag = false;
+	info.holdFlag = false;
+	info.saveReport = false;
+	info.maxValue = 0;
+	info.minValue = 0;
+	info.normalValue = 0;
+	info.positiveFlowIn = false;
+	info.ratioFactor = 1;
+	info.value = 50;
+	info.checkLimit = true;
+	info.hhLimitValue = 100;
+	info.hLimitValue = 98;
+	info.lLimitValue = 8;
+	info.llLimitValue = 10;
+	info.hlimitDead = 1;
+	info.llimitDead = 1;
+	info.isPercentageLimits = false;
+	info.limitStatus = 0;
+	info.ftuUnitId = 0;
+	info.ftuPointId = 0;
 	insert(info);
 	m_dbPtr->commit();
 	return true;
@@ -505,12 +660,81 @@ bool AnalogTable::insertData()
 
 bool AnalogTable::deleteData( const string& mRID )
 {
-	return true;
+	dbCursor<Analog> cursor(dbCursorForUpdate);
+	return deleteDataByCursor(cursor, mRID);
 }
 
-bool AnalogTable::updateData( const string& mRID, const string& fieldName, const string& value )
+bool AnalogTable::updateDatas( const string& mRID, const QMap<QString,QString>& values )
 {
-	return true;
+	dbCursor<Analog> cursor(dbCursorForUpdate);
+	return updateDataByCursor(cursor, mRID, values);
+}
+
+void AnalogTable::getHidedColumns( QList<int>& hideColumns )
+{
+	hideColumns << 2 << 3 << 4 << 5 << 6 << 7 << 8 << 9 << 10 << 11 << 12 << 13 << 14 << 15 << 16 << 17 << 18 
+		<< 19 << 20 << 21 << 22 << 33 << 43 << 47;
+}
+
+void AnalogTable::setFieldValue( dbAnyCursor& anyCursor, const string& fieldName, const string& value )
+{
+	dbCursor<Analog>& cursor = static_cast< dbCursor<Analog>& >(anyCursor);
+	if (fieldName == "name")
+	{
+		cursor->name = value;
+	}
+	else if (fieldName == "maxValue")
+	{
+		cursor->maxValue = transferType<real8, string>(value);
+	}
+	else if (fieldName == "minValue")
+	{
+		cursor->minValue = transferType<real8, string>(value);
+	}
+	else if (fieldName == "normalValue")
+	{
+		cursor->normalValue = transferType<real8, string>(value);
+	}
+	else if (fieldName == "value")
+	{
+		cursor->value = transferType<real8, string>(value);
+	}
+	else if (fieldName == "checkLimit")
+	{
+		cursor->checkLimit = transferType<bool, string>(value);
+	}
+	else if (fieldName == "hhLimitValue")
+	{
+		cursor->hhLimitValue = transferType<real8, string>(value);
+	}
+	else if (fieldName == "hLimitValue")
+	{
+		cursor->hLimitValue = transferType<real8, string>(value);
+	}
+	else if (fieldName == "lLimitValue")
+	{
+		cursor->lLimitValue = transferType<real8, string>(value);
+	}
+	else if (fieldName == "llLimitValue")
+	{
+		cursor->llLimitValue = transferType<real8, string>(value);
+	}
+	else if (fieldName == "hlimitDead")
+	{
+		cursor->hlimitDead = transferType<real8, string>(value);
+	}
+	else if (fieldName == "llimitDead")
+	{
+		cursor->llimitDead = transferType<real8, string>(value);
+	}
+	else if (fieldName == "ftuUnitId")
+	{
+		cursor->ftuUnitId = transferType<int4, string>(value);
+	}
+	else if (fieldName == "ftuPointId")
+	{
+		cursor->ftuPointId = transferType<int4, string>(value);
+	}
 }
 
 DiscreteTable::DiscreteTable( dbDatabase* dbPtr )
@@ -519,13 +743,69 @@ DiscreteTable::DiscreteTable( dbDatabase* dbPtr )
 
 QList<QStringList> DiscreteTable::selectDatas()
 {
-	return QList<QStringList>();
+	QList<QStringList> result;
+
+	dbCursor<Discrete> cursor;
+	if (cursor.select() > 0)
+	{
+		do 
+		{
+			std::ostringstream str;
+			str << cursor->mRID << "," << cursor->name << "," << cursor->localName << "," << cursor->pathName 
+				<< "," << cursor->aliasName << "," << cursor->description 
+				<< "," << cursor->measurementType << "," << cursor->unitMultiplier << "," << cursor->unitSymbol 
+				<< "," << cursor->badReference << "," << cursor->estimatorReplaced << "," << cursor->failure 
+				<< "," << cursor->oldData << "," << cursor->operatorBlocked << "," << cursor->oscillatory 
+				<< "," << cursor->outOfRange << "," << cursor->overFlow << "," << cursor->source 
+				<< "," << cursor->suspect << "," << cursor->test << "," << cursor->validity 
+				<< "," << cursor->valueSource << "," << cursor->sensorAccuracy << "," << cursor->timeStamp 
+				<< "," << cursor->saveSection << "," << cursor->lockFlag << "," << cursor->holdFlag 
+				<< "," << cursor->psr_type << "," << cursor->psr_rid 
+				<< "," << cursor->maxValue << "," << cursor->minValue 
+				<< "," << cursor->reverse << "," << cursor->normalValue << "," << cursor->value 
+				<< "," << cursor->ftuUnitId << "," << cursor->ftuPointId << "," << cursor->ftuVlDesc;
+
+			QString value = QString().fromStdString(str.str());
+
+			QStringList values = value.split(",");
+			result.push_back(values);
+		} while (cursor.next());
+	}
+
+	return result;
 }
 
 bool DiscreteTable::insertData()
 {
 	Discrete info;
 	info.mRID = QUuid::createUuid().toString().toStdString();
+	info.measurementType = 0;
+	info.unitMultiplier = 0;
+	info.unitSymbol = 0;
+	info.badReference = false;
+	info.estimatorReplaced = false;
+	info.failure = false;
+	info.oldData = false;
+	info.operatorBlocked = false;
+	info.oscillatory = false;
+	info.outOfRange = false;
+	info.overFlow = false;
+	info.source = false;
+	info.suspect = false;
+	info.test = false;
+	info.validity = false;
+	info.sensorAccuracy = 0;
+	info.saveSection = false;
+	info.lockFlag = false;
+	info.holdFlag = false;
+	info.maxValue = 0;
+	info.minValue = 0;
+	info.reverse = false;
+	info.normalValue = 0;
+	info.value = 0;
+	info.ftuUnitId = 0;
+	info.ftuPointId = 0;
+
 	insert(info);
 	m_dbPtr->commit();
 	return true;
@@ -533,12 +813,53 @@ bool DiscreteTable::insertData()
 
 bool DiscreteTable::deleteData( const string& mRID )
 {
-	return true;
+	dbCursor<Discrete> cursor(dbCursorForUpdate);
+	return deleteDataByCursor(cursor, mRID);
 }
 
-bool DiscreteTable::updateData( const string& mRID, const string& fieldName, const string& value )
+bool DiscreteTable::updateDatas( const string& mRID, const QMap<QString,QString>& values )
 {
-	return true;
+	dbCursor<Discrete> cursor(dbCursorForUpdate);
+	return updateDataByCursor(cursor, mRID, values);
+}
+
+void DiscreteTable::getHidedColumns( QList<int>& hideColumns )
+{
+	hideColumns << 2 << 3 << 4 << 5 << 6 << 7 << 8 << 9 << 10 << 11 << 12 << 13 << 14 << 15 << 16 << 17 << 18 
+		<< 19 << 20 << 21 << 22 << 36;
+}
+
+void DiscreteTable::setFieldValue( dbAnyCursor& anyCursor, const string& fieldName, const string& value )
+{
+	dbCursor<Discrete>& cursor = static_cast< dbCursor<Discrete>& >(anyCursor);
+	if (fieldName == "name")
+	{
+		cursor->name = value;
+	}
+	else if (fieldName == "maxValue")
+	{
+		cursor->maxValue = transferType<int4, string>(value);
+	}
+	else if (fieldName == "minValue")
+	{
+		cursor->minValue = transferType<int4, string>(value);
+	}
+	else if (fieldName == "normalValue")
+	{
+		cursor->normalValue = transferType<int4, string>(value);
+	}
+	else if (fieldName == "value")
+	{
+		cursor->value = transferType<int4, string>(value);
+	}
+	else if (fieldName == "ftuUnitId")
+	{
+		cursor->ftuUnitId = transferType<int4, string>(value);
+	}
+	else if (fieldName == "ftuPointId")
+	{
+		cursor->ftuPointId = transferType<int4, string>(value);
+	}
 }
 
 AccumulatorTable::AccumulatorTable( dbDatabase* dbPtr )
@@ -547,13 +868,64 @@ AccumulatorTable::AccumulatorTable( dbDatabase* dbPtr )
 
 QList<QStringList> AccumulatorTable::selectDatas()
 {
-	return QList<QStringList>();
+	QList<QStringList> result;
+
+	dbCursor<Accumulator> cursor;
+	if (cursor.select() > 0)
+	{
+		do 
+		{
+			std::ostringstream str;
+			str << cursor->mRID << "," << cursor->name << "," << cursor->localName << "," << cursor->pathName 
+				<< "," << cursor->aliasName << "," << cursor->description 
+				<< "," << cursor->measurementType << "," << cursor->unitMultiplier << "," << cursor->unitSymbol 
+				<< "," << cursor->badReference << "," << cursor->estimatorReplaced << "," << cursor->failure 
+				<< "," << cursor->oldData << "," << cursor->operatorBlocked << "," << cursor->oscillatory 
+				<< "," << cursor->outOfRange << "," << cursor->overFlow << "," << cursor->source 
+				<< "," << cursor->suspect << "," << cursor->test << "," << cursor->validity 
+				<< "," << cursor->valueSource << "," << cursor->sensorAccuracy << "," << cursor->timeStamp 
+				<< "," << cursor->saveSection << "," << cursor->lockFlag << "," << cursor->holdFlag 
+				<< "," << cursor->psr_type << "," << cursor->psr_rid << "," << cursor->maxValue 
+				<< "," << cursor->value << "," << cursor->ftuUnitId << "," << cursor->ftuPointId 
+				<< "," << cursor->ftuVlDesc;
+
+			QString value = QString().fromStdString(str.str());
+
+			QStringList values = value.split(",");
+			result.push_back(values);
+		} while (cursor.next());
+	}
+
+	return result;
 }
 
 bool AccumulatorTable::insertData()
 {
 	Accumulator info;
 	info.mRID = QUuid::createUuid().toString().toStdString();
+	info.measurementType = 0;
+	info.unitMultiplier = 0;
+	info.unitSymbol = 0;
+	info.badReference = false;
+	info.estimatorReplaced = false;
+	info.failure = false;
+	info.oldData = false;
+	info.operatorBlocked = false;
+	info.oscillatory = false;
+	info.outOfRange = false;
+	info.overFlow = false;
+	info.source = false;
+	info.suspect = false;
+	info.test = false;
+	info.validity = false;
+	info.sensorAccuracy = 0;
+	info.saveSection = false;
+	info.lockFlag = false;
+	info.holdFlag = false;
+	info.maxValue = 0;
+	info.value = 0;
+	info.ftuUnitId = 0;
+	info.ftuPointId = 0;
 	insert(info);
 	m_dbPtr->commit();
 	return true;
@@ -561,10 +933,46 @@ bool AccumulatorTable::insertData()
 
 bool AccumulatorTable::deleteData( const string& mRID )
 {
-	return true;
+	dbCursor<Accumulator> cursor(dbCursorForUpdate);
+	return deleteDataByCursor(cursor, mRID);
 }
 
-bool AccumulatorTable::updateData( const string& mRID, const string& fieldName, const string& value )
+bool AccumulatorTable::updateDatas( const string& mRID, const QMap<QString,QString>& values )
 {
-	return true;
+	dbCursor<Accumulator> cursor(dbCursorForUpdate);
+	return updateDataByCursor(cursor, mRID, values);
 }
+
+void AccumulatorTable::getHidedColumns( QList<int>& hideColumns )
+{
+	hideColumns << 2 << 3 << 4 << 5 << 6 << 7 << 8 << 9 << 10 << 11 << 12 << 13 << 14 << 15 << 16 << 17 << 18 
+		<< 19 << 20 << 21 << 22 << 33;
+}
+
+void AccumulatorTable::setFieldValue( dbAnyCursor& anyCursor, const string& fieldName, const string& value )
+{
+	dbCursor<Accumulator>& cursor = static_cast< dbCursor<Accumulator>& >(anyCursor);
+	if (fieldName == "name")
+	{
+		cursor->name = value;
+	}
+	else if (fieldName == "maxValue")
+	{
+		cursor->maxValue = transferType<int4, string>(value);
+	}
+	else if (fieldName == "value")
+	{
+		cursor->value = transferType<int4, string>(value);
+	}
+	else if (fieldName == "ftuUnitId")
+	{
+		cursor->ftuUnitId = transferType<int4, string>(value);
+	}
+	else if (fieldName == "ftuPointId")
+	{
+		cursor->ftuPointId = transferType<int4, string>(value);
+	}
+}
+
+
+

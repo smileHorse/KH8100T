@@ -4,6 +4,7 @@
 #include <QtWidgets/QMainWindow>
 
 class QTableWidget;
+class QTextEdit;
 class QAction;
 class QMenu;
 class QToolBar;
@@ -37,6 +38,7 @@ private:
 private slots:
 	void about();
 	void updateTableWidget(const OperationInfo& text);
+	void updateTextEdit(const QString& text);
 
 private:
 	FepServer*	m_fepServerPtr;
@@ -44,11 +46,16 @@ private:
 
 
 	QTableWidget*	tableWidget;
+	QTextEdit*		textEdit;
 
 	QAction*	exitAction;
 	QAction*	processDataAction;
-	QAction*	processFaultAction;
-	QAction*	processEventAction;
+	QAction*	processDLFaultAction;
+	QAction*	processJDFaultAction;
+	QAction*	processYxTypeEventAction;
+	QAction*	processSoeTypeEventAction;
+	QAction*	processUnitTypeEventAction;
+	QAction*	processProTypeEventAction;
 	QAction*	processWaveAction;
 	QAction*	helpAction;
 

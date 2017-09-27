@@ -3,8 +3,12 @@
         <file>images/fep.png</file>
         <file>images/exit.png</file>
         <file>images/data.png</file>
-        <file>images/fault.png</file>
-        <file>images/event.png</file>
+        <file>images/dlfault.png</file>
+        <file>images/jdfault.png</file>
+        <file>images/yxtype.png</file>
+        <file>images/soetype.png</file>
+        <file>images/unittype.png</file>
+        <file>images/protype.png</file>
         <file>images/wave.png</file>
         <file>images/about.png</file>
     </qresource>

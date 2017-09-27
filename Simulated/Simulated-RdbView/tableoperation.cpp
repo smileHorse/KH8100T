@@ -76,12 +76,22 @@ bool TableOperation::deleteData( const QString& tableName, const QString& mRID )
 	return m_tablePtr->deleteData(mRID.toStdString());
 }
 
-bool TableOperation::updateData( const QString& tableName, const QString& mRID, const QString& fieldName, const QString& value )
+bool TableOperation::saveData( const QString& tableName, const QString& mRID, const QMap<QString,QString>& values )
 {
 	if (!getTablePtrByTableName(tableName))
 	{
 		return false;
 	}
 
-	return m_tablePtr->updateData(mRID.toStdString(), fieldName.toStdString(), value.toStdString());
+	return m_tablePtr->updateDatas(mRID.toStdString(), values);
+}
+
+void TableOperation::getHidedColumns( const QString& tableName, QList<int>& hideColumns )
+{
+	if (!getTablePtrByTableName(tableName))
+	{
+		return;
+	}
+
+	return m_tablePtr->getHidedColumns(hideColumns);
 }

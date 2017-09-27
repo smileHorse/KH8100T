@@ -36,6 +36,7 @@ void FepFrame::startServer()
 	connect(threadPtr, SIGNAL(started()), m_fepServerPtr, SLOT(startServer()));
 	connect(m_fepServerPtr, &FepServer::executeOperation, this, &FepFrame::updateTableWidget);
 	connect(m_fepServerThreadPtr, &FepServerThread::executeOperation, this, &FepFrame::updateTableWidget);
+	connect(m_fepServerThreadPtr, &FepServerThread::publishFepData, this, &FepFrame::updateTextEdit);
 	threadPtr->start();
 }
 
@@ -47,9 +48,19 @@ void FepFrame::createWidgets()
 	tableWidget->setHorizontalHeaderLabels(headLabels);
 	tableWidget->setShowGrid(true);
 	tableWidget->setAlternatingRowColors(true);
-	setCentralWidget(tableWidget);
 
-	resize(800, 600);
+	textEdit = new QTextEdit;
+	textEdit->setReadOnly(true);
+
+	QSplitter* splitter = new QSplitter(Qt::Vertical);
+	splitter->addWidget(tableWidget);
+	splitter->addWidget(textEdit);
+	splitter->setStretchFactor(0, 1);
+	splitter->setStretchFactor(1, 3);
+
+	setCentralWidget(splitter);
+
+	resize(1200, 800);
 	setWindowTitle(QStringLiteral("前置机模拟机"));
 	setWindowIcon(QIcon(":/images/fep.png"));
 }
@@ -62,17 +73,33 @@ void FepFrame::createActions()
 	connect(exitAction, SIGNAL(triggered()), this, SLOT(close()));
 
 	processDataAction = new QAction(QIcon(":/images/data.png"), QStringLiteral("发布数据"), this);
-	processDataAction->setStatusTip(QStringLiteral("发布前置机数据"));
+	processDataAction->setStatusTip(QStringLiteral("前置机发布数据"));
 	connect(processDataAction, SIGNAL(triggered()), m_fepServerThreadPtr, SLOT(processData()));
 
-	processFaultAction = new QAction(QIcon(":/images/fault.png"), QStringLiteral("发布故障事项"), this);
-	processFaultAction->setStatusTip(QStringLiteral("发布前置机故障事项"));
-	connect(processFaultAction, SIGNAL(triggered()), m_fepServerThreadPtr, SLOT(processFault()));
+	processDLFaultAction = new QAction(QIcon(":/images/dlfault.png"), QStringLiteral("发布短路故障事项"), this);
+	processDLFaultAction->setStatusTip(QStringLiteral("前置机发布短路故障事项"));
+	connect(processDLFaultAction, SIGNAL(triggered()), m_fepServerThreadPtr, SLOT(processDLFault()));
 
-	processEventAction = new QAction(QIcon(":/images/data.png"), QStringLiteral("发布通用事项"), this);
-	processEventAction->setStatusTip(QStringLiteral("发布前置机通用事项"));
-	connect(processEventAction, SIGNAL(triggered()), m_fepServerThreadPtr, SLOT(processEvent()));
+	processJDFaultAction = new QAction(QIcon(":/images/jdfault.png"), QStringLiteral("发布接地故障事项"), this);
+	processJDFaultAction->setStatusTip(QStringLiteral("前置机发布接地故障事项"));
+	connect(processJDFaultAction, SIGNAL(triggered()), m_fepServerThreadPtr, SLOT(processJDFault()));
 
+	processYxTypeEventAction = new QAction(QIcon(":/images/yxtype.png"), QStringLiteral("发布遥信变位事项"), this);
+	processYxTypeEventAction->setStatusTip(QStringLiteral("发布前置机遥信变位事项"));
+	connect(processYxTypeEventAction, SIGNAL(triggered()), m_fepServerThreadPtr, SLOT(processYxTypeEvent()));
+
+	processSoeTypeEventAction = new QAction(QIcon(":/images/soetype.png"), QStringLiteral("发布SOE事项"), this);
+	processSoeTypeEventAction->setStatusTip(QStringLiteral("发布前置机SOE事项"));
+	connect(processSoeTypeEventAction, SIGNAL(triggered()), m_fepServerThreadPtr, SLOT(processSoeTypeEvent()));
+
+	processUnitTypeEventAction = new QAction(QIcon(":/images/unittype.png"), QStringLiteral("发布单元事项"), this);
+	processUnitTypeEventAction->setStatusTip(QStringLiteral("发布前置机单元事项"));
+	connect(processUnitTypeEventAction, SIGNAL(triggered()), m_fepServerThreadPtr, SLOT(processUnitTypeEvent()));
+
+	processProTypeEventAction = new QAction(QIcon(":/images/protype.png"), QStringLiteral("发布保护事项"), this);
+	processProTypeEventAction->setStatusTip(QStringLiteral("发布前置机保护事项"));
+	connect(processProTypeEventAction, SIGNAL(triggered()), m_fepServerThreadPtr, SLOT(processProTypeEvent()));
+	
 	processWaveAction = new QAction(QIcon(":/images/wave.png"), QStringLiteral("发布录波事项"), this);
 	processWaveAction->setStatusTip(QStringLiteral("发布前置机录波事项"));
 	connect(processWaveAction, SIGNAL(triggered()), m_fepServerThreadPtr, SLOT(processWave()));
@@ -89,8 +116,15 @@ void FepFrame::createMenus()
 
 	operMenu = menuBar()->addMenu(QStringLiteral("操作"));
 	operMenu->addAction(processDataAction);
-	operMenu->addAction(processFaultAction);
-	operMenu->addAction(processEventAction);
+	operMenu->addSeparator();
+	operMenu->addAction(processDLFaultAction);
+	operMenu->addAction(processJDFaultAction);
+	operMenu->addSeparator();
+	operMenu->addAction(processYxTypeEventAction);
+	operMenu->addAction(processSoeTypeEventAction);
+	operMenu->addAction(processUnitTypeEventAction);
+	operMenu->addAction(processProTypeEventAction);
+	operMenu->addSeparator();
 	operMenu->addAction(processWaveAction);
 
 	helpMenu = menuBar()->addMenu(QStringLiteral("帮助"));
@@ -104,8 +138,15 @@ void FepFrame::createToolBars()
 
 	operToolBar = addToolBar(QStringLiteral("操作"));
 	operToolBar->addAction(processDataAction);
-	operToolBar->addAction(processFaultAction);
-	operToolBar->addAction(processEventAction);
+	operToolBar->addSeparator();
+	operToolBar->addAction(processDLFaultAction);
+	operToolBar->addAction(processJDFaultAction);
+	operToolBar->addSeparator();
+	operToolBar->addAction(processYxTypeEventAction);
+	operToolBar->addAction(processSoeTypeEventAction);
+	operToolBar->addAction(processUnitTypeEventAction);
+	operToolBar->addAction(processProTypeEventAction);
+	operToolBar->addSeparator();
 	operToolBar->addAction(processWaveAction);
 }
 
@@ -133,4 +174,9 @@ void FepFrame::updateTableWidget( const OperationInfo& info )
 
 		tableWidget->resizeColumnToContents(Header_OperTime);
 	}
+}
+
+void FepFrame::updateTextEdit( const QString& text )
+{
+	textEdit->insertPlainText(text);
 }

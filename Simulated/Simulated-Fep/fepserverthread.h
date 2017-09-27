@@ -24,14 +24,23 @@ protected:
 
 private:
 	bool getFepDataPublisher();
+	QString outputFepData(const FepData::DataPacket& packet);
+	QString outputFepFault(const FepData::FaultPacket& packet);
+	QString outputFepEvent(const FepData::EventPacket& packet);
+	QString outputFepWave(const FepData::WavePacket& packet);
 
 signals:
 	void executeOperation(const OperationInfo& text);
+	void publishFepData(const QString& text);
 
 private slots:
 	void processData();
-	void processFault();
-	void processEvent();
+	void processDLFault();
+	void processJDFault();
+	void processYxTypeEvent();
+	void processSoeTypeEvent();
+	void processUnitTypeEvent();
+	void processProTypeEvent();
 	void processWave();
 
 private:
