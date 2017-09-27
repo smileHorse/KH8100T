@@ -5,11 +5,24 @@ TextElement::TextElement( const string& _label, const string& _text, TextElement
 {
 	if (parent)
 	{
-		parent->insertChild(*this);
+		parent->insertChild(this);
 	}
 }
 
-void TextElement::insertChild( const TextElement& element )
+TextElement::~TextElement()
+{
+	for (vector<TextElement*>::iterator iter = children.begin(); iter != children.end(); ++iter)
+	{
+		if (*iter)
+		{
+			delete *iter;
+			*iter = NULL;
+		}
+	}
+	children.clear();
+}
+
+void TextElement::insertChild(TextElement* element )
 {
 	children.push_back(element);
 }
@@ -18,10 +31,10 @@ string TextElement::toString()
 {
 	stringstream str;
 	str << label << ": " << text;
-	for (vector<TextElement>::iterator iter = children.begin(); iter != children.end(); ++iter)
+	for (vector<TextElement*>::iterator iter = children.begin(); iter != children.end(); ++iter)
 	{
 		str << "\n\t";
-		str << iter->toString();
+		str << (*iter)->toString();
 	}
 
 	return str.str();

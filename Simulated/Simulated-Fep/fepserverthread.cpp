@@ -217,6 +217,10 @@ void FepServerThread::processDLFault()
 
 	m_fepDataManagerPrx->processFault(packet);
 
+	// 输出发送的数据
+	QString text = outputFepFault(packet);
+	emit publishFepData(text);
+
 	OperationInfo info(TYPE_FEP);
 	info.setOperationInfo(QStringLiteral("发布短路故障事项"));
 	emit executeOperation(info);
@@ -266,6 +270,10 @@ void FepServerThread::processJDFault()
 
 	m_fepDataManagerPrx->processFault(packet);
 
+	// 输出发送的数据
+	QString text = outputFepFault(packet);
+	emit publishFepData(text);
+
 	OperationInfo info(TYPE_FEP);
 	info.setOperationInfo(QStringLiteral("发布接地故障事项"));
 	emit executeOperation(info);
@@ -293,6 +301,10 @@ void FepServerThread::processYxTypeEvent()
 
 	m_fepDataManagerPrx->processEvent(packet);
 
+	// 输出发送的数据
+	QString text = outputFepEvent(packet);
+	emit publishFepData(text);
+
 	OperationInfo info(TYPE_FEP);
 	info.setOperationInfo(QStringLiteral("发布遥信变位事项"));
 	emit executeOperation(info);
@@ -319,6 +331,10 @@ void FepServerThread::processSoeTypeEvent()
 	packet.soes.push_back(soe);
 
 	m_fepDataManagerPrx->processEvent(packet);
+
+	// 输出发送的数据
+	QString text = outputFepEvent(packet);
+	emit publishFepData(text);
 
 	OperationInfo info(TYPE_FEP);
 	info.setOperationInfo(QStringLiteral("发布SOE事项"));
@@ -348,6 +364,10 @@ void FepServerThread::processUnitTypeEvent()
 	packet.units.push_back(changedUnit);
 
 	m_fepDataManagerPrx->processEvent(packet);
+
+	// 输出发送的数据
+	QString text = outputFepEvent(packet);
+	emit publishFepData(text);
 
 	OperationInfo info(TYPE_FEP);
 	info.setOperationInfo(QStringLiteral("发布单元事项"));
@@ -379,6 +399,10 @@ void FepServerThread::processProTypeEvent()
 
 	m_fepDataManagerPrx->processEvent(packet);
 
+	// 输出发送的数据
+	QString text = outputFepEvent(packet);
+	emit publishFepData(text);
+
 	OperationInfo info(TYPE_FEP);
 	info.setOperationInfo(QStringLiteral("发布保护事项"));
 	emit executeOperation(info);
@@ -395,65 +419,65 @@ QString FepServerThread::outputFepData( const FepData::DataPacket& packet )
 	QString currTime = QDateTime::currentDateTime().toString(Qt::SystemLocaleLongDate);
 
 	TextElement parent("前置机发送数据", currTime.toStdString());
-	parent.insertChild( TextElement("数据包ID", transferToString<unsigned char>(packet.id)));
-	parent.insertChild( TextElement("所属前置机", packet.fepNode));
-	parent.insertChild( TextElement("数据类型", getDataType(packet.type)));
-	parent.insertChild( TextElement("单元号", transferToString<short>(packet.unitNo)));
+	parent.insertChild(new TextElement("数据包ID", transferToString<int>(packet.id)));
+	parent.insertChild(new TextElement("所属前置机", packet.fepNode));
+	parent.insertChild(new TextElement("数据类型", getDataType(packet.type)));
+	parent.insertChild(new TextElement("单元号", transferToString<short>(packet.unitNo)));
 	if (!packet.units.empty())
 	{
-		TextElement units("终端状态", transferToString<size_t>(packet.units.size()), &parent);
+		TextElement* units = new TextElement("终端状态", transferToString<size_t>(packet.units.size()), &parent);
 		for (size_t i = 0; i < packet.units.size(); ++i)
 		{
-			units.insertChild(TextElement("终端编号", transferToString<short>(packet.units.at(i).unitNo)));
-			units.insertChild(TextElement("单元状态", getState(packet.units.at(i).unitState)));
-			units.insertChild(TextElement("主通道状态", getState(packet.units.at(i).channelState1)));
-			units.insertChild(TextElement("副通道状态", getState(packet.units.at(i).channelState2)));
-			units.insertChild(TextElement("误码率", transferToString<unsigned char>(packet.units.at(i).unitNo)));
+			units->insertChild(new TextElement("终端编号", transferToString<short>(packet.units.at(i).unitNo)));
+			units->insertChild(new TextElement("单元状态", getState(packet.units.at(i).unitState)));
+			units->insertChild(new TextElement("主通道状态", getState(packet.units.at(i).channelState1)));
+			units->insertChild(new TextElement("副通道状态", getState(packet.units.at(i).channelState2)));
+			units->insertChild(new TextElement("误码率", transferToString<unsigned char>(packet.units.at(i).unitNo)));
 		}
 	}
 	if (!packet.analogs.empty())
 	{
-		TextElement analogs("遥测数据", transferToString<size_t>(packet.analogs.size()), &parent);
+		TextElement* analogs = new TextElement("遥测数据", transferToString<size_t>(packet.analogs.size()), &parent);
 
 		string value;
 		for (size_t i = 0; i < packet.analogs.size(); ++i)
 		{
 			value += transferToString<int>(packet.analogs.at(i)) + "\t";
 		}
-		analogs.insertChild(TextElement("值", value));
+		analogs->insertChild(new TextElement("值", value));
 	}
 	if (!packet.discretes.empty())
 	{
-		TextElement discretes("遥信数据", transferToString<size_t>(packet.discretes.size()), &parent);
+		TextElement* discretes = new TextElement("遥信数据", transferToString<size_t>(packet.discretes.size()), &parent);
 
 		string value;
 		for (size_t i = 0; i < packet.discretes.size(); ++i)
 		{
 			value += transferToString<int>(packet.discretes.at(i)) + "\t";
 		}
-		discretes.insertChild(TextElement("值", value));
+		discretes->insertChild(new TextElement("值", value));
 	}
 	if (!packet.accmulators.empty())
 	{
-		TextElement accmulators("电度数据", transferToString<size_t>(packet.accmulators.size()), &parent);
+		TextElement* accmulators = new TextElement("电度数据", transferToString<size_t>(packet.accmulators.size()), &parent);
 
 		string value;
 		for (size_t i = 0; i < packet.accmulators.size(); ++i)
 		{
 			value += transferToString<int>(packet.accmulators.at(i)) + "\t";
 		}
-		accmulators.insertChild(TextElement("值", value));
+		accmulators->insertChild(new TextElement("值", value));
 	}
 	if (!packet.changedAnalogs.empty())
 	{
-		TextElement changedAnalogs("变化遥测数据", transferToString<size_t>(packet.changedAnalogs.size()), &parent);
+		TextElement* changedAnalogs = new TextElement("变化遥测数据", transferToString<size_t>(packet.changedAnalogs.size()), &parent);
 
 		for (size_t i = 0; i < packet.changedAnalogs.size(); ++i)
 		{
-			changedAnalogs.insertChild(TextElement("时标", transferToString<long>(packet.changedAnalogs.at(i).timeStamp)));
-			changedAnalogs.insertChild(TextElement("终端编号", transferToString<short>(packet.changedAnalogs.at(i).unitNo)));
-			changedAnalogs.insertChild(TextElement("点号", transferToString<short>(packet.changedAnalogs.at(i).index)));
-			changedAnalogs.insertChild(TextElement("值", transferToString<int>(packet.changedAnalogs.at(i).value)));
+			changedAnalogs->insertChild(new TextElement("时标", transferToString<long>(packet.changedAnalogs.at(i).timeStamp)));
+			changedAnalogs->insertChild(new TextElement("终端编号", transferToString<short>(packet.changedAnalogs.at(i).unitNo)));
+			changedAnalogs->insertChild(new TextElement("点号", transferToString<short>(packet.changedAnalogs.at(i).index)));
+			changedAnalogs->insertChild(new TextElement("值", transferToString<int>(packet.changedAnalogs.at(i).value)));
 		}
 	}
 
@@ -463,17 +487,158 @@ QString FepServerThread::outputFepData( const FepData::DataPacket& packet )
 QString FepServerThread::outputFepFault( const FepData::FaultPacket& packet )
 {
 	QString text;
-	return text;
+	QString currTime = QDateTime::currentDateTime().toString(Qt::SystemLocaleLongDate);
+
+	TextElement parent("前置机发送故障事项", currTime.toStdString());
+	parent.insertChild(new TextElement("数据包ID", transferToString<int>(packet.id)));
+	parent.insertChild(new TextElement("所属前置机", packet.fepNode));
+	if (!packet.events.empty())
+	{
+		TextElement* events = new TextElement("故障事项", transferToString<size_t>(packet.events.size()), &parent);
+		for (size_t i = 0; i < packet.events.size(); ++i)
+		{
+			events->insertChild(new TextElement("单元编号", transferToString<short>(packet.events.at(i).unitNo)));
+			events->insertChild(new TextElement("时标", transferToString<long>(packet.events.at(i).timeStamp)));
+			events->insertChild(new TextElement("故障源", transferToString<short>(packet.events.at(i).source)));
+			events->insertChild(new TextElement("事项类型", transferToString<short>(packet.events.at(i).eventType)));
+			events->insertChild(new TextElement("方向系数标志", transferToString<short>(packet.events.at(i).directionFlag)));
+			events->insertChild(new TextElement("故障类型", transferToString<short>(packet.events.at(i).faultType)));
+			events->insertChild(new TextElement("故障线路号", transferToString<short>(packet.events.at(i).lineNo)));
+			events->insertChild(new TextElement("持续时间", transferToString<short>(packet.events.at(i).duration)));
+			events->insertChild(new TextElement("故障方向", transferToString<short>(packet.events.at(i).direction)));
+			events->insertChild(new TextElement("故障距离", transferToString<short>(packet.events.at(i).distance)));
+			events->insertChild(new TextElement("方向系数", transferToString<short>(packet.events.at(i).directionMultiplier)));
+			events->insertChild(new TextElement("可信度", transferToString<short>(packet.events.at(i).credibility)));
+			events->insertChild(new TextElement("零序电压幅值", transferToString<short>(packet.events.at(i).v0Amp)));
+			events->insertChild(new TextElement("波形类型", transferToString<short>(packet.events.at(i).waveType)));
+			if (!packet.events.at(i).values.empty())
+			{
+				TextElement* values = new TextElement("故障值序列", 
+					transferToString<size_t>(packet.events.at(i).values.size()), events);
+				string value;
+				for (size_t j = 0; j < packet.events.at(i).values.size(); ++j)
+				{
+					value += transferToString<short>(packet.events.at(i).values.at(j)) + "\t";
+				}
+				values->insertChild(new TextElement("值", value));
+			}
+		}
+	}
+
+	return text.fromStdString(parent.toString());
 }
 
 QString FepServerThread::outputFepEvent( const FepData::EventPacket& packet )
 {
 	QString text;
-	return text;
+	QString currTime = QDateTime::currentDateTime().toString(Qt::SystemLocaleLongDate);
+
+	TextElement parent("前置机事项数据", currTime.toStdString());
+	parent.insertChild(new TextElement("数据包ID", transferToString<int>(packet.id)));
+	parent.insertChild(new TextElement("所属前置机", packet.fepNode));
+	parent.insertChild(new TextElement("告警类型", getEventType(packet.type)));
+	if (!packet.digitals.empty())
+	{
+		TextElement* digitals = new TextElement("遥信变位", transferToString<size_t>(packet.digitals.size()), &parent);
+		for (size_t i = 0; i < packet.digitals.size(); ++i)
+		{
+			digitals->insertChild(new TextElement("终端编号", transferToString<short>(packet.digitals.at(i).unitNo)));
+			digitals->insertChild(new TextElement("遥信点号", transferToString<short>(packet.digitals.at(i).index)));
+			digitals->insertChild(new TextElement("遥信值", getDiscreteValue(packet.digitals.at(i).value)));
+			digitals->insertChild(new TextElement("时标", transferToString<long>(packet.digitals.at(i).timeStamp)));
+		}
+	}
+	if (!packet.soes.empty())
+	{
+		TextElement* soes = new TextElement("SOE", transferToString<size_t>(packet.soes.size()), &parent);
+		for (size_t i = 0; i < packet.soes.size(); ++i)
+		{
+			soes->insertChild(new TextElement("终端编号", transferToString<short>(packet.soes.at(i).unitNo)));
+			soes->insertChild(new TextElement("遥信点号", transferToString<short>(packet.soes.at(i).index)));
+			soes->insertChild(new TextElement("遥信值", getDiscreteValue(packet.soes.at(i).value)));
+			soes->insertChild(new TextElement("时标", transferToString<long>(packet.soes.at(i).timeStamp)));
+		}
+	}
+	if (!packet.protects.empty())
+	{
+		TextElement* protects = new TextElement("保护事项", transferToString<size_t>(packet.protects.size()), &parent);
+		for (size_t i = 0; i < packet.protects.size(); ++i)
+		{
+			protects->insertChild(new TextElement("终端编号", transferToString<short>(packet.protects.at(i).unitNo)));
+			protects->insertChild(new TextElement("类型", getProEventType(packet.protects.at(i).Type)));
+			protects->insertChild(new TextElement("时间", transferToString<long>(packet.protects.at(i).timeStamp)));
+			protects->insertChild(new TextElement("模块编号", transferToString<short>(packet.protects.at(i).moduleNo)));
+			protects->insertChild(new TextElement("模块类型", transferToString<short>(packet.protects.at(i).moduleType)));
+			protects->insertChild(new TextElement("信息序号", transferToString<short>(packet.protects.at(i).infoNo)));
+			protects->insertChild(new TextElement("保护动作(1动作 2复归)", transferToString<short>(packet.protects.at(i).state)));
+			if (!packet.protects.at(i).values.empty())
+			{
+				TextElement* values = new TextElement("保护值", transferToString<size_t>(packet.protects.at(i).values.size()), protects);
+				for (size_t j = 0; j < packet.protects.at(i).values.size(); ++j)
+				{
+					values->insertChild(new TextElement("索引", transferToString<short>(packet.protects.at(i).values.at(j).index)));
+					values->insertChild(new TextElement("值", transferToString<short>(packet.protects.at(i).values.at(j).value)));
+				}
+			}
+		}
+	}
+	if (!packet.units.empty())
+	{
+		TextElement* units = new TextElement("变化的终端序列", transferToString<size_t>(packet.units.size()), &parent);
+		for (size_t i = 0; i < packet.units.size(); ++i)
+		{
+			units->insertChild(new TextElement("终端编号", transferToString<short>(packet.units.at(i).unitNo)));
+			units->insertChild(new TextElement("终端状态", getState(packet.units.at(i).unitState)));
+			units->insertChild(new TextElement("主通道状态", getState(packet.units.at(i).channelState1)));
+			units->insertChild(new TextElement("副通道状态", getState(packet.units.at(i).channelState2)));
+			units->insertChild(new TextElement("误码率", transferToString<int>(packet.units.at(i).errorRate)));
+			units->insertChild(new TextElement("时标", transferToString<long>(packet.units.at(i).timeStamp)));
+		}
+	}
+
+	return text.fromStdString(parent.toString());
 }
 
 QString FepServerThread::outputFepWave( const FepData::WavePacket& packet )
 {
 	QString text;
-	return text;
+	QString currTime = QDateTime::currentDateTime().toString(Qt::SystemLocaleLongDate);
+
+	TextElement parent("前置机发送录波事项", currTime.toStdString());
+	parent.insertChild(new TextElement("数据包ID", transferToString<int>(packet.id)));
+	parent.insertChild(new TextElement("所属前置机", packet.fepNode));
+	if (!packet.events.empty())
+	{
+		TextElement* events = new TextElement("录波事项", transferToString<size_t>(packet.events.size()), &parent);
+		for (size_t i = 0; i < packet.events.size(); ++i)
+		{
+			events->insertChild(new TextElement("单元编号", transferToString<short>(packet.events.at(i).unitNo)));
+			events->insertChild(new TextElement("时标", transferToString<long>(packet.events.at(i).timeStamp)));
+			events->insertChild(new TextElement("故障源", transferToString<short>(packet.events.at(i).source)));
+			events->insertChild(new TextElement("事项类型", transferToString<short>(packet.events.at(i).eventType)));
+			events->insertChild(new TextElement("方向系数标志", transferToString<short>(packet.events.at(i).directionFlag)));
+			events->insertChild(new TextElement("故障类型", transferToString<short>(packet.events.at(i).faultType)));
+			events->insertChild(new TextElement("故障线路号", transferToString<short>(packet.events.at(i).lineNo)));
+			events->insertChild(new TextElement("持续时间", transferToString<short>(packet.events.at(i).duration)));
+			events->insertChild(new TextElement("故障方向", transferToString<short>(packet.events.at(i).direction)));
+			events->insertChild(new TextElement("故障距离", transferToString<short>(packet.events.at(i).distance)));
+			events->insertChild(new TextElement("方向系数", transferToString<short>(packet.events.at(i).directionMultiplier)));
+			events->insertChild(new TextElement("可信度", transferToString<short>(packet.events.at(i).credibility)));
+			events->insertChild(new TextElement("零序电压幅值", transferToString<short>(packet.events.at(i).v0Amp)));
+			events->insertChild(new TextElement("波形类型", transferToString<short>(packet.events.at(i).waveType)));
+			if (!packet.events.at(i).values.empty())
+			{
+				TextElement* values = new TextElement("录波值序列", 
+					transferToString<size_t>(packet.events.at(i).values.size()), events);
+				string value;
+				for (size_t j = 0; j < packet.events.at(i).values.size(); ++j)
+				{
+					value += transferToString<short>(packet.events.at(i).values.at(j)) + "\t";
+				}
+				values->insertChild(new TextElement("值", value));
+			}
+		}
+	}
+
+	return text.fromStdString(parent.toString());
 }

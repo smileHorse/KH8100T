@@ -11,8 +11,9 @@ class TextElement
 {
 public:
 	TextElement(const string& _label, const string& _text, TextElement* _parent = 0);
+	~TextElement();
 
-	void	insertChild(const TextElement& element);
+	void	insertChild(TextElement* element);
 
 	string	toString();
 
@@ -21,7 +22,7 @@ private:
 	string	text;
 
 	TextElement*	parent;
-	vector<TextElement>	children;
+	vector<TextElement*>	children;
 };
 
 

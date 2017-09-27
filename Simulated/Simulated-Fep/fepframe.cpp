@@ -50,7 +50,7 @@ void FepFrame::createWidgets()
 	tableWidget->setAlternatingRowColors(true);
 
 	textEdit = new QTextEdit;
-	textEdit->setReadOnly(true);
+	textEdit->setReadOnly(false);
 
 	QSplitter* splitter = new QSplitter(Qt::Vertical);
 	splitter->addWidget(tableWidget);
@@ -179,4 +179,5 @@ void FepFrame::updateTableWidget( const OperationInfo& info )
 void FepFrame::updateTextEdit( const QString& text )
 {
 	textEdit->insertPlainText(text);
+	textEdit->insertPlainText("\n");
 }
