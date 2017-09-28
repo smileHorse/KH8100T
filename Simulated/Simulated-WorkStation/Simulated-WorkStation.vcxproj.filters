@@ -47,15 +47,6 @@
     <ClCompile Include="workstationframe.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="GeneratedFiles\Debug\moc_workstationframe.cpp">
-      <Filter>Generated Files\Debug</Filter>
-    </ClCompile>
-    <ClCompile Include="GeneratedFiles\Release\moc_workstationframe.cpp">
-      <Filter>Generated Files\Release</Filter>
-    </ClCompile>
-    <ClCompile Include="GeneratedFiles\qrc_workstationframe.cpp">
-      <Filter>Generated Files</Filter>
-    </ClCompile>
     <ClCompile Include="..\common\slice\cpp\rdbdata.cpp">
       <Filter>Slice</Filter>
     </ClCompile>
@@ -65,17 +56,29 @@
     <ClCompile Include="workstationserver.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="GeneratedFiles\Debug\moc_workstationserver.cpp">
-      <Filter>Generated Files\Debug</Filter>
-    </ClCompile>
-    <ClCompile Include="GeneratedFiles\Release\moc_workstationserver.cpp">
-      <Filter>Generated Files\Release</Filter>
-    </ClCompile>
     <ClCompile Include="..\common\basic\BaseIceStorm.cpp">
       <Filter>basic</Filter>
     </ClCompile>
     <ClCompile Include="workstationserverthread.cpp">
       <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="RdbAlarmDataI.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="..\common\basic\textelement.cpp">
+      <Filter>basic</Filter>
+    </ClCompile>
+    <ClCompile Include="GeneratedFiles\Debug\moc_workstationframe.cpp">
+      <Filter>Generated Files\Debug</Filter>
+    </ClCompile>
+    <ClCompile Include="GeneratedFiles\Release\moc_workstationframe.cpp">
+      <Filter>Generated Files\Release</Filter>
+    </ClCompile>
+    <ClCompile Include="GeneratedFiles\Debug\moc_workstationserver.cpp">
+      <Filter>Generated Files\Debug</Filter>
+    </ClCompile>
+    <ClCompile Include="GeneratedFiles\Release\moc_workstationserver.cpp">
+      <Filter>Generated Files\Release</Filter>
     </ClCompile>
     <ClCompile Include="GeneratedFiles\Debug\moc_workstationserverthread.cpp">
       <Filter>Generated Files\Debug</Filter>
@@ -83,19 +86,22 @@
     <ClCompile Include="GeneratedFiles\Release\moc_workstationserverthread.cpp">
       <Filter>Generated Files\Release</Filter>
     </ClCompile>
+    <ClCompile Include="GeneratedFiles\qrc_workstationframe.cpp">
+      <Filter>Generated Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <CustomBuild Include="workstationframe.h">
       <Filter>Header Files</Filter>
-    </CustomBuild>
-    <CustomBuild Include="workstationframe.qrc">
-      <Filter>Resource Files</Filter>
     </CustomBuild>
     <CustomBuild Include="workstationserverthread.h">
       <Filter>Header Files</Filter>
     </CustomBuild>
     <CustomBuild Include="workstationserver.h">
       <Filter>Header Files</Filter>
+    </CustomBuild>
+    <CustomBuild Include="workstationframe.qrc">
+      <Filter>Resource Files</Filter>
     </CustomBuild>
   </ItemGroup>
   <ItemGroup>
@@ -112,6 +118,12 @@
       <Filter>basic</Filter>
     </ClInclude>
     <ClInclude Include="..\common\basic\BaseIceStorm.h">
+      <Filter>basic</Filter>
+    </ClInclude>
+    <ClInclude Include="RdbAlarmDataI.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="..\common\basic\textelement.h">
       <Filter>basic</Filter>
     </ClInclude>
   </ItemGroup>

@@ -7,6 +7,30 @@
 
 using namespace std;
 
+template<class inType, class outType>
+class ConvertType
+{
+public:
+	outType convert(const inType& inValue)
+	{
+		outType outValue;
+		stringstream str;
+		str << inValue;
+		str >> outValue;
+		return outValue;
+	}
+};
+
+template<class T>
+class ConvertTypeToString : public ConvertType<T, string>
+{
+public:
+	string convertToString(const T& value)
+	{
+		return convert(value);
+	}
+};
+
 class TextElement
 {
 public:

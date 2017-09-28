@@ -2,12 +2,16 @@
 #include "TableHeader.h"
 #include "workstationserver.h"
 #include "workstationserverthread.h"
+#include "OperationInfo.h"
 
 #include <QtWidgets/QtWidgets>
 
 WorkStationFrame::WorkStationFrame(int argc, char* argv[], QWidget *parent)
 	: QMainWindow(parent), m_argc(argc), m_argv(argv)
 {
+	m_workStationServerPtr = new WorkStationServer(m_argc, m_argv);
+	m_workStationServerThreadPtr = new WorkStationServerThread;
+
 	createWidgets();
 
 	createActions();
@@ -16,8 +20,6 @@ WorkStationFrame::WorkStationFrame(int argc, char* argv[], QWidget *parent)
 	createStatusBar();
 	createConnects();
 
-	m_workStationServerPtr = new WorkStationServer(m_argc, m_argv);
-	m_workStationServerThreadPtr = new WorkStationServerThread;
 }
 
 WorkStationFrame::~WorkStationFrame()
@@ -27,7 +29,6 @@ WorkStationFrame::~WorkStationFrame()
 
 void WorkStationFrame::createWidgets()
 {
-	QWidget* widget = new QWidget;
 	tableWidget = new QTableWidget;
 	QStringList tableHeaders = TableHeader::getTableHeaderLabels();
 	tableWidget->setColumnCount(tableHeaders.count());
@@ -36,19 +37,19 @@ void WorkStationFrame::createWidgets()
 
 	textEdit = new QTextEdit;
 	textEdit->setTextBackgroundColor(QColor(255, 0, 0));
+	textEdit->setReadOnly(true);
 
-	QVBoxLayout* layout = new QVBoxLayout;
-	layout->addWidget(tableWidget, 1);
-	layout->addStretch();
-	layout->addWidget(textEdit, 2);
-
-	widget->setLayout(layout);
-	setCentralWidget(widget);
+	QSplitter* splitter = new QSplitter(Qt::Vertical);
+	splitter->addWidget(tableWidget);
+	splitter->addWidget(textEdit);
+	splitter->setStretchFactor(0, 1);
+	splitter->setStretchFactor(1, 4);
+	setCentralWidget(splitter);
 
 	OperationInfo info(TYPE_CLIENT, "操作信息测试");
 	updateTableWidget(info);
 
-	resize(800, 600);
+	resize(1200, 800);
 	setWindowTitle(QStringLiteral("工作站模拟机"));
 	setWindowIcon(QIcon(":/images/workstation.png"));
 }
@@ -137,7 +138,12 @@ void WorkStationFrame::createStatusBar()
 
 void WorkStationFrame::createConnects()
 {
+	qRegisterMetaType<OperationInfo>("OperationInfo");
 	connect(this, SIGNAL(serverStarted(bool)), this, SLOT(updateActions(bool)));
+	connect(m_workStationServerThreadPtr, &WorkStationServerThread::executeOperation, 
+		this, &WorkStationFrame::updateTableWidget);
+	connect(m_workStationServerThreadPtr, &WorkStationServerThread::outputReceiveData, 
+		this, &WorkStationFrame::updateTextEdit);
 }
 
 void WorkStationFrame::updateTableWidget( const OperationInfo& info )
@@ -153,6 +159,12 @@ void WorkStationFrame::updateTableWidget( const OperationInfo& info )
 
 		tableWidget->resizeColumnsToContents();
 	}
+}
+
+void WorkStationFrame::updateTextEdit( const QString& text )
+{
+	textEdit->insertPlainText(text);
+	textEdit->insertPlainText("\n");
 }
 
 void WorkStationFrame::updateActions( bool serverStarted )

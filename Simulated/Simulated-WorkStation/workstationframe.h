@@ -1,7 +1,6 @@
 #ifndef WORKSTATIONFRAME_H
 #define WORKSTATIONFRAME_H
 
-#include "OperationInfo.h"
 
 #include <QtWidgets/QMainWindow>
 
@@ -12,6 +11,7 @@ class QMenu;
 class QToolBar;
 class WorkStationServer;
 class WorkStationServerThread;
+class OperationInfo;
 
 #pragma execution_character_set("utf-8")
 
@@ -37,6 +37,7 @@ signals:
 
 public slots:
 	void updateTableWidget(const OperationInfo& info);
+	void updateTextEdit(const QString& text);
 
 private slots:
 	void updateActions(bool serverStarted);
@@ -73,7 +74,6 @@ private:
 	QMenu*		helpMenu;
 	QToolBar*	fileToolBar;
 	QToolBar*	operToolBar;
-
 };
 
 

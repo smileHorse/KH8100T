@@ -34,6 +34,8 @@ int WorkStationServer::run( int argc, char* argv[] )
 		if (m_threadPtr)
 		{
 			m_threadPtr->setCommunicatorPtr(m_communicatorPtr);
+			m_threadPtr->setObjectAdapterPtr(adapter);
+			m_threadPtr->start();
 		}
 
 		adapter->activate();
