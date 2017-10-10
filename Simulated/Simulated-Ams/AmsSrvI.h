@@ -11,8 +11,6 @@ using namespace std;
 
 class AmsServerThread;
 
-#pragma execution_character_set("utf-8")
-
 class CAmsAppI : public Amssrv::CAmsApp
 {
 public:
