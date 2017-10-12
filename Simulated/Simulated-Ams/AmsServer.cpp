@@ -26,7 +26,7 @@ int AmsServer::run( int argc, char* argv[] )
 		Ice::CommunicatorPtr communicatorPtr = communicator();
 		info.setOperationInfo("建立连接器");
 		m_threadPtr->putMessage(info);
-
+		
 		::Ice::PropertiesPtr props = communicator()->getProperties();
 		string adapterName = "AmsApp";
 		string amsAppName = "amsApp";

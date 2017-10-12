@@ -34,6 +34,7 @@ module RdbRealData
 	{
 		long		id;
 		long		requestId; //请求编号
+		string 		requestNode;	//请求节点
 
 		bool		isStop; //是否停止此数据请求,ice接口忽略该项
 		int			refreshFreq; //刷新频率,0表示只一次请求,ice接口忽略该项
@@ -59,6 +60,7 @@ module RdbRealData
 	{
 		long		id;
 		long		requestId; //请求编号
+		string 		requestNode;	//请求节点
 
 		bool		isStop; //是否停止此数据请求,ice接口忽略该项
 		int			refreshFreq; //刷新频率,0表示只一次请求,ice接口忽略该项
@@ -83,6 +85,7 @@ module RdbRealData
 	{
 		long		id;     
 		long		requestId; //请求编号
+		string 		requestNode;	//请求节点
 
 		bool		isStop; //是否停止此数据请求,ice接口忽略该项
 		int			refreshFreq; //刷新频率,0表示只一次请求,ice接口忽略该项
@@ -106,6 +109,7 @@ module RdbRealData
 	{
 		long		id;   //
 		long		requestId; //请求编号
+		string 		requestNode;	//请求节点
 
 		long		dataCount; //请求序列的个数
 		RespondDefaultDataSequence	seq;//请求序列
@@ -128,6 +132,7 @@ module RdbRealData
 	{
 		long		id;
 		long		requestId; //请求编号
+		string 		requestNode;	//请求节点
 
 		long		dataCount; //请求序列的个数
 		RespondSpecficDataSequence	seq;//请求序列
@@ -149,6 +154,7 @@ module RdbRealData
 	{
 		long		id;
 		long		requestId; //请求编号
+		string 		requestNode;	//请求节点
 
 		long		dataCount; //请求序列的个数
 		RespondCompleteDataSequence	seq;//请求序列
@@ -199,6 +205,7 @@ module RdbRealData
 	{
 		long	id;
 		long	requestId;   //请求编号
+		string 	requestNode;	//请求节点
 
 		bool	isStop; //是否停止此数据请求，对于Ice接口此字段可不用
 		int		refreshFreq; //刷新频率，刷新频率为零意味着是走ICEStorm的一次性请求
@@ -218,7 +225,8 @@ module RdbRealData
 	struct  ReceiveTopoDataSeq 
 	{
 		long	id;
-		long     requestId;   //请求编号
+		long    requestId;   //请求编号
+		string 	requestNode;	//请求节点
 		ConNodeStateSeq cnStateSeq;
  	};
  	

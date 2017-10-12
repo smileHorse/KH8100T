@@ -340,7 +340,7 @@ void RdbViewFrame::tableItemChanged( QTableWidgetItem* current, QTableWidgetItem
 
 bool RdbViewFrame::openRdbDatabase()
 {
-	if (!m_dbPtr->open("serverdb"))
+	if (!m_dbPtr->open("serverdb1"))
 	{
 		emit databaseOpenState(false);
 		QMessageBox::critical(this, QStringLiteral("实时库操作"), QStringLiteral("数据库打开失败"));
@@ -442,7 +442,8 @@ bool RdbViewFrame::saveData()
 		if (item)
 		{
 			QMap<QString, QString> values;
-			for (int i = 0; i < m_rdbTableWidget->columnCount(); ++i)
+			int columnCount = m_rdbTableWidget->columnCount();
+			for (int i = 0; i < columnCount; ++i)
 			{
 				QString fieldName = m_rdbTableWidget->horizontalHeaderItem(i)->text();
 				QString value = m_rdbTableWidget->item(item->row(), i)->text();

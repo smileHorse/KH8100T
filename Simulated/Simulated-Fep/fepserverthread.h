@@ -2,6 +2,7 @@
 #define FEPSERVERTHREAD_H
 
 #include "fepdata.h"
+#include "processDataDlg.h"
 
 #include <QThread>
 #include <Ice/ice.h>
@@ -35,6 +36,10 @@ signals:
 
 private slots:
 	void processData();
+	void processYxData();
+	void processYcData();
+	void processDdData();
+	void processDataPacket(SelfDataPacket packet);
 	void processDLFault();
 	void processJDFault();
 	void processYxTypeEvent();

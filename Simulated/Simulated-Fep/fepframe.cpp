@@ -76,6 +76,18 @@ void FepFrame::createActions()
 	processDataAction->setStatusTip(QStringLiteral("前置机发布数据"));
 	connect(processDataAction, SIGNAL(triggered()), m_fepServerThreadPtr, SLOT(processData()));
 
+	processYxDataAction = new QAction(QIcon(":/images/data.png"), QStringLiteral("发布遥信数据"), this);
+	processYxDataAction->setStatusTip(QStringLiteral("前置机发布遥信数据"));
+	connect(processYxDataAction, SIGNAL(triggered()), m_fepServerThreadPtr, SLOT(processYxData()));
+
+	processYcDataAction = new QAction(QIcon(":/images/data.png"), QStringLiteral("发布遥测数据"), this);
+	processYcDataAction->setStatusTip(QStringLiteral("前置机发布遥测数据"));
+	connect(processYcDataAction, SIGNAL(triggered()), m_fepServerThreadPtr, SLOT(processYcData()));
+
+	processDdDataAction = new QAction(QIcon(":/images/data.png"), QStringLiteral("发布电度数据"), this);
+	processDdDataAction->setStatusTip(QStringLiteral("前置机发布电度数据"));
+	connect(processDdDataAction, SIGNAL(triggered()), m_fepServerThreadPtr, SLOT(processDdData()));
+
 	processDLFaultAction = new QAction(QIcon(":/images/dlfault.png"), QStringLiteral("发布短路故障事项"), this);
 	processDLFaultAction->setStatusTip(QStringLiteral("前置机发布短路故障事项"));
 	connect(processDLFaultAction, SIGNAL(triggered()), m_fepServerThreadPtr, SLOT(processDLFault()));
@@ -116,6 +128,9 @@ void FepFrame::createMenus()
 
 	operMenu = menuBar()->addMenu(QStringLiteral("操作"));
 	operMenu->addAction(processDataAction);
+	operMenu->addAction(processYxDataAction);
+	operMenu->addAction(processYcDataAction);
+	operMenu->addAction(processDdDataAction);
 	operMenu->addSeparator();
 	operMenu->addAction(processDLFaultAction);
 	operMenu->addAction(processJDFaultAction);
@@ -138,6 +153,9 @@ void FepFrame::createToolBars()
 
 	operToolBar = addToolBar(QStringLiteral("操作"));
 	operToolBar->addAction(processDataAction);
+	operToolBar->addAction(processYxDataAction);
+	operToolBar->addAction(processYcDataAction);
+	operToolBar->addAction(processDdDataAction);
 	operToolBar->addSeparator();
 	operToolBar->addAction(processDLFaultAction);
 	operToolBar->addAction(processJDFaultAction);

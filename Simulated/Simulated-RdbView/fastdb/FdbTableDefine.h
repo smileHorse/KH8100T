@@ -62,7 +62,6 @@ class BusbarSection;
 
 class Conductor;
 class ACLineSegment;
-class DCLineSegment;
 
 class Switch;
 class Disconnector;
@@ -71,6 +70,8 @@ class Breaker;
 
 class PowerTransformer;
 class TransformerWinding;
+
+class AnalogCurveData;
 
 class FormulaDefinition;
 class VariableDefinition;
@@ -316,7 +317,7 @@ enum RegulatingControlModeKind
 
 	// The regulation mode is fixed, and thus not regulating.
 	//##ModelId=4CF46AAD02D1
-	fixed1,
+//	fixed,
 
 	// Admittance is specified
 	//##ModelId=4CF46AC802D1
@@ -407,6 +408,21 @@ public:
 					RELATION(region, sub_regions)
 					//RELATION(lines, sub_region)
 			));
+
+};
+
+class Area: public IdentifiedObject
+{
+public:
+	std::string psrType;
+	std::string ec_type;
+	std::string ec_rid;
+		
+	TYPE_DESCRIPTOR((SUPERCLASS(IdentifiedObject),
+		FIELD(psrType),
+		FIELD(ec_type),
+		FIELD(ec_rid)
+		));
 
 };
 
@@ -1555,6 +1571,9 @@ public:
 	//61850规约值描述
 	std::string ftuVlDesc;
 	
+	//关联的曲线数据
+	dbReference<AnalogCurveData> analog_curve;
+
 	//关联的计算公式
 	dbReference<FormulaDefinition> analog_formula;
 
@@ -1692,6 +1711,7 @@ public:
 					KEY(ftuPointId,INDEXED|HASHED),
 					KEY(ftuVlDesc,INDEXED|HASHED),
 
+					OWNER(analog_curve, analog),
 					OWNER(analog_formula, analog)
 			));
 
@@ -1715,6 +1735,297 @@ struct Extremum
 
 	TYPE_DESCRIPTOR((FIELD(tm),
 					FIELD(value)));
+};
+
+//曲线数据表
+class AnalogCurveData
+{
+public:
+	dbDateTime date;//时间(年月日)
+
+	dbReference<Analog> analog;//关联的遥测项ID
+
+	dbArray<CurvePointValue> pointValues;//数据点数据
+
+	bool updateLimit;//是否更新了极值
+	Extremum maxValue;//最大值
+	Extremum minValue;//最小值
+
+	//更新极值
+	bool UpdateExtreumValue(std::string tm, double vl)
+	{
+		if (!updateLimit)
+		{
+			maxValue.tm = minValue.tm = tm;
+			maxValue.value = minValue.value = vl;
+
+			updateLimit = true;
+			return true;
+		}
+
+		bool is_update = false;
+
+		if (maxValue.value < vl)
+		{
+			maxValue.tm = tm;
+			maxValue.value = vl;
+
+			is_update = true;
+		}
+
+		if (minValue.value > vl)
+		{
+			minValue.tm = tm;
+			minValue.value = vl;
+
+			is_update = true;
+		}
+
+		return is_update;
+	}
+
+	//获得当前有效的点数
+	int getValidPointCount()
+	{
+		dbDateTime tm = dbDateTime::current();
+		int count = tm.hour() * 12 + tm.minute() / 5 + 1;
+
+		return count;
+	}
+
+	//曲线统计值
+	bool getStatisticsValue(double& ave_vl, std::string& max_tm, double& max_vl, std::string& min_tm, double& min_vl)
+	{
+		double vl_total = 0;
+		int vl_count = 0;
+
+		int is_update = false;
+
+		ave_vl = 0;
+		int max_id = 0;
+		int min_id = 0;
+		max_vl = 0;
+		min_vl = 0;
+
+		for (int i = 0; i < pointValues.length(); i++)
+		{
+			if (pointValues.getat(i).isValid)
+			{
+				vl_total += pointValues.getat(i).value;
+				vl_count++;
+
+				if (!is_update)
+				{
+					max_id = min_id = i;
+					max_vl = min_vl = pointValues.getat(i).value;
+
+					is_update = true;
+				}
+				else
+				{
+					if (pointValues.getat(i).value > max_vl)
+					{
+						max_id = i;
+						max_vl = pointValues.getat(i).value;
+					}
+
+					if (pointValues.getat(i).value < min_vl)
+					{
+						min_id = i;
+						min_vl = pointValues.getat(i).value;
+					}
+				}
+			}
+		}
+
+		dbDateTime max_date(date.asTime_t() + max_id * 5 * 60);
+		char temp[128];
+		snprintf(temp, 128, "%04d-%02d-%02d %02d:%02d:%02d", max_date.year(), max_date.month(), max_date.day(),
+			max_date.hour(), max_date.minute(), max_date.second());
+		max_tm = temp;
+
+		dbDateTime min_date(date.asTime_t() + min_id * 5 * 60);
+		snprintf(temp, 128, "%04d-%02d-%02d %02d:%02d:%02d", min_date.year(), min_date.month(), min_date.day(),
+			min_date.hour(), min_date.minute(), min_date.second());
+		min_tm = temp;
+
+		if (vl_count > 0)
+			ave_vl = vl_total / vl_count;
+		return true;
+	}
+
+	//获得点值组成的字符串
+	std::string getPointValues(bool only_valid = false)
+	{
+		std::string strData;
+		char chtmp[128];
+
+		int count = pointValues.length();
+		if (only_valid)
+		{
+			int valid_count = getValidPointCount();
+			if (valid_count < count)
+				count = valid_count;
+		}
+
+		for (int i = 0; i < count; i++)
+		{
+			if (pointValues.getat(i).isValid)
+			{
+				snprintf(chtmp, 128, "%.2f;", pointValues.getat(i).value);
+				strData += chtmp;
+			}
+			else
+				strData += ";";
+		}
+
+		return strData;
+	}
+
+	bool updatePointValues(std::string str_values)
+	{
+		dbArray<double> actual_values;
+		double value;
+
+		int begin_pos = 0;
+		int pos = -1;
+
+		while ((pos = str_values.find(';', begin_pos)) != -1)
+		{
+			value = atof(std::string(str_values.begin() + begin_pos, str_values.begin() + pos).c_str());
+			begin_pos = pos + 1;
+
+			actual_values.append(value);
+		}
+
+		int valid_count = actual_values.length();
+		if (valid_count > pointValues.length())
+			valid_count = pointValues.length();
+
+		CurvePointValue vl;
+		for (int i = 0; i < pointValues.length(); i++)
+		{
+			if (i < valid_count)
+			{
+				vl.isValid = true;
+				vl.value = actual_values.getat(i);
+				pointValues.putat(i, vl);
+			}
+			else
+			{
+				vl.isValid = false;
+				vl.value = 0;
+				pointValues.putat(i, vl);
+			}
+		}
+
+		return true;
+	}
+
+	//复位数组
+	bool resetValue(dbDateTime& new_date, bool isBeginDay = false)
+	{
+		//取时间中的年月日部分
+		dbDateTime rec_date(new_date.year(), new_date.month(), new_date.day());
+
+		//printf("曲线记录新时间:%04d-%02d-%02d\n", new_date.year(), new_date.month(), new_date.day());
+
+		CurvePointValue vl;
+		vl.isValid = false;
+		vl.value = 0;
+
+		//设置大小
+		if (pointValues.length() != 289)
+		{
+			pointValues.resize(289);//289
+			if (0 < pointValues.length())
+				pointValues.putat(0, vl);
+		}
+		else
+		{
+			//新的开始的一天的曲线数据
+			if (isBeginDay)
+			{
+				if (0 < pointValues.length())
+					pointValues.putat(0, pointValues.getat(288));
+				//printf("设置起始时间点的值!!!\n");
+			}
+		}
+
+		//设置时间
+		date = rec_date;
+
+		//复位值(注意：从1开始)
+		for (int i = 1; i < pointValues.length(); i++)
+			pointValues.putat(i, vl);
+
+		updateLimit = false;
+		maxValue.tm = "";
+		maxValue.value = 0;
+		minValue.tm = "";
+		minValue.value = 0;
+
+		return true;
+	}
+
+	//设置值
+	bool setValue(int seq_id, double value, dbDateTime& update_tm)
+	{
+		if ((seq_id < 0) || (seq_id >= pointValues.length()))
+			return false;
+
+		if (seq_id < pointValues.length())
+		{
+			CurvePointValue vl;
+			vl.isValid = true;
+			vl.value = value;
+			pointValues.putat(seq_id, vl);
+		}
+
+		CompleteData(seq_id, value);//补全当前数据
+
+
+		return true;
+	}
+
+	//补全当前数据
+	void CompleteData(int seq_id, double value)
+	{
+		//printf("come here 1 CompleteData:%d - %g\r\n",seq_id,value);
+
+		if ((seq_id < 0) || (seq_id >= pointValues.length()))
+			return;
+
+		//printf("come here 2 CompleteData:%d - %g\r\n",seq_id,value);
+
+		for (int i = seq_id - 1; i >= 0; i--)
+		{
+			if (!pointValues.getat(i).isValid)//补全
+			{
+				if (i < pointValues.length())
+				{
+					CurvePointValue vl;
+					vl.isValid = true;
+					vl.value = value;
+					pointValues.putat(i, vl);
+				}
+
+				//printf("come here 3 CompleteData:%d - %g\r\n",i,value);
+			}
+			else
+				value = pointValues.getat(i).value;
+		}
+	}
+
+	TYPE_DESCRIPTOR((FIELD(date),
+
+		RELATION(analog, analog_curve),
+
+		FIELD(pointValues),
+
+		FIELD(updateLimit),
+		FIELD(maxValue),
+		FIELD(minValue)));
 };
 
 /**
@@ -1829,13 +2140,13 @@ public:
 	//##ModelId=447316E50137
 	int4 minValue;
 
-	// 遥信取反。
-	//##ModelId=4CF4A9A7009C
-	bool reverse;
-
 	// Normal measurement value, e.g., used for percentage calculations.
 	//##ModelId=447316EA0102
 	int4 normalValue;
+
+	// 遥信取反。
+	//##ModelId=4CF4A9A7009C
+	bool reverse;
 
 	// The value to supervise.
 	//##ModelId=4CF4A9480150
@@ -1947,6 +2258,9 @@ public:
 
 	std::string voltageLevel;
 
+	std::string	ec_type;
+	std::string	ec_rid;
+
 	real8	ctRatio;	// CT变比
 	real8	ptRatio;	// PT变比
 
@@ -1954,12 +2268,14 @@ public:
 	int4	lineNo;		// 线路号
 
 	TYPE_DESCRIPTOR((SUPERCLASS(EquipmentContainer),
-					FIELD(voltageLevel),
-					FIELD(ctRatio),
-					FIELD(ptRatio),
-					FIELD(lineType),
-					FIELD(lineNo)
-			));
+		FIELD(voltageLevel),
+		FIELD(ec_type),
+		FIELD(ec_rid),
+		FIELD(ctRatio),
+		FIELD(ptRatio),
+		FIELD(lineType),
+		FIELD(lineNo)
+		));
 };
 
 /*// An electrically connected subset of the network. Topological islands can
@@ -2502,90 +2818,6 @@ public:
 					FIELD (measure_rid)
 			));
 };
-
-
-//zhoucw20121218---------------------------->>
-////厂商及设备类型
-//class ManufacturerDevice
-//{
-//public:
-//    std::string mRID;               //string	记录ID	Index
-//    std::string ManufacturerName;   //String	厂商名称
-//    int4 DeviceTypeID;               //Int	设备型号id
-//    std::string DeviceTypeName;     //string	设备名称
-//
-//    TYPE_DESCRIPTOR((KEY(mRID,INDEXED|HASHED),      //index------?
-//                    FIELD (ManufacturerName),
-//                    FIELD (DeviceTypeID),
-//                    FIELD (DeviceTypeName)
-//            ));
-//
-//};
-//
-////站点单元与厂商及设备类型关系
-//class RemoteUnitMap
-//{
-//public:
-//    std::string mRID;               //string	记录ID	Index
-//    int4 IEDID;                      //Int	IED设备号
-//    std::string ManDevRID;          //String	厂商及设备类型ID
-//
-//    TYPE_DESCRIPTOR((KEY(mRID,INDEXED|HASHED),      //index------?
-//                    FIELD (IEDID),
-//                    FIELD (ManDevRID)
-//            ));
-//};
-//
-////定值
-//class ProtectModifyValue
-//{
-//public:
-//    std::string mRID;           //string	记录ID	Index
-//    std::string ManufacturerName;//string	厂商名称
-//    int4 DeviceTypeID;           //int	设备型号ID
-//    int4 ProtectNo;              //int	定值类型编号
-//    std::string ProtectName;	//string	定值类型名称
-//    real8 ProtectFactor;        //float	定值系数
-//    std::string ProtectUnit;	//string	定值单位
-//    real8 ProtectMin;           //float	定值最小值
-//    real8 ProtectMax;           //float	定值最大值
-//
-//    TYPE_DESCRIPTOR((KEY(mRID,INDEXED|HASHED),      //index------?
-//                    FIELD (ManufacturerName),
-//                    FIELD (DeviceTypeID),
-//                    FIELD (ProtectNo),
-//                    FIELD (ProtectName),
-//                    FIELD (ProtectFactor),
-//                    FIELD (ProtectUnit),
-//                    FIELD (ProtectMin),
-//                    FIELD (ProtectMax)
-//            ));
-//};
-
-//事项
-class ProtectEventT
-{
-public:
-    std::string mRID;               //	string	记录ID	Index
-    std::string ManufacturerName;	//string	厂商名称
-    int4 DeviceTypeID;               //int	设备型号ID
-    int4 ProtectItemNo;              //int	事项类型编号
-    std::string ProtectItemName;    //string	事项类型名称
-    int4 ProtectHasValue;            //int	有无事项值
-    real8 ProtectItemFactor;        //float	事项值系数
-    std::string ProtectItemUnit;          //float	事项值单位
-
-    TYPE_DESCRIPTOR((KEY(mRID,INDEXED|HASHED),      //index------?
-                    FIELD (ManufacturerName),
-                    FIELD (DeviceTypeID),
-                    FIELD (ProtectItemNo),
-                    FIELD (ProtectItemName),
-                    FIELD (ProtectHasValue),
-                    FIELD (ProtectItemFactor),
-                    FIELD (ProtectItemUnit)
-            ));
-};
-//zhoucw20121218----------------------------<<
 
 #endif
 

@@ -196,6 +196,55 @@ void FepServerThread::processData()
 	emit executeOperation(info);
 }
 
+void FepServerThread::processYxData()
+{
+	ProcessDataDialog dialog(AllDataType, Discrete);
+	connect(&dialog, SIGNAL(start(SelfDataPacket)), this, SLOT(processDataPacket(SelfDataPacket)));
+	dialog.exec();
+}
+
+void FepServerThread::processYcData()
+{
+	ProcessDataDialog dialog(AllDataType, Analog);
+	connect(&dialog, SIGNAL(start(SelfDataPacket)), this, SLOT(processDataPacket(SelfDataPacket)));
+	dialog.exec();
+}
+
+void FepServerThread::processDdData()
+{
+	ProcessDataDialog dialog(AllDataType, Accumulator);
+	connect(&dialog, SIGNAL(start(SelfDataPacket)), this, SLOT(processDataPacket(SelfDataPacket)));
+	dialog.exec();
+}
+
+void FepServerThread::processDataPacket( SelfDataPacket selfPacket )
+{
+	// 获取发布者对象
+	if (!getFepDataPublisher())
+	{
+		return;
+	}
+
+	// 发布数据
+	FepData::DataPacket packet;
+	packet.id = selfPacket.id;
+	packet.fepNode = selfPacket.fepNode.toStdString();
+	packet.type = ::FepData::DataType((int)selfPacket.type);
+	packet.unitNo = selfPacket.unitNo;
+	packet.analogs.assign(selfPacket.analogs.begin(), selfPacket.analogs.end());
+	packet.discretes.assign(selfPacket.discretes.begin(), selfPacket.discretes.end());
+	packet.accmulators.assign(selfPacket.accmulators.begin(), selfPacket.accmulators.end());
+	m_fepDataManagerPrx->processData(packet);
+
+	// 输出发送的数据
+	QString text = outputFepData(packet);
+	emit publishFepData(text);
+
+	OperationInfo info(TYPE_FEP);
+	info.setOperationInfo(QStringLiteral("发布数据"));
+	emit executeOperation(info);
+}
+
 void FepServerThread::processDLFault()
 {
 	// 获取发布者对象

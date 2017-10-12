@@ -4,6 +4,9 @@
 #include "OperationInfo.h"
 #include "workstationserverthread.h"
 
+#include <string>
+using namespace std;
+
 WorkStationServer::WorkStationServer( int argc, char* argv[] )
 	: m_argc(argc), m_argv(argv)
 {
@@ -29,6 +32,14 @@ int WorkStationServer::run( int argc, char* argv[] )
 		info.setOperTime();
 		info.setResult(true);
 		emit executeOperation(info);
+
+		RdbRealData::RdbDataOptPrx rdbOptPrx = RdbRealData::RdbDataOptPrx::checkedCast(
+			communicator()->stringToProxy("rdb-opt:default -h 192.168.3.25 -p 10003 -t 5000"));
+		if (rdbOptPrx)
+		{
+			// 查询树
+			GetEquipTree(rdbOptPrx);
+		}
 
 		// 建立子线程用于发送事项和数据
 		if (m_threadPtr)
@@ -75,4 +86,32 @@ void WorkStationServer::setThreadPtr( WorkStationServerThread* ptr )
 void WorkStationServer::startServer()
 {
 	main(m_argc, m_argv);
+}
+
+// 查询树形结构
+bool WorkStationServer::GetEquipTree( RdbRealData::RdbDataOptPrx& proxy )
+{
+	string deviceType = "SubGeographicalRegion";
+	string deviceRid = "{a1d602d4-5ef7-4031-bf86-0c44682161bb}";
+	RdbRealData::EquipTreeSequence treeSeq;
+	proxy->GetEquipTree(deviceType, deviceRid, treeSeq);
+	return true;
+}
+
+// 查询全部数据
+bool WorkStationServer::SelectCompleteData( RdbRealData::RdbDataOptPrx& proxy )
+{
+	RdbRealData::RequestDefaultDataSeq requestSeq;
+	requestSeq.id = 0;
+	requestSeq.requestId = 0;
+	requestSeq.requestNode = "workstation";
+	requestSeq.isStop = false;
+	requestSeq.refreshFreq = 0;
+	RdbRealData::RequestDefaultData	request;
+	request.tableName = "SubGeographicalRegion";
+
+	RdbRealData::RespondDefaultDataSeq respondSeq;
+	proxy->SelectDefaultData(requestSeq, respondSeq);
+
+	return true;
 }

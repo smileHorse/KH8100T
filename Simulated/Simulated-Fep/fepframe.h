@@ -50,6 +50,9 @@ private:
 
 	QAction*	exitAction;
 	QAction*	processDataAction;
+	QAction*	processYxDataAction;
+	QAction*	processYcDataAction;
+	QAction*	processDdDataAction;
 	QAction*	processDLFaultAction;
 	QAction*	processJDFaultAction;
 	QAction*	processYxTypeEventAction;

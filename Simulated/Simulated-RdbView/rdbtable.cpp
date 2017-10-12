@@ -6,6 +6,8 @@
 
 using namespace std;
 
+const string SPLITER_TOKEN = ",";
+
 template <class output_type,class input_type>
 output_type transferType(const input_type &input)
 {
@@ -107,6 +109,284 @@ bool BaseTable::updateDataByCursor( dbAnyCursor& cursor, const string& mRID, con
 		string error = ex.what();
 	}
 	return true;
+}
+
+bool BaseTable::GetDbReference( dbAnyCursor& table, const string rid )
+{
+	dbQuery q1;
+	q1 = "mRID = ", rid;
+
+	if (table.select(q1) == 1)
+		return true;
+
+	return false;
+}
+
+GeographicalRegionTable::GeographicalRegionTable( dbDatabase* dbPtr )
+	: BaseTable(dbPtr)
+{
+}
+
+QList<QStringList> GeographicalRegionTable::selectDatas()
+{
+	QList<QStringList> result;
+
+	dbCursor<GeographicalRegion> cursor;
+	if (cursor.select() > 0)
+	{
+		do 
+		{
+			std::ostringstream str;
+			str << cursor->mRID << "," << cursor->name << "," << cursor->localName << "," << cursor->pathName << "," 
+				<< cursor->aliasName << "," << cursor->description << ",";
+			if (cursor->sub_regions.length() > 0)
+			{
+				for (int i = 0; i < cursor->sub_regions.length(); ++i)
+				{
+					if (i != 0)
+					{
+						str << "/";
+					}
+					str << cursor->sub_regions.getat(i).getOid();
+				}
+				str << cursor->sub_regions.getat(0).getOid();
+			}
+			else
+			{
+				str << "";
+			}
+
+			str << "," << cursor.currentId().getOid();	// 特殊追加，否则区域表少一列
+
+			QString value = QString().fromStdString(str.str());
+
+			QStringList values = value.split(",");
+			result.push_back(values);
+		} while (cursor.next());
+	}
+
+	return result;
+}
+
+bool GeographicalRegionTable::insertData()
+{
+	GeographicalRegion info;
+	info.mRID = QUuid::createUuid().toString().toStdString();
+	info.name = "";
+	info.localName = "";
+	info.pathName = "";
+	info.aliasName = "";
+	info.description = "";
+	insert(info);
+	m_dbPtr->commit();
+	return true;
+}
+
+bool GeographicalRegionTable::deleteData( const string& mRID )
+{
+	dbCursor<GeographicalRegion> cursor(dbCursorForUpdate);
+	return deleteDataByCursor(cursor, mRID);
+}
+
+bool GeographicalRegionTable::updateDatas( const string& mRID, const QMap<QString,QString>& values )
+{
+	dbCursor<GeographicalRegion> cursor(dbCursorForUpdate);
+	return updateDataByCursor(cursor, mRID, values);
+}
+
+void GeographicalRegionTable::getHidedColumns( QList<int>& hideColumns )
+{
+
+}
+
+void GeographicalRegionTable::setFieldValue( dbAnyCursor& anyCursor, const string& fieldName, const string& value )
+{
+	dbCursor<GeographicalRegion>& cursor = static_cast< dbCursor<GeographicalRegion>& >(anyCursor);
+	if (fieldName == "name")
+	{
+		cursor->name = value;
+	}
+	else if (fieldName == "localName")
+	{
+		cursor->localName = value;
+	}
+	else if (fieldName == "pathName")
+	{
+		cursor->pathName = value;
+	}
+	else if (fieldName == "aliasName")
+	{
+		cursor->aliasName = value;
+	}
+	else if (fieldName == "description")
+	{
+		cursor->description = value;
+	}
+}
+
+SubGeographicalRegionTable::SubGeographicalRegionTable( dbDatabase* dbPtr )
+	: BaseTable(dbPtr)
+{
+}
+
+QList<QStringList> SubGeographicalRegionTable::selectDatas()
+{
+	QList<QStringList> result;
+
+	dbCursor<SubGeographicalRegion> cursor;
+	if (cursor.select() > 0)
+	{
+		do 
+		{
+			std::ostringstream str;
+			str << cursor->mRID << "," << cursor->name << "," << cursor->localName << "," << cursor->pathName << "," 
+				<< cursor->aliasName << "," << cursor->description << "," << cursor->region.getOid();
+			
+			QString value = QString().fromStdString(str.str());
+
+			QStringList values = value.split(",");
+			result.push_back(values);
+		} while (cursor.next());
+	}
+
+	return result;
+}
+
+bool SubGeographicalRegionTable::insertData()
+{
+	SubGeographicalRegion info;
+	info.mRID = QUuid::createUuid().toString().toStdString();
+	insert(info);
+	m_dbPtr->commit();
+	return true;
+}
+
+bool SubGeographicalRegionTable::deleteData( const string& mRID )
+{
+	dbCursor<SubGeographicalRegion> cursor(dbCursorForUpdate);
+	return deleteDataByCursor(cursor, mRID);
+}
+
+bool SubGeographicalRegionTable::updateDatas( const string& mRID, const QMap<QString,QString>& values )
+{
+	dbCursor<SubGeographicalRegion> cursor(dbCursorForUpdate);
+	return updateDataByCursor(cursor, mRID, values);
+}
+
+void SubGeographicalRegionTable::getHidedColumns( QList<int>& hideColumns )
+{
+	hideColumns << 2 << 3 << 4 << 5;
+}
+
+void SubGeographicalRegionTable::setFieldValue( dbAnyCursor& anyCursor, const string& fieldName, const string& value )
+{
+	dbCursor<SubGeographicalRegion>& cursor = static_cast< dbCursor<SubGeographicalRegion>& >(anyCursor);
+	if (fieldName == "name")
+	{
+		cursor->name = value;
+	}
+	else if (fieldName == "localName")
+	{
+		cursor->localName = value;
+	}
+	else if (fieldName == "pathName")
+	{
+		cursor->pathName = value;
+	}
+	else if (fieldName == "aliasName")
+	{
+		cursor->aliasName = value;
+	}
+	else if (fieldName == "description")
+	{
+		cursor->description = value;
+	}
+	else if (fieldName == "region")
+	{
+		string region_rid = value;
+		dbCursor<GeographicalRegion> regions;
+		bool ret = GetDbReference(regions, region_rid);
+		if (ret)
+		{
+			cursor->region = regions.currentId();
+		}
+	}
+}
+
+AreaTable::AreaTable( dbDatabase* dbPtr )
+	: BaseTable(dbPtr)
+{
+}
+
+QList<QStringList> AreaTable::selectDatas()
+{
+	QList<QStringList> result;
+
+	dbCursor<Area> cursor;
+	if (cursor.select() > 0)
+	{
+		do 
+		{
+			std::ostringstream str;
+			str << cursor->mRID << "," << cursor->name << "," << cursor->localName << "," << cursor->pathName << "," 
+				<< cursor->aliasName << "," << cursor->description 
+				<< "," << cursor->psrType << "," << cursor->ec_type << "," << cursor->ec_rid;
+
+			QString value = QString().fromStdString(str.str());
+
+			QStringList values = value.split(",");
+			result.push_back(values);
+		} while (cursor.next());
+	}
+
+	return result;
+}
+
+bool AreaTable::insertData()
+{
+	Area info;
+	info.mRID = QUuid::createUuid().toString().toStdString();
+	insert(info);
+	m_dbPtr->commit();
+	return true;
+}
+
+bool AreaTable::deleteData( const string& mRID )
+{
+	dbCursor<Area> cursor(dbCursorForUpdate);
+	return deleteDataByCursor(cursor, mRID);
+}
+
+bool AreaTable::updateDatas( const string& mRID, const QMap<QString,QString>& values )
+{
+	dbCursor<Area> cursor(dbCursorForUpdate);
+	return updateDataByCursor(cursor, mRID, values);
+}
+
+void AreaTable::getHidedColumns( QList<int>& hideColumns )
+{
+	hideColumns << 2 << 3 << 4 << 5;
+}
+
+void AreaTable::setFieldValue( dbAnyCursor& anyCursor, const string& fieldName, const string& value )
+{
+	dbCursor<Area>& cursor = static_cast< dbCursor<Area>& >(anyCursor);
+	if (fieldName == "name")
+	{
+		cursor->name = value;
+	}
+	else if (fieldName == "psrType")
+	{
+		cursor->psrType = value;
+	}
+	else if (fieldName == "ec_type")
+	{
+		cursor->ec_type = value;
+	}
+	else if (fieldName == "ec_rid")
+	{
+		cursor->ec_rid = value;
+	}
 }
 
 RemoteUnitTable::RemoteUnitTable( dbDatabase* dbPtr )
@@ -570,6 +850,342 @@ void VoltageLevelTable::setFieldValue( dbAnyCursor& anyCursor, const string& fie
 	}
 }
 
+BusbarSectionTable::BusbarSectionTable( dbDatabase* dbPtr )
+	: BaseTable(dbPtr)
+{}
+
+QList<QStringList> BusbarSectionTable::selectDatas()
+{
+	QList<QStringList> result;
+
+	dbCursor<BusbarSection> cursor;
+	if (cursor.select() > 0)
+	{
+		do 
+		{
+			std::ostringstream str;
+			str << cursor->mRID << "," << cursor->name << "," << cursor->localName << "," << cursor->pathName 
+				<< "," << cursor->aliasName << "," << cursor->description 
+				<< "," << cursor->psrType 
+				<< "," << cursor->ec_type << "," << cursor->ec_rid 
+				<< "," << cursor->phase << "," << cursor->powerPoint << "," << cursor->base_voltage;
+
+			QString value = QString().fromStdString(str.str());
+
+			QStringList values = value.split(",");
+			result.push_back(values);
+		} while (cursor.next());
+	}
+
+	return result;
+}
+
+bool BusbarSectionTable::insertData()
+{
+	BusbarSection info;
+	info.mRID = QUuid::createUuid().toString().toStdString();
+	info.phase = 0;
+	info.powerPoint = false;
+	insert(info);
+	m_dbPtr->commit();
+	return true;
+}
+
+bool BusbarSectionTable::deleteData( const string& mRID )
+{
+	dbCursor<BusbarSection> cursor(dbCursorForUpdate);
+	return deleteDataByCursor(cursor, mRID);
+}
+
+bool BusbarSectionTable::updateDatas( const string& mRID, const QMap<QString,QString>& values )
+{
+	dbCursor<BusbarSection> cursor(dbCursorForUpdate);
+	return updateDataByCursor(cursor, mRID, values);
+}
+
+void BusbarSectionTable::getHidedColumns( QList<int>& hideColumns )
+{
+	hideColumns << 2 << 3 << 4 << 5;
+}
+
+void BusbarSectionTable::setFieldValue( dbAnyCursor& anyCursor, const string& fieldName, const string& value )
+{
+	dbCursor<BusbarSection>& cursor = static_cast< dbCursor<BusbarSection>& >(anyCursor);
+	if (fieldName == "name")
+	{
+		cursor->name = value;
+	}
+	else if (fieldName == "psrType")
+	{
+		cursor->psrType = value;
+	}
+	else if (fieldName == "ec_type")
+	{
+		cursor->ec_type = value;
+	}
+	else if (fieldName == "ec_rid")
+	{
+		cursor->ec_rid = value;
+	}
+	else if (fieldName == "phase")
+	{
+		cursor->phase = transferType<int4, string>(value);
+	}
+	else if (fieldName == "powerPoint")
+	{
+		cursor->powerPoint = transferType<bool, string>(value);
+	}
+	else if (fieldName == "base_voltage")
+	{
+		cursor->base_voltage = value;
+	}
+}
+
+LineTable::LineTable( dbDatabase* dbPtr )
+	: BaseTable(dbPtr)
+{}
+
+QList<QStringList> LineTable::selectDatas()
+{
+	QList<QStringList> result;
+
+	dbCursor<Line> cursor;
+	if (cursor.select() > 0)
+	{
+		do 
+		{
+			std::ostringstream str;
+			str << cursor->mRID << SPLITER_TOKEN << cursor->name << SPLITER_TOKEN << cursor->localName 
+				<< SPLITER_TOKEN << cursor->pathName 
+				<< SPLITER_TOKEN << cursor->aliasName << SPLITER_TOKEN << cursor->description 
+				<< SPLITER_TOKEN << cursor->psrType 
+				<< SPLITER_TOKEN << cursor->voltageLevel << SPLITER_TOKEN << cursor->ec_type 
+				<< SPLITER_TOKEN << cursor->ec_rid 
+				<< SPLITER_TOKEN << cursor->ctRatio << SPLITER_TOKEN << cursor->ptRatio 
+				<< SPLITER_TOKEN << cursor->lineType << SPLITER_TOKEN << cursor->lineNo;
+
+			QString value = QString().fromStdString(str.str());
+
+			QStringList values = value.split(QString().fromStdString(SPLITER_TOKEN));
+			result.push_back(values);
+		} while (cursor.next());
+	}
+
+	return result;
+}
+
+bool LineTable::insertData()
+{
+	Line info;
+	info.mRID = QUuid::createUuid().toString().toStdString();
+	info.ctRatio = 0.0;
+	info.ptRatio = 0.0;
+	info.lineNo = 0;
+	insert(info);
+	m_dbPtr->commit();
+	return true;
+}
+
+bool LineTable::deleteData( const string& mRID )
+{
+	dbCursor<Line> cursor(dbCursorForUpdate);
+	return deleteDataByCursor(cursor, mRID);
+}
+
+bool LineTable::updateDatas( const string& mRID, const QMap<QString,QString>& values )
+{
+	dbCursor<Line> cursor(dbCursorForUpdate);
+	return updateDataByCursor(cursor, mRID, values);
+}
+
+void LineTable::getHidedColumns( QList<int>& hideColumns )
+{
+	hideColumns << 2 << 3 << 4 << 5;
+}
+
+void LineTable::setFieldValue( dbAnyCursor& anyCursor, const string& fieldName, const string& value )
+{
+	dbCursor<Line>& cursor = static_cast< dbCursor<Line>& >(anyCursor);
+	if (fieldName == "name")
+	{
+		cursor->name = value;
+	}
+	else if (fieldName == "psrType")
+	{
+		cursor->psrType = value;
+	}
+	else if (fieldName == "ec_type")
+	{
+		cursor->ec_type = value;
+	}
+	else if (fieldName == "ec_rid")
+	{
+		cursor->ec_rid = value;
+	}
+	else if (fieldName == "voltageLevel")
+	{
+		cursor->voltageLevel = value;
+	}
+	else if (fieldName == "ctRatio")
+	{
+		cursor->ctRatio = transferType<double, string>(value);
+	}
+	else if (fieldName == "ptRatio")
+	{
+		cursor->ptRatio = transferType<double, string>(value);
+	}
+	else if (fieldName == "lineType")
+	{
+		cursor->lineType = value;
+	}
+	else if (fieldName == "lineNo")
+	{
+		cursor->lineNo = transferType<int4, string>(value);
+	}
+}
+
+BreakerTable::BreakerTable( dbDatabase* dbPtr )
+	: BaseTable(dbPtr)
+{}
+
+QList<QStringList> BreakerTable::selectDatas()
+{
+	QList<QStringList> result;
+
+	dbCursor<Breaker> cursor;
+	if (cursor.select() > 0)
+	{
+		do 
+		{
+			std::ostringstream str;
+			str << cursor->mRID << "," << cursor->name << "," << cursor->localName << "," << cursor->pathName 
+				<< "," << cursor->aliasName << "," << cursor->description 
+				<< "," << cursor->psrType 
+				<< "," << cursor->ec_type << "," << cursor->ec_rid 
+				<< "," << cursor->phase << "," << cursor->powerPoint << "," << cursor->base_voltage 
+				<< "," << cursor->normalOpen << "," << cursor->switchOnCount << "," << cursor->switchOnDate 
+				<< "," << cursor->switchTranMode << "," << cursor->switchCommandType << "," << cursor->brandFlag 
+				<< "," << cursor->ratedCurrent << "," << cursor->inTransitTime << "," << cursor->faFlag 
+				<< "," << cursor->PowerPointFlag << "," << cursor->PPThreshold << "," << cursor->FTUNo 
+				<< "," << cursor->EventID << "," << cursor->WaveDirFlag << "," << cursor->factorDL_I 
+				<< "," << cursor->factorJD_I << "," << cursor->breakerImportant;
+
+			QString value = QString().fromStdString(str.str());
+
+			QStringList values = value.split(",");
+			result.push_back(values);
+		} while (cursor.next());
+	}
+
+	return result;
+}
+
+bool BreakerTable::insertData()
+{
+	Breaker info;
+	info.mRID = QUuid::createUuid().toString().toStdString();
+	info.phase = 0;
+	info.powerPoint = false;
+	info.normalOpen = false;
+	info.switchOnCount = 0;
+	info.ratedCurrent = 0.0;
+	info.inTransitTime = 0.0;
+	info.faFlag = false;
+	info.PowerPointFlag = false;
+	info.PPThreshold = 0.0;
+	info.FTUNo = 0;
+	info.EventID = 0;
+	info.WaveDirFlag = false;
+	info.factorDL_I = 0.0;
+	info.factorJD_I = 0.0;
+	info.breakerImportant = false;
+	insert(info);
+	m_dbPtr->commit();
+	return true;
+}
+
+bool BreakerTable::deleteData( const string& mRID )
+{
+	dbCursor<Breaker> cursor(dbCursorForUpdate);
+	return deleteDataByCursor(cursor, mRID);
+}
+
+bool BreakerTable::updateDatas( const string& mRID, const QMap<QString,QString>& values )
+{
+	dbCursor<Breaker> cursor(dbCursorForUpdate);
+	return updateDataByCursor(cursor, mRID, values);
+}
+
+void BreakerTable::getHidedColumns( QList<int>& hideColumns )
+{
+	hideColumns << 2 << 3 << 4 << 5 << 11 << 12 << 13 << 14 << 15 << 16 << 17 << 18 << 19 << 22;
+}
+
+void BreakerTable::setFieldValue( dbAnyCursor& anyCursor, const string& fieldName, const string& value )
+{
+	dbCursor<Breaker>& cursor = static_cast< dbCursor<Breaker>& >(anyCursor);
+	if (fieldName == "name")
+	{
+		cursor->name = value;
+	}
+	else if (fieldName == "psrType")
+	{
+		cursor->psrType = value;
+	}
+	else if (fieldName == "ec_type")
+	{
+		cursor->ec_type = value;
+	}
+	else if (fieldName == "ec_rid")
+	{
+		cursor->ec_rid = value;
+	}
+	else if (fieldName == "phase")
+	{
+		cursor->phase = transferType<int4, string>(value);
+	}
+	else if (fieldName == "powerPoint")
+	{
+		cursor->powerPoint = transferType<bool, string>(value);
+	}
+	else if (fieldName == "faFlag")
+	{
+		cursor->faFlag = transferType<bool, string>(value);
+	}
+	else if (fieldName == "PowerPointFlag")
+	{
+		cursor->PowerPointFlag = transferType<bool, string>(value);
+	}
+	else if (fieldName == "PPThreshold")
+	{
+		cursor->PPThreshold = transferType<double, string>(value);
+	}
+	else if (fieldName == "FTUNo")
+	{
+		cursor->FTUNo = transferType<int4, string>(value);
+	}
+	else if (fieldName == "EventID")
+	{
+		cursor->EventID = transferType<int4, string>(value);
+	}
+	else if (fieldName == "WaveDirFlag")
+	{
+		cursor->WaveDirFlag = transferType<bool, string>(value);
+	}
+	else if (fieldName == "factorDL_I")
+	{
+		cursor->factorDL_I = transferType<double, string>(value);
+	}
+	else if (fieldName == "factorJD_I")
+	{
+		cursor->factorJD_I = transferType<double, string>(value);
+	}
+	else if (fieldName == "breakerImportant")
+	{
+		cursor->breakerImportant = transferType<bool, string>(value);
+	}
+}
+
 AnalogTable::AnalogTable( dbDatabase* dbPtr )
 	: BaseTable(dbPtr)
 {}
@@ -600,7 +1216,7 @@ QList<QStringList> AnalogTable::selectDatas()
 				<< "," << cursor->hLimitValue << "," << cursor->lLimitValue << "," << cursor->llLimitValue 
 				<< "," << cursor->hlimitDead << "," << cursor->llimitDead << "," << cursor->isPercentageLimits 
 				<< "," << cursor->limitStatus << "," << cursor->ftuUnitId << "," << cursor->ftuPointId 
-				<< "," << cursor->ftuVlDesc << "," << cursor->analog_formula.getOid();
+				<< "," << cursor->ftuVlDesc << "," << cursor->analog_curve.getOid() << "," << cursor->analog_formula.getOid();
 
 			QString value = QString().fromStdString(str.str());
 
@@ -683,6 +1299,14 @@ void AnalogTable::setFieldValue( dbAnyCursor& anyCursor, const string& fieldName
 	{
 		cursor->name = value;
 	}
+	else if (fieldName == "psr_type")
+	{
+		cursor->psr_type = value;
+	}
+	else if (fieldName == "psr_rid")
+	{
+		cursor->psr_rid = value;
+	}
 	else if (fieldName == "maxValue")
 	{
 		cursor->maxValue = transferType<real8, string>(value);
@@ -734,6 +1358,38 @@ void AnalogTable::setFieldValue( dbAnyCursor& anyCursor, const string& fieldName
 	else if (fieldName == "ftuPointId")
 	{
 		cursor->ftuPointId = transferType<int4, string>(value);
+	}
+	else if (fieldName == "saveReport")
+	{
+		cursor->saveReport = transferType<bool, string>(value);
+	}
+	else if (fieldName == "analog_curve")
+	{
+		oid_t analog_curve_id = transferType<oid_t, string>(value);
+
+		dbCursor<AnalogCurveData> curveCursor;
+		curveCursor.select();
+		if (!curveCursor.isEmpty())
+		{
+			do 
+			{
+				if (curveCursor.currentId().getOid() == analog_curve_id)
+				{
+					cursor->analog_curve = curveCursor.currentId();
+					break;
+				}
+			} while (curveCursor.next());
+		}
+	}
+	else if (fieldName == "analog_formula")
+	{
+		string analog_formula_id = value;
+		dbCursor<FormulaDefinition> formulaCursor;
+		bool bRet = GetDbReference(formulaCursor, analog_formula_id);
+		if (bRet)
+		{
+			cursor->analog_formula = formulaCursor.currentId();
+		}
 	}
 }
 
@@ -974,5 +1630,91 @@ void AccumulatorTable::setFieldValue( dbAnyCursor& anyCursor, const string& fiel
 	}
 }
 
+AnalogCurveDataTable::AnalogCurveDataTable( dbDatabase* dbPtr )
+	: BaseTable(dbPtr)
+{}
 
+QList<QStringList> AnalogCurveDataTable::selectDatas()
+{
+	QList<QStringList> result;
 
+	dbCursor<AnalogCurveData> cursor;
+	if (cursor.select() > 0)
+	{
+		do 
+		{
+			std::ostringstream str;
+			str << cursor->date.year() << "-" << cursor->date.month() << "-" << cursor->date.day();
+			str << SPLITER_TOKEN << cursor->date.asTime_t();
+			str << SPLITER_TOKEN << cursor->analog.getOid();
+			str << SPLITER_TOKEN;
+			if (cursor->pointValues.length() > 0)
+			{
+				for (int i = 0; i < cursor->pointValues.length(); ++i)
+				{
+					if (i != 0)
+					{
+						str << SPLITER_TOKEN;
+					}
+					str << "(" << cursor->pointValues.getat(i).isValid << ";" << cursor->pointValues.getat(i).value << ")";
+				}
+			}
+			else
+			{
+				str << " ";
+			}
+			str << SPLITER_TOKEN << cursor.currentId().getOid();
+			str << SPLITER_TOKEN << " " << SPLITER_TOKEN << " ";
+			str << SPLITER_TOKEN << cursor->updateLimit;
+			str << SPLITER_TOKEN << " " << SPLITER_TOKEN << cursor->maxValue.tm << SPLITER_TOKEN << cursor->maxValue.value;
+			str << SPLITER_TOKEN << " " << SPLITER_TOKEN << cursor->minValue.tm << SPLITER_TOKEN << cursor->minValue.value;
+
+			QString value = QString().fromStdString(str.str());
+
+			QStringList values = value.split(QString().fromStdString(SPLITER_TOKEN));
+			result.push_back(values);
+		} while (cursor.next());
+	}
+
+	return result;
+}
+
+bool AnalogCurveDataTable::insertData()
+{
+	AnalogCurveData info;
+	insert(info);
+	m_dbPtr->commit();
+	return true;
+}
+
+bool AnalogCurveDataTable::deleteData( const string& mRID )
+{
+	dbCursor<AnalogCurveData> cursor(dbCursorForUpdate);
+	return deleteDataByCursor(cursor, mRID);
+}
+
+bool AnalogCurveDataTable::updateDatas( const string& mRID, const QMap<QString,QString>& values )
+{
+	dbCursor<AnalogCurveData> cursor(dbCursorForUpdate);
+	return updateDataByCursor(cursor, mRID, values);
+}
+
+void AnalogCurveDataTable::getHidedColumns( QList<int>& hideColumns )
+{
+
+}
+
+void AnalogCurveDataTable::setFieldValue( dbAnyCursor& anyCursor, const string& fieldName, const string& value )
+{
+	dbCursor<AnalogCurveData>& cursor = static_cast< dbCursor<AnalogCurveData>& >(anyCursor);
+	if (fieldName == "analog")
+	{
+		string analogId = value;
+		dbCursor<Analog> analogCursor;
+		bool bRet = GetDbReference(analogCursor, analogId);
+		if (bRet)
+		{
+			cursor->analog = analogCursor.currentId();
+		}
+	}
+}

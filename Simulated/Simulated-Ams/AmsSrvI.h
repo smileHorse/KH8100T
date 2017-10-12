@@ -19,12 +19,14 @@ public:
 	virtual string Register(const ::std::string& strType, const ::Amssrv::Strings& ipVect, ::Ice::Int num, 
 			::Amssrv::ServerNode& serverInfo, const ::Ice::Current& /* = ::Ice::Current */);
 
-	virtual void FinishRegister(const ::std::string& strServerName, const ::std::string& strRole, ::std::string& district, 
-		::std::string& section, ::std::string& districtName, ::std::string& sectionName, 
-		const ::Ice::Current& /* = ::Ice::Current */);
+	virtual void FinishRegister(const ::std::string& strServerName, const ::std::string& strRole, const ::std::string& district, 
+		const ::std::string& section,	const ::Ice::Current& /* = ::Ice::Current */);
+
+	virtual void Quit(const ::Amssrv::ServerNode&, const ::Ice::Current& /* = ::Ice::Current() */);
 
 	virtual string GetRole(const ::std::string& strServerName, const ::Ice::Current& /* = ::Ice::Current */) const;
 
+	virtual void HeartBeat(const ::std::string&, const ::Ice::Current& /* = ::Ice::Current() */);
 private:
 	AmsServerThread*	m_threadPtr;
 };

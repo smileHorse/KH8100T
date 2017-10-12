@@ -56,6 +56,10 @@ namespace IceProxy
 namespace Amssrv
 {
 
+class CAmsManager;
+void __read(::IceInternal::BasicStream*, ::IceInternal::ProxyHandle< ::IceProxy::Amssrv::CAmsManager>&);
+::IceProxy::Ice::Object* upCast(::IceProxy::Amssrv::CAmsManager*);
+
 class CAmsApp;
 void __read(::IceInternal::BasicStream*, ::IceInternal::ProxyHandle< ::IceProxy::Amssrv::CAmsApp>&);
 ::IceProxy::Ice::Object* upCast(::IceProxy::Amssrv::CAmsApp*);
@@ -68,8 +72,10 @@ namespace Amssrv
 {
 
 class CAmsManager;
-::Ice::LocalObject* upCast(::Amssrv::CAmsManager*);
+::Ice::Object* upCast(::Amssrv::CAmsManager*);
 typedef ::IceInternal::Handle< ::Amssrv::CAmsManager> CAmsManagerPtr;
+typedef ::IceInternal::ProxyHandle< ::IceProxy::Amssrv::CAmsManager> CAmsManagerPrx;
+void __patch(CAmsManagerPtr&, const ::Ice::ObjectPtr&);
 
 class CAmsApp;
 ::Ice::Object* upCast(::Amssrv::CAmsApp*);
@@ -320,14 +326,29 @@ struct StreamReader< ::Amssrv::ServerNode, S>
 namespace Amssrv
 {
 
+class Callback_CAmsManager_Register_Base : virtual public ::IceInternal::CallbackBase { };
+typedef ::IceUtil::Handle< Callback_CAmsManager_Register_Base> Callback_CAmsManager_RegisterPtr;
+
+class Callback_CAmsManager_Quit_Base : virtual public ::IceInternal::CallbackBase { };
+typedef ::IceUtil::Handle< Callback_CAmsManager_Quit_Base> Callback_CAmsManager_QuitPtr;
+
+class Callback_CAmsManager_AmsHeartBeat_Base : virtual public ::IceInternal::CallbackBase { };
+typedef ::IceUtil::Handle< Callback_CAmsManager_AmsHeartBeat_Base> Callback_CAmsManager_AmsHeartBeatPtr;
+
 class Callback_CAmsApp_Register_Base : virtual public ::IceInternal::CallbackBase { };
 typedef ::IceUtil::Handle< Callback_CAmsApp_Register_Base> Callback_CAmsApp_RegisterPtr;
 
 class Callback_CAmsApp_FinishRegister_Base : virtual public ::IceInternal::CallbackBase { };
 typedef ::IceUtil::Handle< Callback_CAmsApp_FinishRegister_Base> Callback_CAmsApp_FinishRegisterPtr;
 
+class Callback_CAmsApp_Quit_Base : virtual public ::IceInternal::CallbackBase { };
+typedef ::IceUtil::Handle< Callback_CAmsApp_Quit_Base> Callback_CAmsApp_QuitPtr;
+
 class Callback_CAmsApp_GetRole_Base : virtual public ::IceInternal::CallbackBase { };
 typedef ::IceUtil::Handle< Callback_CAmsApp_GetRole_Base> Callback_CAmsApp_GetRolePtr;
+
+class Callback_CAmsApp_HeartBeat_Base : virtual public ::IceInternal::CallbackBase { };
+typedef ::IceUtil::Handle< Callback_CAmsApp_HeartBeat_Base> Callback_CAmsApp_HeartBeatPtr;
 
 }
 
@@ -336,6 +357,337 @@ namespace IceProxy
 
 namespace Amssrv
 {
+
+class CAmsManager : virtual public ::IceProxy::Ice::Object
+{
+public:
+
+    void Register(const ::std::string& __p_strServerName, const ::std::string& __p_strRole)
+    {
+        Register(__p_strServerName, __p_strRole, 0);
+    }
+    void Register(const ::std::string& __p_strServerName, const ::std::string& __p_strRole, const ::Ice::Context& __ctx)
+    {
+        Register(__p_strServerName, __p_strRole, &__ctx);
+    }
+#ifdef ICE_CPP11
+    ::Ice::AsyncResultPtr
+    begin_Register(const ::std::string& __p_strServerName, const ::std::string& __p_strRole, const ::IceInternal::Function<void ()>& __response, const ::IceInternal::Function<void (const ::Ice::Exception&)>& __exception = ::IceInternal::Function<void (const ::Ice::Exception&)>(), const ::IceInternal::Function<void (bool)>& __sent = ::IceInternal::Function<void (bool)>())
+    {
+        return __begin_Register(__p_strServerName, __p_strRole, 0, __response, __exception, __sent);
+    }
+    ::Ice::AsyncResultPtr
+    begin_Register(const ::std::string& __p_strServerName, const ::std::string& __p_strRole, const ::IceInternal::Function<void (const ::Ice::AsyncResultPtr&)>& __completed, const ::IceInternal::Function<void (const ::Ice::AsyncResultPtr&)>& __sent = ::IceInternal::Function<void (const ::Ice::AsyncResultPtr&)>())
+    {
+        return begin_Register(__p_strServerName, __p_strRole, 0, ::Ice::newCallback(__completed, __sent), 0);
+    }
+    ::Ice::AsyncResultPtr
+    begin_Register(const ::std::string& __p_strServerName, const ::std::string& __p_strRole, const ::Ice::Context& __ctx, const ::IceInternal::Function<void ()>& __response, const ::IceInternal::Function<void (const ::Ice::Exception&)>& __exception = ::IceInternal::Function<void (const ::Ice::Exception&)>(), const ::IceInternal::Function<void (bool)>& __sent = ::IceInternal::Function<void (bool)>())
+    {
+        return __begin_Register(__p_strServerName, __p_strRole, &__ctx, __response, __exception, __sent);
+    }
+    ::Ice::AsyncResultPtr
+    begin_Register(const ::std::string& __p_strServerName, const ::std::string& __p_strRole, const ::Ice::Context& __ctx, const ::IceInternal::Function<void (const ::Ice::AsyncResultPtr&)>& __completed, const ::IceInternal::Function<void (const ::Ice::AsyncResultPtr&)>& __sent = ::IceInternal::Function<void (const ::Ice::AsyncResultPtr&)>())
+    {
+        return begin_Register(__p_strServerName, __p_strRole, &__ctx, ::Ice::newCallback(__completed, __sent));
+    }
+    
+private:
+
+    ::Ice::AsyncResultPtr __begin_Register(const ::std::string& __p_strServerName, const ::std::string& __p_strRole, const ::Ice::Context* __ctx, const ::IceInternal::Function<void ()>& __response, const ::IceInternal::Function<void (const ::Ice::Exception&)>& __exception, const ::IceInternal::Function<void (bool)>& __sent);
+    
+public:
+#endif
+
+    ::Ice::AsyncResultPtr begin_Register(const ::std::string& __p_strServerName, const ::std::string& __p_strRole)
+    {
+        return begin_Register(__p_strServerName, __p_strRole, 0, ::IceInternal::__dummyCallback, 0);
+    }
+
+    ::Ice::AsyncResultPtr begin_Register(const ::std::string& __p_strServerName, const ::std::string& __p_strRole, const ::Ice::Context& __ctx)
+    {
+        return begin_Register(__p_strServerName, __p_strRole, &__ctx, ::IceInternal::__dummyCallback, 0);
+    }
+
+    ::Ice::AsyncResultPtr begin_Register(const ::std::string& __p_strServerName, const ::std::string& __p_strRole, const ::Ice::CallbackPtr& __del, const ::Ice::LocalObjectPtr& __cookie = 0)
+    {
+        return begin_Register(__p_strServerName, __p_strRole, 0, __del, __cookie);
+    }
+
+    ::Ice::AsyncResultPtr begin_Register(const ::std::string& __p_strServerName, const ::std::string& __p_strRole, const ::Ice::Context& __ctx, const ::Ice::CallbackPtr& __del, const ::Ice::LocalObjectPtr& __cookie = 0)
+    {
+        return begin_Register(__p_strServerName, __p_strRole, &__ctx, __del, __cookie);
+    }
+
+    ::Ice::AsyncResultPtr begin_Register(const ::std::string& __p_strServerName, const ::std::string& __p_strRole, const ::Amssrv::Callback_CAmsManager_RegisterPtr& __del, const ::Ice::LocalObjectPtr& __cookie = 0)
+    {
+        return begin_Register(__p_strServerName, __p_strRole, 0, __del, __cookie);
+    }
+
+    ::Ice::AsyncResultPtr begin_Register(const ::std::string& __p_strServerName, const ::std::string& __p_strRole, const ::Ice::Context& __ctx, const ::Amssrv::Callback_CAmsManager_RegisterPtr& __del, const ::Ice::LocalObjectPtr& __cookie = 0)
+    {
+        return begin_Register(__p_strServerName, __p_strRole, &__ctx, __del, __cookie);
+    }
+
+    void end_Register(const ::Ice::AsyncResultPtr&);
+    
+private:
+
+    void Register(const ::std::string&, const ::std::string&, const ::Ice::Context*);
+    ::Ice::AsyncResultPtr begin_Register(const ::std::string&, const ::std::string&, const ::Ice::Context*, const ::IceInternal::CallbackBasePtr&, const ::Ice::LocalObjectPtr& __cookie = 0);
+    
+public:
+
+    void Quit()
+    {
+        Quit(0);
+    }
+    void Quit(const ::Ice::Context& __ctx)
+    {
+        Quit(&__ctx);
+    }
+#ifdef ICE_CPP11
+    ::Ice::AsyncResultPtr
+    begin_Quit(const ::IceInternal::Function<void ()>& __response, const ::IceInternal::Function<void (const ::Ice::Exception&)>& __exception = ::IceInternal::Function<void (const ::Ice::Exception&)>(), const ::IceInternal::Function<void (bool)>& __sent = ::IceInternal::Function<void (bool)>())
+    {
+        return begin_Quit(0, new ::IceInternal::Cpp11FnOnewayCallbackNC(__response, __exception, __sent));
+    }
+    ::Ice::AsyncResultPtr
+    begin_Quit(const ::IceInternal::Function<void (const ::Ice::AsyncResultPtr&)>& __completed, const ::IceInternal::Function<void (const ::Ice::AsyncResultPtr&)>& __sent = ::IceInternal::Function<void (const ::Ice::AsyncResultPtr&)>())
+    {
+        return begin_Quit(0, ::Ice::newCallback(__completed, __sent), 0);
+    }
+    ::Ice::AsyncResultPtr
+    begin_Quit(const ::Ice::Context& __ctx, const ::IceInternal::Function<void ()>& __response, const ::IceInternal::Function<void (const ::Ice::Exception&)>& __exception = ::IceInternal::Function<void (const ::Ice::Exception&)>(), const ::IceInternal::Function<void (bool)>& __sent = ::IceInternal::Function<void (bool)>())
+    {
+        return begin_Quit(&__ctx, new ::IceInternal::Cpp11FnOnewayCallbackNC(__response, __exception, __sent), 0);
+    }
+    ::Ice::AsyncResultPtr
+    begin_Quit(const ::Ice::Context& __ctx, const ::IceInternal::Function<void (const ::Ice::AsyncResultPtr&)>& __completed, const ::IceInternal::Function<void (const ::Ice::AsyncResultPtr&)>& __sent = ::IceInternal::Function<void (const ::Ice::AsyncResultPtr&)>())
+    {
+        return begin_Quit(&__ctx, ::Ice::newCallback(__completed, __sent));
+    }
+#endif
+
+    ::Ice::AsyncResultPtr begin_Quit()
+    {
+        return begin_Quit(0, ::IceInternal::__dummyCallback, 0);
+    }
+
+    ::Ice::AsyncResultPtr begin_Quit(const ::Ice::Context& __ctx)
+    {
+        return begin_Quit(&__ctx, ::IceInternal::__dummyCallback, 0);
+    }
+
+    ::Ice::AsyncResultPtr begin_Quit(const ::Ice::CallbackPtr& __del, const ::Ice::LocalObjectPtr& __cookie = 0)
+    {
+        return begin_Quit(0, __del, __cookie);
+    }
+
+    ::Ice::AsyncResultPtr begin_Quit(const ::Ice::Context& __ctx, const ::Ice::CallbackPtr& __del, const ::Ice::LocalObjectPtr& __cookie = 0)
+    {
+        return begin_Quit(&__ctx, __del, __cookie);
+    }
+
+    ::Ice::AsyncResultPtr begin_Quit(const ::Amssrv::Callback_CAmsManager_QuitPtr& __del, const ::Ice::LocalObjectPtr& __cookie = 0)
+    {
+        return begin_Quit(0, __del, __cookie);
+    }
+
+    ::Ice::AsyncResultPtr begin_Quit(const ::Ice::Context& __ctx, const ::Amssrv::Callback_CAmsManager_QuitPtr& __del, const ::Ice::LocalObjectPtr& __cookie = 0)
+    {
+        return begin_Quit(&__ctx, __del, __cookie);
+    }
+
+    void end_Quit(const ::Ice::AsyncResultPtr&);
+    
+private:
+
+    void Quit(const ::Ice::Context*);
+    ::Ice::AsyncResultPtr begin_Quit(const ::Ice::Context*, const ::IceInternal::CallbackBasePtr&, const ::Ice::LocalObjectPtr& __cookie = 0);
+    
+public:
+
+    void AmsHeartBeat(const ::std::string& __p_strServerName)
+    {
+        AmsHeartBeat(__p_strServerName, 0);
+    }
+    void AmsHeartBeat(const ::std::string& __p_strServerName, const ::Ice::Context& __ctx)
+    {
+        AmsHeartBeat(__p_strServerName, &__ctx);
+    }
+#ifdef ICE_CPP11
+    ::Ice::AsyncResultPtr
+    begin_AmsHeartBeat(const ::std::string& __p_strServerName, const ::IceInternal::Function<void ()>& __response, const ::IceInternal::Function<void (const ::Ice::Exception&)>& __exception = ::IceInternal::Function<void (const ::Ice::Exception&)>(), const ::IceInternal::Function<void (bool)>& __sent = ::IceInternal::Function<void (bool)>())
+    {
+        return begin_AmsHeartBeat(__p_strServerName, 0, new ::IceInternal::Cpp11FnOnewayCallbackNC(__response, __exception, __sent));
+    }
+    ::Ice::AsyncResultPtr
+    begin_AmsHeartBeat(const ::std::string& __p_strServerName, const ::IceInternal::Function<void (const ::Ice::AsyncResultPtr&)>& __completed, const ::IceInternal::Function<void (const ::Ice::AsyncResultPtr&)>& __sent = ::IceInternal::Function<void (const ::Ice::AsyncResultPtr&)>())
+    {
+        return begin_AmsHeartBeat(__p_strServerName, 0, ::Ice::newCallback(__completed, __sent), 0);
+    }
+    ::Ice::AsyncResultPtr
+    begin_AmsHeartBeat(const ::std::string& __p_strServerName, const ::Ice::Context& __ctx, const ::IceInternal::Function<void ()>& __response, const ::IceInternal::Function<void (const ::Ice::Exception&)>& __exception = ::IceInternal::Function<void (const ::Ice::Exception&)>(), const ::IceInternal::Function<void (bool)>& __sent = ::IceInternal::Function<void (bool)>())
+    {
+        return begin_AmsHeartBeat(__p_strServerName, &__ctx, new ::IceInternal::Cpp11FnOnewayCallbackNC(__response, __exception, __sent), 0);
+    }
+    ::Ice::AsyncResultPtr
+    begin_AmsHeartBeat(const ::std::string& __p_strServerName, const ::Ice::Context& __ctx, const ::IceInternal::Function<void (const ::Ice::AsyncResultPtr&)>& __completed, const ::IceInternal::Function<void (const ::Ice::AsyncResultPtr&)>& __sent = ::IceInternal::Function<void (const ::Ice::AsyncResultPtr&)>())
+    {
+        return begin_AmsHeartBeat(__p_strServerName, &__ctx, ::Ice::newCallback(__completed, __sent));
+    }
+#endif
+
+    ::Ice::AsyncResultPtr begin_AmsHeartBeat(const ::std::string& __p_strServerName)
+    {
+        return begin_AmsHeartBeat(__p_strServerName, 0, ::IceInternal::__dummyCallback, 0);
+    }
+
+    ::Ice::AsyncResultPtr begin_AmsHeartBeat(const ::std::string& __p_strServerName, const ::Ice::Context& __ctx)
+    {
+        return begin_AmsHeartBeat(__p_strServerName, &__ctx, ::IceInternal::__dummyCallback, 0);
+    }
+
+    ::Ice::AsyncResultPtr begin_AmsHeartBeat(const ::std::string& __p_strServerName, const ::Ice::CallbackPtr& __del, const ::Ice::LocalObjectPtr& __cookie = 0)
+    {
+        return begin_AmsHeartBeat(__p_strServerName, 0, __del, __cookie);
+    }
+
+    ::Ice::AsyncResultPtr begin_AmsHeartBeat(const ::std::string& __p_strServerName, const ::Ice::Context& __ctx, const ::Ice::CallbackPtr& __del, const ::Ice::LocalObjectPtr& __cookie = 0)
+    {
+        return begin_AmsHeartBeat(__p_strServerName, &__ctx, __del, __cookie);
+    }
+
+    ::Ice::AsyncResultPtr begin_AmsHeartBeat(const ::std::string& __p_strServerName, const ::Amssrv::Callback_CAmsManager_AmsHeartBeatPtr& __del, const ::Ice::LocalObjectPtr& __cookie = 0)
+    {
+        return begin_AmsHeartBeat(__p_strServerName, 0, __del, __cookie);
+    }
+
+    ::Ice::AsyncResultPtr begin_AmsHeartBeat(const ::std::string& __p_strServerName, const ::Ice::Context& __ctx, const ::Amssrv::Callback_CAmsManager_AmsHeartBeatPtr& __del, const ::Ice::LocalObjectPtr& __cookie = 0)
+    {
+        return begin_AmsHeartBeat(__p_strServerName, &__ctx, __del, __cookie);
+    }
+
+    void end_AmsHeartBeat(const ::Ice::AsyncResultPtr&);
+    
+private:
+
+    void AmsHeartBeat(const ::std::string&, const ::Ice::Context*);
+    ::Ice::AsyncResultPtr begin_AmsHeartBeat(const ::std::string&, const ::Ice::Context*, const ::IceInternal::CallbackBasePtr&, const ::Ice::LocalObjectPtr& __cookie = 0);
+    
+public:
+    
+    ::IceInternal::ProxyHandle<CAmsManager> ice_context(const ::Ice::Context& __context) const
+    {
+        return dynamic_cast<CAmsManager*>(::IceProxy::Ice::Object::ice_context(__context).get());
+    }
+    
+    ::IceInternal::ProxyHandle<CAmsManager> ice_adapterId(const ::std::string& __id) const
+    {
+        return dynamic_cast<CAmsManager*>(::IceProxy::Ice::Object::ice_adapterId(__id).get());
+    }
+    
+    ::IceInternal::ProxyHandle<CAmsManager> ice_endpoints(const ::Ice::EndpointSeq& __endpoints) const
+    {
+        return dynamic_cast<CAmsManager*>(::IceProxy::Ice::Object::ice_endpoints(__endpoints).get());
+    }
+    
+    ::IceInternal::ProxyHandle<CAmsManager> ice_locatorCacheTimeout(int __timeout) const
+    {
+        return dynamic_cast<CAmsManager*>(::IceProxy::Ice::Object::ice_locatorCacheTimeout(__timeout).get());
+    }
+    
+    ::IceInternal::ProxyHandle<CAmsManager> ice_connectionCached(bool __cached) const
+    {
+        return dynamic_cast<CAmsManager*>(::IceProxy::Ice::Object::ice_connectionCached(__cached).get());
+    }
+    
+    ::IceInternal::ProxyHandle<CAmsManager> ice_endpointSelection(::Ice::EndpointSelectionType __est) const
+    {
+        return dynamic_cast<CAmsManager*>(::IceProxy::Ice::Object::ice_endpointSelection(__est).get());
+    }
+    
+    ::IceInternal::ProxyHandle<CAmsManager> ice_secure(bool __secure) const
+    {
+        return dynamic_cast<CAmsManager*>(::IceProxy::Ice::Object::ice_secure(__secure).get());
+    }
+    
+    ::IceInternal::ProxyHandle<CAmsManager> ice_preferSecure(bool __preferSecure) const
+    {
+        return dynamic_cast<CAmsManager*>(::IceProxy::Ice::Object::ice_preferSecure(__preferSecure).get());
+    }
+    
+    ::IceInternal::ProxyHandle<CAmsManager> ice_router(const ::Ice::RouterPrx& __router) const
+    {
+        return dynamic_cast<CAmsManager*>(::IceProxy::Ice::Object::ice_router(__router).get());
+    }
+    
+    ::IceInternal::ProxyHandle<CAmsManager> ice_locator(const ::Ice::LocatorPrx& __locator) const
+    {
+        return dynamic_cast<CAmsManager*>(::IceProxy::Ice::Object::ice_locator(__locator).get());
+    }
+    
+    ::IceInternal::ProxyHandle<CAmsManager> ice_collocationOptimized(bool __co) const
+    {
+        return dynamic_cast<CAmsManager*>(::IceProxy::Ice::Object::ice_collocationOptimized(__co).get());
+    }
+    
+    ::IceInternal::ProxyHandle<CAmsManager> ice_invocationTimeout(int __timeout) const
+    {
+        return dynamic_cast<CAmsManager*>(::IceProxy::Ice::Object::ice_invocationTimeout(__timeout).get());
+    }
+    
+    ::IceInternal::ProxyHandle<CAmsManager> ice_twoway() const
+    {
+        return dynamic_cast<CAmsManager*>(::IceProxy::Ice::Object::ice_twoway().get());
+    }
+    
+    ::IceInternal::ProxyHandle<CAmsManager> ice_oneway() const
+    {
+        return dynamic_cast<CAmsManager*>(::IceProxy::Ice::Object::ice_oneway().get());
+    }
+    
+    ::IceInternal::ProxyHandle<CAmsManager> ice_batchOneway() const
+    {
+        return dynamic_cast<CAmsManager*>(::IceProxy::Ice::Object::ice_batchOneway().get());
+    }
+    
+    ::IceInternal::ProxyHandle<CAmsManager> ice_datagram() const
+    {
+        return dynamic_cast<CAmsManager*>(::IceProxy::Ice::Object::ice_datagram().get());
+    }
+    
+    ::IceInternal::ProxyHandle<CAmsManager> ice_batchDatagram() const
+    {
+        return dynamic_cast<CAmsManager*>(::IceProxy::Ice::Object::ice_batchDatagram().get());
+    }
+    
+    ::IceInternal::ProxyHandle<CAmsManager> ice_compress(bool __compress) const
+    {
+        return dynamic_cast<CAmsManager*>(::IceProxy::Ice::Object::ice_compress(__compress).get());
+    }
+    
+    ::IceInternal::ProxyHandle<CAmsManager> ice_timeout(int __timeout) const
+    {
+        return dynamic_cast<CAmsManager*>(::IceProxy::Ice::Object::ice_timeout(__timeout).get());
+    }
+    
+    ::IceInternal::ProxyHandle<CAmsManager> ice_connectionId(const ::std::string& __id) const
+    {
+        return dynamic_cast<CAmsManager*>(::IceProxy::Ice::Object::ice_connectionId(__id).get());
+    }
+    
+    ::IceInternal::ProxyHandle<CAmsManager> ice_encodingVersion(const ::Ice::EncodingVersion& __v) const
+    {
+        return dynamic_cast<CAmsManager*>(::IceProxy::Ice::Object::ice_encodingVersion(__v).get());
+    }
+    
+    static const ::std::string& ice_staticId();
+
+private: 
+    virtual ::IceProxy::Ice::Object* __newInstance() const;
+};
 
 class CAmsApp : virtual public ::IceProxy::Ice::Object
 {
@@ -417,79 +769,149 @@ private:
     
 public:
 
-    void FinishRegister(const ::std::string& __p_strServerName, const ::std::string& __p_strRole, ::std::string& __p_district, ::std::string& __p_section, ::std::string& __p_districtName, ::std::string& __p_sectionName)
+    void FinishRegister(const ::std::string& __p_strServerName, const ::std::string& __p_strRole, const ::std::string& __p_district, const ::std::string& __p_section)
     {
-        FinishRegister(__p_strServerName, __p_strRole, __p_district, __p_section, __p_districtName, __p_sectionName, 0);
+        FinishRegister(__p_strServerName, __p_strRole, __p_district, __p_section, 0);
     }
-    void FinishRegister(const ::std::string& __p_strServerName, const ::std::string& __p_strRole, ::std::string& __p_district, ::std::string& __p_section, ::std::string& __p_districtName, ::std::string& __p_sectionName, const ::Ice::Context& __ctx)
+    void FinishRegister(const ::std::string& __p_strServerName, const ::std::string& __p_strRole, const ::std::string& __p_district, const ::std::string& __p_section, const ::Ice::Context& __ctx)
     {
-        FinishRegister(__p_strServerName, __p_strRole, __p_district, __p_section, __p_districtName, __p_sectionName, &__ctx);
+        FinishRegister(__p_strServerName, __p_strRole, __p_district, __p_section, &__ctx);
     }
 #ifdef ICE_CPP11
     ::Ice::AsyncResultPtr
-    begin_FinishRegister(const ::std::string& __p_strServerName, const ::std::string& __p_strRole, const ::IceInternal::Function<void (const ::std::string&, const ::std::string&, const ::std::string&, const ::std::string&)>& __response, const ::IceInternal::Function<void (const ::Ice::Exception&)>& __exception = ::IceInternal::Function<void (const ::Ice::Exception&)>(), const ::IceInternal::Function<void (bool)>& __sent = ::IceInternal::Function<void (bool)>())
+    begin_FinishRegister(const ::std::string& __p_strServerName, const ::std::string& __p_strRole, const ::std::string& __p_district, const ::std::string& __p_section, const ::IceInternal::Function<void ()>& __response, const ::IceInternal::Function<void (const ::Ice::Exception&)>& __exception = ::IceInternal::Function<void (const ::Ice::Exception&)>(), const ::IceInternal::Function<void (bool)>& __sent = ::IceInternal::Function<void (bool)>())
     {
-        return __begin_FinishRegister(__p_strServerName, __p_strRole, 0, __response, __exception, __sent);
+        return __begin_FinishRegister(__p_strServerName, __p_strRole, __p_district, __p_section, 0, __response, __exception, __sent);
     }
     ::Ice::AsyncResultPtr
-    begin_FinishRegister(const ::std::string& __p_strServerName, const ::std::string& __p_strRole, const ::IceInternal::Function<void (const ::Ice::AsyncResultPtr&)>& __completed, const ::IceInternal::Function<void (const ::Ice::AsyncResultPtr&)>& __sent = ::IceInternal::Function<void (const ::Ice::AsyncResultPtr&)>())
+    begin_FinishRegister(const ::std::string& __p_strServerName, const ::std::string& __p_strRole, const ::std::string& __p_district, const ::std::string& __p_section, const ::IceInternal::Function<void (const ::Ice::AsyncResultPtr&)>& __completed, const ::IceInternal::Function<void (const ::Ice::AsyncResultPtr&)>& __sent = ::IceInternal::Function<void (const ::Ice::AsyncResultPtr&)>())
     {
-        return begin_FinishRegister(__p_strServerName, __p_strRole, 0, ::Ice::newCallback(__completed, __sent), 0);
+        return begin_FinishRegister(__p_strServerName, __p_strRole, __p_district, __p_section, 0, ::Ice::newCallback(__completed, __sent), 0);
     }
     ::Ice::AsyncResultPtr
-    begin_FinishRegister(const ::std::string& __p_strServerName, const ::std::string& __p_strRole, const ::Ice::Context& __ctx, const ::IceInternal::Function<void (const ::std::string&, const ::std::string&, const ::std::string&, const ::std::string&)>& __response, const ::IceInternal::Function<void (const ::Ice::Exception&)>& __exception = ::IceInternal::Function<void (const ::Ice::Exception&)>(), const ::IceInternal::Function<void (bool)>& __sent = ::IceInternal::Function<void (bool)>())
+    begin_FinishRegister(const ::std::string& __p_strServerName, const ::std::string& __p_strRole, const ::std::string& __p_district, const ::std::string& __p_section, const ::Ice::Context& __ctx, const ::IceInternal::Function<void ()>& __response, const ::IceInternal::Function<void (const ::Ice::Exception&)>& __exception = ::IceInternal::Function<void (const ::Ice::Exception&)>(), const ::IceInternal::Function<void (bool)>& __sent = ::IceInternal::Function<void (bool)>())
     {
-        return __begin_FinishRegister(__p_strServerName, __p_strRole, &__ctx, __response, __exception, __sent);
+        return __begin_FinishRegister(__p_strServerName, __p_strRole, __p_district, __p_section, &__ctx, __response, __exception, __sent);
     }
     ::Ice::AsyncResultPtr
-    begin_FinishRegister(const ::std::string& __p_strServerName, const ::std::string& __p_strRole, const ::Ice::Context& __ctx, const ::IceInternal::Function<void (const ::Ice::AsyncResultPtr&)>& __completed, const ::IceInternal::Function<void (const ::Ice::AsyncResultPtr&)>& __sent = ::IceInternal::Function<void (const ::Ice::AsyncResultPtr&)>())
+    begin_FinishRegister(const ::std::string& __p_strServerName, const ::std::string& __p_strRole, const ::std::string& __p_district, const ::std::string& __p_section, const ::Ice::Context& __ctx, const ::IceInternal::Function<void (const ::Ice::AsyncResultPtr&)>& __completed, const ::IceInternal::Function<void (const ::Ice::AsyncResultPtr&)>& __sent = ::IceInternal::Function<void (const ::Ice::AsyncResultPtr&)>())
     {
-        return begin_FinishRegister(__p_strServerName, __p_strRole, &__ctx, ::Ice::newCallback(__completed, __sent));
+        return begin_FinishRegister(__p_strServerName, __p_strRole, __p_district, __p_section, &__ctx, ::Ice::newCallback(__completed, __sent));
     }
     
 private:
 
-    ::Ice::AsyncResultPtr __begin_FinishRegister(const ::std::string& __p_strServerName, const ::std::string& __p_strRole, const ::Ice::Context* __ctx, const ::IceInternal::Function<void (const ::std::string&, const ::std::string&, const ::std::string&, const ::std::string&)>& __response, const ::IceInternal::Function<void (const ::Ice::Exception&)>& __exception, const ::IceInternal::Function<void (bool)>& __sent);
+    ::Ice::AsyncResultPtr __begin_FinishRegister(const ::std::string& __p_strServerName, const ::std::string& __p_strRole, const ::std::string& __p_district, const ::std::string& __p_section, const ::Ice::Context* __ctx, const ::IceInternal::Function<void ()>& __response, const ::IceInternal::Function<void (const ::Ice::Exception&)>& __exception, const ::IceInternal::Function<void (bool)>& __sent);
     
 public:
 #endif
 
-    ::Ice::AsyncResultPtr begin_FinishRegister(const ::std::string& __p_strServerName, const ::std::string& __p_strRole)
+    ::Ice::AsyncResultPtr begin_FinishRegister(const ::std::string& __p_strServerName, const ::std::string& __p_strRole, const ::std::string& __p_district, const ::std::string& __p_section)
     {
-        return begin_FinishRegister(__p_strServerName, __p_strRole, 0, ::IceInternal::__dummyCallback, 0);
+        return begin_FinishRegister(__p_strServerName, __p_strRole, __p_district, __p_section, 0, ::IceInternal::__dummyCallback, 0);
     }
 
-    ::Ice::AsyncResultPtr begin_FinishRegister(const ::std::string& __p_strServerName, const ::std::string& __p_strRole, const ::Ice::Context& __ctx)
+    ::Ice::AsyncResultPtr begin_FinishRegister(const ::std::string& __p_strServerName, const ::std::string& __p_strRole, const ::std::string& __p_district, const ::std::string& __p_section, const ::Ice::Context& __ctx)
     {
-        return begin_FinishRegister(__p_strServerName, __p_strRole, &__ctx, ::IceInternal::__dummyCallback, 0);
+        return begin_FinishRegister(__p_strServerName, __p_strRole, __p_district, __p_section, &__ctx, ::IceInternal::__dummyCallback, 0);
     }
 
-    ::Ice::AsyncResultPtr begin_FinishRegister(const ::std::string& __p_strServerName, const ::std::string& __p_strRole, const ::Ice::CallbackPtr& __del, const ::Ice::LocalObjectPtr& __cookie = 0)
+    ::Ice::AsyncResultPtr begin_FinishRegister(const ::std::string& __p_strServerName, const ::std::string& __p_strRole, const ::std::string& __p_district, const ::std::string& __p_section, const ::Ice::CallbackPtr& __del, const ::Ice::LocalObjectPtr& __cookie = 0)
     {
-        return begin_FinishRegister(__p_strServerName, __p_strRole, 0, __del, __cookie);
+        return begin_FinishRegister(__p_strServerName, __p_strRole, __p_district, __p_section, 0, __del, __cookie);
     }
 
-    ::Ice::AsyncResultPtr begin_FinishRegister(const ::std::string& __p_strServerName, const ::std::string& __p_strRole, const ::Ice::Context& __ctx, const ::Ice::CallbackPtr& __del, const ::Ice::LocalObjectPtr& __cookie = 0)
+    ::Ice::AsyncResultPtr begin_FinishRegister(const ::std::string& __p_strServerName, const ::std::string& __p_strRole, const ::std::string& __p_district, const ::std::string& __p_section, const ::Ice::Context& __ctx, const ::Ice::CallbackPtr& __del, const ::Ice::LocalObjectPtr& __cookie = 0)
     {
-        return begin_FinishRegister(__p_strServerName, __p_strRole, &__ctx, __del, __cookie);
+        return begin_FinishRegister(__p_strServerName, __p_strRole, __p_district, __p_section, &__ctx, __del, __cookie);
     }
 
-    ::Ice::AsyncResultPtr begin_FinishRegister(const ::std::string& __p_strServerName, const ::std::string& __p_strRole, const ::Amssrv::Callback_CAmsApp_FinishRegisterPtr& __del, const ::Ice::LocalObjectPtr& __cookie = 0)
+    ::Ice::AsyncResultPtr begin_FinishRegister(const ::std::string& __p_strServerName, const ::std::string& __p_strRole, const ::std::string& __p_district, const ::std::string& __p_section, const ::Amssrv::Callback_CAmsApp_FinishRegisterPtr& __del, const ::Ice::LocalObjectPtr& __cookie = 0)
     {
-        return begin_FinishRegister(__p_strServerName, __p_strRole, 0, __del, __cookie);
+        return begin_FinishRegister(__p_strServerName, __p_strRole, __p_district, __p_section, 0, __del, __cookie);
     }
 
-    ::Ice::AsyncResultPtr begin_FinishRegister(const ::std::string& __p_strServerName, const ::std::string& __p_strRole, const ::Ice::Context& __ctx, const ::Amssrv::Callback_CAmsApp_FinishRegisterPtr& __del, const ::Ice::LocalObjectPtr& __cookie = 0)
+    ::Ice::AsyncResultPtr begin_FinishRegister(const ::std::string& __p_strServerName, const ::std::string& __p_strRole, const ::std::string& __p_district, const ::std::string& __p_section, const ::Ice::Context& __ctx, const ::Amssrv::Callback_CAmsApp_FinishRegisterPtr& __del, const ::Ice::LocalObjectPtr& __cookie = 0)
     {
-        return begin_FinishRegister(__p_strServerName, __p_strRole, &__ctx, __del, __cookie);
+        return begin_FinishRegister(__p_strServerName, __p_strRole, __p_district, __p_section, &__ctx, __del, __cookie);
     }
 
-    void end_FinishRegister(::std::string& __p_district, ::std::string& __p_section, ::std::string& __p_districtName, ::std::string& __p_sectionName, const ::Ice::AsyncResultPtr&);
+    void end_FinishRegister(const ::Ice::AsyncResultPtr&);
     
 private:
 
-    void FinishRegister(const ::std::string&, const ::std::string&, ::std::string&, ::std::string&, ::std::string&, ::std::string&, const ::Ice::Context*);
-    ::Ice::AsyncResultPtr begin_FinishRegister(const ::std::string&, const ::std::string&, const ::Ice::Context*, const ::IceInternal::CallbackBasePtr&, const ::Ice::LocalObjectPtr& __cookie = 0);
+    void FinishRegister(const ::std::string&, const ::std::string&, const ::std::string&, const ::std::string&, const ::Ice::Context*);
+    ::Ice::AsyncResultPtr begin_FinishRegister(const ::std::string&, const ::std::string&, const ::std::string&, const ::std::string&, const ::Ice::Context*, const ::IceInternal::CallbackBasePtr&, const ::Ice::LocalObjectPtr& __cookie = 0);
+    
+public:
+
+    void Quit(const ::Amssrv::ServerNode& __p_serverInfo)
+    {
+        Quit(__p_serverInfo, 0);
+    }
+    void Quit(const ::Amssrv::ServerNode& __p_serverInfo, const ::Ice::Context& __ctx)
+    {
+        Quit(__p_serverInfo, &__ctx);
+    }
+#ifdef ICE_CPP11
+    ::Ice::AsyncResultPtr
+    begin_Quit(const ::Amssrv::ServerNode& __p_serverInfo, const ::IceInternal::Function<void ()>& __response, const ::IceInternal::Function<void (const ::Ice::Exception&)>& __exception = ::IceInternal::Function<void (const ::Ice::Exception&)>(), const ::IceInternal::Function<void (bool)>& __sent = ::IceInternal::Function<void (bool)>())
+    {
+        return begin_Quit(__p_serverInfo, 0, new ::IceInternal::Cpp11FnOnewayCallbackNC(__response, __exception, __sent));
+    }
+    ::Ice::AsyncResultPtr
+    begin_Quit(const ::Amssrv::ServerNode& __p_serverInfo, const ::IceInternal::Function<void (const ::Ice::AsyncResultPtr&)>& __completed, const ::IceInternal::Function<void (const ::Ice::AsyncResultPtr&)>& __sent = ::IceInternal::Function<void (const ::Ice::AsyncResultPtr&)>())
+    {
+        return begin_Quit(__p_serverInfo, 0, ::Ice::newCallback(__completed, __sent), 0);
+    }
+    ::Ice::AsyncResultPtr
+    begin_Quit(const ::Amssrv::ServerNode& __p_serverInfo, const ::Ice::Context& __ctx, const ::IceInternal::Function<void ()>& __response, const ::IceInternal::Function<void (const ::Ice::Exception&)>& __exception = ::IceInternal::Function<void (const ::Ice::Exception&)>(), const ::IceInternal::Function<void (bool)>& __sent = ::IceInternal::Function<void (bool)>())
+    {
+        return begin_Quit(__p_serverInfo, &__ctx, new ::IceInternal::Cpp11FnOnewayCallbackNC(__response, __exception, __sent), 0);
+    }
+    ::Ice::AsyncResultPtr
+    begin_Quit(const ::Amssrv::ServerNode& __p_serverInfo, const ::Ice::Context& __ctx, const ::IceInternal::Function<void (const ::Ice::AsyncResultPtr&)>& __completed, const ::IceInternal::Function<void (const ::Ice::AsyncResultPtr&)>& __sent = ::IceInternal::Function<void (const ::Ice::AsyncResultPtr&)>())
+    {
+        return begin_Quit(__p_serverInfo, &__ctx, ::Ice::newCallback(__completed, __sent));
+    }
+#endif
+
+    ::Ice::AsyncResultPtr begin_Quit(const ::Amssrv::ServerNode& __p_serverInfo)
+    {
+        return begin_Quit(__p_serverInfo, 0, ::IceInternal::__dummyCallback, 0);
+    }
+
+    ::Ice::AsyncResultPtr begin_Quit(const ::Amssrv::ServerNode& __p_serverInfo, const ::Ice::Context& __ctx)
+    {
+        return begin_Quit(__p_serverInfo, &__ctx, ::IceInternal::__dummyCallback, 0);
+    }
+
+    ::Ice::AsyncResultPtr begin_Quit(const ::Amssrv::ServerNode& __p_serverInfo, const ::Ice::CallbackPtr& __del, const ::Ice::LocalObjectPtr& __cookie = 0)
+    {
+        return begin_Quit(__p_serverInfo, 0, __del, __cookie);
+    }
+
+    ::Ice::AsyncResultPtr begin_Quit(const ::Amssrv::ServerNode& __p_serverInfo, const ::Ice::Context& __ctx, const ::Ice::CallbackPtr& __del, const ::Ice::LocalObjectPtr& __cookie = 0)
+    {
+        return begin_Quit(__p_serverInfo, &__ctx, __del, __cookie);
+    }
+
+    ::Ice::AsyncResultPtr begin_Quit(const ::Amssrv::ServerNode& __p_serverInfo, const ::Amssrv::Callback_CAmsApp_QuitPtr& __del, const ::Ice::LocalObjectPtr& __cookie = 0)
+    {
+        return begin_Quit(__p_serverInfo, 0, __del, __cookie);
+    }
+
+    ::Ice::AsyncResultPtr begin_Quit(const ::Amssrv::ServerNode& __p_serverInfo, const ::Ice::Context& __ctx, const ::Amssrv::Callback_CAmsApp_QuitPtr& __del, const ::Ice::LocalObjectPtr& __cookie = 0)
+    {
+        return begin_Quit(__p_serverInfo, &__ctx, __del, __cookie);
+    }
+
+    void end_Quit(const ::Ice::AsyncResultPtr&);
+    
+private:
+
+    void Quit(const ::Amssrv::ServerNode&, const ::Ice::Context*);
+    ::Ice::AsyncResultPtr begin_Quit(const ::Amssrv::ServerNode&, const ::Ice::Context*, const ::IceInternal::CallbackBasePtr&, const ::Ice::LocalObjectPtr& __cookie = 0);
     
 public:
 
@@ -566,6 +988,76 @@ private:
 
     ::std::string GetRole(const ::std::string&, const ::Ice::Context*);
     ::Ice::AsyncResultPtr begin_GetRole(const ::std::string&, const ::Ice::Context*, const ::IceInternal::CallbackBasePtr&, const ::Ice::LocalObjectPtr& __cookie = 0);
+    
+public:
+
+    void HeartBeat(const ::std::string& __p_strServerName)
+    {
+        HeartBeat(__p_strServerName, 0);
+    }
+    void HeartBeat(const ::std::string& __p_strServerName, const ::Ice::Context& __ctx)
+    {
+        HeartBeat(__p_strServerName, &__ctx);
+    }
+#ifdef ICE_CPP11
+    ::Ice::AsyncResultPtr
+    begin_HeartBeat(const ::std::string& __p_strServerName, const ::IceInternal::Function<void ()>& __response, const ::IceInternal::Function<void (const ::Ice::Exception&)>& __exception = ::IceInternal::Function<void (const ::Ice::Exception&)>(), const ::IceInternal::Function<void (bool)>& __sent = ::IceInternal::Function<void (bool)>())
+    {
+        return begin_HeartBeat(__p_strServerName, 0, new ::IceInternal::Cpp11FnOnewayCallbackNC(__response, __exception, __sent));
+    }
+    ::Ice::AsyncResultPtr
+    begin_HeartBeat(const ::std::string& __p_strServerName, const ::IceInternal::Function<void (const ::Ice::AsyncResultPtr&)>& __completed, const ::IceInternal::Function<void (const ::Ice::AsyncResultPtr&)>& __sent = ::IceInternal::Function<void (const ::Ice::AsyncResultPtr&)>())
+    {
+        return begin_HeartBeat(__p_strServerName, 0, ::Ice::newCallback(__completed, __sent), 0);
+    }
+    ::Ice::AsyncResultPtr
+    begin_HeartBeat(const ::std::string& __p_strServerName, const ::Ice::Context& __ctx, const ::IceInternal::Function<void ()>& __response, const ::IceInternal::Function<void (const ::Ice::Exception&)>& __exception = ::IceInternal::Function<void (const ::Ice::Exception&)>(), const ::IceInternal::Function<void (bool)>& __sent = ::IceInternal::Function<void (bool)>())
+    {
+        return begin_HeartBeat(__p_strServerName, &__ctx, new ::IceInternal::Cpp11FnOnewayCallbackNC(__response, __exception, __sent), 0);
+    }
+    ::Ice::AsyncResultPtr
+    begin_HeartBeat(const ::std::string& __p_strServerName, const ::Ice::Context& __ctx, const ::IceInternal::Function<void (const ::Ice::AsyncResultPtr&)>& __completed, const ::IceInternal::Function<void (const ::Ice::AsyncResultPtr&)>& __sent = ::IceInternal::Function<void (const ::Ice::AsyncResultPtr&)>())
+    {
+        return begin_HeartBeat(__p_strServerName, &__ctx, ::Ice::newCallback(__completed, __sent));
+    }
+#endif
+
+    ::Ice::AsyncResultPtr begin_HeartBeat(const ::std::string& __p_strServerName)
+    {
+        return begin_HeartBeat(__p_strServerName, 0, ::IceInternal::__dummyCallback, 0);
+    }
+
+    ::Ice::AsyncResultPtr begin_HeartBeat(const ::std::string& __p_strServerName, const ::Ice::Context& __ctx)
+    {
+        return begin_HeartBeat(__p_strServerName, &__ctx, ::IceInternal::__dummyCallback, 0);
+    }
+
+    ::Ice::AsyncResultPtr begin_HeartBeat(const ::std::string& __p_strServerName, const ::Ice::CallbackPtr& __del, const ::Ice::LocalObjectPtr& __cookie = 0)
+    {
+        return begin_HeartBeat(__p_strServerName, 0, __del, __cookie);
+    }
+
+    ::Ice::AsyncResultPtr begin_HeartBeat(const ::std::string& __p_strServerName, const ::Ice::Context& __ctx, const ::Ice::CallbackPtr& __del, const ::Ice::LocalObjectPtr& __cookie = 0)
+    {
+        return begin_HeartBeat(__p_strServerName, &__ctx, __del, __cookie);
+    }
+
+    ::Ice::AsyncResultPtr begin_HeartBeat(const ::std::string& __p_strServerName, const ::Amssrv::Callback_CAmsApp_HeartBeatPtr& __del, const ::Ice::LocalObjectPtr& __cookie = 0)
+    {
+        return begin_HeartBeat(__p_strServerName, 0, __del, __cookie);
+    }
+
+    ::Ice::AsyncResultPtr begin_HeartBeat(const ::std::string& __p_strServerName, const ::Ice::Context& __ctx, const ::Amssrv::Callback_CAmsApp_HeartBeatPtr& __del, const ::Ice::LocalObjectPtr& __cookie = 0)
+    {
+        return begin_HeartBeat(__p_strServerName, &__ctx, __del, __cookie);
+    }
+
+    void end_HeartBeat(const ::Ice::AsyncResultPtr&);
+    
+private:
+
+    void HeartBeat(const ::std::string&, const ::Ice::Context*);
+    ::Ice::AsyncResultPtr begin_HeartBeat(const ::std::string&, const ::Ice::Context*, const ::IceInternal::CallbackBasePtr&, const ::Ice::LocalObjectPtr& __cookie = 0);
     
 public:
     
@@ -687,23 +1179,44 @@ private:
 namespace Amssrv
 {
 
-class CAmsManager : virtual public ::Ice::LocalObject
+class CAmsManager : virtual public ::Ice::Object
 {
 public:
 
+    typedef CAmsManagerPrx ProxyType;
     typedef CAmsManagerPtr PointerType;
 
-    virtual void Register() = 0;
+    virtual bool ice_isA(const ::std::string&, const ::Ice::Current& = ::Ice::Current()) const;
+    virtual ::std::vector< ::std::string> ice_ids(const ::Ice::Current& = ::Ice::Current()) const;
+    virtual const ::std::string& ice_id(const ::Ice::Current& = ::Ice::Current()) const;
+    static const ::std::string& ice_staticId();
+
+    virtual void Register(const ::std::string&, const ::std::string&, const ::Ice::Current& = ::Ice::Current()) = 0;
+    ::Ice::DispatchStatus ___Register(::IceInternal::Incoming&, const ::Ice::Current&);
+
+    virtual void Quit(const ::Ice::Current& = ::Ice::Current()) = 0;
+    ::Ice::DispatchStatus ___Quit(::IceInternal::Incoming&, const ::Ice::Current&);
+
+    virtual void AmsHeartBeat(const ::std::string&, const ::Ice::Current& = ::Ice::Current()) = 0;
+    ::Ice::DispatchStatus ___AmsHeartBeat(::IceInternal::Incoming&, const ::Ice::Current&);
+
+    virtual ::Ice::DispatchStatus __dispatch(::IceInternal::Incoming&, const ::Ice::Current&);
+
+protected:
+    virtual void __writeImpl(::IceInternal::BasicStream*) const;
+    virtual void __readImpl(::IceInternal::BasicStream*);
+    using ::Ice::Object::__writeImpl;
+    using ::Ice::Object::__readImpl;
 };
 
 inline bool operator==(const CAmsManager& l, const CAmsManager& r)
 {
-    return static_cast<const ::Ice::LocalObject&>(l) == static_cast<const ::Ice::LocalObject&>(r);
+    return static_cast<const ::Ice::Object&>(l) == static_cast<const ::Ice::Object&>(r);
 }
 
 inline bool operator<(const CAmsManager& l, const CAmsManager& r)
 {
-    return static_cast<const ::Ice::LocalObject&>(l) < static_cast<const ::Ice::LocalObject&>(r);
+    return static_cast<const ::Ice::Object&>(l) < static_cast<const ::Ice::Object&>(r);
 }
 
 class CAmsApp : virtual public ::Ice::Object
@@ -721,11 +1234,17 @@ public:
     virtual ::std::string Register(const ::std::string&, const ::Amssrv::Strings&, ::Ice::Int, ::Amssrv::ServerNode&, const ::Ice::Current& = ::Ice::Current()) = 0;
     ::Ice::DispatchStatus ___Register(::IceInternal::Incoming&, const ::Ice::Current&);
 
-    virtual void FinishRegister(const ::std::string&, const ::std::string&, ::std::string&, ::std::string&, ::std::string&, ::std::string&, const ::Ice::Current& = ::Ice::Current()) = 0;
+    virtual void FinishRegister(const ::std::string&, const ::std::string&, const ::std::string&, const ::std::string&, const ::Ice::Current& = ::Ice::Current()) = 0;
     ::Ice::DispatchStatus ___FinishRegister(::IceInternal::Incoming&, const ::Ice::Current&);
+
+    virtual void Quit(const ::Amssrv::ServerNode&, const ::Ice::Current& = ::Ice::Current()) = 0;
+    ::Ice::DispatchStatus ___Quit(::IceInternal::Incoming&, const ::Ice::Current&);
 
     virtual ::std::string GetRole(const ::std::string&, const ::Ice::Current& = ::Ice::Current()) const = 0;
     ::Ice::DispatchStatus ___GetRole(::IceInternal::Incoming&, const ::Ice::Current&) const;
+
+    virtual void HeartBeat(const ::std::string&, const ::Ice::Current& = ::Ice::Current()) = 0;
+    ::Ice::DispatchStatus ___HeartBeat(::IceInternal::Incoming&, const ::Ice::Current&);
 
     virtual ::Ice::DispatchStatus __dispatch(::IceInternal::Incoming&, const ::Ice::Current&);
 
@@ -750,6 +1269,296 @@ inline bool operator<(const CAmsApp& l, const CAmsApp& r)
 
 namespace Amssrv
 {
+
+template<class T>
+class CallbackNC_CAmsManager_Register : public Callback_CAmsManager_Register_Base, public ::IceInternal::TwowayCallbackNC<T>
+{
+public:
+
+    typedef IceUtil::Handle<T> TPtr;
+
+    typedef void (T::*Exception)(const ::Ice::Exception&);
+    typedef void (T::*Sent)(bool);
+    typedef void (T::*Response)();
+
+    CallbackNC_CAmsManager_Register(const TPtr& obj, Response cb, Exception excb, Sent sentcb)
+        : ::IceInternal::TwowayCallbackNC<T>(obj, cb != 0, excb, sentcb), _response(cb)
+    {
+    }
+
+    virtual void completed(const ::Ice::AsyncResultPtr& __result) const
+    {
+        ::Amssrv::CAmsManagerPrx __proxy = ::Amssrv::CAmsManagerPrx::uncheckedCast(__result->getProxy());
+        try
+        {
+            __proxy->end_Register(__result);
+        }
+        catch(const ::Ice::Exception& ex)
+        {
+            ::IceInternal::CallbackNC<T>::exception(__result, ex);
+            return;
+        }
+        if(_response)
+        {
+            (::IceInternal::CallbackNC<T>::_callback.get()->*_response)();
+        }
+    }
+
+    private:
+
+    Response _response;
+};
+
+template<class T> Callback_CAmsManager_RegisterPtr
+newCallback_CAmsManager_Register(const IceUtil::Handle<T>& instance, void (T::*cb)(), void (T::*excb)(const ::Ice::Exception&), void (T::*sentcb)(bool) = 0)
+{
+    return new CallbackNC_CAmsManager_Register<T>(instance, cb, excb, sentcb);
+}
+
+template<class T> Callback_CAmsManager_RegisterPtr
+newCallback_CAmsManager_Register(const IceUtil::Handle<T>& instance, void (T::*excb)(const ::Ice::Exception&), void (T::*sentcb)(bool) = 0)
+{
+    return new CallbackNC_CAmsManager_Register<T>(instance, 0, excb, sentcb);
+}
+
+template<class T> Callback_CAmsManager_RegisterPtr
+newCallback_CAmsManager_Register(T* instance, void (T::*cb)(), void (T::*excb)(const ::Ice::Exception&), void (T::*sentcb)(bool) = 0)
+{
+    return new CallbackNC_CAmsManager_Register<T>(instance, cb, excb, sentcb);
+}
+
+template<class T> Callback_CAmsManager_RegisterPtr
+newCallback_CAmsManager_Register(T* instance, void (T::*excb)(const ::Ice::Exception&), void (T::*sentcb)(bool) = 0)
+{
+    return new CallbackNC_CAmsManager_Register<T>(instance, 0, excb, sentcb);
+}
+
+template<class T, typename CT>
+class Callback_CAmsManager_Register : public Callback_CAmsManager_Register_Base, public ::IceInternal::TwowayCallback<T, CT>
+{
+public:
+
+    typedef IceUtil::Handle<T> TPtr;
+
+    typedef void (T::*Exception)(const ::Ice::Exception& , const CT&);
+    typedef void (T::*Sent)(bool , const CT&);
+    typedef void (T::*Response)(const CT&);
+
+    Callback_CAmsManager_Register(const TPtr& obj, Response cb, Exception excb, Sent sentcb)
+        : ::IceInternal::TwowayCallback<T, CT>(obj, cb != 0, excb, sentcb), _response(cb)
+    {
+    }
+
+    virtual void completed(const ::Ice::AsyncResultPtr& __result) const
+    {
+        ::Amssrv::CAmsManagerPrx __proxy = ::Amssrv::CAmsManagerPrx::uncheckedCast(__result->getProxy());
+        try
+        {
+            __proxy->end_Register(__result);
+        }
+        catch(const ::Ice::Exception& ex)
+        {
+            ::IceInternal::Callback<T, CT>::exception(__result, ex);
+            return;
+        }
+        if(_response)
+        {
+            (::IceInternal::Callback<T, CT>::_callback.get()->*_response)(CT::dynamicCast(__result->getCookie()));
+        }
+    }
+
+    private:
+
+    Response _response;
+};
+
+template<class T, typename CT> Callback_CAmsManager_RegisterPtr
+newCallback_CAmsManager_Register(const IceUtil::Handle<T>& instance, void (T::*cb)(const CT&), void (T::*excb)(const ::Ice::Exception&, const CT&), void (T::*sentcb)(bool, const CT&) = 0)
+{
+    return new Callback_CAmsManager_Register<T, CT>(instance, cb, excb, sentcb);
+}
+
+template<class T, typename CT> Callback_CAmsManager_RegisterPtr
+newCallback_CAmsManager_Register(const IceUtil::Handle<T>& instance, void (T::*excb)(const ::Ice::Exception&, const CT&), void (T::*sentcb)(bool, const CT&) = 0)
+{
+    return new Callback_CAmsManager_Register<T, CT>(instance, 0, excb, sentcb);
+}
+
+template<class T, typename CT> Callback_CAmsManager_RegisterPtr
+newCallback_CAmsManager_Register(T* instance, void (T::*cb)(const CT&), void (T::*excb)(const ::Ice::Exception&, const CT&), void (T::*sentcb)(bool, const CT&) = 0)
+{
+    return new Callback_CAmsManager_Register<T, CT>(instance, cb, excb, sentcb);
+}
+
+template<class T, typename CT> Callback_CAmsManager_RegisterPtr
+newCallback_CAmsManager_Register(T* instance, void (T::*excb)(const ::Ice::Exception&, const CT&), void (T::*sentcb)(bool, const CT&) = 0)
+{
+    return new Callback_CAmsManager_Register<T, CT>(instance, 0, excb, sentcb);
+}
+
+template<class T>
+class CallbackNC_CAmsManager_Quit : public Callback_CAmsManager_Quit_Base, public ::IceInternal::OnewayCallbackNC<T>
+{
+public:
+
+    typedef IceUtil::Handle<T> TPtr;
+
+    typedef void (T::*Exception)(const ::Ice::Exception&);
+    typedef void (T::*Sent)(bool);
+    typedef void (T::*Response)();
+
+    CallbackNC_CAmsManager_Quit(const TPtr& obj, Response cb, Exception excb, Sent sentcb)
+        : ::IceInternal::OnewayCallbackNC<T>(obj, cb, excb, sentcb)
+    {
+    }
+};
+
+template<class T> Callback_CAmsManager_QuitPtr
+newCallback_CAmsManager_Quit(const IceUtil::Handle<T>& instance, void (T::*cb)(), void (T::*excb)(const ::Ice::Exception&), void (T::*sentcb)(bool) = 0)
+{
+    return new CallbackNC_CAmsManager_Quit<T>(instance, cb, excb, sentcb);
+}
+
+template<class T> Callback_CAmsManager_QuitPtr
+newCallback_CAmsManager_Quit(const IceUtil::Handle<T>& instance, void (T::*excb)(const ::Ice::Exception&), void (T::*sentcb)(bool) = 0)
+{
+    return new CallbackNC_CAmsManager_Quit<T>(instance, 0, excb, sentcb);
+}
+
+template<class T> Callback_CAmsManager_QuitPtr
+newCallback_CAmsManager_Quit(T* instance, void (T::*cb)(), void (T::*excb)(const ::Ice::Exception&), void (T::*sentcb)(bool) = 0)
+{
+    return new CallbackNC_CAmsManager_Quit<T>(instance, cb, excb, sentcb);
+}
+
+template<class T> Callback_CAmsManager_QuitPtr
+newCallback_CAmsManager_Quit(T* instance, void (T::*excb)(const ::Ice::Exception&), void (T::*sentcb)(bool) = 0)
+{
+    return new CallbackNC_CAmsManager_Quit<T>(instance, 0, excb, sentcb);
+}
+
+template<class T, typename CT>
+class Callback_CAmsManager_Quit : public Callback_CAmsManager_Quit_Base, public ::IceInternal::OnewayCallback<T, CT>
+{
+public:
+
+    typedef IceUtil::Handle<T> TPtr;
+
+    typedef void (T::*Exception)(const ::Ice::Exception& , const CT&);
+    typedef void (T::*Sent)(bool , const CT&);
+    typedef void (T::*Response)(const CT&);
+
+    Callback_CAmsManager_Quit(const TPtr& obj, Response cb, Exception excb, Sent sentcb)
+        : ::IceInternal::OnewayCallback<T, CT>(obj, cb, excb, sentcb)
+    {
+    }
+};
+
+template<class T, typename CT> Callback_CAmsManager_QuitPtr
+newCallback_CAmsManager_Quit(const IceUtil::Handle<T>& instance, void (T::*cb)(const CT&), void (T::*excb)(const ::Ice::Exception&, const CT&), void (T::*sentcb)(bool, const CT&) = 0)
+{
+    return new Callback_CAmsManager_Quit<T, CT>(instance, cb, excb, sentcb);
+}
+
+template<class T, typename CT> Callback_CAmsManager_QuitPtr
+newCallback_CAmsManager_Quit(const IceUtil::Handle<T>& instance, void (T::*excb)(const ::Ice::Exception&, const CT&), void (T::*sentcb)(bool, const CT&) = 0)
+{
+    return new Callback_CAmsManager_Quit<T, CT>(instance, 0, excb, sentcb);
+}
+
+template<class T, typename CT> Callback_CAmsManager_QuitPtr
+newCallback_CAmsManager_Quit(T* instance, void (T::*cb)(const CT&), void (T::*excb)(const ::Ice::Exception&, const CT&), void (T::*sentcb)(bool, const CT&) = 0)
+{
+    return new Callback_CAmsManager_Quit<T, CT>(instance, cb, excb, sentcb);
+}
+
+template<class T, typename CT> Callback_CAmsManager_QuitPtr
+newCallback_CAmsManager_Quit(T* instance, void (T::*excb)(const ::Ice::Exception&, const CT&), void (T::*sentcb)(bool, const CT&) = 0)
+{
+    return new Callback_CAmsManager_Quit<T, CT>(instance, 0, excb, sentcb);
+}
+
+template<class T>
+class CallbackNC_CAmsManager_AmsHeartBeat : public Callback_CAmsManager_AmsHeartBeat_Base, public ::IceInternal::OnewayCallbackNC<T>
+{
+public:
+
+    typedef IceUtil::Handle<T> TPtr;
+
+    typedef void (T::*Exception)(const ::Ice::Exception&);
+    typedef void (T::*Sent)(bool);
+    typedef void (T::*Response)();
+
+    CallbackNC_CAmsManager_AmsHeartBeat(const TPtr& obj, Response cb, Exception excb, Sent sentcb)
+        : ::IceInternal::OnewayCallbackNC<T>(obj, cb, excb, sentcb)
+    {
+    }
+};
+
+template<class T> Callback_CAmsManager_AmsHeartBeatPtr
+newCallback_CAmsManager_AmsHeartBeat(const IceUtil::Handle<T>& instance, void (T::*cb)(), void (T::*excb)(const ::Ice::Exception&), void (T::*sentcb)(bool) = 0)
+{
+    return new CallbackNC_CAmsManager_AmsHeartBeat<T>(instance, cb, excb, sentcb);
+}
+
+template<class T> Callback_CAmsManager_AmsHeartBeatPtr
+newCallback_CAmsManager_AmsHeartBeat(const IceUtil::Handle<T>& instance, void (T::*excb)(const ::Ice::Exception&), void (T::*sentcb)(bool) = 0)
+{
+    return new CallbackNC_CAmsManager_AmsHeartBeat<T>(instance, 0, excb, sentcb);
+}
+
+template<class T> Callback_CAmsManager_AmsHeartBeatPtr
+newCallback_CAmsManager_AmsHeartBeat(T* instance, void (T::*cb)(), void (T::*excb)(const ::Ice::Exception&), void (T::*sentcb)(bool) = 0)
+{
+    return new CallbackNC_CAmsManager_AmsHeartBeat<T>(instance, cb, excb, sentcb);
+}
+
+template<class T> Callback_CAmsManager_AmsHeartBeatPtr
+newCallback_CAmsManager_AmsHeartBeat(T* instance, void (T::*excb)(const ::Ice::Exception&), void (T::*sentcb)(bool) = 0)
+{
+    return new CallbackNC_CAmsManager_AmsHeartBeat<T>(instance, 0, excb, sentcb);
+}
+
+template<class T, typename CT>
+class Callback_CAmsManager_AmsHeartBeat : public Callback_CAmsManager_AmsHeartBeat_Base, public ::IceInternal::OnewayCallback<T, CT>
+{
+public:
+
+    typedef IceUtil::Handle<T> TPtr;
+
+    typedef void (T::*Exception)(const ::Ice::Exception& , const CT&);
+    typedef void (T::*Sent)(bool , const CT&);
+    typedef void (T::*Response)(const CT&);
+
+    Callback_CAmsManager_AmsHeartBeat(const TPtr& obj, Response cb, Exception excb, Sent sentcb)
+        : ::IceInternal::OnewayCallback<T, CT>(obj, cb, excb, sentcb)
+    {
+    }
+};
+
+template<class T, typename CT> Callback_CAmsManager_AmsHeartBeatPtr
+newCallback_CAmsManager_AmsHeartBeat(const IceUtil::Handle<T>& instance, void (T::*cb)(const CT&), void (T::*excb)(const ::Ice::Exception&, const CT&), void (T::*sentcb)(bool, const CT&) = 0)
+{
+    return new Callback_CAmsManager_AmsHeartBeat<T, CT>(instance, cb, excb, sentcb);
+}
+
+template<class T, typename CT> Callback_CAmsManager_AmsHeartBeatPtr
+newCallback_CAmsManager_AmsHeartBeat(const IceUtil::Handle<T>& instance, void (T::*excb)(const ::Ice::Exception&, const CT&), void (T::*sentcb)(bool, const CT&) = 0)
+{
+    return new Callback_CAmsManager_AmsHeartBeat<T, CT>(instance, 0, excb, sentcb);
+}
+
+template<class T, typename CT> Callback_CAmsManager_AmsHeartBeatPtr
+newCallback_CAmsManager_AmsHeartBeat(T* instance, void (T::*cb)(const CT&), void (T::*excb)(const ::Ice::Exception&, const CT&), void (T::*sentcb)(bool, const CT&) = 0)
+{
+    return new Callback_CAmsManager_AmsHeartBeat<T, CT>(instance, cb, excb, sentcb);
+}
+
+template<class T, typename CT> Callback_CAmsManager_AmsHeartBeatPtr
+newCallback_CAmsManager_AmsHeartBeat(T* instance, void (T::*excb)(const ::Ice::Exception&, const CT&), void (T::*sentcb)(bool, const CT&) = 0)
+{
+    return new Callback_CAmsManager_AmsHeartBeat<T, CT>(instance, 0, excb, sentcb);
+}
 
 template<class T>
 class CallbackNC_CAmsApp_Register : public Callback_CAmsApp_Register_Base, public ::IceInternal::TwowayCallbackNC<T>
@@ -866,7 +1675,7 @@ public:
 
     typedef void (T::*Exception)(const ::Ice::Exception&);
     typedef void (T::*Sent)(bool);
-    typedef void (T::*Response)(const ::std::string&, const ::std::string&, const ::std::string&, const ::std::string&);
+    typedef void (T::*Response)();
 
     CallbackNC_CAmsApp_FinishRegister(const TPtr& obj, Response cb, Exception excb, Sent sentcb)
         : ::IceInternal::TwowayCallbackNC<T>(obj, cb != 0, excb, sentcb), _response(cb)
@@ -876,13 +1685,9 @@ public:
     virtual void completed(const ::Ice::AsyncResultPtr& __result) const
     {
         ::Amssrv::CAmsAppPrx __proxy = ::Amssrv::CAmsAppPrx::uncheckedCast(__result->getProxy());
-        ::std::string district;
-        ::std::string section;
-        ::std::string districtName;
-        ::std::string sectionName;
         try
         {
-            __proxy->end_FinishRegister(district, section, districtName, sectionName, __result);
+            __proxy->end_FinishRegister(__result);
         }
         catch(const ::Ice::Exception& ex)
         {
@@ -891,7 +1696,7 @@ public:
         }
         if(_response)
         {
-            (::IceInternal::CallbackNC<T>::_callback.get()->*_response)(district, section, districtName, sectionName);
+            (::IceInternal::CallbackNC<T>::_callback.get()->*_response)();
         }
     }
 
@@ -901,15 +1706,27 @@ public:
 };
 
 template<class T> Callback_CAmsApp_FinishRegisterPtr
-newCallback_CAmsApp_FinishRegister(const IceUtil::Handle<T>& instance, void (T::*cb)(const ::std::string&, const ::std::string&, const ::std::string&, const ::std::string&), void (T::*excb)(const ::Ice::Exception&), void (T::*sentcb)(bool) = 0)
+newCallback_CAmsApp_FinishRegister(const IceUtil::Handle<T>& instance, void (T::*cb)(), void (T::*excb)(const ::Ice::Exception&), void (T::*sentcb)(bool) = 0)
 {
     return new CallbackNC_CAmsApp_FinishRegister<T>(instance, cb, excb, sentcb);
 }
 
 template<class T> Callback_CAmsApp_FinishRegisterPtr
-newCallback_CAmsApp_FinishRegister(T* instance, void (T::*cb)(const ::std::string&, const ::std::string&, const ::std::string&, const ::std::string&), void (T::*excb)(const ::Ice::Exception&), void (T::*sentcb)(bool) = 0)
+newCallback_CAmsApp_FinishRegister(const IceUtil::Handle<T>& instance, void (T::*excb)(const ::Ice::Exception&), void (T::*sentcb)(bool) = 0)
+{
+    return new CallbackNC_CAmsApp_FinishRegister<T>(instance, 0, excb, sentcb);
+}
+
+template<class T> Callback_CAmsApp_FinishRegisterPtr
+newCallback_CAmsApp_FinishRegister(T* instance, void (T::*cb)(), void (T::*excb)(const ::Ice::Exception&), void (T::*sentcb)(bool) = 0)
 {
     return new CallbackNC_CAmsApp_FinishRegister<T>(instance, cb, excb, sentcb);
+}
+
+template<class T> Callback_CAmsApp_FinishRegisterPtr
+newCallback_CAmsApp_FinishRegister(T* instance, void (T::*excb)(const ::Ice::Exception&), void (T::*sentcb)(bool) = 0)
+{
+    return new CallbackNC_CAmsApp_FinishRegister<T>(instance, 0, excb, sentcb);
 }
 
 template<class T, typename CT>
@@ -921,7 +1738,7 @@ public:
 
     typedef void (T::*Exception)(const ::Ice::Exception& , const CT&);
     typedef void (T::*Sent)(bool , const CT&);
-    typedef void (T::*Response)(const ::std::string&, const ::std::string&, const ::std::string&, const ::std::string&, const CT&);
+    typedef void (T::*Response)(const CT&);
 
     Callback_CAmsApp_FinishRegister(const TPtr& obj, Response cb, Exception excb, Sent sentcb)
         : ::IceInternal::TwowayCallback<T, CT>(obj, cb != 0, excb, sentcb), _response(cb)
@@ -931,13 +1748,9 @@ public:
     virtual void completed(const ::Ice::AsyncResultPtr& __result) const
     {
         ::Amssrv::CAmsAppPrx __proxy = ::Amssrv::CAmsAppPrx::uncheckedCast(__result->getProxy());
-        ::std::string district;
-        ::std::string section;
-        ::std::string districtName;
-        ::std::string sectionName;
         try
         {
-            __proxy->end_FinishRegister(district, section, districtName, sectionName, __result);
+            __proxy->end_FinishRegister(__result);
         }
         catch(const ::Ice::Exception& ex)
         {
@@ -946,7 +1759,7 @@ public:
         }
         if(_response)
         {
-            (::IceInternal::Callback<T, CT>::_callback.get()->*_response)(district, section, districtName, sectionName, CT::dynamicCast(__result->getCookie()));
+            (::IceInternal::Callback<T, CT>::_callback.get()->*_response)(CT::dynamicCast(__result->getCookie()));
         }
     }
 
@@ -956,15 +1769,109 @@ public:
 };
 
 template<class T, typename CT> Callback_CAmsApp_FinishRegisterPtr
-newCallback_CAmsApp_FinishRegister(const IceUtil::Handle<T>& instance, void (T::*cb)(const ::std::string&, const ::std::string&, const ::std::string&, const ::std::string&, const CT&), void (T::*excb)(const ::Ice::Exception&, const CT&), void (T::*sentcb)(bool, const CT&) = 0)
+newCallback_CAmsApp_FinishRegister(const IceUtil::Handle<T>& instance, void (T::*cb)(const CT&), void (T::*excb)(const ::Ice::Exception&, const CT&), void (T::*sentcb)(bool, const CT&) = 0)
 {
     return new Callback_CAmsApp_FinishRegister<T, CT>(instance, cb, excb, sentcb);
 }
 
 template<class T, typename CT> Callback_CAmsApp_FinishRegisterPtr
-newCallback_CAmsApp_FinishRegister(T* instance, void (T::*cb)(const ::std::string&, const ::std::string&, const ::std::string&, const ::std::string&, const CT&), void (T::*excb)(const ::Ice::Exception&, const CT&), void (T::*sentcb)(bool, const CT&) = 0)
+newCallback_CAmsApp_FinishRegister(const IceUtil::Handle<T>& instance, void (T::*excb)(const ::Ice::Exception&, const CT&), void (T::*sentcb)(bool, const CT&) = 0)
+{
+    return new Callback_CAmsApp_FinishRegister<T, CT>(instance, 0, excb, sentcb);
+}
+
+template<class T, typename CT> Callback_CAmsApp_FinishRegisterPtr
+newCallback_CAmsApp_FinishRegister(T* instance, void (T::*cb)(const CT&), void (T::*excb)(const ::Ice::Exception&, const CT&), void (T::*sentcb)(bool, const CT&) = 0)
 {
     return new Callback_CAmsApp_FinishRegister<T, CT>(instance, cb, excb, sentcb);
+}
+
+template<class T, typename CT> Callback_CAmsApp_FinishRegisterPtr
+newCallback_CAmsApp_FinishRegister(T* instance, void (T::*excb)(const ::Ice::Exception&, const CT&), void (T::*sentcb)(bool, const CT&) = 0)
+{
+    return new Callback_CAmsApp_FinishRegister<T, CT>(instance, 0, excb, sentcb);
+}
+
+template<class T>
+class CallbackNC_CAmsApp_Quit : public Callback_CAmsApp_Quit_Base, public ::IceInternal::OnewayCallbackNC<T>
+{
+public:
+
+    typedef IceUtil::Handle<T> TPtr;
+
+    typedef void (T::*Exception)(const ::Ice::Exception&);
+    typedef void (T::*Sent)(bool);
+    typedef void (T::*Response)();
+
+    CallbackNC_CAmsApp_Quit(const TPtr& obj, Response cb, Exception excb, Sent sentcb)
+        : ::IceInternal::OnewayCallbackNC<T>(obj, cb, excb, sentcb)
+    {
+    }
+};
+
+template<class T> Callback_CAmsApp_QuitPtr
+newCallback_CAmsApp_Quit(const IceUtil::Handle<T>& instance, void (T::*cb)(), void (T::*excb)(const ::Ice::Exception&), void (T::*sentcb)(bool) = 0)
+{
+    return new CallbackNC_CAmsApp_Quit<T>(instance, cb, excb, sentcb);
+}
+
+template<class T> Callback_CAmsApp_QuitPtr
+newCallback_CAmsApp_Quit(const IceUtil::Handle<T>& instance, void (T::*excb)(const ::Ice::Exception&), void (T::*sentcb)(bool) = 0)
+{
+    return new CallbackNC_CAmsApp_Quit<T>(instance, 0, excb, sentcb);
+}
+
+template<class T> Callback_CAmsApp_QuitPtr
+newCallback_CAmsApp_Quit(T* instance, void (T::*cb)(), void (T::*excb)(const ::Ice::Exception&), void (T::*sentcb)(bool) = 0)
+{
+    return new CallbackNC_CAmsApp_Quit<T>(instance, cb, excb, sentcb);
+}
+
+template<class T> Callback_CAmsApp_QuitPtr
+newCallback_CAmsApp_Quit(T* instance, void (T::*excb)(const ::Ice::Exception&), void (T::*sentcb)(bool) = 0)
+{
+    return new CallbackNC_CAmsApp_Quit<T>(instance, 0, excb, sentcb);
+}
+
+template<class T, typename CT>
+class Callback_CAmsApp_Quit : public Callback_CAmsApp_Quit_Base, public ::IceInternal::OnewayCallback<T, CT>
+{
+public:
+
+    typedef IceUtil::Handle<T> TPtr;
+
+    typedef void (T::*Exception)(const ::Ice::Exception& , const CT&);
+    typedef void (T::*Sent)(bool , const CT&);
+    typedef void (T::*Response)(const CT&);
+
+    Callback_CAmsApp_Quit(const TPtr& obj, Response cb, Exception excb, Sent sentcb)
+        : ::IceInternal::OnewayCallback<T, CT>(obj, cb, excb, sentcb)
+    {
+    }
+};
+
+template<class T, typename CT> Callback_CAmsApp_QuitPtr
+newCallback_CAmsApp_Quit(const IceUtil::Handle<T>& instance, void (T::*cb)(const CT&), void (T::*excb)(const ::Ice::Exception&, const CT&), void (T::*sentcb)(bool, const CT&) = 0)
+{
+    return new Callback_CAmsApp_Quit<T, CT>(instance, cb, excb, sentcb);
+}
+
+template<class T, typename CT> Callback_CAmsApp_QuitPtr
+newCallback_CAmsApp_Quit(const IceUtil::Handle<T>& instance, void (T::*excb)(const ::Ice::Exception&, const CT&), void (T::*sentcb)(bool, const CT&) = 0)
+{
+    return new Callback_CAmsApp_Quit<T, CT>(instance, 0, excb, sentcb);
+}
+
+template<class T, typename CT> Callback_CAmsApp_QuitPtr
+newCallback_CAmsApp_Quit(T* instance, void (T::*cb)(const CT&), void (T::*excb)(const ::Ice::Exception&, const CT&), void (T::*sentcb)(bool, const CT&) = 0)
+{
+    return new Callback_CAmsApp_Quit<T, CT>(instance, cb, excb, sentcb);
+}
+
+template<class T, typename CT> Callback_CAmsApp_QuitPtr
+newCallback_CAmsApp_Quit(T* instance, void (T::*excb)(const ::Ice::Exception&, const CT&), void (T::*sentcb)(bool, const CT&) = 0)
+{
+    return new Callback_CAmsApp_Quit<T, CT>(instance, 0, excb, sentcb);
 }
 
 template<class T>
@@ -1069,6 +1976,88 @@ template<class T, typename CT> Callback_CAmsApp_GetRolePtr
 newCallback_CAmsApp_GetRole(T* instance, void (T::*cb)(const ::std::string&, const CT&), void (T::*excb)(const ::Ice::Exception&, const CT&), void (T::*sentcb)(bool, const CT&) = 0)
 {
     return new Callback_CAmsApp_GetRole<T, CT>(instance, cb, excb, sentcb);
+}
+
+template<class T>
+class CallbackNC_CAmsApp_HeartBeat : public Callback_CAmsApp_HeartBeat_Base, public ::IceInternal::OnewayCallbackNC<T>
+{
+public:
+
+    typedef IceUtil::Handle<T> TPtr;
+
+    typedef void (T::*Exception)(const ::Ice::Exception&);
+    typedef void (T::*Sent)(bool);
+    typedef void (T::*Response)();
+
+    CallbackNC_CAmsApp_HeartBeat(const TPtr& obj, Response cb, Exception excb, Sent sentcb)
+        : ::IceInternal::OnewayCallbackNC<T>(obj, cb, excb, sentcb)
+    {
+    }
+};
+
+template<class T> Callback_CAmsApp_HeartBeatPtr
+newCallback_CAmsApp_HeartBeat(const IceUtil::Handle<T>& instance, void (T::*cb)(), void (T::*excb)(const ::Ice::Exception&), void (T::*sentcb)(bool) = 0)
+{
+    return new CallbackNC_CAmsApp_HeartBeat<T>(instance, cb, excb, sentcb);
+}
+
+template<class T> Callback_CAmsApp_HeartBeatPtr
+newCallback_CAmsApp_HeartBeat(const IceUtil::Handle<T>& instance, void (T::*excb)(const ::Ice::Exception&), void (T::*sentcb)(bool) = 0)
+{
+    return new CallbackNC_CAmsApp_HeartBeat<T>(instance, 0, excb, sentcb);
+}
+
+template<class T> Callback_CAmsApp_HeartBeatPtr
+newCallback_CAmsApp_HeartBeat(T* instance, void (T::*cb)(), void (T::*excb)(const ::Ice::Exception&), void (T::*sentcb)(bool) = 0)
+{
+    return new CallbackNC_CAmsApp_HeartBeat<T>(instance, cb, excb, sentcb);
+}
+
+template<class T> Callback_CAmsApp_HeartBeatPtr
+newCallback_CAmsApp_HeartBeat(T* instance, void (T::*excb)(const ::Ice::Exception&), void (T::*sentcb)(bool) = 0)
+{
+    return new CallbackNC_CAmsApp_HeartBeat<T>(instance, 0, excb, sentcb);
+}
+
+template<class T, typename CT>
+class Callback_CAmsApp_HeartBeat : public Callback_CAmsApp_HeartBeat_Base, public ::IceInternal::OnewayCallback<T, CT>
+{
+public:
+
+    typedef IceUtil::Handle<T> TPtr;
+
+    typedef void (T::*Exception)(const ::Ice::Exception& , const CT&);
+    typedef void (T::*Sent)(bool , const CT&);
+    typedef void (T::*Response)(const CT&);
+
+    Callback_CAmsApp_HeartBeat(const TPtr& obj, Response cb, Exception excb, Sent sentcb)
+        : ::IceInternal::OnewayCallback<T, CT>(obj, cb, excb, sentcb)
+    {
+    }
+};
+
+template<class T, typename CT> Callback_CAmsApp_HeartBeatPtr
+newCallback_CAmsApp_HeartBeat(const IceUtil::Handle<T>& instance, void (T::*cb)(const CT&), void (T::*excb)(const ::Ice::Exception&, const CT&), void (T::*sentcb)(bool, const CT&) = 0)
+{
+    return new Callback_CAmsApp_HeartBeat<T, CT>(instance, cb, excb, sentcb);
+}
+
+template<class T, typename CT> Callback_CAmsApp_HeartBeatPtr
+newCallback_CAmsApp_HeartBeat(const IceUtil::Handle<T>& instance, void (T::*excb)(const ::Ice::Exception&, const CT&), void (T::*sentcb)(bool, const CT&) = 0)
+{
+    return new Callback_CAmsApp_HeartBeat<T, CT>(instance, 0, excb, sentcb);
+}
+
+template<class T, typename CT> Callback_CAmsApp_HeartBeatPtr
+newCallback_CAmsApp_HeartBeat(T* instance, void (T::*cb)(const CT&), void (T::*excb)(const ::Ice::Exception&, const CT&), void (T::*sentcb)(bool, const CT&) = 0)
+{
+    return new Callback_CAmsApp_HeartBeat<T, CT>(instance, cb, excb, sentcb);
+}
+
+template<class T, typename CT> Callback_CAmsApp_HeartBeatPtr
+newCallback_CAmsApp_HeartBeat(T* instance, void (T::*excb)(const ::Ice::Exception&, const CT&), void (T::*sentcb)(bool, const CT&) = 0)
+{
+    return new Callback_CAmsApp_HeartBeat<T, CT>(instance, 0, excb, sentcb);
 }
 
 }

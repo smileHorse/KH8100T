@@ -18,8 +18,8 @@
 // </auto-generated>
 //
 
-#ifndef __cpp_rdbdata_h__
-#define __cpp_rdbdata_h__
+#ifndef __rdbdata_h__
+#define __rdbdata_h__
 
 #include <IceUtil/PushDisableWarnings.h>
 #include <Ice/ProxyF.h>
@@ -202,6 +202,7 @@ struct RequestDefaultDataSeq
 {
     ::Ice::Long id;
     ::Ice::Long requestId;
+    ::std::string requestNode;
     bool isStop;
     ::Ice::Int refreshFreq;
     ::Ice::Long dataCount;
@@ -222,6 +223,7 @@ struct RequestSpecficDataSeq
 {
     ::Ice::Long id;
     ::Ice::Long requestId;
+    ::std::string requestNode;
     bool isStop;
     ::Ice::Int refreshFreq;
     ::Ice::Long dataCount;
@@ -312,6 +314,7 @@ struct RequestCompleteDataSeq
 {
     ::Ice::Long id;
     ::Ice::Long requestId;
+    ::std::string requestNode;
     bool isStop;
     ::Ice::Int refreshFreq;
     ::Ice::Long dataCount;
@@ -402,6 +405,7 @@ struct RespondDefaultDataSeq
 {
     ::Ice::Long id;
     ::Ice::Long requestId;
+    ::std::string requestNode;
     ::Ice::Long dataCount;
     ::RdbRealData::RespondDefaultDataSequence seq;
 };
@@ -420,6 +424,7 @@ struct RespondSpecficDataSeq
 {
     ::Ice::Long id;
     ::Ice::Long requestId;
+    ::std::string requestNode;
     ::Ice::Long dataCount;
     ::RdbRealData::RespondSpecficDataSequence seq;
 };
@@ -437,6 +442,7 @@ struct RespondCompleteDataSeq
 {
     ::Ice::Long id;
     ::Ice::Long requestId;
+    ::std::string requestNode;
     ::Ice::Long dataCount;
     ::RdbRealData::RespondCompleteDataSequence seq;
 };
@@ -774,6 +780,7 @@ struct RequestTopoDataSeq
 {
     ::Ice::Long id;
     ::Ice::Long requestId;
+    ::std::string requestNode;
     bool isStop;
     ::Ice::Int refreshFreq;
     ::RdbRealData::Strings ridSeq;
@@ -850,6 +857,7 @@ struct ReceiveTopoDataSeq
 {
     ::Ice::Long id;
     ::Ice::Long requestId;
+    ::std::string requestNode;
     ::RdbRealData::ConNodeStateSeq cnStateSeq;
 };
 
@@ -1071,7 +1079,7 @@ template<>
 struct StreamableTraits< ::RdbRealData::RequestDefaultDataSeq>
 {
     static const StreamHelperCategory helper = StreamHelperCategoryStruct;
-    static const int minWireSize = 30;
+    static const int minWireSize = 31;
     static const bool fixedLength = false;
 };
 
@@ -1082,6 +1090,7 @@ struct StreamWriter< ::RdbRealData::RequestDefaultDataSeq, S>
     {
         __os->write(v.id);
         __os->write(v.requestId);
+        __os->write(v.requestNode);
         __os->write(v.isStop);
         __os->write(v.refreshFreq);
         __os->write(v.dataCount);
@@ -1096,6 +1105,7 @@ struct StreamReader< ::RdbRealData::RequestDefaultDataSeq, S>
     {
         __is->read(v.id);
         __is->read(v.requestId);
+        __is->read(v.requestNode);
         __is->read(v.isStop);
         __is->read(v.refreshFreq);
         __is->read(v.dataCount);
@@ -1139,7 +1149,7 @@ template<>
 struct StreamableTraits< ::RdbRealData::RequestSpecficDataSeq>
 {
     static const StreamHelperCategory helper = StreamHelperCategoryStruct;
-    static const int minWireSize = 30;
+    static const int minWireSize = 31;
     static const bool fixedLength = false;
 };
 
@@ -1150,6 +1160,7 @@ struct StreamWriter< ::RdbRealData::RequestSpecficDataSeq, S>
     {
         __os->write(v.id);
         __os->write(v.requestId);
+        __os->write(v.requestNode);
         __os->write(v.isStop);
         __os->write(v.refreshFreq);
         __os->write(v.dataCount);
@@ -1164,6 +1175,7 @@ struct StreamReader< ::RdbRealData::RequestSpecficDataSeq, S>
     {
         __is->read(v.id);
         __is->read(v.requestId);
+        __is->read(v.requestNode);
         __is->read(v.isStop);
         __is->read(v.refreshFreq);
         __is->read(v.dataCount);
@@ -1205,7 +1217,7 @@ template<>
 struct StreamableTraits< ::RdbRealData::RequestCompleteDataSeq>
 {
     static const StreamHelperCategory helper = StreamHelperCategoryStruct;
-    static const int minWireSize = 30;
+    static const int minWireSize = 31;
     static const bool fixedLength = false;
 };
 
@@ -1216,6 +1228,7 @@ struct StreamWriter< ::RdbRealData::RequestCompleteDataSeq, S>
     {
         __os->write(v.id);
         __os->write(v.requestId);
+        __os->write(v.requestNode);
         __os->write(v.isStop);
         __os->write(v.refreshFreq);
         __os->write(v.dataCount);
@@ -1230,6 +1243,7 @@ struct StreamReader< ::RdbRealData::RequestCompleteDataSeq, S>
     {
         __is->read(v.id);
         __is->read(v.requestId);
+        __is->read(v.requestNode);
         __is->read(v.isStop);
         __is->read(v.refreshFreq);
         __is->read(v.dataCount);
@@ -1271,7 +1285,7 @@ template<>
 struct StreamableTraits< ::RdbRealData::RespondDefaultDataSeq>
 {
     static const StreamHelperCategory helper = StreamHelperCategoryStruct;
-    static const int minWireSize = 25;
+    static const int minWireSize = 26;
     static const bool fixedLength = false;
 };
 
@@ -1282,6 +1296,7 @@ struct StreamWriter< ::RdbRealData::RespondDefaultDataSeq, S>
     {
         __os->write(v.id);
         __os->write(v.requestId);
+        __os->write(v.requestNode);
         __os->write(v.dataCount);
         __os->write(v.seq);
     }
@@ -1294,6 +1309,7 @@ struct StreamReader< ::RdbRealData::RespondDefaultDataSeq, S>
     {
         __is->read(v.id);
         __is->read(v.requestId);
+        __is->read(v.requestNode);
         __is->read(v.dataCount);
         __is->read(v.seq);
     }
@@ -1335,7 +1351,7 @@ template<>
 struct StreamableTraits< ::RdbRealData::RespondSpecficDataSeq>
 {
     static const StreamHelperCategory helper = StreamHelperCategoryStruct;
-    static const int minWireSize = 25;
+    static const int minWireSize = 26;
     static const bool fixedLength = false;
 };
 
@@ -1346,6 +1362,7 @@ struct StreamWriter< ::RdbRealData::RespondSpecficDataSeq, S>
     {
         __os->write(v.id);
         __os->write(v.requestId);
+        __os->write(v.requestNode);
         __os->write(v.dataCount);
         __os->write(v.seq);
     }
@@ -1358,6 +1375,7 @@ struct StreamReader< ::RdbRealData::RespondSpecficDataSeq, S>
     {
         __is->read(v.id);
         __is->read(v.requestId);
+        __is->read(v.requestNode);
         __is->read(v.dataCount);
         __is->read(v.seq);
     }
@@ -1397,7 +1415,7 @@ template<>
 struct StreamableTraits< ::RdbRealData::RespondCompleteDataSeq>
 {
     static const StreamHelperCategory helper = StreamHelperCategoryStruct;
-    static const int minWireSize = 25;
+    static const int minWireSize = 26;
     static const bool fixedLength = false;
 };
 
@@ -1408,6 +1426,7 @@ struct StreamWriter< ::RdbRealData::RespondCompleteDataSeq, S>
     {
         __os->write(v.id);
         __os->write(v.requestId);
+        __os->write(v.requestNode);
         __os->write(v.dataCount);
         __os->write(v.seq);
     }
@@ -1420,6 +1439,7 @@ struct StreamReader< ::RdbRealData::RespondCompleteDataSeq, S>
     {
         __is->read(v.id);
         __is->read(v.requestId);
+        __is->read(v.requestNode);
         __is->read(v.dataCount);
         __is->read(v.seq);
     }
@@ -1533,7 +1553,7 @@ template<>
 struct StreamableTraits< ::RdbRealData::RequestTopoDataSeq>
 {
     static const StreamHelperCategory helper = StreamHelperCategoryStruct;
-    static const int minWireSize = 22;
+    static const int minWireSize = 23;
     static const bool fixedLength = false;
 };
 
@@ -1544,6 +1564,7 @@ struct StreamWriter< ::RdbRealData::RequestTopoDataSeq, S>
     {
         __os->write(v.id);
         __os->write(v.requestId);
+        __os->write(v.requestNode);
         __os->write(v.isStop);
         __os->write(v.refreshFreq);
         __os->write(v.ridSeq);
@@ -1557,6 +1578,7 @@ struct StreamReader< ::RdbRealData::RequestTopoDataSeq, S>
     {
         __is->read(v.id);
         __is->read(v.requestId);
+        __is->read(v.requestNode);
         __is->read(v.isStop);
         __is->read(v.refreshFreq);
         __is->read(v.ridSeq);
@@ -1595,7 +1617,7 @@ template<>
 struct StreamableTraits< ::RdbRealData::ReceiveTopoDataSeq>
 {
     static const StreamHelperCategory helper = StreamHelperCategoryStruct;
-    static const int minWireSize = 17;
+    static const int minWireSize = 18;
     static const bool fixedLength = false;
 };
 
@@ -1606,6 +1628,7 @@ struct StreamWriter< ::RdbRealData::ReceiveTopoDataSeq, S>
     {
         __os->write(v.id);
         __os->write(v.requestId);
+        __os->write(v.requestNode);
         __os->write(v.cnStateSeq);
     }
 };
@@ -1617,6 +1640,7 @@ struct StreamReader< ::RdbRealData::ReceiveTopoDataSeq, S>
     {
         __is->read(v.id);
         __is->read(v.requestId);
+        __is->read(v.requestNode);
         __is->read(v.cnStateSeq);
     }
 };
