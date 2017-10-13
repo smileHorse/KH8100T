@@ -95,6 +95,7 @@ bool WorkStationServer::GetEquipTree( RdbRealData::RdbDataOptPrx& proxy )
 	string deviceRid = "{a1d602d4-5ef7-4031-bf86-0c44682161bb}";
 	RdbRealData::EquipTreeSequence treeSeq;
 	proxy->GetEquipTree(deviceType, deviceRid, treeSeq);
+	proxy->GetSpecificEquipTree(deviceType, deviceRid, "Breaker", treeSeq);
 	return true;
 }
 

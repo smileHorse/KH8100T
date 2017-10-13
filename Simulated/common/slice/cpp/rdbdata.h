@@ -1914,6 +1914,9 @@ typedef ::IceUtil::Handle< Callback_RdbDataOpt_DeleteRdbData_Base> Callback_RdbD
 class Callback_RdbDataOpt_GetEquipTree_Base : virtual public ::IceInternal::CallbackBase { };
 typedef ::IceUtil::Handle< Callback_RdbDataOpt_GetEquipTree_Base> Callback_RdbDataOpt_GetEquipTreePtr;
 
+class Callback_RdbDataOpt_GetSpecificEquipTree_Base : virtual public ::IceInternal::CallbackBase { };
+typedef ::IceUtil::Handle< Callback_RdbDataOpt_GetSpecificEquipTree_Base> Callback_RdbDataOpt_GetSpecificEquipTreePtr;
+
 class Callback_RdbDataOpt_GetEquipLineAndStationInfo_Base : virtual public ::IceInternal::CallbackBase { };
 typedef ::IceUtil::Handle< Callback_RdbDataOpt_GetEquipLineAndStationInfo_Base> Callback_RdbDataOpt_GetEquipLineAndStationInfoPtr;
 
@@ -3353,6 +3356,82 @@ private:
     
 public:
 
+    bool GetSpecificEquipTree(const ::std::string& __p_deviceType, const ::std::string& __p_deviceRid, const ::std::string& __p_specDeviceType, ::RdbRealData::EquipTreeSequence& __p_treeSeq)
+    {
+        return GetSpecificEquipTree(__p_deviceType, __p_deviceRid, __p_specDeviceType, __p_treeSeq, 0);
+    }
+    bool GetSpecificEquipTree(const ::std::string& __p_deviceType, const ::std::string& __p_deviceRid, const ::std::string& __p_specDeviceType, ::RdbRealData::EquipTreeSequence& __p_treeSeq, const ::Ice::Context& __ctx)
+    {
+        return GetSpecificEquipTree(__p_deviceType, __p_deviceRid, __p_specDeviceType, __p_treeSeq, &__ctx);
+    }
+#ifdef ICE_CPP11
+    ::Ice::AsyncResultPtr
+    begin_GetSpecificEquipTree(const ::std::string& __p_deviceType, const ::std::string& __p_deviceRid, const ::std::string& __p_specDeviceType, const ::IceInternal::Function<void (bool, const ::RdbRealData::EquipTreeSequence&)>& __response, const ::IceInternal::Function<void (const ::Ice::Exception&)>& __exception = ::IceInternal::Function<void (const ::Ice::Exception&)>(), const ::IceInternal::Function<void (bool)>& __sent = ::IceInternal::Function<void (bool)>())
+    {
+        return __begin_GetSpecificEquipTree(__p_deviceType, __p_deviceRid, __p_specDeviceType, 0, __response, __exception, __sent);
+    }
+    ::Ice::AsyncResultPtr
+    begin_GetSpecificEquipTree(const ::std::string& __p_deviceType, const ::std::string& __p_deviceRid, const ::std::string& __p_specDeviceType, const ::IceInternal::Function<void (const ::Ice::AsyncResultPtr&)>& __completed, const ::IceInternal::Function<void (const ::Ice::AsyncResultPtr&)>& __sent = ::IceInternal::Function<void (const ::Ice::AsyncResultPtr&)>())
+    {
+        return begin_GetSpecificEquipTree(__p_deviceType, __p_deviceRid, __p_specDeviceType, 0, ::Ice::newCallback(__completed, __sent), 0);
+    }
+    ::Ice::AsyncResultPtr
+    begin_GetSpecificEquipTree(const ::std::string& __p_deviceType, const ::std::string& __p_deviceRid, const ::std::string& __p_specDeviceType, const ::Ice::Context& __ctx, const ::IceInternal::Function<void (bool, const ::RdbRealData::EquipTreeSequence&)>& __response, const ::IceInternal::Function<void (const ::Ice::Exception&)>& __exception = ::IceInternal::Function<void (const ::Ice::Exception&)>(), const ::IceInternal::Function<void (bool)>& __sent = ::IceInternal::Function<void (bool)>())
+    {
+        return __begin_GetSpecificEquipTree(__p_deviceType, __p_deviceRid, __p_specDeviceType, &__ctx, __response, __exception, __sent);
+    }
+    ::Ice::AsyncResultPtr
+    begin_GetSpecificEquipTree(const ::std::string& __p_deviceType, const ::std::string& __p_deviceRid, const ::std::string& __p_specDeviceType, const ::Ice::Context& __ctx, const ::IceInternal::Function<void (const ::Ice::AsyncResultPtr&)>& __completed, const ::IceInternal::Function<void (const ::Ice::AsyncResultPtr&)>& __sent = ::IceInternal::Function<void (const ::Ice::AsyncResultPtr&)>())
+    {
+        return begin_GetSpecificEquipTree(__p_deviceType, __p_deviceRid, __p_specDeviceType, &__ctx, ::Ice::newCallback(__completed, __sent));
+    }
+    
+private:
+
+    ::Ice::AsyncResultPtr __begin_GetSpecificEquipTree(const ::std::string& __p_deviceType, const ::std::string& __p_deviceRid, const ::std::string& __p_specDeviceType, const ::Ice::Context* __ctx, const ::IceInternal::Function<void (bool, const ::RdbRealData::EquipTreeSequence&)>& __response, const ::IceInternal::Function<void (const ::Ice::Exception&)>& __exception, const ::IceInternal::Function<void (bool)>& __sent);
+    
+public:
+#endif
+
+    ::Ice::AsyncResultPtr begin_GetSpecificEquipTree(const ::std::string& __p_deviceType, const ::std::string& __p_deviceRid, const ::std::string& __p_specDeviceType)
+    {
+        return begin_GetSpecificEquipTree(__p_deviceType, __p_deviceRid, __p_specDeviceType, 0, ::IceInternal::__dummyCallback, 0);
+    }
+
+    ::Ice::AsyncResultPtr begin_GetSpecificEquipTree(const ::std::string& __p_deviceType, const ::std::string& __p_deviceRid, const ::std::string& __p_specDeviceType, const ::Ice::Context& __ctx)
+    {
+        return begin_GetSpecificEquipTree(__p_deviceType, __p_deviceRid, __p_specDeviceType, &__ctx, ::IceInternal::__dummyCallback, 0);
+    }
+
+    ::Ice::AsyncResultPtr begin_GetSpecificEquipTree(const ::std::string& __p_deviceType, const ::std::string& __p_deviceRid, const ::std::string& __p_specDeviceType, const ::Ice::CallbackPtr& __del, const ::Ice::LocalObjectPtr& __cookie = 0)
+    {
+        return begin_GetSpecificEquipTree(__p_deviceType, __p_deviceRid, __p_specDeviceType, 0, __del, __cookie);
+    }
+
+    ::Ice::AsyncResultPtr begin_GetSpecificEquipTree(const ::std::string& __p_deviceType, const ::std::string& __p_deviceRid, const ::std::string& __p_specDeviceType, const ::Ice::Context& __ctx, const ::Ice::CallbackPtr& __del, const ::Ice::LocalObjectPtr& __cookie = 0)
+    {
+        return begin_GetSpecificEquipTree(__p_deviceType, __p_deviceRid, __p_specDeviceType, &__ctx, __del, __cookie);
+    }
+
+    ::Ice::AsyncResultPtr begin_GetSpecificEquipTree(const ::std::string& __p_deviceType, const ::std::string& __p_deviceRid, const ::std::string& __p_specDeviceType, const ::RdbRealData::Callback_RdbDataOpt_GetSpecificEquipTreePtr& __del, const ::Ice::LocalObjectPtr& __cookie = 0)
+    {
+        return begin_GetSpecificEquipTree(__p_deviceType, __p_deviceRid, __p_specDeviceType, 0, __del, __cookie);
+    }
+
+    ::Ice::AsyncResultPtr begin_GetSpecificEquipTree(const ::std::string& __p_deviceType, const ::std::string& __p_deviceRid, const ::std::string& __p_specDeviceType, const ::Ice::Context& __ctx, const ::RdbRealData::Callback_RdbDataOpt_GetSpecificEquipTreePtr& __del, const ::Ice::LocalObjectPtr& __cookie = 0)
+    {
+        return begin_GetSpecificEquipTree(__p_deviceType, __p_deviceRid, __p_specDeviceType, &__ctx, __del, __cookie);
+    }
+
+    bool end_GetSpecificEquipTree(::RdbRealData::EquipTreeSequence& __p_treeSeq, const ::Ice::AsyncResultPtr&);
+    
+private:
+
+    bool GetSpecificEquipTree(const ::std::string&, const ::std::string&, const ::std::string&, ::RdbRealData::EquipTreeSequence&, const ::Ice::Context*);
+    ::Ice::AsyncResultPtr begin_GetSpecificEquipTree(const ::std::string&, const ::std::string&, const ::std::string&, const ::Ice::Context*, const ::IceInternal::CallbackBasePtr&, const ::Ice::LocalObjectPtr& __cookie = 0);
+    
+public:
+
     bool GetEquipLineAndStationInfo(const ::std::string& __p_deviceType, const ::std::string& __p_deviceRid, ::RdbRealData::LineAndStationInfo& __p_info)
     {
         return GetEquipLineAndStationInfo(__p_deviceType, __p_deviceRid, __p_info, 0);
@@ -4308,6 +4387,9 @@ public:
 
     virtual bool GetEquipTree(const ::std::string&, const ::std::string&, ::RdbRealData::EquipTreeSequence&, const ::Ice::Current& = ::Ice::Current()) = 0;
     ::Ice::DispatchStatus ___GetEquipTree(::IceInternal::Incoming&, const ::Ice::Current&);
+
+    virtual bool GetSpecificEquipTree(const ::std::string&, const ::std::string&, const ::std::string&, ::RdbRealData::EquipTreeSequence&, const ::Ice::Current& = ::Ice::Current()) = 0;
+    ::Ice::DispatchStatus ___GetSpecificEquipTree(::IceInternal::Incoming&, const ::Ice::Current&);
 
     virtual bool GetEquipLineAndStationInfo(const ::std::string&, const ::std::string&, ::RdbRealData::LineAndStationInfo&, const ::Ice::Current& = ::Ice::Current()) = 0;
     ::Ice::DispatchStatus ___GetEquipLineAndStationInfo(::IceInternal::Incoming&, const ::Ice::Current&);
@@ -5895,6 +5977,112 @@ template<class T, typename CT> Callback_RdbDataOpt_GetEquipTreePtr
 newCallback_RdbDataOpt_GetEquipTree(T* instance, void (T::*cb)(bool, const ::RdbRealData::EquipTreeSequence&, const CT&), void (T::*excb)(const ::Ice::Exception&, const CT&), void (T::*sentcb)(bool, const CT&) = 0)
 {
     return new Callback_RdbDataOpt_GetEquipTree<T, CT>(instance, cb, excb, sentcb);
+}
+
+template<class T>
+class CallbackNC_RdbDataOpt_GetSpecificEquipTree : public Callback_RdbDataOpt_GetSpecificEquipTree_Base, public ::IceInternal::TwowayCallbackNC<T>
+{
+public:
+
+    typedef IceUtil::Handle<T> TPtr;
+
+    typedef void (T::*Exception)(const ::Ice::Exception&);
+    typedef void (T::*Sent)(bool);
+    typedef void (T::*Response)(bool, const ::RdbRealData::EquipTreeSequence&);
+
+    CallbackNC_RdbDataOpt_GetSpecificEquipTree(const TPtr& obj, Response cb, Exception excb, Sent sentcb)
+        : ::IceInternal::TwowayCallbackNC<T>(obj, cb != 0, excb, sentcb), _response(cb)
+    {
+    }
+
+    virtual void completed(const ::Ice::AsyncResultPtr& __result) const
+    {
+        ::RdbRealData::RdbDataOptPrx __proxy = ::RdbRealData::RdbDataOptPrx::uncheckedCast(__result->getProxy());
+        ::RdbRealData::EquipTreeSequence treeSeq;
+        bool __ret;
+        try
+        {
+            __ret = __proxy->end_GetSpecificEquipTree(treeSeq, __result);
+        }
+        catch(const ::Ice::Exception& ex)
+        {
+            ::IceInternal::CallbackNC<T>::exception(__result, ex);
+            return;
+        }
+        if(_response)
+        {
+            (::IceInternal::CallbackNC<T>::_callback.get()->*_response)(__ret, treeSeq);
+        }
+    }
+
+    private:
+
+    Response _response;
+};
+
+template<class T> Callback_RdbDataOpt_GetSpecificEquipTreePtr
+newCallback_RdbDataOpt_GetSpecificEquipTree(const IceUtil::Handle<T>& instance, void (T::*cb)(bool, const ::RdbRealData::EquipTreeSequence&), void (T::*excb)(const ::Ice::Exception&), void (T::*sentcb)(bool) = 0)
+{
+    return new CallbackNC_RdbDataOpt_GetSpecificEquipTree<T>(instance, cb, excb, sentcb);
+}
+
+template<class T> Callback_RdbDataOpt_GetSpecificEquipTreePtr
+newCallback_RdbDataOpt_GetSpecificEquipTree(T* instance, void (T::*cb)(bool, const ::RdbRealData::EquipTreeSequence&), void (T::*excb)(const ::Ice::Exception&), void (T::*sentcb)(bool) = 0)
+{
+    return new CallbackNC_RdbDataOpt_GetSpecificEquipTree<T>(instance, cb, excb, sentcb);
+}
+
+template<class T, typename CT>
+class Callback_RdbDataOpt_GetSpecificEquipTree : public Callback_RdbDataOpt_GetSpecificEquipTree_Base, public ::IceInternal::TwowayCallback<T, CT>
+{
+public:
+
+    typedef IceUtil::Handle<T> TPtr;
+
+    typedef void (T::*Exception)(const ::Ice::Exception& , const CT&);
+    typedef void (T::*Sent)(bool , const CT&);
+    typedef void (T::*Response)(bool, const ::RdbRealData::EquipTreeSequence&, const CT&);
+
+    Callback_RdbDataOpt_GetSpecificEquipTree(const TPtr& obj, Response cb, Exception excb, Sent sentcb)
+        : ::IceInternal::TwowayCallback<T, CT>(obj, cb != 0, excb, sentcb), _response(cb)
+    {
+    }
+
+    virtual void completed(const ::Ice::AsyncResultPtr& __result) const
+    {
+        ::RdbRealData::RdbDataOptPrx __proxy = ::RdbRealData::RdbDataOptPrx::uncheckedCast(__result->getProxy());
+        ::RdbRealData::EquipTreeSequence treeSeq;
+        bool __ret;
+        try
+        {
+            __ret = __proxy->end_GetSpecificEquipTree(treeSeq, __result);
+        }
+        catch(const ::Ice::Exception& ex)
+        {
+            ::IceInternal::Callback<T, CT>::exception(__result, ex);
+            return;
+        }
+        if(_response)
+        {
+            (::IceInternal::Callback<T, CT>::_callback.get()->*_response)(__ret, treeSeq, CT::dynamicCast(__result->getCookie()));
+        }
+    }
+
+    private:
+
+    Response _response;
+};
+
+template<class T, typename CT> Callback_RdbDataOpt_GetSpecificEquipTreePtr
+newCallback_RdbDataOpt_GetSpecificEquipTree(const IceUtil::Handle<T>& instance, void (T::*cb)(bool, const ::RdbRealData::EquipTreeSequence&, const CT&), void (T::*excb)(const ::Ice::Exception&, const CT&), void (T::*sentcb)(bool, const CT&) = 0)
+{
+    return new Callback_RdbDataOpt_GetSpecificEquipTree<T, CT>(instance, cb, excb, sentcb);
+}
+
+template<class T, typename CT> Callback_RdbDataOpt_GetSpecificEquipTreePtr
+newCallback_RdbDataOpt_GetSpecificEquipTree(T* instance, void (T::*cb)(bool, const ::RdbRealData::EquipTreeSequence&, const CT&), void (T::*excb)(const ::Ice::Exception&, const CT&), void (T::*sentcb)(bool, const CT&) = 0)
+{
+    return new Callback_RdbDataOpt_GetSpecificEquipTree<T, CT>(instance, cb, excb, sentcb);
 }
 
 template<class T>

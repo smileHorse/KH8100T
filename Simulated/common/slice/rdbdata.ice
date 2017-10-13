@@ -327,6 +327,9 @@ module RdbRealData
 		
 		//查询设备树形列表
 		bool GetEquipTree(string deviceType,string deviceRid,out EquipTreeSequence treeSeq);
+
+		//查询指定子类型设备树形列表
+		bool GetSpecificEquipTree(string deviceType,string deviceRid,string specDeviceType,out EquipTreeSequence treeSeq);
 		
 		//获得设备所属的变电站和线路
 		bool GetEquipLineAndStationInfo(string deviceType,string deviceRid,out LineAndStationInfo info);

@@ -27,7 +27,13 @@ public:
 	virtual string GetRole(const ::std::string& strServerName, const ::Ice::Current& /* = ::Ice::Current */) const;
 
 	virtual void HeartBeat(const ::std::string&, const ::Ice::Current& /* = ::Ice::Current() */);
+
+public:
+	void setDataSrvInfo(const string& ip, int port);
+
 private:
 	AmsServerThread*	m_threadPtr;
+
+	::Amssrv::ServerNode	dataSrvInfo;	// 数据服务器节点信息
 };
 #endif

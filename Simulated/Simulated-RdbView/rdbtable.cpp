@@ -1371,14 +1371,24 @@ void AnalogTable::setFieldValue( dbAnyCursor& anyCursor, const string& fieldName
 		curveCursor.select();
 		if (!curveCursor.isEmpty())
 		{
+			bool bFind = false;
 			do 
 			{
 				if (curveCursor.currentId().getOid() == analog_curve_id)
 				{
 					cursor->analog_curve = curveCursor.currentId();
+					bFind = true;
 					break;
 				}
 			} while (curveCursor.next());
+			if (!bFind)
+			{
+				cursor->analog_curve = 0;
+			}
+		}
+		else
+		{
+			cursor->analog_curve = 0;
 		}
 	}
 	else if (fieldName == "analog_formula")
@@ -1389,6 +1399,10 @@ void AnalogTable::setFieldValue( dbAnyCursor& anyCursor, const string& fieldName
 		if (bRet)
 		{
 			cursor->analog_formula = formulaCursor.currentId();
+		}
+		else
+		{
+			cursor->analog_formula = 0;
 		}
 	}
 }
@@ -1654,7 +1668,7 @@ QList<QStringList> AnalogCurveDataTable::selectDatas()
 				{
 					if (i != 0)
 					{
-						str << SPLITER_TOKEN;
+						str << "/";
 					}
 					str << "(" << cursor->pointValues.getat(i).isValid << ";" << cursor->pointValues.getat(i).value << ")";
 				}
@@ -1682,6 +1696,8 @@ QList<QStringList> AnalogCurveDataTable::selectDatas()
 bool AnalogCurveDataTable::insertData()
 {
 	AnalogCurveData info;
+	dbDateTime db_tm(time(NULL));
+	info.date = dbDateTime(db_tm.year(), db_tm.month(), db_tm.day());
 	insert(info);
 	m_dbPtr->commit();
 	return true;

@@ -43,6 +43,14 @@ int AmsServer::run( int argc, char* argv[] )
 		Amssrv::CAmsAppPtr amsApp = new CAmsAppI(m_threadPtr);
 		adapter->add(amsApp, communicator()->stringToIdentity(amsAppName));
 
+		// 通过属性设置数据服务器节点信息
+		if (props)
+		{
+			string dataSrvIp = props->getPropertyWithDefault("DataSrvIp", "192.168.3.25");
+			int dataSrvPort = props->getPropertyAsIntWithDefault("DataSrvPort", DATASRV_ADAPTER_PORT);
+			((CAmsAppI*)amsApp.get())->setDataSrvInfo(dataSrvIp, dataSrvPort);
+		}
+
 		adapter->activate();
 		info.setOperationInfo("激活对象适配器");
 		m_threadPtr->putMessage(info);
