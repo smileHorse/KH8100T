@@ -106,6 +106,7 @@ void TransactionFrame::updateStartStopAction( bool isStart )
 	startMasterAction->setEnabled(!isStart);
 	startSlaveAction->setEnabled(!isStart);
 	stopAction->setEnabled(isStart);
+	selectAction->setEnabled(!isStart);
 }
 
 void TransactionFrame::closeApp()
