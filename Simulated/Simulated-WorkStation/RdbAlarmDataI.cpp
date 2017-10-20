@@ -86,7 +86,7 @@ void RdbAlarmDataI::SendAlarmData( const ::RdbWarningData::WarningInfoSeq& seq, 
 			parent.insertChild(new TextElement("¸æ¾¯ÄÚÈÝ", content));
 
 			QString text = QString().fromStdString(parent.toString());
-			m_threadPtr->outputWarningData(text);
+			m_threadPtr->outputOperationData(text);
 		}
 	}
 }

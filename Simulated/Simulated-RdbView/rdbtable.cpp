@@ -1495,7 +1495,7 @@ bool DiscreteTable::updateDatas( const string& mRID, const QMap<QString,QString>
 
 void DiscreteTable::getHidedColumns( QList<int>& hideColumns )
 {
-	hideColumns << 2 << 3 << 4 << 5 << 6 << 7 << 8 << 9 << 10 << 11 << 12 << 13 << 14 << 15 << 16 << 17 << 18 
+	hideColumns << 2 << 3 << 4 << 5 << 7 << 8 << 9 << 10 << 11 << 12 << 13 << 14 << 15 << 16 << 17 << 18 
 		<< 19 << 20 << 21 << 22 << 36;
 }
 
@@ -1505,6 +1505,10 @@ void DiscreteTable::setFieldValue( dbAnyCursor& anyCursor, const string& fieldNa
 	if (fieldName == "name")
 	{
 		cursor->name = value;
+	}
+	else if (fieldName == "measurementType")
+	{
+		cursor->measurementType = transferType<int4, string>(value);
 	}
 	else if (fieldName == "maxValue")
 	{
@@ -1529,6 +1533,14 @@ void DiscreteTable::setFieldValue( dbAnyCursor& anyCursor, const string& fieldNa
 	else if (fieldName == "ftuPointId")
 	{
 		cursor->ftuPointId = transferType<int4, string>(value);
+	}
+	else if (fieldName == "psr_type")
+	{
+		cursor->psr_type = value;
+	}
+	else if (fieldName == "psr_rid")
+	{
+		cursor->psr_rid = value;
 	}
 }
 

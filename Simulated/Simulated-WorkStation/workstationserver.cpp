@@ -19,27 +19,23 @@ int WorkStationServer::run( int argc, char* argv[] )
 	{
 		m_communicatorPtr = communicator();
 		OperationInfo info(TYPE_CLIENT);
-		info.setOperation("创建连接器成功");
-		info.setOperTime();
-		info.setResult(true);
+		info.setOperationInfo("创建连接器成功");
 		emit executeOperation(info);
 
-		QString endPoints("default -h localhost -p %1");
+		QString endPoints("default -h 192.168.3.25 -p %1");
 		endPoints = endPoints.arg(WORKSTATION_ADAPTER_PORT);
 		Ice::ObjectAdapterPtr adapter = m_communicatorPtr->createObjectAdapterWithEndpoints("workStationAdatpter", 
 			endPoints.toStdString());
-		info.setOperation("获取适配器成功");
-		info.setOperTime();
-		info.setResult(true);
+		info.setOperationInfo("获取适配器成功");
 		emit executeOperation(info);
 
-		RdbRealData::RdbDataOptPrx rdbOptPrx = RdbRealData::RdbDataOptPrx::checkedCast(
-			communicator()->stringToProxy("rdb-opt:default -h 192.168.3.25 -p 10003 -t 5000"));
-		if (rdbOptPrx)
-		{
-			// 查询树
-			GetEquipTree(rdbOptPrx);
-		}
+		//RdbRealData::RdbDataOptPrx rdbOptPrx = RdbRealData::RdbDataOptPrx::checkedCast(
+		//	communicator()->stringToProxy("rdb-opt:default -h 192.168.3.25 -p 10003 -t 5000"));
+		//if (rdbOptPrx)
+		//{
+		//	// 查询树
+		//	GetEquipTree(rdbOptPrx);
+		//}
 
 		// 建立子线程用于发送事项和数据
 		if (m_threadPtr)
@@ -50,15 +46,11 @@ int WorkStationServer::run( int argc, char* argv[] )
 		}
 
 		adapter->activate();
-		info.setOperation("激活适配器");
-		info.setOperTime();
-		info.setResult(true);
+		info.setOperationInfo("激活适配器");
 		emit executeOperation(info);
 
 		m_communicatorPtr->waitForShutdown();
-		info.setOperation("关闭Ice服务");
-		info.setOperTime();
-		info.setResult(true);
+		info.setOperationInfo("关闭Ice服务");
 		emit executeOperation(info);
 
 		communicator()->shutdown();
@@ -67,10 +59,7 @@ int WorkStationServer::run( int argc, char* argv[] )
 	catch(const Ice::Exception& ex)
 	{
 		OperationInfo info(TYPE_CLIENT);
-		info.setOperation("启动Ice服务");
-		info.setOperTime();
-		info.setResult(false);
-		info.setReason(ex.what());
+		info.setOperationInfo("启动Ice服务", QDateTime(), false, ex.what());
 		emit executeOperation(info);
 		return EXIT_FAILURE;
 	}

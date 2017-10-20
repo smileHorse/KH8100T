@@ -35,10 +35,10 @@ signals:
 	void publishFepData(const QString& text);
 
 private slots:
-	void processData();
 	void processYxData();
 	void processYcData();
 	void processDdData();
+	void processUnitStateData();
 	void processDataPacket(SelfDataPacket packet);
 	void processDLFault();
 	void processJDFault();

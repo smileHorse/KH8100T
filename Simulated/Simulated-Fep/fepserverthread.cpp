@@ -103,6 +103,27 @@ string getEventType(FepData::EventType value)
 	}
 }
 
+FepData::State getUnitState( int i )
+{
+	switch(i)
+	{
+	case 0:
+		return FepData::NotInstall;
+	case 1:
+		return FepData::OffLine;
+	case 2:
+		return FepData::New;
+	case 3:
+		return FepData::Run;
+	case 4:
+		return FepData::Stop;
+	case 5:
+		return FepData::HighErrorRate;
+	default:
+		return FepData::Run;
+	}
+}
+
 void FepServerThread::setCommunicatorPtr( Ice::CommunicatorPtr ptr )
 {
 	m_communicatorPtr = ptr;
@@ -159,43 +180,6 @@ bool FepServerThread::getFepDataPublisher()
 	return true;
 }
 
-void FepServerThread::processData()
-{
-	// 获取发布者对象
-	if (!getFepDataPublisher())
-	{
-		return;
-	}
-
-	// 发布全数据
-	FepData::DataPacket packet;
-	packet.id = 15;
-	packet.fepNode = "fep36";
-	packet.type = FepData::AllDataType;
-	packet.unitNo = 1;
-	// 发送5个数据
-	for (int i = 1; i < 6; ++i)
-	{
-		packet.analogs.push_back(i);
-		packet.analogs.push_back(i * 2);
-
-		packet.discretes.push_back(i);
-		packet.discretes.push_back(i % 2);
-
-		packet.accmulators.push_back(i);
-		packet.accmulators.push_back(i+1);
-	}
-	m_fepDataManagerPrx->processData(packet);
-
-	// 输出发送的数据
-	QString text = outputFepData(packet);
-	emit publishFepData(text);
-
-	OperationInfo info(TYPE_FEP);
-	info.setOperationInfo(QStringLiteral("发布数据"));
-	emit executeOperation(info);
-}
-
 void FepServerThread::processYxData()
 {
 	ProcessDataDialog dialog(AllDataType, Discrete);
@@ -217,6 +201,29 @@ void FepServerThread::processDdData()
 	dialog.exec();
 }
 
+void FepServerThread::processUnitStateData()
+{
+	SelfDataPacket selfPacket;
+	selfPacket.id = 1;
+	selfPacket.fepNode = "fep-36";
+	selfPacket.type = UnitStateType;
+	selfPacket.unitNo = 1;
+	qsrand(QDateTime::currentDateTime().toTime_t());
+	for (int i = 0; i < 5; ++i)
+	{
+		::FepData::Unit unit;
+		unit.unitNo = i + 1;
+		unit.unitState = getUnitState(qrand() % 5);
+		unit.channelState1 = getUnitState(qrand() % 5);
+		unit.channelState2 = getUnitState(qrand() % 5);
+		unit.errorRate = (qrand() % 100);
+
+		selfPacket.units.push_back(unit);
+	}
+
+	processDataPacket(selfPacket);
+}
+
 void FepServerThread::processDataPacket( SelfDataPacket selfPacket )
 {
 	// 获取发布者对象
@@ -231,6 +238,7 @@ void FepServerThread::processDataPacket( SelfDataPacket selfPacket )
 	packet.fepNode = selfPacket.fepNode.toStdString();
 	packet.type = ::FepData::DataType((int)selfPacket.type);
 	packet.unitNo = selfPacket.unitNo;
+	packet.units.assign(selfPacket.units.begin(), selfPacket.units.end());
 	packet.analogs.assign(selfPacket.analogs.begin(), selfPacket.analogs.end());
 	packet.discretes.assign(selfPacket.discretes.begin(), selfPacket.discretes.end());
 	packet.accmulators.assign(selfPacket.accmulators.begin(), selfPacket.accmulators.end());
@@ -474,14 +482,14 @@ QString FepServerThread::outputFepData( const FepData::DataPacket& packet )
 	parent.insertChild(new TextElement("单元号", transferToString<short>(packet.unitNo)));
 	if (!packet.units.empty())
 	{
-		TextElement* units = new TextElement("终端状态", transferToString<size_t>(packet.units.size()), &parent);
+		TextElement* units = new TextElement("终端个数", transferToString<size_t>(packet.units.size()), &parent);
 		for (size_t i = 0; i < packet.units.size(); ++i)
 		{
 			units->insertChild(new TextElement("终端编号", transferToString<short>(packet.units.at(i).unitNo)));
 			units->insertChild(new TextElement("单元状态", getState(packet.units.at(i).unitState)));
 			units->insertChild(new TextElement("主通道状态", getState(packet.units.at(i).channelState1)));
 			units->insertChild(new TextElement("副通道状态", getState(packet.units.at(i).channelState2)));
-			units->insertChild(new TextElement("误码率", transferToString<unsigned char>(packet.units.at(i).unitNo)));
+			units->insertChild(new TextElement("误码率", transferToString<double>(packet.units.at(i).errorRate)));
 		}
 	}
 	if (!packet.analogs.empty())
@@ -691,3 +699,4 @@ QString FepServerThread::outputFepWave( const FepData::WavePacket& packet )
 
 	return text.fromStdString(parent.toString());
 }
+

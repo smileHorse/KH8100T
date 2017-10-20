@@ -1,6 +1,8 @@
 #ifndef PROCESSDATADLG_H
 #define PROCESSDATADLG_H
 
+#include "fepdata.h"
+
 #include <QtWidgets/QDialog>
 #include <vector>
 using namespace std;
@@ -47,6 +49,7 @@ public:
 		this->fepNode = packet.fepNode;
 		this->type = packet.type;
 		this->unitNo = packet.unitNo;
+		this->units.assign(packet.units.begin(), packet.units.end());
 		this->analogs.assign(packet.analogs.begin(), packet.analogs.end());
 		this->discretes.assign(packet.discretes.begin(), packet.discretes.end());
 		this->accmulators.assign(packet.accmulators.begin(), packet.accmulators.end());
@@ -57,7 +60,7 @@ public:
 	QString     fepNode;  // 所属前置机    
 	DataType    type;     // 数据类型
 	short       unitNo;   // 单元号
-	//UnitSeq             units;           // 终端状态
+	::FepData::UnitSeq             units;           // 终端状态
 	vector<double>	analogs;         // 遥测
 	vector<int>		discretes;       // 遥信
 	vector<double>	accmulators;     // 电度

@@ -34,6 +34,11 @@ private:
 
 signals:
 	void serverStarted(bool serverStarted);
+	void requestCompleteData();
+	void subscriberRdbRequestSignal(bool isStop);
+	void subscriberRdbRespondSignal(bool isStop);
+	void subscriberAlarmDataSignal(bool isStop);
+	void subscriberFepDataSignal(bool isStop);
 
 public slots:
 	void updateTableWidget(const OperationInfo& info);
@@ -47,6 +52,10 @@ private slots:
 	void requestStormTopoData();
 	void requestRdbData();
 	void requestTopoData();
+	void subscriberRdbRequest();
+	void subscriberRdbRespond();
+	void subscriberAlarmData();
+	void subscriberFepData();
 	void about();
 
 
@@ -67,6 +76,10 @@ private:
 	QAction*	requestStormTopoDataAction;
 	QAction*	requestRdbDataAction;
 	QAction*	requestTopoDataAction;
+	QAction*	subscriberRdbRequestAction;
+	QAction*	subscriberRdbRespondAction;
+	QAction*	subscriberAlarmDataAction;
+	QAction*	subscriberFepDataAction;
 	QAction*	helpAction;
 
 	QMenu*		fileMenu;

@@ -80,7 +80,9 @@
     <ClCompile Include="..\common\basic\BaseIceStorm.cpp" />
     <ClCompile Include="..\common\basic\TableHeader.cpp" />
     <ClCompile Include="..\common\basic\textelement.cpp" />
+    <ClCompile Include="..\common\slice\cpp\fepdata.cpp" />
     <ClCompile Include="..\common\slice\cpp\rdbdata.cpp" />
+    <ClCompile Include="FepDataManagerI.cpp" />
     <ClCompile Include="GeneratedFiles\Debug\moc_workstationframe.cpp">
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">true</ExcludedFromBuild>
     </ClCompile>
@@ -107,6 +109,7 @@
     </ClCompile>
     <ClCompile Include="main.cpp" />
     <ClCompile Include="RdbAlarmDataI.cpp" />
+    <ClCompile Include="RdbRealDataI.cpp" />
     <ClCompile Include="workstationframe.cpp" />
     <ClCompile Include="workstationserver.cpp" />
     <ClCompile Include="workstationserverthread.cpp" />
@@ -143,8 +146,11 @@
     <ClInclude Include="..\common\basic\OperationInfo.h" />
     <ClInclude Include="..\common\basic\TableHeader.h" />
     <ClInclude Include="..\common\basic\textelement.h" />
+    <ClInclude Include="..\common\slice\cpp\fepdata.h" />
     <ClInclude Include="..\common\slice\cpp\rdbdata.h" />
+    <ClInclude Include="FepDataManagerI.h" />
     <ClInclude Include="RdbAlarmDataI.h" />
+    <ClInclude Include="RdbRealDataI.h" />
     <CustomBuild Include="workstationserverthread.h">
       <AdditionalInputs Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">$(QTDIR)\bin\moc.exe;%(FullPath);%(AdditionalInputs)</AdditionalInputs>
       <Message Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Moc%27ing workstationserverthread.h...</Message>

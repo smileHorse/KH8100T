@@ -89,6 +89,15 @@
     <ClCompile Include="GeneratedFiles\qrc_workstationframe.cpp">
       <Filter>Generated Files</Filter>
     </ClCompile>
+    <ClCompile Include="RdbRealDataI.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="..\common\slice\cpp\fepdata.cpp">
+      <Filter>Slice</Filter>
+    </ClCompile>
+    <ClCompile Include="FepDataManagerI.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <CustomBuild Include="workstationframe.h">
@@ -125,6 +134,15 @@
     </ClInclude>
     <ClInclude Include="..\common\basic\textelement.h">
       <Filter>basic</Filter>
+    </ClInclude>
+    <ClInclude Include="RdbRealDataI.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="..\common\slice\cpp\fepdata.h">
+      <Filter>Slice</Filter>
+    </ClInclude>
+    <ClInclude Include="FepDataManagerI.h">
+      <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>
