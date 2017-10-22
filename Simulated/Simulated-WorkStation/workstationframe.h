@@ -1,7 +1,6 @@
 #ifndef WORKSTATIONFRAME_H
 #define WORKSTATIONFRAME_H
 
-#include "OperationInfo.h"
 
 #include <QtWidgets/QMainWindow>
 
@@ -12,6 +11,7 @@ class QMenu;
 class QToolBar;
 class WorkStationServer;
 class WorkStationServerThread;
+class OperationInfo;
 
 #pragma execution_character_set("utf-8")
 
@@ -34,9 +34,15 @@ private:
 
 signals:
 	void serverStarted(bool serverStarted);
+	void requestCompleteData();
+	void subscriberRdbRequestSignal(bool isStop);
+	void subscriberRdbRespondSignal(bool isStop);
+	void subscriberAlarmDataSignal(bool isStop);
+	void subscriberFepDataSignal(bool isStop);
 
 public slots:
 	void updateTableWidget(const OperationInfo& info);
+	void updateTextEdit(const QString& text);
 
 private slots:
 	void updateActions(bool serverStarted);
@@ -46,6 +52,10 @@ private slots:
 	void requestStormTopoData();
 	void requestRdbData();
 	void requestTopoData();
+	void subscriberRdbRequest();
+	void subscriberRdbRespond();
+	void subscriberAlarmData();
+	void subscriberFepData();
 	void about();
 
 
@@ -66,6 +76,10 @@ private:
 	QAction*	requestStormTopoDataAction;
 	QAction*	requestRdbDataAction;
 	QAction*	requestTopoDataAction;
+	QAction*	subscriberRdbRequestAction;
+	QAction*	subscriberRdbRespondAction;
+	QAction*	subscriberAlarmDataAction;
+	QAction*	subscriberFepDataAction;
 	QAction*	helpAction;
 
 	QMenu*		fileMenu;
@@ -73,7 +87,6 @@ private:
 	QMenu*		helpMenu;
 	QToolBar*	fileToolBar;
 	QToolBar*	operToolBar;
-
 };
 
 

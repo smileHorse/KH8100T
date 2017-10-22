@@ -5,6 +5,7 @@
 
 #define GeographicalRegion_ID 		"GeographicalRegion"
 #define SubGeographicalRegion_ID 	"SubGeographicalRegion"
+#define Area_ID					 	"Area"
 #define Substation_ID 				"Substation"
 #define BaseVoltage_ID 				"BaseVoltage"
 #define VoltageLevel_ID 			"VoltageLevel"
@@ -27,10 +28,4 @@
 #define DiscreteUnitPoint_ID 		"DiscreteUnitPoint"
 #define ControlUnitPoint_ID 		"ControlUnitPoint"
 
-//zhoucw20121218---------------------------->>
-#define ManufacturerDevice_ID 				"ManufacturerDevice"
-#define RemoteUnitMap_ID                    "RemoteUnitMap"
-#define ProtectModifyValue_ID 				"ProtectModifyValue"
-#define ProtectEvent_ID                     "ProtectEventT"
-//zhoucw20121218----------------------------<<
 #endif

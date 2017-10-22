@@ -6,6 +6,8 @@
 REGISTER( GeographicalRegion );
 REGISTER( SubGeographicalRegion );
 
+REGISTER( Area );
+
 REGISTER( RemoteUnit );
 
 REGISTER( AnalogUnitPoint );
@@ -37,11 +39,7 @@ REGISTER( Breaker);
 REGISTER( PowerTransformer);
 REGISTER( TransformerWinding);
 
+REGISTER( AnalogCurveData);
+
 REGISTER( FormulaDefinition);
 REGISTER( VariableDefinition);
-//zhoucw20121218---------------------------->>
-//REGISTER( ManufacturerDevice);
-//REGISTER( RemoteUnitMap);
-//REGISTER( ProtectModifyValue);
-REGISTER( ProtectEventT);
-//zhoucw20121218----------------------------<<

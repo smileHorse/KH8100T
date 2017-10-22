@@ -117,6 +117,7 @@ private:
 	bool		result;			// 操作结果
 	QString		reason;			// 失败原因
 };
+
 Q_DECLARE_METATYPE(OperationInfo)
 
 #endif

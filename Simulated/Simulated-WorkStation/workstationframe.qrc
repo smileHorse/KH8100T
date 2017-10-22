@@ -11,6 +11,7 @@
         <file>images/requestRdb.png</file>
         <file>images/requestTopo.png</file>
         <file>images/about.png</file>
+        <file>images/text.png</file>
     </qresource>
 </RCC>
 

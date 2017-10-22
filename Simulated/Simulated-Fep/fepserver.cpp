@@ -20,33 +20,29 @@ int FepServer::run( int argc, char* argv[] )
 	{
 		m_communicatorPtr = communicator();
 		OperationInfo info(TYPE_FEP);
-		info.setOperation(QStringLiteral("创建连接器"));
-		info.setOperTime();
-		info.setResult(true);
+		info.setOperationInfo(QStringLiteral("创建连接器"));
 		emit executeOperation(info);
+		
+		string adapterName = "FepAdatpter";
+		::Ice::PropertiesPtr props = m_communicatorPtr->getProperties();
+		if (props)
+		{
+			adapterName = props->getPropertyWithDefault("AdapterName", adapterName);
+		}
 
-		QString endPoints("default -h localhost -p %1");
-		endPoints = endPoints.arg(FEP_ADAPTER_PORT);
-		Ice::ObjectAdapterPtr adapter = m_communicatorPtr->createObjectAdapterWithEndpoints("fepAdatpter", 
-			endPoints.toStdString());
-		info.setOperation(QStringLiteral("获取适配器成功"));
-		info.setOperTime();
-		info.setResult(true);
+		Ice::ObjectAdapterPtr adapter = m_communicatorPtr->createObjectAdapter(adapterName);
+		info.setOperationInfo(QStringLiteral("获取适配器成功"));
 		emit executeOperation(info);
 
 		// 建立子线程用于发送事项和数据
 		m_threadPtr->setCommunicatorPtr(m_communicatorPtr);
 
 		adapter->activate();
-		info.setOperation(QStringLiteral("激活适配器"));
-		info.setOperTime();
-		info.setResult(true);
+		info.setOperationInfo(QStringLiteral("激活适配器"));
 		emit executeOperation(info);
 
 		m_communicatorPtr->waitForShutdown();
-		info.setOperation(QStringLiteral("关闭Ice服务"));
-		info.setOperTime();
-		info.setResult(true);
+		info.setOperationInfo(QStringLiteral("关闭Ice服务"));
 		emit executeOperation(info);
 
 		communicator()->shutdown();
@@ -55,10 +51,7 @@ int FepServer::run( int argc, char* argv[] )
 	catch(const Ice::Exception& ex)
 	{
 		OperationInfo info(TYPE_FEP);
-		info.setOperation(QStringLiteral("启动Ice服务"));
-		info.setOperTime();
-		info.setResult(false);
-		info.setReason(ex.what());
+		info.setOperationInfo(QStringLiteral("启动Ice服务"), QDateTime(), false, ex.what());
 		emit executeOperation(info);
 		return EXIT_FAILURE;
 	}
@@ -73,5 +66,5 @@ void FepServer::setThreadPtr( FepServerThread* ptr )
 
 void FepServer::startServer()
 {
-	main(m_argc, m_argv);
+	main(m_argc, m_argv, "config.server");
 }

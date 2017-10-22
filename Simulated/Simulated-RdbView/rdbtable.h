@@ -25,9 +25,56 @@ protected:
 	bool	deleteDataByCursor(dbAnyCursor& cursor, const string& mRID);
 	bool	updateDataByCursor(dbAnyCursor& cursor, const string& mRID, const QMap<QString,QString>& values);
 	virtual	void setFieldValue(dbAnyCursor& anyCursor, const string& field, const string& value){}
+	//获取关联值
+	bool GetDbReference(dbAnyCursor& table, const string rid);
 	
 public:
 	dbDatabase* m_dbPtr;
+};
+
+class GeographicalRegionTable : public BaseTable
+{
+public:
+	GeographicalRegionTable(dbDatabase* dbPtr);
+
+	virtual QList<QStringList>	selectDatas();
+	virtual bool insertData();
+	virtual bool deleteData(const string& mRID);
+	virtual bool updateDatas(const string& mRID, const QMap<QString,QString>& values);
+	virtual void getHidedColumns(QList<int>& hideColumns);
+
+protected:
+	virtual	void setFieldValue(dbAnyCursor& anyCursor, const string& fieldName, const string& value);
+};
+
+class SubGeographicalRegionTable : public BaseTable
+{
+public:
+	SubGeographicalRegionTable(dbDatabase* dbPtr);
+
+	virtual QList<QStringList>	selectDatas();
+	virtual bool insertData();
+	virtual bool deleteData(const string& mRID);
+	virtual bool updateDatas(const string& mRID, const QMap<QString,QString>& values);
+	virtual void getHidedColumns(QList<int>& hideColumns);
+
+protected:
+	virtual	void setFieldValue(dbAnyCursor& anyCursor, const string& fieldName, const string& value);
+};
+
+class AreaTable : public BaseTable
+{
+public:
+	AreaTable(dbDatabase* dbPtr);
+
+	virtual QList<QStringList>	selectDatas();
+	virtual bool insertData();
+	virtual bool deleteData(const string& mRID);
+	virtual bool updateDatas(const string& mRID, const QMap<QString,QString>& values);
+	virtual void getHidedColumns(QList<int>& hideColumns);
+
+protected:
+	virtual	void setFieldValue(dbAnyCursor& anyCursor, const string& fieldName, const string& value);
 };
 
 class RemoteUnitTable : public BaseTable
@@ -120,6 +167,51 @@ protected:
 	virtual	void setFieldValue(dbAnyCursor& anyCursor, const string& fieldName, const string& value);
 };
 
+class BusbarSectionTable : public BaseTable
+{
+public:
+	BusbarSectionTable(dbDatabase* dbPtr);
+
+	virtual QList<QStringList>	selectDatas();
+	virtual bool insertData();
+	virtual bool deleteData(const string& mRID);
+	virtual bool updateDatas(const string& mRID, const QMap<QString,QString>& values);
+	virtual void getHidedColumns(QList<int>& hideColumns);
+
+protected:
+	virtual	void setFieldValue(dbAnyCursor& anyCursor, const string& fieldName, const string& value);
+};
+
+class LineTable : public BaseTable
+{
+public:
+	LineTable(dbDatabase* dbPtr);
+
+	virtual QList<QStringList>	selectDatas();
+	virtual bool insertData();
+	virtual bool deleteData(const string& mRID);
+	virtual bool updateDatas(const string& mRID, const QMap<QString,QString>& values);
+	virtual void getHidedColumns(QList<int>& hideColumns);
+
+protected:
+	virtual	void setFieldValue(dbAnyCursor& anyCursor, const string& fieldName, const string& value);
+};
+
+class BreakerTable : public BaseTable
+{
+public:
+	BreakerTable(dbDatabase* dbPtr);
+
+	virtual QList<QStringList>	selectDatas();
+	virtual bool insertData();
+	virtual bool deleteData(const string& mRID);
+	virtual bool updateDatas(const string& mRID, const QMap<QString,QString>& values);
+	virtual void getHidedColumns(QList<int>& hideColumns);
+
+protected:
+	virtual	void setFieldValue(dbAnyCursor& anyCursor, const string& fieldName, const string& value);
+};
+
 class AnalogTable : public BaseTable
 {
 public:
@@ -164,4 +256,20 @@ public:
 protected:
 	virtual	void setFieldValue(dbAnyCursor& anyCursor, const string& fieldName, const string& value);
 };
+
+class AnalogCurveDataTable : public BaseTable
+{
+public:
+	AnalogCurveDataTable(dbDatabase* dbPtr);
+
+	virtual QList<QStringList>	selectDatas();
+	virtual bool insertData();
+	virtual bool deleteData(const string& mRID);
+	virtual bool updateDatas(const string& mRID, const QMap<QString,QString>& values);
+	virtual void getHidedColumns(QList<int>& hideColumns);
+
+protected:
+	virtual	void setFieldValue(dbAnyCursor& anyCursor, const string& fieldName, const string& value);
+};
+
 #endif

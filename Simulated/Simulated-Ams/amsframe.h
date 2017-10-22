@@ -9,8 +9,6 @@ class QMenu;
 class QToolBar;
 class OperationInfo;
 
-#pragma execution_character_set("utf-8")
-
 class AmsFrame : public QMainWindow
 {
 	Q_OBJECT

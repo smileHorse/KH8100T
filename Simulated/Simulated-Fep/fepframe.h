@@ -39,6 +39,7 @@ private slots:
 	void about();
 	void updateTableWidget(const OperationInfo& text);
 	void updateTextEdit(const QString& text);
+	void clearTextEdit();
 
 private:
 	FepServer*	m_fepServerPtr;
@@ -49,7 +50,10 @@ private:
 	QTextEdit*		textEdit;
 
 	QAction*	exitAction;
-	QAction*	processDataAction;
+	QAction*	processYxDataAction;
+	QAction*	processYcDataAction;
+	QAction*	processDdDataAction;
+	QAction*	processUnitStateDataAction;
 	QAction*	processDLFaultAction;
 	QAction*	processJDFaultAction;
 	QAction*	processYxTypeEventAction;
@@ -57,6 +61,7 @@ private:
 	QAction*	processUnitTypeEventAction;
 	QAction*	processProTypeEventAction;
 	QAction*	processWaveAction;
+	QAction*	clearAction;
 	QAction*	helpAction;
 
 	QMenu*		fileMenu;

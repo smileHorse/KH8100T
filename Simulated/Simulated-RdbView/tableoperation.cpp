@@ -33,15 +33,22 @@ bool TableOperation::getTablePtrByTableName( const QString& tableName )
 	static QMap<QString, BaseTable*> tablePtrs;
 	if (tablePtrs.isEmpty())
 	{
-		tablePtrs.insert("RemoteUnit",			new RemoteUnitTable(m_dbPtr));
-		tablePtrs.insert("AnalogUnitPoint",			new AnalogUnitPointTable(m_dbPtr));
+		tablePtrs.insert("GeographicalRegion",			new GeographicalRegionTable(m_dbPtr));
+		tablePtrs.insert("SubGeographicalRegion",		new SubGeographicalRegionTable(m_dbPtr));
+		tablePtrs.insert("Area",						new AreaTable(m_dbPtr));
+		tablePtrs.insert("RemoteUnit",					new RemoteUnitTable(m_dbPtr));
+		tablePtrs.insert("AnalogUnitPoint",				new AnalogUnitPointTable(m_dbPtr));
 		tablePtrs.insert("DiscreteUnitPoint",			new DiscreteUnitPointTable(m_dbPtr));
 		tablePtrs.insert("ControlUnitPoint",			new ControlUnitPointTable(m_dbPtr));
-		tablePtrs.insert("Substation",			new SubstationTable(m_dbPtr));
-		tablePtrs.insert("VoltageLevel",			new VoltageLevelTable(m_dbPtr));
-		tablePtrs.insert("Analog",			new AnalogTable(m_dbPtr));
-		tablePtrs.insert("Discrete",			new DiscreteTable(m_dbPtr));
-		tablePtrs.insert("Accumulator",			new AccumulatorTable(m_dbPtr));
+		tablePtrs.insert("Substation",					new SubstationTable(m_dbPtr));
+		tablePtrs.insert("VoltageLevel",				new VoltageLevelTable(m_dbPtr));
+		tablePtrs.insert("BusbarSection",				new BusbarSectionTable(m_dbPtr));
+		tablePtrs.insert("Line",						new LineTable(m_dbPtr));
+		tablePtrs.insert("Breaker",						new BreakerTable(m_dbPtr));
+		tablePtrs.insert("Analog",						new AnalogTable(m_dbPtr));
+		tablePtrs.insert("Discrete",					new DiscreteTable(m_dbPtr));
+		tablePtrs.insert("Accumulator",					new AccumulatorTable(m_dbPtr));
+		tablePtrs.insert("AnalogCurveData",					new AnalogCurveDataTable(m_dbPtr));
 	}
 
 	if (tablePtrs.contains(tableName))

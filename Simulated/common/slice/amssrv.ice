@@ -49,14 +49,20 @@ module Amssrv{
 	 * AMS Manager自己接口
 	 *
 	 **/
-	local interface CAmsManager
+	interface CAmsManager
 	{ 	    	    
 	    /**
 	     *
 	     * AMS Manager注册
 	     *
 	     **/
-	    void Register() throws CAmsException;
+	    void Register(string strServerName, string strRole) throws CAmsException;
+	    
+	    //退出
+	    void Quit();
+	    
+	    //心跳函数
+	    void AmsHeartBeat(string strServerName);
 	};
 	
 	
@@ -95,7 +101,17 @@ module Amssrv{
 	     * @throws CAmsException:未知异常
 	     *
 	     **/
-	    void FinishRegister(string strServerName, string strRole, out string district, out string section, out string districtName, out string sectionName)throws CAmsException;
+	    void FinishRegister(string strServerName, string strRole, string district, string section)throws CAmsException;
+	    
+	    /**
+	     *
+	     * 退出
+	     *
+	     * @parameter serverInfo:Server信息
+	     * @return void
+	     *
+	     **/
+	    void Quit(ServerNode serverInfo);
 	    
 	    /**
 	     *
@@ -106,6 +122,10 @@ module Amssrv{
 	     *
 	     **/
 	    ["cpp:const","nonmutating"] string GetRole(string strServerName)throws CAmsException;
+	    
+	    
+	    //心跳函数
+	    void HeartBeat(string strServerName);
 	};
 };
 

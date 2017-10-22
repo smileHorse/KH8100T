@@ -3,7 +3,13 @@
 # "Hello". The following line sets the endpoints for this
 # adapter.
 #
-Hello.Endpoints=tcp -h localhost -p 10000
+AmsApp.Endpoints=tcp -h 192.168.3.25 -p 10002
+
+AdapterName = AmsApp
+AmsAppName = amsApp
+
+DataSrvIp = 192.168.3.226
+DataSrvPort = 10003
 
 #
 # Warn about connection exceptions

@@ -268,7 +268,7 @@ Ice::ObjectPrx BaseIceStorm::GetPublisher(Ice::CommunicatorPtr &communicatorPtr,
 IceStorm::TopicPrx BaseIceStorm::GetTopicProxy(Ice::CommunicatorPtr &communicatorPtr, std::string &strTopic)
 {
 	IceStorm::TopicManagerPrx manager = IceStorm::TopicManagerPrx::checkedCast(
-		communicatorPtr->stringToProxy("server-icestorm/TopicManager:default -h localhost -p 10000"));
+		communicatorPtr->stringToProxy("server-icestorm/TopicManager:default -h 192.168.3.226 -p 10000"));
 	if(manager == 0)
 	{
 		throw "得到 IceStorm::TopicManager 失败!";

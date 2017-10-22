@@ -72,9 +72,21 @@ void FepFrame::createActions()
 	exitAction->setStatusTip(QStringLiteral("退出模拟机程序"));
 	connect(exitAction, SIGNAL(triggered()), this, SLOT(close()));
 
-	processDataAction = new QAction(QIcon(":/images/data.png"), QStringLiteral("发布数据"), this);
-	processDataAction->setStatusTip(QStringLiteral("前置机发布数据"));
-	connect(processDataAction, SIGNAL(triggered()), m_fepServerThreadPtr, SLOT(processData()));
+	processYcDataAction = new QAction(QIcon(":/images/ycdata.png"), QStringLiteral("发布遥测数据"), this);
+	processYcDataAction->setStatusTip(QStringLiteral("前置机发布遥测数据"));
+	connect(processYcDataAction, SIGNAL(triggered()), m_fepServerThreadPtr, SLOT(processYcData()));
+	
+	processYxDataAction = new QAction(QIcon(":/images/yxdata.png"), QStringLiteral("发布遥信数据"), this);
+	processYxDataAction->setStatusTip(QStringLiteral("前置机发布遥信数据"));
+	connect(processYxDataAction, SIGNAL(triggered()), m_fepServerThreadPtr, SLOT(processYxData()));
+
+	processDdDataAction = new QAction(QIcon(":/images/dddata.png"), QStringLiteral("发布电度数据"), this);
+	processDdDataAction->setStatusTip(QStringLiteral("前置机发布电度数据"));
+	connect(processDdDataAction, SIGNAL(triggered()), m_fepServerThreadPtr, SLOT(processDdData()));
+
+	processUnitStateDataAction = new QAction(QIcon(":/images/unitstatedata.png"), QStringLiteral("发布终端状态"), this);
+	processUnitStateDataAction->setStatusTip(QStringLiteral("前置机发布终端状态"));
+	connect(processUnitStateDataAction, SIGNAL(triggered()), m_fepServerThreadPtr, SLOT(processUnitStateData()));
 
 	processDLFaultAction = new QAction(QIcon(":/images/dlfault.png"), QStringLiteral("发布短路故障事项"), this);
 	processDLFaultAction->setStatusTip(QStringLiteral("前置机发布短路故障事项"));
@@ -103,6 +115,10 @@ void FepFrame::createActions()
 	processWaveAction = new QAction(QIcon(":/images/wave.png"), QStringLiteral("发布录波事项"), this);
 	processWaveAction->setStatusTip(QStringLiteral("发布前置机录波事项"));
 	connect(processWaveAction, SIGNAL(triggered()), m_fepServerThreadPtr, SLOT(processWave()));
+
+	clearAction = new QAction(QIcon(":/images/clear.png"), QStringLiteral("清空文本"), this);
+	clearAction->setStatusTip(QStringLiteral("清空文本控件"));
+	connect(clearAction, SIGNAL(triggered()), this, SLOT(clearTextEdit()));
 	
 	helpAction = new QAction(QIcon(":/images/about.png"), QStringLiteral("关于"), this);
 	helpAction->setStatusTip(QStringLiteral("关于模拟机程序"));
@@ -115,7 +131,10 @@ void FepFrame::createMenus()
 	fileMenu->addAction(exitAction);
 
 	operMenu = menuBar()->addMenu(QStringLiteral("操作"));
-	operMenu->addAction(processDataAction);
+	operMenu->addAction(processYcDataAction);
+	operMenu->addAction(processYxDataAction);
+	operMenu->addAction(processDdDataAction);
+	operMenu->addAction(processUnitStateDataAction);
 	operMenu->addSeparator();
 	operMenu->addAction(processDLFaultAction);
 	operMenu->addAction(processJDFaultAction);
@@ -126,6 +145,8 @@ void FepFrame::createMenus()
 	operMenu->addAction(processProTypeEventAction);
 	operMenu->addSeparator();
 	operMenu->addAction(processWaveAction);
+	operMenu->addSeparator();
+	operMenu->addAction(clearAction);
 
 	helpMenu = menuBar()->addMenu(QStringLiteral("帮助"));
 	helpMenu->addAction(helpAction);
@@ -137,7 +158,10 @@ void FepFrame::createToolBars()
 	fileToolBar->addAction(exitAction);
 
 	operToolBar = addToolBar(QStringLiteral("操作"));
-	operToolBar->addAction(processDataAction);
+	operToolBar->addAction(processYcDataAction);
+	operToolBar->addAction(processYxDataAction);
+	operToolBar->addAction(processDdDataAction);
+	operToolBar->addAction(processUnitStateDataAction);
 	operToolBar->addSeparator();
 	operToolBar->addAction(processDLFaultAction);
 	operToolBar->addAction(processJDFaultAction);
@@ -148,6 +172,8 @@ void FepFrame::createToolBars()
 	operToolBar->addAction(processProTypeEventAction);
 	operToolBar->addSeparator();
 	operToolBar->addAction(processWaveAction);
+	operToolBar->addSeparator();
+	operToolBar->addAction(clearAction);
 }
 
 void FepFrame::createStatusBar()
@@ -180,4 +206,13 @@ void FepFrame::updateTextEdit( const QString& text )
 {
 	textEdit->insertPlainText(text);
 	textEdit->insertPlainText("\n");
+	textEdit->moveCursor(QTextCursor::End);
+}
+
+void FepFrame::clearTextEdit()
+{
+	if (textEdit)
+	{
+		textEdit->clear();
+	}
 }

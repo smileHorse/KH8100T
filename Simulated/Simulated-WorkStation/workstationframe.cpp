@@ -2,12 +2,16 @@
 #include "TableHeader.h"
 #include "workstationserver.h"
 #include "workstationserverthread.h"
+#include "OperationInfo.h"
 
 #include <QtWidgets/QtWidgets>
 
 WorkStationFrame::WorkStationFrame(int argc, char* argv[], QWidget *parent)
 	: QMainWindow(parent), m_argc(argc), m_argv(argv)
 {
+	m_workStationServerPtr = new WorkStationServer(m_argc, m_argv);
+	m_workStationServerThreadPtr = new WorkStationServerThread;
+
 	createWidgets();
 
 	createActions();
@@ -16,8 +20,6 @@ WorkStationFrame::WorkStationFrame(int argc, char* argv[], QWidget *parent)
 	createStatusBar();
 	createConnects();
 
-	m_workStationServerPtr = new WorkStationServer(m_argc, m_argv);
-	m_workStationServerThreadPtr = new WorkStationServerThread;
 }
 
 WorkStationFrame::~WorkStationFrame()
@@ -27,7 +29,6 @@ WorkStationFrame::~WorkStationFrame()
 
 void WorkStationFrame::createWidgets()
 {
-	QWidget* widget = new QWidget;
 	tableWidget = new QTableWidget;
 	QStringList tableHeaders = TableHeader::getTableHeaderLabels();
 	tableWidget->setColumnCount(tableHeaders.count());
@@ -36,19 +37,19 @@ void WorkStationFrame::createWidgets()
 
 	textEdit = new QTextEdit;
 	textEdit->setTextBackgroundColor(QColor(255, 0, 0));
+	textEdit->setReadOnly(true);
 
-	QVBoxLayout* layout = new QVBoxLayout;
-	layout->addWidget(tableWidget, 1);
-	layout->addStretch();
-	layout->addWidget(textEdit, 2);
-
-	widget->setLayout(layout);
-	setCentralWidget(widget);
+	QSplitter* splitter = new QSplitter(Qt::Vertical);
+	splitter->addWidget(tableWidget);
+	splitter->addWidget(textEdit);
+	splitter->setStretchFactor(0, 1);
+	splitter->setStretchFactor(1, 4);
+	setCentralWidget(splitter);
 
 	OperationInfo info(TYPE_CLIENT, "操作信息测试");
 	updateTableWidget(info);
 
-	resize(800, 600);
+	resize(1200, 800);
 	setWindowTitle(QStringLiteral("工作站模拟机"));
 	setWindowIcon(QIcon(":/images/workstation.png"));
 }
@@ -69,25 +70,45 @@ void WorkStationFrame::createActions()
 	exitAction->setStatusTip(QStringLiteral("退出模拟机程序"));
 	connect(exitAction, SIGNAL(triggered()), this, SLOT(close()));
 	
-	requestStormRdbDataAction = new QAction(QIcon(":/images/requestStormRdb.png"), QStringLiteral("请求实时数据"), this);
+	requestStormRdbDataAction = new QAction(QIcon(":/images/requestStormRdb.png"), QStringLiteral("请求实时数据(IceStorm)"), this);
 	requestStormRdbDataAction->setStatusTip(QStringLiteral("通过IceStorm请求实时数据"));
 	requestStormRdbDataAction->setEnabled(false);
 	connect(requestStormRdbDataAction, SIGNAL(triggered()), this, SLOT(requestStormRdbData()));
 	
-	requestStormTopoDataAction = new QAction(QIcon(":/images/requestStormTopo.png"), QStringLiteral("请求拓扑数据"), this);
+	requestStormTopoDataAction = new QAction(QIcon(":/images/requestStormTopo.png"), QStringLiteral("请求拓扑数据(IceStorm)"), this);
 	requestStormTopoDataAction->setStatusTip(QStringLiteral("通过IceStorm请求拓扑数据"));
 	requestStormTopoDataAction->setEnabled(false);
 	connect(requestStormTopoDataAction, SIGNAL(triggered()), this, SLOT(requestStormTopoData()));
 
-	requestRdbDataAction = new QAction(QIcon(":/images/requestRdb.png"), QStringLiteral("请求实时数据"), this);
+	requestRdbDataAction = new QAction(QIcon(":/images/requestRdb.png"), QStringLiteral("请求实时数据(Ice)"), this);
 	requestRdbDataAction->setStatusTip(QStringLiteral("通过Ice请求实时数据"));
 	requestRdbDataAction->setEnabled(false);
 	connect(requestRdbDataAction, SIGNAL(triggered()), this, SLOT(requestRdbData()));
 
-	requestTopoDataAction = new QAction(QIcon(":/images/requestTopo.png"), QStringLiteral("请求拓扑数据"), this);
+	requestTopoDataAction = new QAction(QIcon(":/images/requestTopo.png"), QStringLiteral("请求拓扑数据(Ice)"), this);
 	requestTopoDataAction->setStatusTip(QStringLiteral("通过Ice请求拓扑数据"));
 	requestTopoDataAction->setEnabled(false);
 	connect(requestTopoDataAction, SIGNAL(triggered()), this, SLOT(requestTopoData()));
+
+	subscriberRdbRequestAction = new QAction(QIcon(":/images/requestTopo.png"), QStringLiteral("订阅实时数据请求"), this);
+	subscriberRdbRequestAction->setStatusTip(QStringLiteral("订阅实时数据请求"));
+	subscriberRdbRequestAction->setEnabled(false);
+	connect(subscriberRdbRequestAction, SIGNAL(triggered()), this, SLOT(subscriberRdbRequest()));
+
+	subscriberRdbRespondAction = new QAction(QIcon(":/images/requestTopo.png"), QStringLiteral("订阅实时数据响应"), this);
+	subscriberRdbRespondAction->setStatusTip(QStringLiteral("订阅实时数据响应"));
+	subscriberRdbRespondAction->setEnabled(false);
+	connect(subscriberRdbRespondAction, SIGNAL(triggered()), this, SLOT(subscriberRdbRespond()));
+
+	subscriberAlarmDataAction = new QAction(QIcon(":/images/requestTopo.png"), QStringLiteral("订阅报警数据"), this);
+	subscriberAlarmDataAction->setStatusTip(QStringLiteral("订阅报警数据"));
+	subscriberAlarmDataAction->setEnabled(false);
+	connect(subscriberAlarmDataAction, SIGNAL(triggered()), this, SLOT(subscriberAlarmData()));
+
+	subscriberFepDataAction = new QAction(QIcon(":/images/requestTopo.png"), QStringLiteral("订阅前置机数据请求"), this);
+	subscriberFepDataAction->setStatusTip(QStringLiteral("订阅前置机数据请求"));
+	subscriberFepDataAction->setEnabled(false);
+	connect(subscriberFepDataAction, SIGNAL(triggered()), this, SLOT(subscriberFepData()));
 
 	helpAction = new QAction(QIcon(":/images/about.png"), QStringLiteral("关于"), this);
 	helpAction->setStatusTip(QStringLiteral("关于模拟机程序"));
@@ -109,6 +130,11 @@ void WorkStationFrame::createMenus()
 	QMenu* iceMenu = operMenu->addMenu(QIcon(":/images/icemenu.png"), QStringLiteral("Ice"));
 	iceMenu->addAction(requestRdbDataAction);
 	iceMenu->addAction(requestTopoDataAction);
+	QMenu* subscriberMenu = operMenu->addMenu(QIcon(":/images/icemenu.png"), QStringLiteral("IceStorm Subscriber"));
+	subscriberMenu->addAction(subscriberRdbRequestAction);
+	subscriberMenu->addAction(subscriberRdbRespondAction);
+	subscriberMenu->addAction(subscriberAlarmDataAction);
+	subscriberMenu->addAction(subscriberFepDataAction);
 
 	helpMenu = menuBar()->addMenu(QStringLiteral("帮助"));
 	helpMenu->addAction(helpAction);
@@ -128,6 +154,11 @@ void WorkStationFrame::createToolBars()
 	operToolBar->addSeparator();
 	operToolBar->addAction(requestRdbDataAction);
 	operToolBar->addAction(requestTopoDataAction);
+	operToolBar->addSeparator();
+	operToolBar->addAction(subscriberRdbRequestAction);
+	operToolBar->addAction(subscriberRdbRespondAction);
+	operToolBar->addAction(subscriberAlarmDataAction);
+	operToolBar->addAction(subscriberFepDataAction);
 }
 
 void WorkStationFrame::createStatusBar()
@@ -137,7 +168,17 @@ void WorkStationFrame::createStatusBar()
 
 void WorkStationFrame::createConnects()
 {
+	qRegisterMetaType<OperationInfo>("OperationInfo");
 	connect(this, SIGNAL(serverStarted(bool)), this, SLOT(updateActions(bool)));
+	connect(this, SIGNAL(requestCompleteData()), m_workStationServerThreadPtr, SLOT(requestCompleteData()));
+	connect(this, SIGNAL(subscriberRdbRequestSignal(bool)), m_workStationServerThreadPtr, SLOT(subscriberRdbRequest(bool)));
+	connect(this, SIGNAL(subscriberRdbRespondSignal(bool)), m_workStationServerThreadPtr, SLOT(subscriberRdbRespond(bool)));
+	connect(this, SIGNAL(subscriberAlarmDataSignal(bool)), m_workStationServerThreadPtr, SLOT(subscriberAlarmData(bool)));
+	connect(this, SIGNAL(subscriberFepDataSignal(bool)), m_workStationServerThreadPtr, SLOT(subscriberFepData(bool)));
+	connect(m_workStationServerThreadPtr, &WorkStationServerThread::executeOperation, 
+		this, &WorkStationFrame::updateTableWidget);
+	connect(m_workStationServerThreadPtr, &WorkStationServerThread::outputReceiveData, 
+		this, &WorkStationFrame::updateTextEdit);
 }
 
 void WorkStationFrame::updateTableWidget( const OperationInfo& info )
@@ -155,6 +196,12 @@ void WorkStationFrame::updateTableWidget( const OperationInfo& info )
 	}
 }
 
+void WorkStationFrame::updateTextEdit( const QString& text )
+{
+	textEdit->insertPlainText(text);
+	textEdit->insertPlainText("\n");
+}
+
 void WorkStationFrame::updateActions( bool serverStarted )
 {
 	startServerAction->setEnabled(!serverStarted);
@@ -163,6 +210,10 @@ void WorkStationFrame::updateActions( bool serverStarted )
 	requestStormTopoDataAction->setEnabled(serverStarted);
 	requestRdbDataAction->setEnabled(serverStarted);
 	requestTopoDataAction->setEnabled(serverStarted);
+	subscriberRdbRequestAction->setEnabled(serverStarted);
+	subscriberRdbRespondAction->setEnabled(serverStarted);
+	subscriberAlarmDataAction->setEnabled(serverStarted);
+	subscriberFepDataAction->setEnabled(serverStarted);
 }
 
 void WorkStationFrame::startServer()
@@ -185,7 +236,7 @@ void WorkStationFrame::stopServer()
 
 void WorkStationFrame::requestStormRdbData()
 {
-
+	emit requestCompleteData();
 }
 
 void WorkStationFrame::requestStormTopoData()
@@ -202,6 +253,84 @@ void WorkStationFrame::requestTopoData()
 {
 
 }
+
+void WorkStationFrame::subscriberRdbRequest()
+{
+	QString text = subscriberRdbRequestAction->text();
+	if (text.contains(QStringLiteral("取消")))
+	{
+		subscriberRdbRequestAction->setText(QStringLiteral("订阅实时数据请求"));
+		subscriberRdbRequestAction->setStatusTip(QStringLiteral("订阅实时数据请求"));
+
+		emit subscriberRdbRequestSignal(true);
+	}
+	else
+	{
+		subscriberRdbRequestAction->setText(QStringLiteral("取消订阅实时数据请求"));
+		subscriberRdbRequestAction->setStatusTip(QStringLiteral("取消订阅实时数据请求"));
+
+		emit subscriberRdbRequestSignal(false);
+	}
+}
+
+
+void WorkStationFrame::subscriberRdbRespond()
+{
+	QString text = subscriberRdbRespondAction->text();
+	if (text.contains(QStringLiteral("取消")))
+	{
+		subscriberRdbRespondAction->setText(QStringLiteral("订阅实时数据响应"));
+		subscriberRdbRespondAction->setStatusTip(QStringLiteral("订阅实时数据响应"));
+
+		emit subscriberRdbRespondSignal(true);
+	}
+	else
+	{
+		subscriberRdbRespondAction->setText(QStringLiteral("取消订阅实时数据响应"));
+		subscriberRdbRespondAction->setStatusTip(QStringLiteral("取消订阅实时数据响应"));
+
+		emit subscriberRdbRespondSignal(false);
+	}
+}
+
+void WorkStationFrame::subscriberAlarmData()
+{
+	QString text = subscriberAlarmDataAction->text();
+	if (text.contains(QStringLiteral("取消")))
+	{
+		subscriberAlarmDataAction->setText(QStringLiteral("订阅报警数据"));
+		subscriberAlarmDataAction->setStatusTip(QStringLiteral("订阅报警数据"));
+
+		emit subscriberAlarmDataSignal(true);
+	}
+	else
+	{
+		subscriberAlarmDataAction->setText(QStringLiteral("取消订阅报警数据"));
+		subscriberAlarmDataAction->setStatusTip(QStringLiteral("取消订阅报警数据"));
+
+		emit subscriberAlarmDataSignal(false);
+	}
+}
+
+void WorkStationFrame::subscriberFepData()
+{
+	QString text = subscriberFepDataAction->text();
+	if (text.contains(QStringLiteral("取消")))
+	{
+		subscriberFepDataAction->setText(QStringLiteral("订阅前置机数据"));
+		subscriberFepDataAction->setStatusTip(QStringLiteral("订阅前置机数据"));
+
+		emit subscriberFepDataSignal(true);
+	}
+	else
+	{
+		subscriberFepDataAction->setText(QStringLiteral("取消订阅前置机数据"));
+		subscriberFepDataAction->setStatusTip(QStringLiteral("取消订阅前置机数据"));
+
+		emit subscriberFepDataSignal(false);
+	}
+}
+
 
 void WorkStationFrame::about()
 {

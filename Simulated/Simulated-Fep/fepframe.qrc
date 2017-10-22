@@ -2,7 +2,10 @@
     <qresource prefix="/">
         <file>images/fep.png</file>
         <file>images/exit.png</file>
-        <file>images/data.png</file>
+        <file>images/ycdata.png</file>
+        <file>images/yxdata.png</file>
+        <file>images/dddata.png</file>
+        <file>images/unitstatedata.png</file>
         <file>images/dlfault.png</file>
         <file>images/jdfault.png</file>
         <file>images/yxtype.png</file>
@@ -10,6 +13,7 @@
         <file>images/unittype.png</file>
         <file>images/protype.png</file>
         <file>images/wave.png</file>
+        <file>images/clear.png</file>
         <file>images/about.png</file>
     </qresource>
 </RCC>
