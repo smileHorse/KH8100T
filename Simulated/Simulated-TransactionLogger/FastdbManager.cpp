@@ -87,10 +87,6 @@ bool FastdbManager::closeDatabase()
 
 void FastdbManager::setTransactionLogger( dbTransactionLogger* logger )
 {
-	openDatabase();
-	
-	closeTransactionLogger();
-
 	m_db.setTransactionLogger(logger);
 
 	m_bSetTransactionLogger = logger != NULL;
@@ -99,6 +95,10 @@ void FastdbManager::setTransactionLogger( dbTransactionLogger* logger )
 void FastdbManager::setTransactionLogger(const string& path, int flags, bool crc)
 {
 	QMutexLocker lock(&g_mutex);
+
+	openDatabase();
+
+	closeTransactionLogger();
 
 	if (!m_tl.open(path.c_str(), flags, crc))
 	{

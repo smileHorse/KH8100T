@@ -35,13 +35,13 @@ void RandomOperateDb::startOperate(OperateMode mode)
 		insertData();
 		break;
 	case UpdateMode:
-		//updateData();
+		updateData();
 		break;
 	case DeleteMode:
-		//deleteData();
+		deleteData();
 		break;
 	case SelectMode:
-		//selectData();
+		selectData();
 		break;
 	default:
 		break;

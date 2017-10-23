@@ -49,7 +49,7 @@ bool DbTransactionLoggerThread::isNeedChangeTransLogger()
 {
 	// 超过指定时间则需要处理  1min
 	QDateTime currTime = QDateTime::currentDateTime();
-	if ((currTime.toTime_t() - m_lastChangeLoggerTime.toTime_t()) >= 10)
+	if ((currTime.toTime_t() - m_lastChangeLoggerTime.toTime_t()) >= 60)
 	{
 		m_lastChangeLoggerTime = currTime;
 		return true;

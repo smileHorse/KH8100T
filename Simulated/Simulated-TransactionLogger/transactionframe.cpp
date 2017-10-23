@@ -5,7 +5,7 @@
 
 #include <QtWidgets/QtWidgets>
 
-#define Thread_Count	1
+#define Thread_Count	10
 
 TransactionFrame::TransactionFrame(QWidget *parent)
 	: QMainWindow(parent)
@@ -358,7 +358,7 @@ void TransactionFrame::restoreDb()
 		}
 		else
 		{
-			tlPtr->rollback();
+			//tlPtr->rollback();
 			QString text = QStringLiteral("恢复实时库失败\t错误原因: %1").arg(getRestoreStatus(status));
 			outputOperationInfo(LoggerInfo::getLoggerInfo(text, FrameService));
 		}
