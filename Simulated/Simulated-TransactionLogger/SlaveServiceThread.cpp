@@ -1,6 +1,5 @@
 
 #include "SlaveServiceThread.h"
-#include "RandomOperateDb.h"
 #include "common.h"
 
 SlaveServiceThread::SlaveServiceThread(QObject* parent)
@@ -22,18 +21,27 @@ void SlaveServiceThread::close()
 {
 	m_db.close();
 	tl.close();
-
+	
 	emit outputOperationInfo(LoggerInfo::getLoggerInfo(QStringLiteral("关闭实时库和事务日志文件成功"), SlaveService));
 }
 
 void SlaveServiceThread::run()
 {
-	m_db.open(DatabaseName);
-	tl.open(_T("testtl.log"), dbFile::read_only);
-	//m_db.setTransactionLogger(&tl);
+	if(!m_db.open(DatabaseName))
+	{
+		emit outputOperationInfo(LoggerInfo::getLoggerInfo(QStringLiteral("打开实时库失败"), SlaveService));
 
-	emit outputOperationInfo(LoggerInfo::getLoggerInfo(QStringLiteral("打开实时库和事务日志文件成功"), SlaveService));
+		return;
+	}
+	if(!tl.open(_T("testtl.log"), dbFile::read_only))
+	{
+		emit outputOperationInfo(LoggerInfo::getLoggerInfo(QStringLiteral("打开事务日志文件失败"), SlaveService));
 
+		return;
+	}
+
+	emit outputOperationInfo(LoggerInfo::getLoggerInfo(QStringLiteral("打开事务日志文件成功"), SlaveService));
+	
 	restoreDb();
 
 	while(!m_isStop)

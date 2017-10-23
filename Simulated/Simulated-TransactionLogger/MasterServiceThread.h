@@ -10,7 +10,7 @@ class MasterServiceThread : public QThread
 	Q_OBJECT
 
 public:
-	MasterServiceThread(QObject* parent = 0);
+	MasterServiceThread(dbDatabase* dbPtr, QObject* parent = 0);
 	~MasterServiceThread();
 
 public:
@@ -31,8 +31,7 @@ private:
 	bool m_isStop;
 	QDateTime	m_lastOperTime;
 	
-	dbDatabase m_db;
-	dbFileTransactionLogger tl;
+	dbDatabase* m_dbPtr;
 };
 
 #endif

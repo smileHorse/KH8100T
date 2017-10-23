@@ -27,7 +27,9 @@ public:
 	void deleteData();
 	void selectData();
 
-	QString getOperateInfo();
+	QString getOperateInfo() const;
+	void	setThreadId(const QString& threadId);
+	QString	getThreadId() const;
 
 private:
 	int getRandValue();
@@ -35,6 +37,7 @@ private:
 private:
 	dbDatabase*	m_dbPtr;
 	QString m_operInfo;	// 操作信息
+	QString	m_threadId;	// 线程Id
 
 	QMutex	m_mutex;
 };
