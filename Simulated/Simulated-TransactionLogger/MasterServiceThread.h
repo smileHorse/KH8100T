@@ -5,12 +5,14 @@
 
 #include <QtCore/QtCore>
 
+class FastdbManager;
+
 class MasterServiceThread : public QThread
 {
 	Q_OBJECT
 
 public:
-	MasterServiceThread(dbDatabase* dbPtr, QObject* parent = 0);
+	MasterServiceThread(QObject* parent = 0);
 	~MasterServiceThread();
 
 public:
@@ -30,8 +32,9 @@ signals:
 private:
 	bool m_isStop;
 	QDateTime	m_lastOperTime;
+	QDateTime	m_lastChangeLoggerTime;	
 	
-	dbDatabase* m_dbPtr;
+	FastdbManager*	m_fastdbManager;
 };
 
 #endif

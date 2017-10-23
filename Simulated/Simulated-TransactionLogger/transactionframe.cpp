@@ -1,22 +1,24 @@
 #include "transactionframe.h"
 #include "RandomOperateDb.h"
+#include "FastdbManager.h"
 #include "fastdb.h"
 
 #include <QtWidgets/QtWidgets>
 
-#define Thread_Count	10
+#define Thread_Count	1
 
 TransactionFrame::TransactionFrame(QWidget *parent)
 	: QMainWindow(parent)
 {
+	m_fastdbManager = FastdbManagerInstance::getFastdbManagerInstance();
+
 	createWidgets();
 	createServices();
 	createActions();
 	createConnects();
 	createMenus();
 	createToolBars();
-	createStatusBar();
-	
+	createStatusBar();	
 }
 
 TransactionFrame::~TransactionFrame()
@@ -35,6 +37,8 @@ TransactionFrame::~TransactionFrame()
 		delete slaveService;
 		slaveService = NULL;
 	}
+
+	FastdbManagerInstance::releaseFastdbManagerInstance();
 }
 
 void TransactionFrame::createServices()
@@ -44,7 +48,7 @@ void TransactionFrame::createServices()
 	vctMasterServices.reserve(Thread_Count);
 	for (int i = 0; i < Thread_Count; ++i)
 	{
-		vctMasterServices.push_back(new MasterServiceThread(&m_db));
+		vctMasterServices.push_back(new MasterServiceThread());
 	}
 	slaveService = new SlaveServiceThread();
 }
@@ -130,62 +134,34 @@ void TransactionFrame::createActions()
 
 void TransactionFrame::createConnects()
 {
-	//connect(this, SIGNAL(startMasterServiceSignal()), &masterService, SLOT(start()));
 	Q_FOREACH(MasterServiceThread* thread, vctMasterServices)
 	{
 		connect(this, SIGNAL(startMasterServiceSignal()), thread, SLOT(start()));
 	}
 	connect(this, SIGNAL(startSlaveServiceSignal()), slaveService, SLOT(start()));
 
-	//connect(&masterService, SIGNAL(outputOperationInfo(QString)), this, SLOT(outputOperationInfo(QString)));
 	Q_FOREACH(MasterServiceThread* thread, vctMasterServices)
 	{
 		connect(thread, SIGNAL(outputOperationInfo(QString)), this, SLOT(outputOperationInfo(QString)));
 	}
 	connect(slaveService, SIGNAL(outputOperationInfo(QString)), this, SLOT(outputOperationInfo(QString)));
+
+	connect(m_fastdbManager, SIGNAL(outputOperationInfo(QString)), this, SLOT(outputOperationInfo(QString)));
 }
 
-void TransactionFrame::openDatabase()
+bool TransactionFrame::openDatabase()
 {
-	if (m_db.isOpen())
-	{
-		outputOperationInfo(LoggerInfo::getLoggerInfo(QStringLiteral("实时库已打开"), FrameService));
-		return;
-	}
-
-	if(!m_db.open(DatabaseName))
-	{
-		outputOperationInfo(LoggerInfo::getLoggerInfo(QStringLiteral("实时库打开失败"), FrameService));
-		return;
-	}
-	outputOperationInfo(LoggerInfo::getLoggerInfo(QStringLiteral("实时库打开成功"), FrameService));
+	return m_fastdbManager->openDatabase();
 }
 
-void TransactionFrame::reopenDatabase()
+bool TransactionFrame::reopenDatabase()
 {
-	if (m_db.isOpen())
-	{
-		m_db.close();
-	}
-
-	if(!m_db.open(DatabaseName))
-	{
-		outputOperationInfo(LoggerInfo::getLoggerInfo(QStringLiteral("实时库打开失败"), FrameService));
-		return;
-	}
-	outputOperationInfo(LoggerInfo::getLoggerInfo(QStringLiteral("实时库打开成功"), FrameService));
+	return m_fastdbManager->reopenDatabase();
 }
 
-void TransactionFrame::closeDatabase()
+bool TransactionFrame::closeDatabase()
 {
-	if (!m_db.isOpen())
-	{
-		outputOperationInfo(LoggerInfo::getLoggerInfo(QStringLiteral("实时库已关闭"), FrameService));
-		return;
-	}
-
-	m_db.close();
-	outputOperationInfo(LoggerInfo::getLoggerInfo(QStringLiteral("实时库关闭成功"), FrameService));
+	return m_fastdbManager->closeDatabase();
 }
 
 void TransactionFrame::updateStartStopAction( bool isStart )
@@ -240,13 +216,26 @@ void TransactionFrame::startMasterService()
 {
 	updateStartStopAction(true);
 	openDatabase();
-
-	tl.open(_T("testtl.log"), dbFile::truncate|dbFile::no_sync);
-	m_db.setTransactionLogger(&tl);
-
+	
 	outputOperationInfo(LoggerInfo::getLoggerInfo(QStringLiteral("打开实时库和事务日志文件成功"), FrameService));
 
 	setCurrentServiceType(MasterService);
+
+	// 启动事务日志管理线程
+	if (dbTransactionLoggerThread.isRunning())
+	{
+		dbTransactionLoggerThread.setStop(true);
+
+		bool loggerThreadFinished = false;
+		while(!loggerThreadFinished)
+		{
+			if (dbTransactionLoggerThread.isFinished())
+			{
+				loggerThreadFinished = true;
+			}
+		}
+	}
+	dbTransactionLoggerThread.start();
 
 	emit startMasterServiceSignal();
 }
@@ -275,6 +264,8 @@ void TransactionFrame::stopService()
 				thread->setStop(true);
 			}
 		}
+		
+		dbTransactionLoggerThread.setStop(true);
 	}
 	else if (currServiceType == SlaveService)
 	{
@@ -310,8 +301,7 @@ void TransactionFrame::stopService()
 
 	if (currServiceType == MasterService)
 	{
-		m_db.close();
-		tl.close();
+		closeDatabase();
 	}
 }
 
@@ -319,7 +309,7 @@ void TransactionFrame::selectData()
 {
 	openDatabase();
 
-	RandomOperateDb operDb(&m_db);
+	RandomOperateDb operDb;
 	QString threadId = QString("%1").arg((DWORD)(QThread::currentThreadId()));
 	operDb.setThreadId(threadId);
 	operDb.startOperate(SelectMode);
@@ -340,7 +330,14 @@ void TransactionFrame::restoreDb()
 {
 	// 通过事务日志恢复实时库时，必须关闭实时库，并重新打开，才能进行后续恢复操作
 	reopenDatabase();
-	if(!tl.open(_T("testtl.log"), dbFile::read_only))
+
+	QString fileName = QFileDialog::getOpenFileName(this, QStringLiteral("选择备份文件"));
+	if (fileName.isEmpty())
+	{
+		return;
+	}
+	string path = fileName.toStdString();
+	if (!m_fastdbManager->openTransactionLogger(path, dbFile::read_only))
 	{
 		outputOperationInfo(LoggerInfo::getLoggerInfo(QStringLiteral("打开事务日志文件失败"), FrameService));
 
@@ -351,16 +348,17 @@ void TransactionFrame::restoreDb()
 	
 	try 
 	{
+		dbFileTransactionLogger* tlPtr = m_fastdbManager->getDbFileTransactionLogger();
 		size_t n;
-		dbFileTransactionLogger::RestoreStatus status = tl.restore(m_db, n);
+		dbFileTransactionLogger::RestoreStatus status = tlPtr->restore(*(m_fastdbManager->getDbDatabase()), n);
 		if (status == dbFileTransactionLogger::rsOK)
 		{
-			tl.close();
+			tlPtr->close();
 			outputOperationInfo(LoggerInfo::getLoggerInfo(QStringLiteral("恢复实时库成功"), FrameService));
 		}
 		else
 		{
-			tl.rollback();
+			tlPtr->rollback();
 			QString text = QStringLiteral("恢复实时库失败\t错误原因: %1").arg(getRestoreStatus(status));
 			outputOperationInfo(LoggerInfo::getLoggerInfo(text, FrameService));
 		}

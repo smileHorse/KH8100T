@@ -1,11 +1,12 @@
 #include "RandomOperateDb.h"
 #include "FastdbTableDefine.h"
+#include "FastdbManager.h"
 
 
-RandomOperateDb::RandomOperateDb(dbDatabase* dbPtr)
-	: m_dbPtr(dbPtr), m_operInfo(QStringLiteral(""))
+RandomOperateDb::RandomOperateDb()
+	: m_operInfo(QStringLiteral(""))
 {
-
+	m_fastdbManager = FastdbManagerInstance::getFastdbManagerInstance();
 }
 
 RandomOperateDb::~RandomOperateDb()
@@ -15,6 +16,7 @@ RandomOperateDb::~RandomOperateDb()
 
 void RandomOperateDb::startOperate(OperateMode mode)
 {
+	dbDatabase* m_dbPtr = m_fastdbManager->getDbDatabase();
 	if (!m_dbPtr)
 	{
 		m_operInfo += QStringLiteral("线程ID( ") + getThreadId() + QStringLiteral(" )");
@@ -33,13 +35,13 @@ void RandomOperateDb::startOperate(OperateMode mode)
 		insertData();
 		break;
 	case UpdateMode:
-		updateData();
+		//updateData();
 		break;
 	case DeleteMode:
-		deleteData();
+		//deleteData();
 		break;
 	case SelectMode:
-		selectData();
+		//selectData();
 		break;
 	default:
 		break;
@@ -74,7 +76,7 @@ void RandomOperateDb::insertData()
 	// 每次插入指定条目的数据
 	const int count = 20;
 	m_operInfo += QStringLiteral("线程ID( ") + getThreadId() + QStringLiteral(" )");
-	m_operInfo += QStringLiteral("插入数据：");
+	m_operInfo += QStringLiteral("插入数据：\n");
 	for (int i = 0; i < count; ++i)
 	{
 		Record record;
@@ -88,7 +90,7 @@ void RandomOperateDb::insertData()
 
 		QThread::msleep(2);
 	}
-	m_dbPtr->commit();
+	m_fastdbManager->commit();
 }
 
 void RandomOperateDb::updateData()
@@ -98,7 +100,7 @@ void RandomOperateDb::updateData()
 	dbCursor<Record> cursor(dbCursorForUpdate);
 	int count = cursor.select();
 	m_operInfo += QStringLiteral("线程ID( ") + getThreadId() + QStringLiteral(" )");
-	m_operInfo += QStringLiteral("更新数据： ");
+	m_operInfo += QStringLiteral("更新数据： \n");
 	if (count > 0)
 	{
 		int value = getRandValue() % 5;
@@ -116,7 +118,7 @@ void RandomOperateDb::updateData()
 	{
 		m_operInfo += QStringLiteral("无数据");
 	}
-	m_dbPtr->commit();
+	m_fastdbManager->commit();
 }
 
 void RandomOperateDb::deleteData()
@@ -127,7 +129,7 @@ void RandomOperateDb::deleteData()
 	dbCursor<Record> cursor(dbCursorForUpdate);
 	int count = cursor.select();
 	m_operInfo += QStringLiteral("线程ID( ") + getThreadId() + QStringLiteral(" )");
-	m_operInfo += QStringLiteral("删除数据： ");
+	m_operInfo += QStringLiteral("删除数据： \n");
 	if (count > 0)
 	{
 		do 
@@ -145,7 +147,7 @@ void RandomOperateDb::deleteData()
 	{
 		m_operInfo += QStringLiteral("无数据");
 	}
-	m_dbPtr->commit();
+	m_fastdbManager->commit();
 }
 
 void RandomOperateDb::selectData()
@@ -155,8 +157,8 @@ void RandomOperateDb::selectData()
 	dbCursor<Record> cursor(dbCursorViewOnly);
 	int count = cursor.select();
 	m_operInfo += QStringLiteral("线程ID( ") + getThreadId() + QStringLiteral(" )");
-	QString text = QString(QStringLiteral("个数(%1)")).arg(count);
-	m_operInfo += QStringLiteral("查询数据： ") + text;
+	QString text = QString(QStringLiteral("个数(%1)\n")).arg(count);
+	m_operInfo += QStringLiteral("查询数据：") + text;
 	if (count > 0)
 	{
 		do 

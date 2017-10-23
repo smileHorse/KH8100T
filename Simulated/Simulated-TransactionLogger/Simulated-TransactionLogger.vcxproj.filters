@@ -77,6 +77,24 @@
     <ClCompile Include="RandomOperateDb.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="FastdbManager.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="GeneratedFiles\Debug\moc_FastdbManager.cpp">
+      <Filter>Generated Files\Debug</Filter>
+    </ClCompile>
+    <ClCompile Include="GeneratedFiles\Release\moc_FastdbManager.cpp">
+      <Filter>Generated Files\Release</Filter>
+    </ClCompile>
+    <ClCompile Include="GeneratedFiles\Debug\moc_DbTransactionLoggerThread.cpp">
+      <Filter>Generated Files\Debug</Filter>
+    </ClCompile>
+    <ClCompile Include="GeneratedFiles\Release\moc_DbTransactionLoggerThread.cpp">
+      <Filter>Generated Files\Release</Filter>
+    </ClCompile>
+    <ClCompile Include="DbTransactionLoggerThread.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <CustomBuild Include="transactionframe.h">
@@ -89,6 +107,12 @@
       <Filter>Header Files</Filter>
     </CustomBuild>
     <CustomBuild Include="SlaveServiceThread.h">
+      <Filter>Header Files</Filter>
+    </CustomBuild>
+    <CustomBuild Include="FastdbManager.h">
+      <Filter>Header Files</Filter>
+    </CustomBuild>
+    <CustomBuild Include="DbTransactionLoggerThread.h">
       <Filter>Header Files</Filter>
     </CustomBuild>
   </ItemGroup>

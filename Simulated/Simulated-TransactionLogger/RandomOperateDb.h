@@ -5,6 +5,8 @@
 
 #include <QtCore/QtCore>
 
+class FastdbManager;
+
 enum OperateMode
 {
 	InsertMode,
@@ -17,7 +19,7 @@ enum OperateMode
 class RandomOperateDb
 {
 public:
-	RandomOperateDb(dbDatabase* dbPtr = NULL);
+	RandomOperateDb();
 	~RandomOperateDb();
 
 public:
@@ -35,7 +37,7 @@ private:
 	int getRandValue();
 
 private:
-	dbDatabase*	m_dbPtr;
+	FastdbManager*	m_fastdbManager;
 	QString m_operInfo;	// 操作信息
 	QString	m_threadId;	// 线程Id
 

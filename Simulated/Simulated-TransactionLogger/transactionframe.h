@@ -3,11 +3,14 @@
 
 #include "MasterServiceThread.h"
 #include "SlaveServiceThread.h"
+#include "DbTransactionLoggerThread.h"
 #include "fastdb.h"
 #include "common.h"
 
 #include <QtCore/QtCore>
 #include <QtWidgets/QMainWindow>
+
+class FastdbManager;
 
 class QTextEdit;
 class QAction;
@@ -31,9 +34,9 @@ private:
 	void createActions();
 	void createConnects();
 
-	void openDatabase();
-	void reopenDatabase();
-	void closeDatabase();
+	bool openDatabase();
+	bool reopenDatabase();
+	bool closeDatabase();
 
 	void updateStartStopAction(bool isStart);
 
@@ -76,9 +79,9 @@ private:
 
 	QVector<MasterServiceThread*>	vctMasterServices;
 	SlaveServiceThread* slaveService;
+	DbTransactionLoggerThread	dbTransactionLoggerThread;
 
-	dbDatabase	m_db;
-	dbFileTransactionLogger tl;
+	FastdbManager*	m_fastdbManager;
 
 	ServiceType	m_currServiceType;
 };

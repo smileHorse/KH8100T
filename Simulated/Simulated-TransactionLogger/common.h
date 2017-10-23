@@ -4,7 +4,10 @@
 #include <QtCore/QtCore>
 
 extern const char* DatabaseName;
+extern const char* LoggerPathName;
 extern const int OPERATE_SPAN;
+
+extern QMutex	g_mutex;
 
 enum ServiceType
 {
