@@ -3,8 +3,14 @@
 
 #include "MasterServiceThread.h"
 #include "SlaveServiceThread.h"
+#include "DbTransactionLoggerThread.h"
+#include "fastdb.h"
+#include "common.h"
 
+#include <QtCore/QtCore>
 #include <QtWidgets/QMainWindow>
+
+class FastdbManager;
 
 class QTextEdit;
 class QAction;
@@ -20,6 +26,7 @@ public:
 	~TransactionFrame();
 
 private:
+	void createServices();
 	void createWidgets();
 	void createMenus();
 	void createToolBars();
@@ -27,7 +34,16 @@ private:
 	void createActions();
 	void createConnects();
 
+	bool openDatabase();
+	bool reopenDatabase();
+	bool closeDatabase();
+
 	void updateStartStopAction(bool isStart);
+
+	void setCurrentServiceType(ServiceType type);
+	ServiceType getCurrentServiceType() const;
+
+	QString getRestoreStatus(dbFileTransactionLogger::RestoreStatus status);
 
 signals:
 	void startMasterServiceSignal();
@@ -40,6 +56,7 @@ private slots:
 	void stopService();
 	void selectData();
 	void clearTextEdit();
+	void restoreDb();
 	void outputOperationInfo(QString text);
 
 
@@ -52,6 +69,7 @@ private:
 	QAction* stopAction;			// 停止服务
 	QAction* selectAction;			// 查询实时库数据
 	QAction* clearAction;			// 清空文本
+	QAction* restoreAction;			// 恢复实时库
 
 	QMenu*	fileMenu;
 	QMenu*	operMenu;
@@ -59,8 +77,13 @@ private:
 	QToolBar*	fileToolbar;
 	QToolBar*	operToolbar;
 
-	MasterServiceThread	masterService;
-	SlaveServiceThread slaveService;
+	QVector<MasterServiceThread*>	vctMasterServices;
+	SlaveServiceThread* slaveService;
+	DbTransactionLoggerThread	dbTransactionLoggerThread;
+
+	FastdbManager*	m_fastdbManager;
+
+	ServiceType	m_currServiceType;
 };
 
 #endif // TRANSACTIONFRAME_H

@@ -3,7 +3,11 @@
 
 const char* DatabaseName = "Test-Db";
 
+const char* LoggerPathName = "./logger";
+
 const int OPERATE_SPAN = 2;
+
+QMutex	g_mutex;
 
 
 QString getServiceType(ServiceType type)
