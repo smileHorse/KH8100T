@@ -56,6 +56,7 @@ private slots:
 	void subscriberRdbRespond();
 	void subscriberAlarmData();
 	void subscriberFepData();
+	void clearTextEdit();
 	void about();
 
 
@@ -80,6 +81,7 @@ private:
 	QAction*	subscriberRdbRespondAction;
 	QAction*	subscriberAlarmDataAction;
 	QAction*	subscriberFepDataAction;
+	QAction*	clearAction;
 	QAction*	helpAction;
 
 	QMenu*		fileMenu;

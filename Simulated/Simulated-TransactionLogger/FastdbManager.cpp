@@ -100,7 +100,7 @@ void FastdbManager::setTransactionLogger(const string& path, int flags, bool crc
 
 	closeTransactionLogger();
 
-	if (!m_tl.open(path.c_str(), flags, crc))
+	if (!openTransactionLogger(path.c_str(), flags, crc))
 	{
 		setTransactionLogger(NULL);
 		return;

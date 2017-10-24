@@ -33,7 +33,6 @@ public:
 	bool openDatabase();
 	bool reopenDatabase();
 	bool closeDatabase();
-	bool hasSetTransactionLogger();
 	void setTransactionLogger(const string& path, int flags = dbFile::no_sync, bool crc = true);
 	void setTransactionLogger(dbTransactionLogger* logger);
 	bool openTransactionLogger(const string& path, int flags = dbFile::no_sync, bool crc = true);
@@ -43,6 +42,10 @@ public:
 
 	dbDatabase* getDbDatabase();
 	dbFileTransactionLogger*	getDbFileTransactionLogger();
+
+private:
+	bool hasSetTransactionLogger();
+
 	
 signals:
 	void outputOperationInfo(QString text);

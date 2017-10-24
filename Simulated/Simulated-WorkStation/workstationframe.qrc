@@ -10,8 +10,13 @@
         <file>images/requestStormTopo.png</file>
         <file>images/requestRdb.png</file>
         <file>images/requestTopo.png</file>
+        <file>images/clear.png</file>
         <file>images/about.png</file>
         <file>images/text.png</file>
+        <file>images/subscribeRdbRequest.png</file>
+        <file>images/subscribeRdbRespond.png</file>
+        <file>images/subscribeAlarmData.png</file>
+        <file>images/subscribeFepData.png</file>
     </qresource>
 </RCC>
 

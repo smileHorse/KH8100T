@@ -204,6 +204,7 @@ void FepFrame::updateTableWidget( const OperationInfo& info )
 
 void FepFrame::updateTextEdit( const QString& text )
 {
+	textEdit->moveCursor(QTextCursor::End);
 	textEdit->insertPlainText(text);
 	textEdit->insertPlainText("\n");
 	textEdit->moveCursor(QTextCursor::End);

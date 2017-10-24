@@ -90,25 +90,29 @@ void WorkStationFrame::createActions()
 	requestTopoDataAction->setEnabled(false);
 	connect(requestTopoDataAction, SIGNAL(triggered()), this, SLOT(requestTopoData()));
 
-	subscriberRdbRequestAction = new QAction(QIcon(":/images/requestTopo.png"), QStringLiteral("订阅实时数据请求"), this);
+	subscriberRdbRequestAction = new QAction(QIcon(":/images/subscribeRdbRequest.png"), QStringLiteral("订阅实时数据请求"), this);
 	subscriberRdbRequestAction->setStatusTip(QStringLiteral("订阅实时数据请求"));
 	subscriberRdbRequestAction->setEnabled(false);
 	connect(subscriberRdbRequestAction, SIGNAL(triggered()), this, SLOT(subscriberRdbRequest()));
 
-	subscriberRdbRespondAction = new QAction(QIcon(":/images/requestTopo.png"), QStringLiteral("订阅实时数据响应"), this);
+	subscriberRdbRespondAction = new QAction(QIcon(":/images/subscribeRdbRespond.png"), QStringLiteral("订阅实时数据响应"), this);
 	subscriberRdbRespondAction->setStatusTip(QStringLiteral("订阅实时数据响应"));
 	subscriberRdbRespondAction->setEnabled(false);
 	connect(subscriberRdbRespondAction, SIGNAL(triggered()), this, SLOT(subscriberRdbRespond()));
 
-	subscriberAlarmDataAction = new QAction(QIcon(":/images/requestTopo.png"), QStringLiteral("订阅报警数据"), this);
+	subscriberAlarmDataAction = new QAction(QIcon(":/images/subscribeAlarmData.png"), QStringLiteral("订阅报警数据"), this);
 	subscriberAlarmDataAction->setStatusTip(QStringLiteral("订阅报警数据"));
 	subscriberAlarmDataAction->setEnabled(false);
 	connect(subscriberAlarmDataAction, SIGNAL(triggered()), this, SLOT(subscriberAlarmData()));
 
-	subscriberFepDataAction = new QAction(QIcon(":/images/requestTopo.png"), QStringLiteral("订阅前置机数据请求"), this);
+	subscriberFepDataAction = new QAction(QIcon(":/images/subscribeFepData.png"), QStringLiteral("订阅前置机数据请求"), this);
 	subscriberFepDataAction->setStatusTip(QStringLiteral("订阅前置机数据请求"));
 	subscriberFepDataAction->setEnabled(false);
 	connect(subscriberFepDataAction, SIGNAL(triggered()), this, SLOT(subscriberFepData()));
+
+	clearAction = new QAction(QIcon(":/images/clear.png"), QStringLiteral("清空文本"), this);
+	clearAction->setStatusTip(QStringLiteral("清空文本"));
+	connect(clearAction, SIGNAL(triggered()), this, SLOT(clearTextEdit()));
 
 	helpAction = new QAction(QIcon(":/images/about.png"), QStringLiteral("关于"), this);
 	helpAction->setStatusTip(QStringLiteral("关于模拟机程序"));
@@ -135,6 +139,8 @@ void WorkStationFrame::createMenus()
 	subscriberMenu->addAction(subscriberRdbRespondAction);
 	subscriberMenu->addAction(subscriberAlarmDataAction);
 	subscriberMenu->addAction(subscriberFepDataAction);
+	operMenu->addSeparator();
+	operMenu->addAction(clearAction);
 
 	helpMenu = menuBar()->addMenu(QStringLiteral("帮助"));
 	helpMenu->addAction(helpAction);
@@ -159,6 +165,8 @@ void WorkStationFrame::createToolBars()
 	operToolBar->addAction(subscriberRdbRespondAction);
 	operToolBar->addAction(subscriberAlarmDataAction);
 	operToolBar->addAction(subscriberFepDataAction);
+	operToolBar->addSeparator();
+	operToolBar->addAction(clearAction);
 }
 
 void WorkStationFrame::createStatusBar()
@@ -198,8 +206,10 @@ void WorkStationFrame::updateTableWidget( const OperationInfo& info )
 
 void WorkStationFrame::updateTextEdit( const QString& text )
 {
+	textEdit->moveCursor(QTextCursor::End);
 	textEdit->insertPlainText(text);
 	textEdit->insertPlainText("\n");
+	textEdit->moveCursor(QTextCursor::End);
 }
 
 void WorkStationFrame::updateActions( bool serverStarted )
@@ -331,6 +341,14 @@ void WorkStationFrame::subscriberFepData()
 	}
 }
 
+
+void WorkStationFrame::clearTextEdit()
+{
+	if (textEdit)
+	{
+		textEdit->clear();
+	}
+}
 
 void WorkStationFrame::about()
 {
