@@ -19,23 +19,28 @@ public:
 
 public:
 	void setParam(int argc, char* argv[]);
+	
+private:
+	void createWidgets();
+	void createActions();
+	void createMenus();
+	void createToolbar();
+	void createStatusBar();
+
+	void hasSetRole(bool isMaster);
+
+signals:
+	void setRole(QString role);
 
 public slots:
 	// 开始执行服务
 	void startServer();
 
-private:
-	void createWidgets();
-
-	void createActions();
-
-	void createMenus();
-	void createToolbar();
-	void createStatusBar();
-
 private slots:
 	void about();
 	void updateTableWidget(const OperationInfo& info);
+	void setMasterRole();
+	void setSlaveRole();
 
 private:
 	int		m_argc;
@@ -44,12 +49,16 @@ private:
 	QTableWidget*	tableWidget;
 
 	QAction*	exitAction;
+	QAction*	setMasterAction;
+	QAction*	setSlaveAction;
 	QAction*	helpAction;
 
 	QMenu*	fileMenu;
+	QMenu*	operMenu;
 	QMenu*	helpMenu;
 
 	QToolBar*	fileToolbar;
+	QToolBar*	operToolbar;
 };
 
 #endif // AMSFRAME_H

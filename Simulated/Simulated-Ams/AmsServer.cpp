@@ -1,6 +1,5 @@
 
 #include "AmsServer.h"
-#include "AmsSrvI.h"
 #include "AmsServerThread.h"
 #include "OperationInfo.h"
 
@@ -40,7 +39,7 @@ int AmsServer::run( int argc, char* argv[] )
 		info.setOperationInfo("获取对象适配器");
 		m_threadPtr->putMessage(info);
 
-		Amssrv::CAmsAppPtr amsApp = new CAmsAppI(m_threadPtr);
+		amsApp = new CAmsAppI(m_threadPtr);
 		adapter->add(amsApp, communicator()->stringToIdentity(amsAppName));
 
 		// 通过属性设置数据服务器节点信息
@@ -69,4 +68,9 @@ int AmsServer::run( int argc, char* argv[] )
 	m_threadPtr->putMessage(info);
 	
 	return EXIT_SUCCESS;
+}
+
+void AmsServer::setRole( const string& role )
+{
+	((CAmsAppI*)amsApp.get())->setRole(role);
 }

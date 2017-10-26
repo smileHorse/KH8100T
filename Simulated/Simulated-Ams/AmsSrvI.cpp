@@ -14,6 +14,8 @@ CAmsAppI::CAmsAppI( AmsServerThread* threadPtr )
 	dataSrvInfo.type = TYPE_DATASRV;
 	dataSrvInfo.ip = "192.168.3.25";
 	dataSrvInfo.port = DATASRV_ADAPTER_PORT;
+
+	m_role = ROLE_MASTER;
 }
 
 std::string CAmsAppI::Register( const string& strType, const Strings& ipVect, ::Ice::Int num, 
@@ -24,7 +26,7 @@ std::string CAmsAppI::Register( const string& strType, const Strings& ipVect, ::
 	OperationInfo info(QString().fromStdString(strType).toInt(), "ÇëÇó×¢²á", true);
 	m_threadPtr->putMessage(info);
 
-	return ROLE_MASTER;
+	return m_role;
 }
 
 void CAmsAppI::FinishRegister( const string& strServerName, const string& strRole, const string& district, 
@@ -52,4 +54,9 @@ void CAmsAppI::setDataSrvInfo( const string& ip, int port )
 {
 	dataSrvInfo.ip = ip;
 	dataSrvInfo.port = port;
+}
+
+void CAmsAppI::setRole( const string& role )
+{
+	m_role = role;
 }

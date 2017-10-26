@@ -31,9 +31,13 @@ public:
 public:
 	void setDataSrvInfo(const string& ip, int port);
 
+	void setRole(const string& role);
+
 private:
 	AmsServerThread*	m_threadPtr;
 
 	::Amssrv::ServerNode	dataSrvInfo;	// 数据服务器节点信息
+
+	string	m_role;		// 当前角色
 };
 #endif

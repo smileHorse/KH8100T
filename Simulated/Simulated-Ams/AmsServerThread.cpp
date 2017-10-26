@@ -1,12 +1,21 @@
 #include "AmsServerThread.h"
-#include "AmsServer.h"
 #include "OperationInfo.h"
 
+AmsServerThread::AmsServerThread( QObject* parent /*= 0*/ )
+	: QThread(parent), server(this)
+{
+
+}
 
 void AmsServerThread::run()
 {
-	AmsServer server(this);
 	server.main(m_argc, m_argv, "config.server");
+}
+
+
+void AmsServerThread::setRole(QString role)
+{
+	server.setRole(role.toStdString());
 }
 
 void AmsServerThread::setParam( int argc, char* argv[] )
