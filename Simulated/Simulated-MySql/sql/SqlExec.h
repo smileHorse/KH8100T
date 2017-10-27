@@ -27,6 +27,9 @@ public:
 	bool openDb();
 
 	// 执行查询操作
+	bool exec(const QString& sql);
+
+	// 执行查询操作
 	bool exec(QSqlQuery& query, const QString& sql);
 
 	// 获取错误信息
@@ -34,6 +37,7 @@ public:
 
 private:
 	QSqlDatabase	m_database;
+	QSqlQuery		m_query;
 
 	QMutex			m_mutex;
 	QString			m_databaseName;

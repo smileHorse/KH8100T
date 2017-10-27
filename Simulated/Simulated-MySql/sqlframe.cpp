@@ -1,4 +1,5 @@
 #include "sqlframe.h"
+#include "sql/SqlExec.h"
 
 #include <QtWidgets/QtWidgets>
 
@@ -7,6 +8,9 @@
 SqlFrame::SqlFrame(QWidget *parent)
 	: QMainWindow(parent)
 {
+	m_nThreadCount = THREAD_COUNT;
+	QSharedPointer<CSqlExec> sqlExecPtr = CSqlExecInstance::getSqlExecInstance();
+
 	createWidgets();
 	createActions();
 	createConnectes();
@@ -45,6 +49,10 @@ void SqlFrame::createActions()
 	closeAction->setStatusTip(QStringLiteral("退出程序"));
 	connect(closeAction, SIGNAL(triggered()), this, SLOT(close()));
 
+	setCountAction = new QAction(QIcon(":/images/setCount.png"), QStringLiteral("设置线程数量"), this);
+	setCountAction->setStatusTip(QStringLiteral("设置线程数量"));
+	connect(setCountAction, SIGNAL(triggered()), this, SLOT(setThreadCount()));
+
 	clearAction = new QAction(QIcon(":/images/clear.png"), QStringLiteral("清空文本"), this);
 	clearAction->setStatusTip(QStringLiteral("清空文本"));
 	connect(clearAction, SIGNAL(triggered()), this, SLOT(clearTextEdit()));
@@ -64,6 +72,7 @@ void SqlFrame::createMenus()
 	fileMenu->addAction(closeAction);
 
 	operMenu = menuBar()->addMenu(QStringLiteral("操作"));
+	operMenu->addAction(setCountAction);
 	operMenu->addAction(clearAction);
 }
 
@@ -76,6 +85,7 @@ void SqlFrame::createToolBars()
 	fileToolbar->addAction(closeAction);
 
 	operToolbar = addToolBar(QStringLiteral("操作"));
+	operToolbar->addAction(setCountAction);
 	operToolbar->addAction(clearAction);
 }
 
@@ -94,14 +104,13 @@ void SqlFrame::startExecSql()
 {
 	updateExecAction(true);
 
-	for (int i = 0; i < THREAD_COUNT; ++i)
+	for (int i = 0; i < m_nThreadCount; ++i)
 	{
 		QSharedPointer<CExecThread> execThreadPtr(new CExecThread);
 		execThreadPtr->start();
 		connect(execThreadPtr.data(), SIGNAL(outputOperInfo(QString)), this, SLOT(updateTextEdit(QString)));
 		m_execThreads.push_back(execThreadPtr);
 	}
-
 }
 
 void SqlFrame::stopExecSql()
@@ -122,6 +131,17 @@ void SqlFrame::stopExecSql()
 		++i;
 	}
 	m_execThreads.clear();
+}
+
+void SqlFrame::setThreadCount()
+{
+	bool ok;
+	int count = QInputDialog::getInt(this, QStringLiteral("线程数量"), QStringLiteral("请输入线程数量:"),
+		m_nThreadCount, 1, 20, 1, &ok);
+	if (ok)
+	{
+		m_nThreadCount = count;
+	}
 }
 
 void SqlFrame::clearTextEdit()

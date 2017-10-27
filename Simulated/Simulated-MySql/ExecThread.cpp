@@ -1,7 +1,7 @@
 #include "ExecThread.h"
 
 CExecThread::CExecThread( QObject* parent /*= 0*/ )
-	: QThread(parent), m_stop(false), m_mutex(QMutex::Recursive)
+	: QThread(parent), m_stop(false), m_mutex(QMutex::NonRecursive)
 {
 	m_sqlExecPtr = CSqlExecInstance::getSqlExecInstance();
 }
@@ -28,7 +28,7 @@ void CExecThread::run()
 
 bool CExecThread::selectRecord()
 {
-	QMutexLocker locker(&m_mutex);
+	//QMutexLocker locker(&m_mutex);
 
 	if (m_sqlExecPtr.isNull())
 	{
@@ -36,9 +36,9 @@ bool CExecThread::selectRecord()
 		return false;
 	}
 
-	QString sql = "select * from test";
+	QString sql = "select * from city";
 	QSqlQuery query;
-	if (!m_sqlExecPtr->exec(query, sql))
+	if (!m_sqlExecPtr->exec(sql))
 	{
 		QString error = QString(QStringLiteral("执行查询操作出错: %1")).arg(m_sqlExecPtr->getError());
 		emit outputOperInfo(getOperInfo(error));

@@ -32,6 +32,7 @@ private:
 private slots:
 	void startExecSql();
 	void stopExecSql();
+	void setThreadCount();
 	void clearTextEdit();
 	void updateTextEdit(QString text);
 
@@ -41,6 +42,7 @@ private:
 	QAction*	startAction;
 	QAction*	stopAction;
 	QAction*	closeAction;
+	QAction*	setCountAction;
 	QAction*	clearAction;
 
 	QMenu*		fileMenu;
@@ -49,6 +51,7 @@ private:
 	QToolBar*	fileToolbar;
 	QToolBar*	operToolbar;
 
+	int			m_nThreadCount;
 	QVector< QSharedPointer<CExecThread> > m_execThreads;
 };
 

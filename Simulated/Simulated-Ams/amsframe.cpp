@@ -41,7 +41,7 @@ void AmsFrame::createWidgets()
 	setCentralWidget(tableWidget);
 
 	resize(800, 600);
-	setWindowTitle(QStringLiteral("AMS模拟机"));
+	setWindowTitle(QStringLiteral("AMS模拟机(返回主角色)"));
 	setWindowIcon(QIcon(":/images/ams.png"));
 }
 

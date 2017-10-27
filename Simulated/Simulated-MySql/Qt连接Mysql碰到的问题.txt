@@ -1,0 +1,15 @@
+1、MySql Server has gone away
+	解决方案1：
+	my.ini中修改配置 
+	wait_timeout=2880000
+	interactive_timeout = 2880000
+	max_allowed_packet = 1024M
+	
+	解决方案2：
+	上述配置生效后，仍然出现这个问题，检查mysql库中user表，查看是否允许以ip地址的形式访问数据库；
+	
+
+2、Lost connection to mysql server during query
+
+3、driver not loaded
+	 需要重新编译Qt中的Mysql驱动

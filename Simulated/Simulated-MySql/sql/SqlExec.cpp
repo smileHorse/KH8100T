@@ -14,11 +14,11 @@ QSharedPointer<CSqlExec> CSqlExecInstance::getSqlExecInstance()
 }
 
 CSqlExec::CSqlExec()
-	: m_mutex(QMutex::Recursive)
+	: m_mutex(QMutex::NonRecursive)
 {
 	m_database = QSqlDatabase::addDatabase("QMYSQL");
 
-	m_databaseName = "simulated";
+	m_databaseName = "world";
 	m_userName = "root";
 	m_password = "root";
 	m_hostname = "localhost";
@@ -40,6 +40,32 @@ bool CSqlExec::openDb()
 	if(!m_database.open())
 	{
 		m_error = m_database.lastError().text();
+		return false;
+	}
+
+	return true;
+}
+
+// Ö´ÐÐ²éÑ¯²Ù×÷
+bool CSqlExec::exec( const QString& sql )
+{
+	QMutexLocker locker(&m_mutex);
+
+	if (!openDb())
+	{
+		return false;
+	}
+
+	QSqlQuery query;
+	if(!query.prepare(sql))
+	{
+		m_error = query.lastError().text();
+		return false;
+	}
+
+	if (!query.exec())
+	{
+		m_error = query.lastError().text();
 		return false;
 	}
 
@@ -69,6 +95,7 @@ bool CSqlExec::exec(QSqlQuery& query, const QString& sql)
 
 	return true;
 }
+
 
 QString CSqlExec::getError()
 {

@@ -4,6 +4,7 @@
       <file>images/start.png</file>
       <file>images/stop.png</file>
       <file>images/close.png</file>
+      <file>images/setCount.png</file>
       <file>images/clear.png</file>
     </qresource>
 </RCC>
