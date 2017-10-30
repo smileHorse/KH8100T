@@ -58,7 +58,13 @@ void RdbRealDataRequestI::RequestCompleteData( const ::RdbRealData::RequestCompl
 
 void RdbRealDataRequestI::SendTopoDataRequest( const ::RdbRealData::RequestTopoDataSeq&, const ::Ice::Current& /* = ::Ice::Current() */ )
 {
+	if (!m_threadPtr)
+	{
+		return;
+	}
 
+	static int topo_count = 0;
+	m_threadPtr->outputOperationData(QString("收到拓扑数据请求 %1").arg(++topo_count));
 }
 
 RdbRealDataRespondI::RdbRealDataRespondI( WorkStationServerThread* threadPtr )
@@ -95,6 +101,12 @@ void RdbRealDataRespondI::RespondCompleteData( const ::RdbRealData::RespondCompl
 
 void RdbRealDataRespondI::SendTopoDataRespond( const ::RdbRealData::ReceiveTopoDataSeq&, const ::Ice::Current& /* = ::Ice::Current() */ )
 {
+	if (!m_threadPtr)
+	{
+		return;
+	}
 
+	static int topo_count = 0;
+	m_threadPtr->outputOperationData(QString("收到拓扑数据响应 %1").arg(++topo_count));
 }
 

@@ -1656,6 +1656,102 @@ void AccumulatorTable::setFieldValue( dbAnyCursor& anyCursor, const string& fiel
 	}
 }
 
+CommandTable::CommandTable( dbDatabase* dbPtr )
+	: BaseTable(dbPtr)
+{
+
+}
+
+QList<QStringList> CommandTable::selectDatas()
+{
+	QList<QStringList> result;
+
+	dbCursor<Command> cursor;
+	if (cursor.select() > 0)
+	{
+		do 
+		{
+			std::ostringstream str;
+			str << cursor->mRID << "," << cursor->name << "," << cursor->localName << "," << cursor->pathName 
+				<< "," << cursor->aliasName << "," << cursor->description 
+				<< "," << cursor->timeStamp << "," << cursor->operationInProgress << "," << cursor->bilaFlag 
+				<< "," << cursor->psr_type << "," << cursor->psr_rid << "," << cursor->ftuUnitId 
+				<< "," << cursor->ftuPointId << "," << cursor->ftuVlDesc << "," << cursor->directControl;
+
+			QString value = QString().fromStdString(str.str());
+
+			QStringList values = value.split(",");
+			result.push_back(values);
+		} while (cursor.next());
+	}
+
+	return result;
+}
+
+bool CommandTable::insertData()
+{
+	Command info;
+	info.mRID = QUuid::createUuid().toString().toStdString();
+	info.operationInProgress = false;
+	info.bilaFlag = 1;
+	info.ftuUnitId = 0;
+	info.ftuPointId = 0;
+	info.directControl = false;
+	insert(info);
+	m_dbPtr->commit();
+	return true;
+}
+
+bool CommandTable::deleteData( const string& mRID )
+{
+	dbCursor<Command> cursor(dbCursorForUpdate);
+	return deleteDataByCursor(cursor, mRID);
+}
+
+bool CommandTable::updateDatas( const string& mRID, const QMap<QString,QString>& values )
+{
+	dbCursor<Command> cursor(dbCursorForUpdate);
+	return updateDataByCursor(cursor, mRID, values);
+}
+
+void CommandTable::getHidedColumns( QList<int>& hideColumns )
+{
+	hideColumns << 2 << 3 << 4 << 5 << 6 << 7;
+}
+
+void CommandTable::setFieldValue( dbAnyCursor& anyCursor, const string& fieldName, const string& value )
+{
+	dbCursor<Command>& cursor = static_cast< dbCursor<Command>& >(anyCursor);
+	if (fieldName == "name")
+	{
+		cursor->name = value;
+	}
+	else if (fieldName == "operationInProgress")
+	{
+		cursor->operationInProgress = transferType<bool, string>(value);
+	}
+	else if (fieldName == "bilaFlag")
+	{
+		cursor->bilaFlag = transferType<int, string>(value);
+	}
+	else if (fieldName == "psr_type")
+	{
+		cursor->psr_type = (value);
+	}
+	else if (fieldName == "psr_rid")
+	{
+		cursor->psr_rid = (value);
+	}
+	else if (fieldName == "ftuUnitId")
+	{
+		cursor->ftuUnitId = transferType<int4, string>(value);
+	}
+	else if (fieldName == "ftuPointId")
+	{
+		cursor->ftuPointId = transferType<int4, string>(value);
+	}
+}
+
 AnalogCurveDataTable::AnalogCurveDataTable( dbDatabase* dbPtr )
 	: BaseTable(dbPtr)
 {}

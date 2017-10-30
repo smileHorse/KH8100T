@@ -1298,12 +1298,15 @@ public:
 	int ftuPointId;//IED设备遥控号
 	std::string ftuVlDesc;//IED设备61850遥控描述
 
+	bool directControl;
+
 	TYPE_DESCRIPTOR((SUPERCLASS(Control),
 					FIELD(psr_rid),
 					FIELD(psr_type),
 					FIELD(ftuUnitId),
 					FIELD(ftuPointId),
-					FIELD(ftuVlDesc)
+					FIELD(ftuVlDesc),
+					FIELD(directControl)
 			));
 };
 
