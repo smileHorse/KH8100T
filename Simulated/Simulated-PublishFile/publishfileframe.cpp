@@ -1,4 +1,5 @@
 #include "publishfileframe.h"
+#include "FileHandler.h"
 
 #include <QtWidgets/QtWidgets>
 
@@ -45,6 +46,14 @@ void PublishFileFrame::createActions()
 	publishAction->setStatusTip(QStringLiteral("发布文件"));
 	connect(publishAction, SIGNAL(triggered()), this, SLOT(publishFile()));
 
+	readFileAction = new QAction(QIcon(":/images/read.png"), QStringLiteral("读取文件"), this);
+	readFileAction->setStatusTip(QStringLiteral("读取文件"));
+	connect(readFileAction, SIGNAL(triggered()), this, SLOT(readFile()));
+
+	writeFileAction = new QAction(QIcon(":/images/write.png"), QStringLiteral("写入文件"), this);
+	writeFileAction->setStatusTip(QStringLiteral("写入文件"));
+	connect(writeFileAction, SIGNAL(triggered()), this, SLOT(writeFile()));
+
 	clearAction = new QAction(QIcon(":/images/clear.png"), QStringLiteral("清空文本"), this);
 	clearAction->setStatusTip(QStringLiteral("清空文本"));
 	connect(clearAction, SIGNAL(triggered()), this, SLOT(clearTextEdit()));
@@ -62,6 +71,8 @@ void PublishFileFrame::createMenus()
 
 	operMenu = menuBar()->addMenu(QStringLiteral("操作"));
 	operMenu->addAction(publishAction);
+	operMenu->addAction(readFileAction);
+	operMenu->addAction(writeFileAction);
 	operMenu->addAction(clearAction);
 }
 
@@ -72,6 +83,8 @@ void PublishFileFrame::createToolBars()
 
 	operToolBar = addToolBar(QStringLiteral("操作"));
 	operToolBar->addAction(publishAction);
+	operToolBar->addAction(readFileAction);
+	operToolBar->addAction(writeFileAction);
 	operToolBar->addAction(clearAction);
 }
 
@@ -95,6 +108,72 @@ void PublishFileFrame::publishFile()
 
 	m_transFileServer->publishFile(true);
 	setWindowTitle(QStringLiteral("%1").arg(TITLE));
+}
+
+void PublishFileFrame::readFile()
+{
+	CFileHandler fileHandler;
+	string content;
+	bool ok;
+	int value = QInputDialog::getInt(this, QStringLiteral("选择读取文件的方式"), 
+		QStringLiteral("1: default	2: fstream	3: QFile	4: QTextStream	5: QDataStream"), 
+		1, 1, 5, 1, &ok);
+	if (ok)
+	{
+		bool (CFileHandler::*pfun)(const string&, string&);
+		QString mode;
+		switch(value)
+		{
+		case 1:
+			pfun = &CFileHandler::readFile;
+			mode = "readFile";
+			break;
+		case 2:
+			pfun = &CFileHandler::readFileWithFStream;
+			mode = "readFileWithFStream";
+			break;
+		case 3:
+			pfun = &CFileHandler::readFileWithQFile;
+			mode = "readFileWithQFile";
+			break;
+		case 4:
+			pfun = &CFileHandler::readFileWithQTextStream;
+			mode = "readFileWithQTextStream";
+			break;
+		case 5:
+			pfun = &CFileHandler::readFileWithQDataStream;
+			mode = "readFileWithQDataStream";
+			break;
+		default:
+			pfun = 0;
+			break;
+		}
+
+		updateTextEdit(QStringLiteral("以 %1 方式读取文件").arg(mode));
+		if ((fileHandler.*pfun)("input.log", content))
+		{
+			m_fileContent = content;
+			updateTextEdit(QString().fromStdString(content));
+		}
+		else
+		{
+			updateTextEdit(QStringLiteral("读取文件失败"));
+		}
+	}
+}
+
+void PublishFileFrame::writeFile()
+{
+	CFileHandler fileHandler;
+	string content = m_fileContent;
+	if (fileHandler.writeFile("output.log", content))
+	{
+		updateTextEdit(QStringLiteral("写入文件成功"));
+	}
+	else
+	{
+		updateTextEdit(QStringLiteral("写入文件失败"));
+	}
 }
 
 void PublishFileFrame::clearTextEdit()

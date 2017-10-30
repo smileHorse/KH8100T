@@ -3,7 +3,10 @@
 
 #include "transferfileserver.h"
 
+#include <string>
 #include <QtWidgets/QMainWindow>
+
+using namespace std;
 
 class QAction;
 class QMenu;
@@ -34,6 +37,8 @@ signals:
 
 private slots:
 	void publishFile();
+	void readFile();
+	void writeFile();
 	void clearTextEdit();
 	void updateTextEdit(QString text);
 
@@ -41,6 +46,8 @@ private:
 	QTextEdit*	textEdit;
 	QAction*	closeAction;
 	QAction*	publishAction;
+	QAction*	readFileAction;
+	QAction*	writeFileAction;
 	QAction*	clearAction;
 
 	QMenu*		fileMenu;
@@ -50,7 +57,8 @@ private:
 	QToolBar*	operToolBar;
 
 	bool		m_publishing;
-	bool		m_subscribering;
+
+	string		m_fileContent;
 
 	QSharedPointer<TransferFileServer>	m_transFileServer;
 };

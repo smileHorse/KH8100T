@@ -21,12 +21,18 @@ public:
 	// 读取文件
 	bool readFile(const string& fileName, string& content);
 
+
+	bool readFileWithFStream(const string& fileName, string& content);
 	bool readFileWithQFile(const string& fileName, string& content);
 	bool readFileWithQTextStream(const string& fileName, string& content);
 	bool readFileWithQDataStream(const string& fileName, string& content);
 
 	// 写入文件
 	bool writeFile(const string& fileName, const string& content);
+
+private:
+	QString	getReadFilePath(const string& fileName);
+	QString getWriteFilePath(const string& fileName);
 
 };
 #endif

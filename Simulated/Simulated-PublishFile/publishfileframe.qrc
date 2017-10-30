@@ -3,6 +3,8 @@
     <file>images/app.png</file>
     <file>images/close.png</file>
     <file>images/publish.png</file>
+    <file>images/read.png</file>
+    <file>images/write.png</file>
     <file>images/clear.png</file>
   </qresource>
 </RCC>
