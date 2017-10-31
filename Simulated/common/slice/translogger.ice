@@ -16,10 +16,14 @@
 */
 module TransferRdbLogger
 { 
+	sequence<byte> Bytes;
+    
     const string TransferRdbLoggerTopic = "transaction_logger";  // Ö÷Ìâ
     interface TransferRdbLoggerInfo
     {
         void transferRdbLogger(string title, string data);
+
+        void transferRdbLoggerBinary(string title, Bytes datas);
     };
 };
  

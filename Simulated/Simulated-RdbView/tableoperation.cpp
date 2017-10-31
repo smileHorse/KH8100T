@@ -48,7 +48,8 @@ bool TableOperation::getTablePtrByTableName( const QString& tableName )
 		tablePtrs.insert("Analog",						new AnalogTable(m_dbPtr));
 		tablePtrs.insert("Discrete",					new DiscreteTable(m_dbPtr));
 		tablePtrs.insert("Accumulator",					new AccumulatorTable(m_dbPtr));
-		tablePtrs.insert("AnalogCurveData",					new AnalogCurveDataTable(m_dbPtr));
+		tablePtrs.insert("Command",						new CommandTable(m_dbPtr));
+		tablePtrs.insert("AnalogCurveData",				new AnalogCurveDataTable(m_dbPtr));
 	}
 
 	if (tablePtrs.contains(tableName))

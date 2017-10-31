@@ -76,6 +76,8 @@ void __patch(TransferRdbLoggerInfoPtr&, const ::Ice::ObjectPtr&);
 namespace TransferRdbLogger
 {
 
+typedef ::std::vector< ::Ice::Byte> Bytes;
+
 const ::std::string TransferRdbLoggerTopic = "transaction_logger";
 
 }
@@ -85,6 +87,9 @@ namespace TransferRdbLogger
 
 class Callback_TransferRdbLoggerInfo_transferRdbLogger_Base : virtual public ::IceInternal::CallbackBase { };
 typedef ::IceUtil::Handle< Callback_TransferRdbLoggerInfo_transferRdbLogger_Base> Callback_TransferRdbLoggerInfo_transferRdbLoggerPtr;
+
+class Callback_TransferRdbLoggerInfo_transferRdbLoggerBinary_Base : virtual public ::IceInternal::CallbackBase { };
+typedef ::IceUtil::Handle< Callback_TransferRdbLoggerInfo_transferRdbLoggerBinary_Base> Callback_TransferRdbLoggerInfo_transferRdbLoggerBinaryPtr;
 
 }
 
@@ -165,6 +170,76 @@ private:
 
     void transferRdbLogger(const ::std::string&, const ::std::string&, const ::Ice::Context*);
     ::Ice::AsyncResultPtr begin_transferRdbLogger(const ::std::string&, const ::std::string&, const ::Ice::Context*, const ::IceInternal::CallbackBasePtr&, const ::Ice::LocalObjectPtr& __cookie = 0);
+    
+public:
+
+    void transferRdbLoggerBinary(const ::std::string& __p_title, const ::TransferRdbLogger::Bytes& __p_datas)
+    {
+        transferRdbLoggerBinary(__p_title, __p_datas, 0);
+    }
+    void transferRdbLoggerBinary(const ::std::string& __p_title, const ::TransferRdbLogger::Bytes& __p_datas, const ::Ice::Context& __ctx)
+    {
+        transferRdbLoggerBinary(__p_title, __p_datas, &__ctx);
+    }
+#ifdef ICE_CPP11
+    ::Ice::AsyncResultPtr
+    begin_transferRdbLoggerBinary(const ::std::string& __p_title, const ::TransferRdbLogger::Bytes& __p_datas, const ::IceInternal::Function<void ()>& __response, const ::IceInternal::Function<void (const ::Ice::Exception&)>& __exception = ::IceInternal::Function<void (const ::Ice::Exception&)>(), const ::IceInternal::Function<void (bool)>& __sent = ::IceInternal::Function<void (bool)>())
+    {
+        return begin_transferRdbLoggerBinary(__p_title, __p_datas, 0, new ::IceInternal::Cpp11FnOnewayCallbackNC(__response, __exception, __sent));
+    }
+    ::Ice::AsyncResultPtr
+    begin_transferRdbLoggerBinary(const ::std::string& __p_title, const ::TransferRdbLogger::Bytes& __p_datas, const ::IceInternal::Function<void (const ::Ice::AsyncResultPtr&)>& __completed, const ::IceInternal::Function<void (const ::Ice::AsyncResultPtr&)>& __sent = ::IceInternal::Function<void (const ::Ice::AsyncResultPtr&)>())
+    {
+        return begin_transferRdbLoggerBinary(__p_title, __p_datas, 0, ::Ice::newCallback(__completed, __sent), 0);
+    }
+    ::Ice::AsyncResultPtr
+    begin_transferRdbLoggerBinary(const ::std::string& __p_title, const ::TransferRdbLogger::Bytes& __p_datas, const ::Ice::Context& __ctx, const ::IceInternal::Function<void ()>& __response, const ::IceInternal::Function<void (const ::Ice::Exception&)>& __exception = ::IceInternal::Function<void (const ::Ice::Exception&)>(), const ::IceInternal::Function<void (bool)>& __sent = ::IceInternal::Function<void (bool)>())
+    {
+        return begin_transferRdbLoggerBinary(__p_title, __p_datas, &__ctx, new ::IceInternal::Cpp11FnOnewayCallbackNC(__response, __exception, __sent), 0);
+    }
+    ::Ice::AsyncResultPtr
+    begin_transferRdbLoggerBinary(const ::std::string& __p_title, const ::TransferRdbLogger::Bytes& __p_datas, const ::Ice::Context& __ctx, const ::IceInternal::Function<void (const ::Ice::AsyncResultPtr&)>& __completed, const ::IceInternal::Function<void (const ::Ice::AsyncResultPtr&)>& __sent = ::IceInternal::Function<void (const ::Ice::AsyncResultPtr&)>())
+    {
+        return begin_transferRdbLoggerBinary(__p_title, __p_datas, &__ctx, ::Ice::newCallback(__completed, __sent));
+    }
+#endif
+
+    ::Ice::AsyncResultPtr begin_transferRdbLoggerBinary(const ::std::string& __p_title, const ::TransferRdbLogger::Bytes& __p_datas)
+    {
+        return begin_transferRdbLoggerBinary(__p_title, __p_datas, 0, ::IceInternal::__dummyCallback, 0);
+    }
+
+    ::Ice::AsyncResultPtr begin_transferRdbLoggerBinary(const ::std::string& __p_title, const ::TransferRdbLogger::Bytes& __p_datas, const ::Ice::Context& __ctx)
+    {
+        return begin_transferRdbLoggerBinary(__p_title, __p_datas, &__ctx, ::IceInternal::__dummyCallback, 0);
+    }
+
+    ::Ice::AsyncResultPtr begin_transferRdbLoggerBinary(const ::std::string& __p_title, const ::TransferRdbLogger::Bytes& __p_datas, const ::Ice::CallbackPtr& __del, const ::Ice::LocalObjectPtr& __cookie = 0)
+    {
+        return begin_transferRdbLoggerBinary(__p_title, __p_datas, 0, __del, __cookie);
+    }
+
+    ::Ice::AsyncResultPtr begin_transferRdbLoggerBinary(const ::std::string& __p_title, const ::TransferRdbLogger::Bytes& __p_datas, const ::Ice::Context& __ctx, const ::Ice::CallbackPtr& __del, const ::Ice::LocalObjectPtr& __cookie = 0)
+    {
+        return begin_transferRdbLoggerBinary(__p_title, __p_datas, &__ctx, __del, __cookie);
+    }
+
+    ::Ice::AsyncResultPtr begin_transferRdbLoggerBinary(const ::std::string& __p_title, const ::TransferRdbLogger::Bytes& __p_datas, const ::TransferRdbLogger::Callback_TransferRdbLoggerInfo_transferRdbLoggerBinaryPtr& __del, const ::Ice::LocalObjectPtr& __cookie = 0)
+    {
+        return begin_transferRdbLoggerBinary(__p_title, __p_datas, 0, __del, __cookie);
+    }
+
+    ::Ice::AsyncResultPtr begin_transferRdbLoggerBinary(const ::std::string& __p_title, const ::TransferRdbLogger::Bytes& __p_datas, const ::Ice::Context& __ctx, const ::TransferRdbLogger::Callback_TransferRdbLoggerInfo_transferRdbLoggerBinaryPtr& __del, const ::Ice::LocalObjectPtr& __cookie = 0)
+    {
+        return begin_transferRdbLoggerBinary(__p_title, __p_datas, &__ctx, __del, __cookie);
+    }
+
+    void end_transferRdbLoggerBinary(const ::Ice::AsyncResultPtr&);
+    
+private:
+
+    void transferRdbLoggerBinary(const ::std::string&, const ::TransferRdbLogger::Bytes&, const ::Ice::Context*);
+    ::Ice::AsyncResultPtr begin_transferRdbLoggerBinary(const ::std::string&, const ::TransferRdbLogger::Bytes&, const ::Ice::Context*, const ::IceInternal::CallbackBasePtr&, const ::Ice::LocalObjectPtr& __cookie = 0);
     
 public:
     
@@ -301,6 +376,9 @@ public:
     virtual void transferRdbLogger(const ::std::string&, const ::std::string&, const ::Ice::Current& = ::Ice::Current()) = 0;
     ::Ice::DispatchStatus ___transferRdbLogger(::IceInternal::Incoming&, const ::Ice::Current&);
 
+    virtual void transferRdbLoggerBinary(const ::std::string&, const ::TransferRdbLogger::Bytes&, const ::Ice::Current& = ::Ice::Current()) = 0;
+    ::Ice::DispatchStatus ___transferRdbLoggerBinary(::IceInternal::Incoming&, const ::Ice::Current&);
+
     virtual ::Ice::DispatchStatus __dispatch(::IceInternal::Incoming&, const ::Ice::Current&);
 
 protected:
@@ -405,6 +483,88 @@ template<class T, typename CT> Callback_TransferRdbLoggerInfo_transferRdbLoggerP
 newCallback_TransferRdbLoggerInfo_transferRdbLogger(T* instance, void (T::*excb)(const ::Ice::Exception&, const CT&), void (T::*sentcb)(bool, const CT&) = 0)
 {
     return new Callback_TransferRdbLoggerInfo_transferRdbLogger<T, CT>(instance, 0, excb, sentcb);
+}
+
+template<class T>
+class CallbackNC_TransferRdbLoggerInfo_transferRdbLoggerBinary : public Callback_TransferRdbLoggerInfo_transferRdbLoggerBinary_Base, public ::IceInternal::OnewayCallbackNC<T>
+{
+public:
+
+    typedef IceUtil::Handle<T> TPtr;
+
+    typedef void (T::*Exception)(const ::Ice::Exception&);
+    typedef void (T::*Sent)(bool);
+    typedef void (T::*Response)();
+
+    CallbackNC_TransferRdbLoggerInfo_transferRdbLoggerBinary(const TPtr& obj, Response cb, Exception excb, Sent sentcb)
+        : ::IceInternal::OnewayCallbackNC<T>(obj, cb, excb, sentcb)
+    {
+    }
+};
+
+template<class T> Callback_TransferRdbLoggerInfo_transferRdbLoggerBinaryPtr
+newCallback_TransferRdbLoggerInfo_transferRdbLoggerBinary(const IceUtil::Handle<T>& instance, void (T::*cb)(), void (T::*excb)(const ::Ice::Exception&), void (T::*sentcb)(bool) = 0)
+{
+    return new CallbackNC_TransferRdbLoggerInfo_transferRdbLoggerBinary<T>(instance, cb, excb, sentcb);
+}
+
+template<class T> Callback_TransferRdbLoggerInfo_transferRdbLoggerBinaryPtr
+newCallback_TransferRdbLoggerInfo_transferRdbLoggerBinary(const IceUtil::Handle<T>& instance, void (T::*excb)(const ::Ice::Exception&), void (T::*sentcb)(bool) = 0)
+{
+    return new CallbackNC_TransferRdbLoggerInfo_transferRdbLoggerBinary<T>(instance, 0, excb, sentcb);
+}
+
+template<class T> Callback_TransferRdbLoggerInfo_transferRdbLoggerBinaryPtr
+newCallback_TransferRdbLoggerInfo_transferRdbLoggerBinary(T* instance, void (T::*cb)(), void (T::*excb)(const ::Ice::Exception&), void (T::*sentcb)(bool) = 0)
+{
+    return new CallbackNC_TransferRdbLoggerInfo_transferRdbLoggerBinary<T>(instance, cb, excb, sentcb);
+}
+
+template<class T> Callback_TransferRdbLoggerInfo_transferRdbLoggerBinaryPtr
+newCallback_TransferRdbLoggerInfo_transferRdbLoggerBinary(T* instance, void (T::*excb)(const ::Ice::Exception&), void (T::*sentcb)(bool) = 0)
+{
+    return new CallbackNC_TransferRdbLoggerInfo_transferRdbLoggerBinary<T>(instance, 0, excb, sentcb);
+}
+
+template<class T, typename CT>
+class Callback_TransferRdbLoggerInfo_transferRdbLoggerBinary : public Callback_TransferRdbLoggerInfo_transferRdbLoggerBinary_Base, public ::IceInternal::OnewayCallback<T, CT>
+{
+public:
+
+    typedef IceUtil::Handle<T> TPtr;
+
+    typedef void (T::*Exception)(const ::Ice::Exception& , const CT&);
+    typedef void (T::*Sent)(bool , const CT&);
+    typedef void (T::*Response)(const CT&);
+
+    Callback_TransferRdbLoggerInfo_transferRdbLoggerBinary(const TPtr& obj, Response cb, Exception excb, Sent sentcb)
+        : ::IceInternal::OnewayCallback<T, CT>(obj, cb, excb, sentcb)
+    {
+    }
+};
+
+template<class T, typename CT> Callback_TransferRdbLoggerInfo_transferRdbLoggerBinaryPtr
+newCallback_TransferRdbLoggerInfo_transferRdbLoggerBinary(const IceUtil::Handle<T>& instance, void (T::*cb)(const CT&), void (T::*excb)(const ::Ice::Exception&, const CT&), void (T::*sentcb)(bool, const CT&) = 0)
+{
+    return new Callback_TransferRdbLoggerInfo_transferRdbLoggerBinary<T, CT>(instance, cb, excb, sentcb);
+}
+
+template<class T, typename CT> Callback_TransferRdbLoggerInfo_transferRdbLoggerBinaryPtr
+newCallback_TransferRdbLoggerInfo_transferRdbLoggerBinary(const IceUtil::Handle<T>& instance, void (T::*excb)(const ::Ice::Exception&, const CT&), void (T::*sentcb)(bool, const CT&) = 0)
+{
+    return new Callback_TransferRdbLoggerInfo_transferRdbLoggerBinary<T, CT>(instance, 0, excb, sentcb);
+}
+
+template<class T, typename CT> Callback_TransferRdbLoggerInfo_transferRdbLoggerBinaryPtr
+newCallback_TransferRdbLoggerInfo_transferRdbLoggerBinary(T* instance, void (T::*cb)(const CT&), void (T::*excb)(const ::Ice::Exception&, const CT&), void (T::*sentcb)(bool, const CT&) = 0)
+{
+    return new Callback_TransferRdbLoggerInfo_transferRdbLoggerBinary<T, CT>(instance, cb, excb, sentcb);
+}
+
+template<class T, typename CT> Callback_TransferRdbLoggerInfo_transferRdbLoggerBinaryPtr
+newCallback_TransferRdbLoggerInfo_transferRdbLoggerBinary(T* instance, void (T::*excb)(const ::Ice::Exception&, const CT&), void (T::*sentcb)(bool, const CT&) = 0)
+{
+    return new Callback_TransferRdbLoggerInfo_transferRdbLoggerBinary<T, CT>(instance, 0, excb, sentcb);
 }
 
 }

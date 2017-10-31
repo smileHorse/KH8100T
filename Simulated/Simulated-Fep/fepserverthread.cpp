@@ -203,25 +203,51 @@ void FepServerThread::processDdData()
 
 void FepServerThread::processUnitStateData()
 {
-	SelfDataPacket selfPacket;
-	selfPacket.id = 1;
-	selfPacket.fepNode = "fep-36";
-	selfPacket.type = UnitStateType;
-	selfPacket.unitNo = 1;
-	qsrand(QDateTime::currentDateTime().toTime_t());
-	for (int i = 0; i < 5; ++i)
+	//SelfDataPacket selfPacket;
+	//selfPacket.id = 1;
+	//selfPacket.fepNode = "fep-36";
+	//selfPacket.type = UnitStateType;
+	//selfPacket.unitNo = 1;
+	//qsrand(QDateTime::currentDateTime().toTime_t());
+	//for (int i = 0; i < 5; ++i)
+	//{
+	//	::FepData::Unit unit;
+	//	unit.unitNo = i + 1;
+	//	unit.unitState = getUnitState(qrand() % 5);
+	//	unit.channelState1 = getUnitState(qrand() % 5);
+	//	unit.channelState2 = getUnitState(qrand() % 5);
+	//	unit.errorRate = (qrand() % 100);
+
+	//	selfPacket.units.push_back(unit);
+	//}
+
+	//processDataPacket(selfPacket);
+
+	// ¶¨Ê±·¢ËÍÖÕ¶Ë×´Ì¬
+	while(true)
 	{
-		::FepData::Unit unit;
-		unit.unitNo = i + 1;
-		unit.unitState = getUnitState(qrand() % 5);
-		unit.channelState1 = getUnitState(qrand() % 5);
-		unit.channelState2 = getUnitState(qrand() % 5);
-		unit.errorRate = (qrand() % 100);
+		SelfDataPacket selfPacket;
+		selfPacket.id = 1;
+		selfPacket.fepNode = "fep-36";
+		selfPacket.type = UnitStateType;
+		selfPacket.unitNo = 1;
+		qsrand(QDateTime::currentDateTime().toTime_t());
+		for (int i = 0; i < 5; ++i)
+		{
+			::FepData::Unit unit;
+			unit.unitNo = i + 1;
+			unit.unitState = getUnitState(3);
+			unit.channelState1 = getUnitState(3);
+			unit.channelState2 = getUnitState(3);
+			unit.errorRate = (qrand() % 100);
 
-		selfPacket.units.push_back(unit);
+			selfPacket.units.push_back(unit);
+		}
+
+		processDataPacket(selfPacket);
+
+		QThread::sleep(10);
 	}
-
-	processDataPacket(selfPacket);
 }
 
 void FepServerThread::processDataPacket( SelfDataPacket selfPacket )

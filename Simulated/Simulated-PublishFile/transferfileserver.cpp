@@ -7,6 +7,11 @@
 #include <Ice/Ice.h>
 #include <IceUtil/IceUtil.h>
 #include <IceStorm/IceStorm.h>
+#include <fstream>
+
+using namespace std;
+
+#define BUFFER_SIZE		2048 * 2
 
 TransferFileServer::TransferFileServer(int argc, char* argv[])
 {
@@ -68,14 +73,38 @@ void TransferFileServer::publishFile(bool isStart)
 
 		// 读取文件内容
 		string fileName = "source.log";
-		string content = "";
-		CFileHandler fileHandler;
-		if (!fileHandler.readFileWithQDataStream(fileName, content))
-		{
-			emit outputOperationInfo(QStringLiteral("读取文件出错"));
-		}
+		//string content = "";
+		//CFileHandler fileHandler;
+		//if (!fileHandler.readFileWithQDataStream(fileName, content))
+		//{
+		//	emit outputOperationInfo(QStringLiteral("读取文件出错"));
+		//}
 
-		m_publishFilePrx->transferRdbLogger(fileName, content);
+		//m_publishFilePrx->transferRdbLogger(fileName, content);
+
+		std::ifstream fin("source/" + fileName, std::ios::binary);
+
+		int nNum;
+		char szBuf[BUFFER_SIZE] = {0};
+
+		bool result = true;
+		while(!fin.eof())  
+		{  
+			char szBuf[BUFFER_SIZE] = {0};  
+
+			fin.read(szBuf, sizeof(char) * BUFFER_SIZE);
+
+			vector<::Ice::Byte>	datas;
+			for (int i = 0; i < fin.gcount(); ++i)
+			{
+				datas.push_back((::Ice::Byte)szBuf[i]);
+			}
+
+			m_publishFilePrx->transferRdbLoggerBinary(fileName, datas);
+		}  
+
+		fin.close();
+
 
 		emit outputOperationInfo(QStringLiteral("完成发布文件..."));
 	}

@@ -45,6 +45,8 @@ namespace
 
 const ::std::string __TransferRdbLogger__TransferRdbLoggerInfo__transferRdbLogger_name = "transferRdbLogger";
 
+const ::std::string __TransferRdbLogger__TransferRdbLoggerInfo__transferRdbLoggerBinary_name = "transferRdbLoggerBinary";
+
 }
 ::IceProxy::Ice::Object* ::IceProxy::TransferRdbLogger::upCast(::IceProxy::TransferRdbLogger::TransferRdbLoggerInfo* p) { return p; }
 
@@ -106,6 +108,50 @@ void
 IceProxy::TransferRdbLogger::TransferRdbLoggerInfo::end_transferRdbLogger(const ::Ice::AsyncResultPtr& __result)
 {
     __end(__result, __TransferRdbLogger__TransferRdbLoggerInfo__transferRdbLogger_name);
+}
+
+void
+IceProxy::TransferRdbLogger::TransferRdbLoggerInfo::transferRdbLoggerBinary(const ::std::string& __p_title, const ::TransferRdbLogger::Bytes& __p_datas, const ::Ice::Context* __ctx)
+{
+    ::IceInternal::Outgoing __og(this, __TransferRdbLogger__TransferRdbLoggerInfo__transferRdbLoggerBinary_name, ::Ice::Normal, __ctx);
+    try
+    {
+        ::IceInternal::BasicStream* __os = __og.startWriteParams(::Ice::DefaultFormat);
+        __os->write(__p_title);
+        __os->write(__p_datas);
+        __og.endWriteParams();
+    }
+    catch(const ::Ice::LocalException& __ex)
+    {
+        __og.abort(__ex);
+    }
+    __invoke(__og);
+}
+
+::Ice::AsyncResultPtr
+IceProxy::TransferRdbLogger::TransferRdbLoggerInfo::begin_transferRdbLoggerBinary(const ::std::string& __p_title, const ::TransferRdbLogger::Bytes& __p_datas, const ::Ice::Context* __ctx, const ::IceInternal::CallbackBasePtr& __del, const ::Ice::LocalObjectPtr& __cookie)
+{
+    ::IceInternal::OutgoingAsyncPtr __result = new ::IceInternal::OutgoingAsync(this, __TransferRdbLogger__TransferRdbLoggerInfo__transferRdbLoggerBinary_name, __del, __cookie);
+    try
+    {
+        __result->prepare(__TransferRdbLogger__TransferRdbLoggerInfo__transferRdbLoggerBinary_name, ::Ice::Normal, __ctx);
+        ::IceInternal::BasicStream* __os = __result->startWriteParams(::Ice::DefaultFormat);
+        __os->write(__p_title);
+        __os->write(__p_datas);
+        __result->endWriteParams();
+        __result->invoke();
+    }
+    catch(const ::Ice::Exception& __ex)
+    {
+        __result->abort(__ex);
+    }
+    return __result;
+}
+
+void
+IceProxy::TransferRdbLogger::TransferRdbLoggerInfo::end_transferRdbLoggerBinary(const ::Ice::AsyncResultPtr& __result)
+{
+    __end(__result, __TransferRdbLogger__TransferRdbLoggerInfo__transferRdbLoggerBinary_name);
 }
 
 const ::std::string&
@@ -176,6 +222,21 @@ TransferRdbLogger::TransferRdbLoggerInfo::___transferRdbLogger(::IceInternal::In
     return ::Ice::DispatchOK;
 }
 
+::Ice::DispatchStatus
+TransferRdbLogger::TransferRdbLoggerInfo::___transferRdbLoggerBinary(::IceInternal::Incoming& __inS, const ::Ice::Current& __current)
+{
+    __checkMode(::Ice::Normal, __current.mode);
+    ::IceInternal::BasicStream* __is = __inS.startReadParams();
+    ::std::string __p_title;
+    ::TransferRdbLogger::Bytes __p_datas;
+    __is->read(__p_title);
+    __is->read(__p_datas);
+    __inS.endReadParams();
+    transferRdbLoggerBinary(__p_title, __p_datas, __current);
+    __inS.__writeEmptyParams();
+    return ::Ice::DispatchOK;
+}
+
 namespace
 {
 const ::std::string __TransferRdbLogger__TransferRdbLoggerInfo_all[] =
@@ -184,7 +245,8 @@ const ::std::string __TransferRdbLogger__TransferRdbLoggerInfo_all[] =
     "ice_ids",
     "ice_isA",
     "ice_ping",
-    "transferRdbLogger"
+    "transferRdbLogger",
+    "transferRdbLoggerBinary"
 };
 
 }
@@ -192,7 +254,7 @@ const ::std::string __TransferRdbLogger__TransferRdbLoggerInfo_all[] =
 ::Ice::DispatchStatus
 TransferRdbLogger::TransferRdbLoggerInfo::__dispatch(::IceInternal::Incoming& in, const ::Ice::Current& current)
 {
-    ::std::pair< const ::std::string*, const ::std::string*> r = ::std::equal_range(__TransferRdbLogger__TransferRdbLoggerInfo_all, __TransferRdbLogger__TransferRdbLoggerInfo_all + 5, current.operation);
+    ::std::pair< const ::std::string*, const ::std::string*> r = ::std::equal_range(__TransferRdbLogger__TransferRdbLoggerInfo_all, __TransferRdbLogger__TransferRdbLoggerInfo_all + 6, current.operation);
     if(r.first == r.second)
     {
         throw ::Ice::OperationNotExistException(__FILE__, __LINE__, current.id, current.facet, current.operation);
@@ -219,6 +281,10 @@ TransferRdbLogger::TransferRdbLoggerInfo::__dispatch(::IceInternal::Incoming& in
         case 4:
         {
             return ___transferRdbLogger(in, current);
+        }
+        case 5:
+        {
+            return ___transferRdbLoggerBinary(in, current);
         }
     }
 

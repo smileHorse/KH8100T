@@ -1675,7 +1675,7 @@ QList<QStringList> CommandTable::selectDatas()
 			str << cursor->mRID << "," << cursor->name << "," << cursor->localName << "," << cursor->pathName 
 				<< "," << cursor->aliasName << "," << cursor->description 
 				<< "," << cursor->timeStamp << "," << cursor->operationInProgress << "," << cursor->bilaFlag 
-				<< "," << cursor->psr_type << "," << cursor->psr_rid << "," << cursor->ftuUnitId 
+				<< "," << cursor->psr_rid << "," << cursor->psr_type << "," << cursor->ftuUnitId 
 				<< "," << cursor->ftuPointId << "," << cursor->ftuVlDesc << "," << cursor->directControl;
 
 			QString value = QString().fromStdString(str.str());
