@@ -1842,3 +1842,252 @@ void AnalogCurveDataTable::setFieldValue( dbAnyCursor& anyCursor, const string& 
 		}
 	}
 }
+
+PowerTransformerTable::PowerTransformerTable( dbDatabase* dbPtr )
+	: BaseTable(dbPtr)
+{}
+
+QList<QStringList> PowerTransformerTable::selectDatas()
+{
+	QList<QStringList> result;
+
+	dbCursor<PowerTransformer> cursor;
+	if (cursor.select() > 0)
+	{
+		do 
+		{
+			std::ostringstream str;
+			str << cursor->mRID << "," << cursor->name << "," << cursor->localName << "," << cursor->pathName 
+				<< "," << cursor->aliasName << "," << cursor->description 
+				<< "," << cursor->psrType
+				<< "," << cursor->ec_type << "," << cursor->ec_rid 
+				<< "," << cursor->bmagSat << "," << cursor->magBaseU << "," << cursor->magSatFlux 
+				<< "," << cursor->phases << "," << cursor->transfCoolingType << "," << cursor->transformerType 
+				<< ",";
+			int length = cursor->transformer_windings.length();
+			if (length > 0)
+			{
+				for (int i = 0; i < length; ++i)
+				{
+					str << (i == 0) ? "" : "/";
+					str << cursor->transformer_windings[i].getOid();
+				}
+			}
+			else
+			{
+				str << "";
+			}
+			str << "," << cursor.currentId().getOid();
+
+			QString value = QString().fromStdString(str.str());
+
+			QStringList values = value.split(",");
+			result.push_back(values);
+		} while (cursor.next());
+	}
+
+	return result;
+}
+
+bool PowerTransformerTable::insertData()
+{
+	PowerTransformer info;
+	info.mRID = QUuid::createUuid().toString().toStdString();
+	info.bmagSat = 0.0;
+	info.magBaseU = 0.0;
+	info.magSatFlux = 0.0;
+	info.phases = 0;
+	info.transfCoolingType = 0;
+	info.transformerType = 0;
+	insert(info);
+	m_dbPtr->commit();
+	return true;
+}
+
+bool PowerTransformerTable::deleteData( const string& mRID )
+{
+	dbCursor<PowerTransformer> cursor(dbCursorForUpdate);
+	return deleteDataByCursor(cursor, mRID);
+}
+
+bool PowerTransformerTable::updateDatas( const string& mRID, const QMap<QString,QString>& values )
+{
+	dbCursor<PowerTransformer> cursor(dbCursorForUpdate);
+	return updateDataByCursor(cursor, mRID, values);
+}
+
+void PowerTransformerTable::getHidedColumns( QList<int>& hideColumns )
+{
+	hideColumns << 2 << 3 << 4 << 5;
+}
+
+void PowerTransformerTable::setFieldValue( dbAnyCursor& anyCursor, const string& fieldName, const string& value )
+{
+	dbCursor<PowerTransformer>& cursor = static_cast< dbCursor<PowerTransformer>& >(anyCursor);
+	if (fieldName == "name")
+	{
+		cursor->name = value;
+	}
+	else if (fieldName == "psrType")
+	{
+		cursor->psrType = value;
+	}
+	else if (fieldName == "ec_type")
+	{
+		cursor->ec_type = value;
+	}
+	else if (fieldName == "ec_rid")
+	{
+		cursor->ec_rid = value;
+	}
+	else if (fieldName == "bmagSat")
+	{
+		cursor->bmagSat = transferType<real8, string>(value);
+	}
+	else if (fieldName == "magBaseU")
+	{
+		cursor->magBaseU = transferType<real8, string>(value);
+	}
+	else if (fieldName == "magSatFlux")
+	{
+		cursor->magSatFlux = transferType<real8, string>(value);
+	}
+	else if (fieldName == "phases")
+	{
+		cursor->phases = transferType<int, string>(value);
+	}
+	else if (fieldName == "transfCoolingType")
+	{
+		cursor->transfCoolingType = transferType<int, string>(value);
+	}
+	else if (fieldName == "transformerType")
+	{
+		cursor->transformerType = transferType<int, string>(value);
+	}
+}
+
+TransformerWindingTable::TransformerWindingTable( dbDatabase* dbPtr )
+	: BaseTable(dbPtr)
+{}
+
+QList<QStringList> TransformerWindingTable::selectDatas()
+{
+	QList<QStringList> result;
+
+	dbCursor<TransformerWinding> cursor;
+	if (cursor.select() > 0)
+	{
+		do 
+		{
+			std::ostringstream str;
+			str << cursor->mRID << "," << cursor->name << "," << cursor->localName << "," << cursor->pathName 
+				<< "," << cursor->aliasName << "," << cursor->description 
+				<< "," << cursor->psrType 
+				<< "," << cursor->ec_type << "," << cursor->ec_rid 
+				<< "," << cursor->phase << "," << cursor->powerPoint << "," << cursor->base_voltage 
+				<< "," << cursor->b << "," << cursor->b0 << "," << cursor->connectionType 
+				<< "," << cursor->emergencyS << "," << cursor->g << "," << cursor->g0 
+				<< "," << cursor->grounded << "," << cursor->insulationU << "," << cursor->r 
+				<< "," << cursor->r0 << "," << cursor->ratedU << "," << cursor->ratedS << "," << cursor->rground 
+				<< "," << cursor->shortTermS << "," << cursor->windingType << "," << cursor->x 
+				<< "," << cursor->x0 << "," << cursor->xground << "," << cursor->power_tranformer.getOid();
+
+			QString value = QString().fromStdString(str.str());
+
+			QStringList values = value.split(",");
+			result.push_back(values);
+		} while (cursor.next());
+	}
+
+	return result;
+}
+
+bool TransformerWindingTable::insertData()
+{
+	TransformerWinding info;
+	info.mRID = QUuid::createUuid().toString().toStdString();
+	info.phase = 0;
+	info.powerPoint = false;
+	info.b = 0.0;
+	info.b0 = 0.0;
+	info.connectionType = 0;
+	info.emergencyS = 0.0;
+	info.g = 0.0;
+	info.g0 = 0.0;
+	info.grounded = false;
+	info.insulationU = 0.0;
+	info.r = 0.0;
+	info.r0 = 0.0;
+	info.ratedU = 0.0;
+	info.ratedS = 0.0;
+	info.rground = 0.0;
+	info.shortTermS = 0.0;
+	info.windingType = 0;
+	info.x = 0.0;
+	info.x0 = 0.0;
+	info.xground = 0.0;
+	insert(info);
+	m_dbPtr->commit();
+	return true;
+}
+
+bool TransformerWindingTable::deleteData( const string& mRID )
+{
+	dbCursor<TransformerWinding> cursor(dbCursorForUpdate);
+	return deleteDataByCursor(cursor, mRID);
+}
+
+bool TransformerWindingTable::updateDatas( const string& mRID, const QMap<QString,QString>& values )
+{
+	dbCursor<TransformerWinding> cursor(dbCursorForUpdate);
+	return updateDataByCursor(cursor, mRID, values);
+}
+
+void TransformerWindingTable::getHidedColumns( QList<int>& hideColumns )
+{
+	hideColumns << 2 << 3 << 4 << 5 << 11 << 12 << 13 << 14 << 15 << 16 << 17 << 18 << 19 << 20 << 21 << 22 
+		<< 23 << 24 << 25 << 27 << 28 << 29;
+}
+
+void TransformerWindingTable::setFieldValue( dbAnyCursor& anyCursor, const string& fieldName, const string& value )
+{
+	dbCursor<TransformerWinding>& cursor = static_cast< dbCursor<TransformerWinding>& >(anyCursor);
+	if (fieldName == "name")
+	{
+		cursor->name = value;
+	}
+	else if (fieldName == "psrType")
+	{
+		cursor->psrType = value;
+	}
+	else if (fieldName == "ec_type")
+	{
+		cursor->ec_type = value;
+	}
+	else if (fieldName == "ec_rid")
+	{
+		cursor->ec_rid = value;
+	}
+	else if (fieldName == "phase")
+	{
+		cursor->phase = transferType<int, string>(value);
+	}
+	else if (fieldName == "powerPoint")
+	{
+		cursor->powerPoint = transferType<bool, string>(value);
+	}
+	else if (fieldName == "windingType")
+	{
+		cursor->windingType = transferType<int, string>(value);
+	}
+	else if (fieldName == "power_tranformer")
+	{
+		string powerTransformerId = value;
+		dbCursor<PowerTransformer> powerTransCursor;
+		bool bRet = GetDbReference(powerTransCursor, powerTransformerId);
+		if (bRet)
+		{
+			cursor->power_tranformer = powerTransCursor.currentId();
+		}
+	}
+}

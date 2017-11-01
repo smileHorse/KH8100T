@@ -50,6 +50,8 @@ bool TableOperation::getTablePtrByTableName( const QString& tableName )
 		tablePtrs.insert("Accumulator",					new AccumulatorTable(m_dbPtr));
 		tablePtrs.insert("Command",						new CommandTable(m_dbPtr));
 		tablePtrs.insert("AnalogCurveData",				new AnalogCurveDataTable(m_dbPtr));
+		tablePtrs.insert("PowerTransformer",			new PowerTransformerTable(m_dbPtr));
+		tablePtrs.insert("TransformerWinding",			new TransformerWindingTable(m_dbPtr));
 	}
 
 	if (tablePtrs.contains(tableName))

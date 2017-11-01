@@ -288,4 +288,34 @@ protected:
 	virtual	void setFieldValue(dbAnyCursor& anyCursor, const string& fieldName, const string& value);
 };
 
+class PowerTransformerTable : public BaseTable
+{
+public:
+	PowerTransformerTable(dbDatabase* dbPtr);
+
+	virtual QList<QStringList>	selectDatas();
+	virtual bool insertData();
+	virtual bool deleteData(const string& mRID);
+	virtual bool updateDatas(const string& mRID, const QMap<QString,QString>& values);
+	virtual void getHidedColumns(QList<int>& hideColumns);
+
+protected:
+	virtual	void setFieldValue(dbAnyCursor& anyCursor, const string& fieldName, const string& value);
+};
+
+class TransformerWindingTable : public BaseTable
+{
+public:
+	TransformerWindingTable(dbDatabase* dbPtr);
+
+	virtual QList<QStringList>	selectDatas();
+	virtual bool insertData();
+	virtual bool deleteData(const string& mRID);
+	virtual bool updateDatas(const string& mRID, const QMap<QString,QString>& values);
+	virtual void getHidedColumns(QList<int>& hideColumns);
+
+protected:
+	virtual	void setFieldValue(dbAnyCursor& anyCursor, const string& fieldName, const string& value);
+};
+
 #endif
