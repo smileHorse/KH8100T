@@ -226,14 +226,7 @@ void TransactionFrame::startMasterService()
 	{
 		dbTransactionLoggerThread.setStop(true);
 
-		bool loggerThreadFinished = false;
-		while(!loggerThreadFinished)
-		{
-			if (dbTransactionLoggerThread.isFinished())
-			{
-				loggerThreadFinished = true;
-			}
-		}
+		dbTransactionLoggerThread.wait();
 	}
 	dbTransactionLoggerThread.start();
 
@@ -262,39 +255,19 @@ void TransactionFrame::stopService()
 			if (thread->isRunning())
 			{
 				thread->setStop(true);
+				thread->wait();
 			}
 		}
 		
 		dbTransactionLoggerThread.setStop(true);
+		dbTransactionLoggerThread.wait();
 	}
 	else if (currServiceType == SlaveService)
 	{
 		if (slaveService->isRunning())
 		{
 			slaveService->setStop(true);
-		}
-	}
-
-	bool allThreadFinished = false;
-	while(!allThreadFinished)
-	{
-		allThreadFinished = true;
-		if (currServiceType == MasterService)
-		{
-			Q_FOREACH(MasterServiceThread* thread, vctMasterServices)
-			{
-				if (!thread->isFinished())
-				{
-					allThreadFinished = false;
-				}
-			}
-		}
-		else if (currServiceType == SlaveService)
-		{
-			if (!slaveService->isFinished())
-			{
-				allThreadFinished = false;
-			}
+			slaveService->wait();
 		}
 	}
 	outputOperationInfo(LoggerInfo::getLoggerInfo(QStringLiteral("关闭实时库和事务日志文件成功"), FrameService));

@@ -33,6 +33,8 @@ void MasterServiceThread::run()
 {
 	while(!m_isStop)
 	{
+		QMutexLocker locker(&m_mutex);
+
 		// 每隔指定时间操作一次数据库
 		if (isNeedDeal())
 		{

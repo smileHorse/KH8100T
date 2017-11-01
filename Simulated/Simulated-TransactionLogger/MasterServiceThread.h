@@ -35,6 +35,8 @@ private:
 	QDateTime	m_lastChangeLoggerTime;	
 	
 	FastdbManager*	m_fastdbManager;
+
+	QMutex	m_mutex;
 };
 
 #endif
