@@ -297,46 +297,50 @@ public:
 // The kind of regulation model.   For example regulating voltage, reactive
 // power, active power, etc.
 //##ModelId=3748506400EC
-enum RegulatingControlModeKind
+// Masf add 20171025 解决与QTextStream中fixed函数的编译冲突，增加命名空间
+namespace FdbTableDefine
 {
-	// Voltage is specified.
-	//##ModelId=4CF46A490370
-	voltage,
+	enum RegulatingControlModeKind
+	{
+		// Voltage is specified.
+		//##ModelId=4CF46A490370
+		voltage,
 
-	// Active power is specified.
-	//##ModelId=4CF46A5C00C4
-	activePower,
+		// Active power is specified.
+		//##ModelId=4CF46A5C00C4
+		activePower,
 
-	// Reactive power is specified.
-	//##ModelId=4CF46A7A03C1
-	reactivePower,
+		// Reactive power is specified.
+		//##ModelId=4CF46A7A03C1
+		reactivePower,
 
-	// Current flow is specified.
-	//##ModelId=4CF46A9102BD
-	currentFlow,
+		// Current flow is specified.
+		//##ModelId=4CF46A9102BD
+		currentFlow,
 
-	// The regulation mode is fixed, and thus not regulating.
-	//##ModelId=4CF46AAD02D1
-//	fixed,
+		// The regulation mode is fixed, and thus not regulating.
+		//##ModelId=4CF46AAD02D1
+		fixed,
 
-	// Admittance is specified
-	//##ModelId=4CF46AC802D1
-	admittance,
+		// Admittance is specified
+		//##ModelId=4CF46AC802D1
+		admittance,
 
-	// Control switches on/off by time of day. The times may change on the
-	// weekend, or in different seasons.
-	//##ModelId=4CF46AE20123
-	timeScheduled,
+		// Control switches on/off by time of day. The times may change on the
+		// weekend, or in different seasons.
+		//##ModelId=4CF46AE20123
+		timeScheduled,
 
-	// Control switches on/off based on the local temperature (i.e., a
-	// thermostat).
-	//##ModelId=4CF46AFE0376
-	temperature,
+		// Control switches on/off based on the local temperature (i.e., a
+		// thermostat).
+		//##ModelId=4CF46AFE0376
+		temperature,
 
-	//##ModelId=4CF46B1B0380
-	powerFactor
+		//##ModelId=4CF46B1B0380
+		powerFactor
 
-};
+	};
+}
 
 // Transformer tap changer type. Indicates the capabilities of the tap changer
 // independent of the operating mode.
@@ -1298,7 +1302,7 @@ public:
 	int ftuPointId;//IED设备遥控号
 	std::string ftuVlDesc;//IED设备61850遥控描述
 
-	bool directControl;
+	bool	directControl;	// 直控标志
 
 	TYPE_DESCRIPTOR((SUPERCLASS(Control),
 					FIELD(psr_rid),
@@ -2821,6 +2825,5 @@ public:
 					FIELD (measure_rid)
 			));
 };
-
 #endif
 

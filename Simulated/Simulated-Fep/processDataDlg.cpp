@@ -192,7 +192,7 @@ void ProcessDataDialog::getDataPacket( SelfDataPacket& packet )
 			{
 				for (int j = 0; j < COUNT; ++j)
 				{
-					packet.analogs.push_back(i * 10 + j + 1);
+					packet.discretes.push_back(i * 10 + j + 1);
 					packet.discretes.push_back(dataTable->item(i, j)->text().toInt());
 				}
 			}			

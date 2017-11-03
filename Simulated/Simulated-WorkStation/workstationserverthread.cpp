@@ -197,6 +197,26 @@ void WorkStationServerThread::requestCompleteData()
 	}
 }
 
+void WorkStationServerThread::selectCompleteData()
+{
+	RdbRealData::RdbDataOptPrx rdbOptPrx = RdbRealData::RdbDataOptPrx::checkedCast(
+		m_communicatorPtr->stringToProxy("rdb-opt:default -h 192.168.3.25 -p 10003 -t 5000"));
+	if (rdbOptPrx)
+	{
+		RdbRealData::RequestCompleteDataSeq requestSeq;
+		requestSeq.id = 0;
+		requestSeq.requestId = 0;
+		requestSeq.requestNode = "workstation";
+		requestSeq.isStop = false;
+		requestSeq.refreshFreq = 0;
+		RdbRealData::RequestCompleteData	request;
+		request.tableName = "SubGeographicalRegion";
+
+		RdbRealData::RespondCompleteDataSeq respondSeq;
+		rdbOptPrx->SelectCompleteData(requestSeq, respondSeq);
+	}
+}
+
 void WorkStationServerThread::subscriberRdbRequest(bool isStop)
 {
 	try 

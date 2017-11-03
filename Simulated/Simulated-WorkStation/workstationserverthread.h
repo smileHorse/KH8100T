@@ -36,6 +36,7 @@ signals:
 
 private slots:
 	void requestCompleteData();
+	void selectCompleteData();
 	void subscriberRdbRequest(bool isStop);
 	void subscriberRdbRespond(bool isStop);
 	void subscriberAlarmData(bool isStop);

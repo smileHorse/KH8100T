@@ -1207,7 +1207,7 @@ QList<QStringList> AnalogTable::selectDatas()
 				<< "," << cursor->oldData << "," << cursor->operatorBlocked << "," << cursor->oscillatory 
 				<< "," << cursor->outOfRange << "," << cursor->overFlow << "," << cursor->source 
 				<< "," << cursor->suspect << "," << cursor->test << "," << cursor->validity 
-				<< "," << cursor->valueSource << "," << cursor->sensorAccuracy << "," << cursor->timeStamp 
+				<< "," << cursor->valueSource << "," << cursor->timeStamp << "," << cursor->sensorAccuracy 
 				<< "," << cursor->saveSection << "," << cursor->lockFlag << "," << cursor->holdFlag 
 				<< "," << cursor->psr_type << "," << cursor->psr_rid 
 				<< "," << cursor->saveReport << "," << cursor->maxValue << "," << cursor->minValue 
@@ -1290,6 +1290,9 @@ void AnalogTable::getHidedColumns( QList<int>& hideColumns )
 {
 	hideColumns << 2 << 3 << 4 << 5 << 6 << 7 << 8 << 9 << 10 << 11 << 12 << 13 << 14 << 15 << 16 << 17 << 18 
 		<< 19 << 20 << 21 << 22 << 33 << 43 << 47;
+	//hideColumns << 2 << 3 << 4 << 5 << 6 << 7 << 8 << 9 << 10 << 11 << 12 << 13 << 14 << 15 << 16 << 17 << 18 
+	//	<< 19 << 20 << 21 << 23 << 30 << 31 << 32 << 33 << 34 << 35 << 36 << 37 << 38 << 39 << 40 << 41 
+	//	<< 42 << 43 << 44 << 47;
 }
 
 void AnalogTable::setFieldValue( dbAnyCursor& anyCursor, const string& fieldName, const string& value )
@@ -1428,7 +1431,7 @@ QList<QStringList> DiscreteTable::selectDatas()
 				<< "," << cursor->oldData << "," << cursor->operatorBlocked << "," << cursor->oscillatory 
 				<< "," << cursor->outOfRange << "," << cursor->overFlow << "," << cursor->source 
 				<< "," << cursor->suspect << "," << cursor->test << "," << cursor->validity 
-				<< "," << cursor->valueSource << "," << cursor->sensorAccuracy << "," << cursor->timeStamp 
+				<< "," << cursor->valueSource << "," << cursor->timeStamp << "," << cursor->sensorAccuracy 
 				<< "," << cursor->saveSection << "," << cursor->lockFlag << "," << cursor->holdFlag 
 				<< "," << cursor->psr_type << "," << cursor->psr_rid 
 				<< "," << cursor->maxValue << "," << cursor->minValue 
@@ -1497,6 +1500,8 @@ void DiscreteTable::getHidedColumns( QList<int>& hideColumns )
 {
 	hideColumns << 2 << 3 << 4 << 5 << 7 << 8 << 9 << 10 << 11 << 12 << 13 << 14 << 15 << 16 << 17 << 18 
 		<< 19 << 20 << 21 << 22 << 36;
+	//hideColumns << 2 << 3 << 4 << 5 << 7 << 8 << 9 << 10 << 11 << 12 << 13 << 14 << 15 << 16 << 17 << 18 
+	//	<< 19 << 20 << 21 << 23 << 29 << 30 << 31 << 32 << 33 << 36;
 }
 
 void DiscreteTable::setFieldValue( dbAnyCursor& anyCursor, const string& fieldName, const string& value )
@@ -1869,7 +1874,7 @@ QList<QStringList> PowerTransformerTable::selectDatas()
 			{
 				for (int i = 0; i < length; ++i)
 				{
-					str << (i == 0) ? "" : "/";
+					str << ((i == 0) ? "" : "/");
 					str << cursor->transformer_windings[i].getOid();
 				}
 			}
@@ -2090,4 +2095,135 @@ void TransformerWindingTable::setFieldValue( dbAnyCursor& anyCursor, const strin
 			cursor->power_tranformer = powerTransCursor.currentId();
 		}
 	}
+}
+
+ConnectivityNodeTable::ConnectivityNodeTable( dbDatabase* dbPtr )
+	: BaseTable(dbPtr)
+{
+
+}
+
+QList<QStringList> ConnectivityNodeTable::selectDatas()
+{
+	QList<QStringList> result;
+
+	dbCursor<ConnectivityNode> cursor;
+	if (cursor.select() > 0)
+	{
+		do 
+		{
+			std::ostringstream str;
+			str << cursor->mRID << "," << cursor->name << "," << cursor->localName << "," << cursor->pathName 
+				<< "," << cursor->aliasName << "," << cursor->description 
+				<< "," << cursor->fixed_terminal 
+				<< "," << cursor->ec_type << "," << cursor->ec_rid 
+				<< ",";
+
+			int length = cursor->terminals.length();
+			if (length > 0)
+			{
+				for (int i = 0; i < length; ++i)
+				{
+					str << (i == 0 ? "" : "/");
+					str << cursor->terminals[i].getOid();
+				}
+			}
+			else
+			{
+				str << "";
+			}
+			str << "," << cursor.currentId().getOid() << "," << cursor->power_status;
+			QString value = QString().fromStdString(str.str());
+
+			QStringList values = value.split(",");
+			result.push_back(values);
+		} while (cursor.next());
+	}
+
+	return result;
+}
+
+bool ConnectivityNodeTable::insertData()
+{
+	return true;
+}
+
+bool ConnectivityNodeTable::deleteData( const string& mRID )
+{
+	dbCursor<ConnectivityNode> cursor(dbCursorForUpdate);
+	return deleteDataByCursor(cursor, mRID);
+}
+
+bool ConnectivityNodeTable::updateDatas( const string& mRID, const QMap<QString,QString>& values )
+{
+	dbCursor<ConnectivityNode> cursor(dbCursorForUpdate);
+	return updateDataByCursor(cursor, mRID, values);
+}
+
+void ConnectivityNodeTable::getHidedColumns( QList<int>& hideColumns )
+{
+	return;
+}
+
+void ConnectivityNodeTable::setFieldValue( dbAnyCursor& anyCursor, const string& fieldName, const string& value )
+{
+	return;
+}
+
+TerminalTable::TerminalTable( dbDatabase* dbPtr )
+	: BaseTable(dbPtr)
+{
+
+}
+
+QList<QStringList> TerminalTable::selectDatas()
+{
+	QList<QStringList> result;
+
+	dbCursor<Terminal> cursor;
+	if (cursor.select() > 0)
+	{
+		do 
+		{
+			std::ostringstream str;
+			str << cursor->mRID << "," << cursor->name << "," << cursor.currentId().getOid() << "," << cursor->pathName 
+				<< "," << cursor->aliasName << "," << cursor->description 
+				<< "," << cursor->ce_type << "," << cursor->ce_rid 
+				<< "," << cursor->connectivity_node.getOid();
+
+			QString value = QString().fromStdString(str.str());
+
+			QStringList values = value.split(",");
+			result.push_back(values);
+		} while (cursor.next());
+	}
+
+	return result;
+}
+
+bool TerminalTable::insertData()
+{
+	return true;
+}
+
+bool TerminalTable::deleteData( const string& mRID )
+{
+	dbCursor<Terminal> cursor(dbCursorForUpdate);
+	return deleteDataByCursor(cursor, mRID);
+}
+
+bool TerminalTable::updateDatas( const string& mRID, const QMap<QString,QString>& values )
+{
+	dbCursor<Terminal> cursor(dbCursorForUpdate);
+	return updateDataByCursor(cursor, mRID, values);
+}
+
+void TerminalTable::getHidedColumns( QList<int>& hideColumns )
+{
+	return;
+}
+
+void TerminalTable::setFieldValue( dbAnyCursor& anyCursor, const string& fieldName, const string& value )
+{
+	return;
 }

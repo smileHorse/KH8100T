@@ -318,4 +318,33 @@ protected:
 	virtual	void setFieldValue(dbAnyCursor& anyCursor, const string& fieldName, const string& value);
 };
 
+class ConnectivityNodeTable : public BaseTable
+{
+public:
+	ConnectivityNodeTable(dbDatabase* dbPtr);
+
+	virtual QList<QStringList>	selectDatas();
+	virtual bool insertData();
+	virtual bool deleteData(const string& mRID);
+	virtual bool updateDatas(const string& mRID, const QMap<QString,QString>& values);
+	virtual void getHidedColumns(QList<int>& hideColumns);
+
+protected:
+	virtual	void setFieldValue(dbAnyCursor& anyCursor, const string& fieldName, const string& value);
+};
+
+class TerminalTable : public BaseTable
+{
+public:
+	TerminalTable(dbDatabase* dbPtr);
+
+	virtual QList<QStringList>	selectDatas();
+	virtual bool insertData();
+	virtual bool deleteData(const string& mRID);
+	virtual bool updateDatas(const string& mRID, const QMap<QString,QString>& values);
+	virtual void getHidedColumns(QList<int>& hideColumns);
+
+protected:
+	virtual	void setFieldValue(dbAnyCursor& anyCursor, const string& fieldName, const string& value);
+};
 #endif

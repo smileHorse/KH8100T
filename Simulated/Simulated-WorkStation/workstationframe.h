@@ -35,6 +35,7 @@ private:
 signals:
 	void serverStarted(bool serverStarted);
 	void requestCompleteData();
+	void selectCompleteData();
 	void subscriberRdbRequestSignal(bool isStop);
 	void subscriberRdbRespondSignal(bool isStop);
 	void subscriberAlarmDataSignal(bool isStop);
