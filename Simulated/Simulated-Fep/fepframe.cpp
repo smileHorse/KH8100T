@@ -86,7 +86,7 @@ void FepFrame::createActions()
 
 	processUnitStateDataAction = new QAction(QIcon(":/images/unitstatedata.png"), QStringLiteral("发布终端状态"), this);
 	processUnitStateDataAction->setStatusTip(QStringLiteral("前置机发布终端状态"));
-	connect(processUnitStateDataAction, SIGNAL(triggered()), m_fepServerThreadPtr, SLOT(processUnitStateData()));
+	connect(processUnitStateDataAction, SIGNAL(triggered()), this, SLOT(processUnitStateData()));
 
 	processDLFaultAction = new QAction(QIcon(":/images/dlfault.png"), QStringLiteral("发布短路故障事项"), this);
 	processDLFaultAction->setStatusTip(QStringLiteral("前置机发布短路故障事项"));
@@ -215,5 +215,24 @@ void FepFrame::clearTextEdit()
 	if (textEdit)
 	{
 		textEdit->clear();
+	}
+}
+
+void FepFrame::processUnitStateData()
+{
+	QString text = processUnitStateDataAction->text();
+	if (text.contains(QStringLiteral("取消")))
+	{
+		processUnitStateDataAction->setText(QStringLiteral("发布终端状态"));
+		processUnitStateDataAction->setStatusTip(QStringLiteral("发布终端状态"));
+
+		m_fepServerThreadPtr->processUnitStateData(false);
+	}
+	else
+	{
+		processUnitStateDataAction->setText(QStringLiteral("取消发布终端状态"));
+		processUnitStateDataAction->setStatusTip(QStringLiteral("取消发布终端状态"));
+
+		m_fepServerThreadPtr->processUnitStateData(true);
 	}
 }

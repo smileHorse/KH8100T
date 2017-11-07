@@ -118,6 +118,9 @@ namespace Aml
 class Callback_CAmlRole_GetRole_Base : virtual public ::IceInternal::CallbackBase { };
 typedef ::IceUtil::Handle< Callback_CAmlRole_GetRole_Base> Callback_CAmlRole_GetRolePtr;
 
+class Callback_CAmlRole_GetFepRole_Base : virtual public ::IceInternal::CallbackBase { };
+typedef ::IceUtil::Handle< Callback_CAmlRole_GetFepRole_Base> Callback_CAmlRole_GetFepRolePtr;
+
 class Callback_CAmlRole_SetRole_Base : virtual public ::IceInternal::CallbackBase { };
 typedef ::IceUtil::Handle< Callback_CAmlRole_SetRole_Base> Callback_CAmlRole_SetRolePtr;
 
@@ -209,6 +212,82 @@ private:
 
     ::std::string GetRole(const ::Ice::Context*);
     ::Ice::AsyncResultPtr begin_GetRole(const ::Ice::Context*, const ::IceInternal::CallbackBasePtr&, const ::Ice::LocalObjectPtr& __cookie = 0);
+    
+public:
+
+    ::std::string GetFepRole(::std::string& __p_strPart, ::std::string& __p_strSec)
+    {
+        return GetFepRole(__p_strPart, __p_strSec, 0);
+    }
+    ::std::string GetFepRole(::std::string& __p_strPart, ::std::string& __p_strSec, const ::Ice::Context& __ctx)
+    {
+        return GetFepRole(__p_strPart, __p_strSec, &__ctx);
+    }
+#ifdef ICE_CPP11
+    ::Ice::AsyncResultPtr
+    begin_GetFepRole(const ::IceInternal::Function<void (const ::std::string&, const ::std::string&, const ::std::string&)>& __response, const ::IceInternal::Function<void (const ::Ice::Exception&)>& __exception = ::IceInternal::Function<void (const ::Ice::Exception&)>(), const ::IceInternal::Function<void (bool)>& __sent = ::IceInternal::Function<void (bool)>())
+    {
+        return __begin_GetFepRole(0, __response, __exception, __sent);
+    }
+    ::Ice::AsyncResultPtr
+    begin_GetFepRole(const ::IceInternal::Function<void (const ::Ice::AsyncResultPtr&)>& __completed, const ::IceInternal::Function<void (const ::Ice::AsyncResultPtr&)>& __sent = ::IceInternal::Function<void (const ::Ice::AsyncResultPtr&)>())
+    {
+        return begin_GetFepRole(0, ::Ice::newCallback(__completed, __sent), 0);
+    }
+    ::Ice::AsyncResultPtr
+    begin_GetFepRole(const ::Ice::Context& __ctx, const ::IceInternal::Function<void (const ::std::string&, const ::std::string&, const ::std::string&)>& __response, const ::IceInternal::Function<void (const ::Ice::Exception&)>& __exception = ::IceInternal::Function<void (const ::Ice::Exception&)>(), const ::IceInternal::Function<void (bool)>& __sent = ::IceInternal::Function<void (bool)>())
+    {
+        return __begin_GetFepRole(&__ctx, __response, __exception, __sent);
+    }
+    ::Ice::AsyncResultPtr
+    begin_GetFepRole(const ::Ice::Context& __ctx, const ::IceInternal::Function<void (const ::Ice::AsyncResultPtr&)>& __completed, const ::IceInternal::Function<void (const ::Ice::AsyncResultPtr&)>& __sent = ::IceInternal::Function<void (const ::Ice::AsyncResultPtr&)>())
+    {
+        return begin_GetFepRole(&__ctx, ::Ice::newCallback(__completed, __sent));
+    }
+    
+private:
+
+    ::Ice::AsyncResultPtr __begin_GetFepRole(const ::Ice::Context* __ctx, const ::IceInternal::Function<void (const ::std::string&, const ::std::string&, const ::std::string&)>& __response, const ::IceInternal::Function<void (const ::Ice::Exception&)>& __exception, const ::IceInternal::Function<void (bool)>& __sent);
+    
+public:
+#endif
+
+    ::Ice::AsyncResultPtr begin_GetFepRole()
+    {
+        return begin_GetFepRole(0, ::IceInternal::__dummyCallback, 0);
+    }
+
+    ::Ice::AsyncResultPtr begin_GetFepRole(const ::Ice::Context& __ctx)
+    {
+        return begin_GetFepRole(&__ctx, ::IceInternal::__dummyCallback, 0);
+    }
+
+    ::Ice::AsyncResultPtr begin_GetFepRole(const ::Ice::CallbackPtr& __del, const ::Ice::LocalObjectPtr& __cookie = 0)
+    {
+        return begin_GetFepRole(0, __del, __cookie);
+    }
+
+    ::Ice::AsyncResultPtr begin_GetFepRole(const ::Ice::Context& __ctx, const ::Ice::CallbackPtr& __del, const ::Ice::LocalObjectPtr& __cookie = 0)
+    {
+        return begin_GetFepRole(&__ctx, __del, __cookie);
+    }
+
+    ::Ice::AsyncResultPtr begin_GetFepRole(const ::Aml::Callback_CAmlRole_GetFepRolePtr& __del, const ::Ice::LocalObjectPtr& __cookie = 0)
+    {
+        return begin_GetFepRole(0, __del, __cookie);
+    }
+
+    ::Ice::AsyncResultPtr begin_GetFepRole(const ::Ice::Context& __ctx, const ::Aml::Callback_CAmlRole_GetFepRolePtr& __del, const ::Ice::LocalObjectPtr& __cookie = 0)
+    {
+        return begin_GetFepRole(&__ctx, __del, __cookie);
+    }
+
+    ::std::string end_GetFepRole(::std::string& __p_strPart, ::std::string& __p_strSec, const ::Ice::AsyncResultPtr&);
+    
+private:
+
+    ::std::string GetFepRole(::std::string&, ::std::string&, const ::Ice::Context*);
+    ::Ice::AsyncResultPtr begin_GetFepRole(const ::Ice::Context*, const ::IceInternal::CallbackBasePtr&, const ::Ice::LocalObjectPtr& __cookie = 0);
     
 public:
 
@@ -497,6 +576,9 @@ public:
     virtual ::std::string GetRole(const ::Ice::Current& = ::Ice::Current()) const = 0;
     ::Ice::DispatchStatus ___GetRole(::IceInternal::Incoming&, const ::Ice::Current&) const;
 
+    virtual ::std::string GetFepRole(::std::string&, ::std::string&, const ::Ice::Current& = ::Ice::Current()) const = 0;
+    ::Ice::DispatchStatus ___GetFepRole(::IceInternal::Incoming&, const ::Ice::Current&) const;
+
     virtual void SetRole(const ::std::string&, const ::Ice::Current& = ::Ice::Current()) = 0;
     ::Ice::DispatchStatus ___SetRole(::IceInternal::Incoming&, const ::Ice::Current&);
 
@@ -629,6 +711,114 @@ template<class T, typename CT> Callback_CAmlRole_GetRolePtr
 newCallback_CAmlRole_GetRole(T* instance, void (T::*cb)(const ::std::string&, const CT&), void (T::*excb)(const ::Ice::Exception&, const CT&), void (T::*sentcb)(bool, const CT&) = 0)
 {
     return new Callback_CAmlRole_GetRole<T, CT>(instance, cb, excb, sentcb);
+}
+
+template<class T>
+class CallbackNC_CAmlRole_GetFepRole : public Callback_CAmlRole_GetFepRole_Base, public ::IceInternal::TwowayCallbackNC<T>
+{
+public:
+
+    typedef IceUtil::Handle<T> TPtr;
+
+    typedef void (T::*Exception)(const ::Ice::Exception&);
+    typedef void (T::*Sent)(bool);
+    typedef void (T::*Response)(const ::std::string&, const ::std::string&, const ::std::string&);
+
+    CallbackNC_CAmlRole_GetFepRole(const TPtr& obj, Response cb, Exception excb, Sent sentcb)
+        : ::IceInternal::TwowayCallbackNC<T>(obj, cb != 0, excb, sentcb), _response(cb)
+    {
+    }
+
+    virtual void completed(const ::Ice::AsyncResultPtr& __result) const
+    {
+        ::Aml::CAmlRolePrx __proxy = ::Aml::CAmlRolePrx::uncheckedCast(__result->getProxy());
+        ::std::string strPart;
+        ::std::string strSec;
+        ::std::string __ret;
+        try
+        {
+            __ret = __proxy->end_GetFepRole(strPart, strSec, __result);
+        }
+        catch(const ::Ice::Exception& ex)
+        {
+            ::IceInternal::CallbackNC<T>::exception(__result, ex);
+            return;
+        }
+        if(_response)
+        {
+            (::IceInternal::CallbackNC<T>::_callback.get()->*_response)(__ret, strPart, strSec);
+        }
+    }
+
+    private:
+
+    Response _response;
+};
+
+template<class T> Callback_CAmlRole_GetFepRolePtr
+newCallback_CAmlRole_GetFepRole(const IceUtil::Handle<T>& instance, void (T::*cb)(const ::std::string&, const ::std::string&, const ::std::string&), void (T::*excb)(const ::Ice::Exception&), void (T::*sentcb)(bool) = 0)
+{
+    return new CallbackNC_CAmlRole_GetFepRole<T>(instance, cb, excb, sentcb);
+}
+
+template<class T> Callback_CAmlRole_GetFepRolePtr
+newCallback_CAmlRole_GetFepRole(T* instance, void (T::*cb)(const ::std::string&, const ::std::string&, const ::std::string&), void (T::*excb)(const ::Ice::Exception&), void (T::*sentcb)(bool) = 0)
+{
+    return new CallbackNC_CAmlRole_GetFepRole<T>(instance, cb, excb, sentcb);
+}
+
+template<class T, typename CT>
+class Callback_CAmlRole_GetFepRole : public Callback_CAmlRole_GetFepRole_Base, public ::IceInternal::TwowayCallback<T, CT>
+{
+public:
+
+    typedef IceUtil::Handle<T> TPtr;
+
+    typedef void (T::*Exception)(const ::Ice::Exception& , const CT&);
+    typedef void (T::*Sent)(bool , const CT&);
+    typedef void (T::*Response)(const ::std::string&, const ::std::string&, const ::std::string&, const CT&);
+
+    Callback_CAmlRole_GetFepRole(const TPtr& obj, Response cb, Exception excb, Sent sentcb)
+        : ::IceInternal::TwowayCallback<T, CT>(obj, cb != 0, excb, sentcb), _response(cb)
+    {
+    }
+
+    virtual void completed(const ::Ice::AsyncResultPtr& __result) const
+    {
+        ::Aml::CAmlRolePrx __proxy = ::Aml::CAmlRolePrx::uncheckedCast(__result->getProxy());
+        ::std::string strPart;
+        ::std::string strSec;
+        ::std::string __ret;
+        try
+        {
+            __ret = __proxy->end_GetFepRole(strPart, strSec, __result);
+        }
+        catch(const ::Ice::Exception& ex)
+        {
+            ::IceInternal::Callback<T, CT>::exception(__result, ex);
+            return;
+        }
+        if(_response)
+        {
+            (::IceInternal::Callback<T, CT>::_callback.get()->*_response)(__ret, strPart, strSec, CT::dynamicCast(__result->getCookie()));
+        }
+    }
+
+    private:
+
+    Response _response;
+};
+
+template<class T, typename CT> Callback_CAmlRole_GetFepRolePtr
+newCallback_CAmlRole_GetFepRole(const IceUtil::Handle<T>& instance, void (T::*cb)(const ::std::string&, const ::std::string&, const ::std::string&, const CT&), void (T::*excb)(const ::Ice::Exception&, const CT&), void (T::*sentcb)(bool, const CT&) = 0)
+{
+    return new Callback_CAmlRole_GetFepRole<T, CT>(instance, cb, excb, sentcb);
+}
+
+template<class T, typename CT> Callback_CAmlRole_GetFepRolePtr
+newCallback_CAmlRole_GetFepRole(T* instance, void (T::*cb)(const ::std::string&, const ::std::string&, const ::std::string&, const CT&), void (T::*excb)(const ::Ice::Exception&, const CT&), void (T::*sentcb)(bool, const CT&) = 0)
+{
+    return new Callback_CAmlRole_GetFepRole<T, CT>(instance, cb, excb, sentcb);
 }
 
 template<class T>

@@ -5,9 +5,12 @@
 const int COUNT = 10;
 
 ProcessDataDialog::ProcessDataDialog(DataType type, AllDataTypeType alltype, QWidget* parent /*= 0*/ )
-	: QDialog(parent), dataType(type), allDataTypeType(alltype), stopProcess(false)
+	: QDialog(parent), dataType(type), allDataTypeType(alltype), m_processCount(0)
 {
+	m_timer = QSharedPointer<QTimer>::create();
+	
 	createWidgets();
+	createConnections();
 }
 
 void ProcessDataDialog::createWidgets()
@@ -82,6 +85,7 @@ void ProcessDataDialog::createWidgets()
 	closeBtn = new QPushButton(QStringLiteral("¹Ø±Õ"));
 
 	connect(startBtn, SIGNAL(clicked()), this, SLOT(startProcessData()));
+	connect(cancelBtn, SIGNAL(clicked()), this, SLOT(cancelProcessData()));
 	connect(closeBtn, SIGNAL(clicked()), this, SLOT(close()));
 
 	QHBoxLayout* btnLayout = new QHBoxLayout;
@@ -102,6 +106,11 @@ void ProcessDataDialog::createWidgets()
 	generateValue();
 	resize(1100, 600);
 	setWindowTitle(getWindowTitle());
+}
+
+void ProcessDataDialog::createConnections()
+{
+	connect(m_timer.data(), SIGNAL(timeout()), this, SLOT(processRandomData()));
 }
 
 QString ProcessDataDialog::getWindowTitle() const
@@ -287,36 +296,39 @@ void ProcessDataDialog::startProcessData()
 		SelfDataPacket dataPacket;
 		getDataPacket(dataPacket);
 		emit start(dataPacket);
+
+		startBtn->setEnabled(true);
+		cancelBtn->setEnabled(false);
 	}
 	else if (mode == Random)
 	{
 		int sendCount = sendCountEdit->text().toInt();
-		if (sendCount == 0)
-		{
-			while(true)
-			{
-				generateValue();
-				SelfDataPacket dataPacket;
-				getDataPacket(dataPacket);
-				emit start(dataPacket);
-			}
-		}
-		else if (sendCount > 0)
-		{
-			for (int i = 0; i < sendCount; ++i)
-			{
-				generateValue();
-				SelfDataPacket dataPacket;
-				getDataPacket(dataPacket);
-				emit start(dataPacket);
+		
+		m_processCount = sendCount;
+		m_timer->start(2000);
+		//if (sendCount == 0)
+		//{
+		//	while(true)
+		//	{
+		//		generateValue();
+		//		SelfDataPacket dataPacket;
+		//		getDataPacket(dataPacket);
+		//		emit start(dataPacket);
+		//	}
+		//}
+		//else if (sendCount > 0)
+		//{
+		//	for (int i = 0; i < sendCount; ++i)
+		//	{
+		//		generateValue();
+		//		SelfDataPacket dataPacket;
+		//		getDataPacket(dataPacket);
+		//		emit start(dataPacket);
 
-				QThread::sleep(1);
-			}
-		}
+		//		QThread::sleep(1);
+		//	}
+		//}
 	}
-
-	startBtn->setEnabled(true);
-	cancelBtn->setEnabled(false);
 }
 
 void ProcessDataDialog::cancelProcessData()
@@ -324,5 +336,25 @@ void ProcessDataDialog::cancelProcessData()
 	startBtn->setEnabled(true);
 	cancelBtn->setEnabled(false);
 
-	stopProcess = true;
+	if (!m_timer.isNull() && m_timer->isActive())
+	{
+		m_timer->stop();
+	}
+}
+
+void ProcessDataDialog::processRandomData()
+{
+	generateValue();
+	SelfDataPacket dataPacket;
+	getDataPacket(dataPacket);
+	emit start(dataPacket);
+
+	if (m_processCount != 0)
+	{
+		if(--m_processCount == 0)
+		{
+			cancelProcessData();
+		}
+	}
+
 }

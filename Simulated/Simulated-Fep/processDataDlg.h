@@ -4,6 +4,7 @@
 #include "fepdata.h"
 
 #include <QtWidgets/QDialog>
+#include <QtCore/QtCore>
 #include <vector>
 using namespace std;
 
@@ -75,6 +76,7 @@ public:
 
 private:
 	void createWidgets();
+	void createConnections();
 	QString getWindowTitle() const;
 	QString getAllDataTypeTitle() const;
 	GenerateValueMode	getValueMode() const;
@@ -90,13 +92,12 @@ private slots:
 	void generateValue();
 	void startProcessData();
 	void cancelProcessData();
+	void processRandomData();
 
 private:
 	DataType	dataType;
 	AllDataTypeType	allDataTypeType;
-
-	bool	stopProcess;
-
+	
 	QLabel*		idLable;		// 数据包id
 	QLineEdit*	idEdit;
 	QLabel*		fepNodeLable;	// 前置机
@@ -118,6 +119,9 @@ private:
 	QPushButton*	startBtn;
 	QPushButton*	cancelBtn;
 	QPushButton*	closeBtn;
+
+	QSharedPointer<QTimer>	m_timer;
+	int				m_processCount;
 };
 
 #endif

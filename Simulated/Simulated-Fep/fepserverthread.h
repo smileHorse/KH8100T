@@ -4,7 +4,7 @@
 #include "fepdata.h"
 #include "processDataDlg.h"
 
-#include <QThread>
+#include <QtCore/QtCore>
 #include <Ice/ice.h>
 #include <IceUtil/IceUtil.h>
 #include <IceStorm/IceStorm.h>
@@ -34,11 +34,12 @@ signals:
 	void executeOperation(const OperationInfo& text);
 	void publishFepData(const QString& text);
 
-private slots:
+public slots:
 	void processYxData();
 	void processYcData();
 	void processDdData();
-	void processUnitStateData();
+	void processUnitStateData(bool isProcess);
+	void processUnitStateDataImpl();
 	void processDataPacket(SelfDataPacket packet);
 	void processDLFault();
 	void processJDFault();
@@ -51,6 +52,7 @@ private slots:
 private:
 	Ice::CommunicatorPtr m_communicatorPtr;
 	FepData::FepDataManagerPrx	m_fepDataManagerPrx;
+	QSharedPointer<QTimer>	m_unitStateTimer;
 };
 
 #endif

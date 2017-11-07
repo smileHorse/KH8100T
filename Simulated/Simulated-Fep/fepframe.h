@@ -41,6 +41,8 @@ private slots:
 	void updateTextEdit(const QString& text);
 	void clearTextEdit();
 
+	void processUnitStateData();
+
 private:
 	FepServer*	m_fepServerPtr;
 	FepServerThread*	m_fepServerThreadPtr;

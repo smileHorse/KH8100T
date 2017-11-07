@@ -201,7 +201,7 @@ void FepServerThread::processDdData()
 	dialog.exec();
 }
 
-void FepServerThread::processUnitStateData()
+void FepServerThread::processUnitStateData(bool isProcess)
 {
 	//SelfDataPacket selfPacket;
 	//selfPacket.id = 1;
@@ -223,31 +223,43 @@ void FepServerThread::processUnitStateData()
 
 	//processDataPacket(selfPacket);
 
-	// ¶¨Ê±·¢ËÍÖÕ¶Ë×´Ì¬
-	while(true)
+	if (isProcess)
 	{
-		SelfDataPacket selfPacket;
-		selfPacket.id = 1;
-		selfPacket.fepNode = "fep-36";
-		selfPacket.type = UnitStateType;
-		selfPacket.unitNo = 1;
-		qsrand(QDateTime::currentDateTime().toTime_t());
-		for (int i = 0; i < 5; ++i)
-		{
-			::FepData::Unit unit;
-			unit.unitNo = i + 1;
-			unit.unitState = getUnitState(3);
-			unit.channelState1 = getUnitState(3);
-			unit.channelState2 = getUnitState(3);
-			unit.errorRate = (qrand() % 100);
-
-			selfPacket.units.push_back(unit);
-		}
-
-		processDataPacket(selfPacket);
-
-		QThread::sleep(10);
+		// ¶¨Ê±·¢ËÍÖÕ¶Ë×´Ì¬
+		m_unitStateTimer = QSharedPointer<QTimer>::create();
+		connect(m_unitStateTimer.data(), SIGNAL(timeout()), this, SLOT(processUnitStateDataImpl()));
+		m_unitStateTimer->start(5000);
 	}
+	else
+	{
+		if (!m_unitStateTimer.isNull() && m_unitStateTimer->isActive())
+		{
+			m_unitStateTimer->stop();
+		}
+	}
+}
+
+void FepServerThread::processUnitStateDataImpl()
+{
+	SelfDataPacket selfPacket;
+	selfPacket.id = 1;
+	selfPacket.fepNode = "fep-36";
+	selfPacket.type = UnitStateType;
+	selfPacket.unitNo = 1;
+	qsrand(QDateTime::currentDateTime().toTime_t());
+	for (int i = 0; i < 5; ++i)
+	{
+		::FepData::Unit unit;
+		unit.unitNo = i + 1;
+		unit.unitState = getUnitState(3);
+		unit.channelState1 = getUnitState(3);
+		unit.channelState2 = getUnitState(3);
+		unit.errorRate = (qrand() % 100);
+
+		selfPacket.units.push_back(unit);
+	}
+
+	processDataPacket(selfPacket);
 }
 
 void FepServerThread::processDataPacket( SelfDataPacket selfPacket )
