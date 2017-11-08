@@ -37,7 +37,7 @@ class FASTDB_DLL_ENTRY dbCriticalSection {
     }
 };
         
-#define SMALL_BUF_SIZE 512
+#define SMALL_BUF_SIZE 4096	// Masf modify 20171026 修复实时库恢复时崩溃的问题
 
 class FASTDB_DLL_ENTRY dbSmallBuffer { 
   protected:
@@ -75,7 +75,7 @@ class FASTDB_DLL_ENTRY dbSmallBuffer {
 
     ~dbSmallBuffer() { 
         if (buf != smallBuf) { 
-            delete[] buf;
+           delete[] buf;
         }
     }
 };

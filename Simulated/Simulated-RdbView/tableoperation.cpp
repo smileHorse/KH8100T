@@ -54,6 +54,7 @@ bool TableOperation::getTablePtrByTableName( const QString& tableName )
 		tablePtrs.insert("TransformerWinding",			new TransformerWindingTable(m_dbPtr));
 		tablePtrs.insert("ConnectivityNode",			new ConnectivityNodeTable(m_dbPtr));
 		tablePtrs.insert("Terminal",					new TerminalTable(m_dbPtr));
+		tablePtrs.insert("Step",						new StepTable(m_dbPtr));
 	}
 
 	if (tablePtrs.contains(tableName))

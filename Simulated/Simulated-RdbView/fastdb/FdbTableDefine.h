@@ -2825,5 +2825,30 @@ public:
 					FIELD (measure_rid)
 			));
 };
+
+// 档位库
+class Step
+{
+public:
+	std::string	mRID;			// 档位id
+	std::string	name;			// 档位名称
+	std::string	psr_type;		// 所属容器类型
+	std::string psr_rid;		// 所属容器id
+	int			compute_type;	// 计算方法
+	int			step;			// 当前档位值
+	int			highStep;		// 档位上限
+	int			lowStep;		// 档位下限
+
+	TYPE_DESCRIPTOR((
+		KEY(mRID, INDEXED | HASHED),
+		FIELD(name),
+		FIELD(psr_type),
+		FIELD(psr_rid),
+		FIELD(compute_type),
+		FIELD(step),
+		FIELD(highStep),
+		FIELD(lowStep)
+		));
+};
 #endif
 

@@ -43,3 +43,5 @@ REGISTER( AnalogCurveData);
 
 REGISTER( FormulaDefinition);
 REGISTER( VariableDefinition);
+
+REGISTER(Step);

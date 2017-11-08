@@ -2227,3 +2227,96 @@ void TerminalTable::setFieldValue( dbAnyCursor& anyCursor, const string& fieldNa
 {
 	return;
 }
+
+StepTable::StepTable( dbDatabase* dbPtr )
+	: BaseTable(dbPtr)
+{
+
+}
+
+QList<QStringList> StepTable::selectDatas()
+{
+	QList<QStringList> result;
+
+	dbCursor<Step> cursor;
+	if (cursor.select() > 0)
+	{
+		do 
+		{
+			std::ostringstream str;
+			str << cursor->mRID << "," << cursor->name << "," << cursor->psr_type << "," << cursor->psr_rid 
+				<< "," << cursor->compute_type << "," << cursor->step 
+				<< "," << cursor->highStep << "," << cursor->lowStep;
+
+			QString value = QString().fromStdString(str.str());
+
+			QStringList values = value.split(",");
+			result.push_back(values);
+		} while (cursor.next());
+	}
+
+	return result;
+}
+
+bool StepTable::insertData()
+{
+	Step info;
+	info.mRID = QUuid::createUuid().toString().toStdString();
+	info.compute_type = 1;
+	info.step = 4;
+	info.highStep = 9;
+	info.lowStep = 1;
+	insert(info);
+	m_dbPtr->commit();
+	return true;
+}
+
+bool StepTable::deleteData( const string& mRID )
+{
+	dbCursor<Step> cursor(dbCursorForUpdate);
+	return deleteDataByCursor(cursor, mRID);
+}
+
+bool StepTable::updateDatas( const string& mRID, const QMap<QString,QString>& values )
+{
+	dbCursor<Step> cursor(dbCursorForUpdate);
+	return updateDataByCursor(cursor, mRID, values);
+}
+
+void StepTable::getHidedColumns( QList<int>& hideColumns )
+{
+
+}
+
+void StepTable::setFieldValue( dbAnyCursor& anyCursor, const string& fieldName, const string& value )
+{
+	dbCursor<Step>& cursor = static_cast< dbCursor<Step>& >(anyCursor);
+	if (fieldName == "name")
+	{
+		cursor->name = value;
+	}
+	else if (fieldName == "psr_type")
+	{
+		cursor->psr_type = value;
+	}
+	else if (fieldName == "psr_rid")
+	{
+		cursor->psr_rid = value;
+	}
+	else if (fieldName == "compute_type")
+	{
+		cursor->compute_type = transferType<int, string>(value);
+	}
+	else if (fieldName == "step")
+	{
+		cursor->step = transferType<int, string>(value);
+	}
+	else if (fieldName == "highStep")
+	{
+		cursor->highStep = transferType<int, string>(value);
+	}
+	else if (fieldName == "lowStep")
+	{
+		cursor->lowStep = transferType<int, string>(value);
+	}
+}
