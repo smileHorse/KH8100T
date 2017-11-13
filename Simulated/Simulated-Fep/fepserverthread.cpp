@@ -103,6 +103,13 @@ string getEventType(FepData::EventType value)
 	}
 }
 
+// 把时标转换为字符串
+string convertTimeStampToString(long long timestamp)
+{
+	IceUtil::Time time = IceUtil::Time::microSeconds(timestamp);
+	return time.toString("%Y-%m-%d %H:%M:%S");
+}
+
 FepData::State getUnitState( int i )
 {
 	switch(i)
@@ -374,7 +381,25 @@ void FepServerThread::processJDFault()
 	emit executeOperation(info);
 }
 
-void FepServerThread::processYxTypeEvent()
+void FepServerThread::processYxTypeEvent(bool isProcess)
+{
+	if (isProcess)
+	{
+		// 定时发送终端状态
+		m_yxTypeEventTimer = QSharedPointer<QTimer>::create();
+		connect(m_yxTypeEventTimer.data(), SIGNAL(timeout()), this, SLOT(processYxTypeEventImpl()));
+		m_yxTypeEventTimer->start(5000);
+	}
+	else
+	{
+		if (!m_yxTypeEventTimer.isNull() && m_yxTypeEventTimer->isActive())
+		{
+			m_yxTypeEventTimer->stop();
+		}
+	}
+}
+
+void FepServerThread::processYxTypeEventImpl()
 {
 	// 获取发布者对象
 	if (!getFepDataPublisher())
@@ -569,7 +594,7 @@ QString FepServerThread::outputFepData( const FepData::DataPacket& packet )
 
 		for (size_t i = 0; i < packet.changedAnalogs.size(); ++i)
 		{
-			changedAnalogs->insertChild(new TextElement("时标", transferToString<long>(packet.changedAnalogs.at(i).timeStamp)));
+			changedAnalogs->insertChild(new TextElement("时标", convertTimeStampToString(packet.changedAnalogs.at(i).timeStamp)));
 			changedAnalogs->insertChild(new TextElement("终端编号", transferToString<short>(packet.changedAnalogs.at(i).unitNo)));
 			changedAnalogs->insertChild(new TextElement("点号", transferToString<short>(packet.changedAnalogs.at(i).index)));
 			changedAnalogs->insertChild(new TextElement("值", transferToString<int>(packet.changedAnalogs.at(i).value)));
@@ -593,7 +618,7 @@ QString FepServerThread::outputFepFault( const FepData::FaultPacket& packet )
 		for (size_t i = 0; i < packet.events.size(); ++i)
 		{
 			events->insertChild(new TextElement("单元编号", transferToString<short>(packet.events.at(i).unitNo)));
-			events->insertChild(new TextElement("时标", transferToString<long>(packet.events.at(i).timeStamp)));
+			events->insertChild(new TextElement("时标", convertTimeStampToString(packet.events.at(i).timeStamp)));
 			events->insertChild(new TextElement("故障源", transferToString<short>(packet.events.at(i).source)));
 			events->insertChild(new TextElement("事项类型", transferToString<short>(packet.events.at(i).eventType)));
 			events->insertChild(new TextElement("方向系数标志", transferToString<short>(packet.events.at(i).directionFlag)));
@@ -640,7 +665,7 @@ QString FepServerThread::outputFepEvent( const FepData::EventPacket& packet )
 			digitals->insertChild(new TextElement("终端编号", transferToString<short>(packet.digitals.at(i).unitNo)));
 			digitals->insertChild(new TextElement("遥信点号", transferToString<short>(packet.digitals.at(i).index)));
 			digitals->insertChild(new TextElement("遥信值", getDiscreteValue(packet.digitals.at(i).value)));
-			digitals->insertChild(new TextElement("时标", transferToString<long>(packet.digitals.at(i).timeStamp)));
+			digitals->insertChild(new TextElement("时标", convertTimeStampToString(packet.digitals.at(i).timeStamp)));
 		}
 	}
 	if (!packet.soes.empty())
@@ -651,7 +676,7 @@ QString FepServerThread::outputFepEvent( const FepData::EventPacket& packet )
 			soes->insertChild(new TextElement("终端编号", transferToString<short>(packet.soes.at(i).unitNo)));
 			soes->insertChild(new TextElement("遥信点号", transferToString<short>(packet.soes.at(i).index)));
 			soes->insertChild(new TextElement("遥信值", getDiscreteValue(packet.soes.at(i).value)));
-			soes->insertChild(new TextElement("时标", transferToString<long>(packet.soes.at(i).timeStamp)));
+			soes->insertChild(new TextElement("时标", convertTimeStampToString(packet.soes.at(i).timeStamp)));
 		}
 	}
 	if (!packet.protects.empty())
@@ -687,7 +712,7 @@ QString FepServerThread::outputFepEvent( const FepData::EventPacket& packet )
 			units->insertChild(new TextElement("主通道状态", getState(packet.units.at(i).channelState1)));
 			units->insertChild(new TextElement("副通道状态", getState(packet.units.at(i).channelState2)));
 			units->insertChild(new TextElement("误码率", transferToString<int>(packet.units.at(i).errorRate)));
-			units->insertChild(new TextElement("时标", transferToString<long>(packet.units.at(i).timeStamp)));
+			units->insertChild(new TextElement("时标", convertTimeStampToString(packet.units.at(i).timeStamp)));
 		}
 	}
 
@@ -708,7 +733,7 @@ QString FepServerThread::outputFepWave( const FepData::WavePacket& packet )
 		for (size_t i = 0; i < packet.events.size(); ++i)
 		{
 			events->insertChild(new TextElement("单元编号", transferToString<short>(packet.events.at(i).unitNo)));
-			events->insertChild(new TextElement("时标", transferToString<long>(packet.events.at(i).timeStamp)));
+			events->insertChild(new TextElement("时标", convertTimeStampToString(packet.events.at(i).timeStamp)));
 			events->insertChild(new TextElement("故障源", transferToString<short>(packet.events.at(i).source)));
 			events->insertChild(new TextElement("事项类型", transferToString<short>(packet.events.at(i).eventType)));
 			events->insertChild(new TextElement("方向系数标志", transferToString<short>(packet.events.at(i).directionFlag)));

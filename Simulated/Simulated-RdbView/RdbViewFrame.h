@@ -53,6 +53,7 @@ private slots:
 	bool deleteData();
 	bool saveData();
 	bool refreshData();
+	bool deleteAllData();
 	void hideTableColumn();
 	void about();
 	void updateDatabaseActions(bool opened);
@@ -75,6 +76,7 @@ private:
 	QAction*	deleteAction;
 	QAction*	saveAction;
 	QAction*	refreshAction;
+	QAction*	deleteAllAction;
 	QAction*	hideTableColumnAction;
 	QAction*	aboutAction;
 

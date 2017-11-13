@@ -72,7 +72,8 @@ void RdbAlarmDataI::SendAlarmData( const ::RdbWarningData::WarningInfoSeq& seq, 
 			TextElement parent("收到 告警数据", ConvertTypeToString<size_t>().convertToString(seq.size()));
 			parent.insertChild(new TextElement("标识号", info.id));
 			parent.insertChild(new TextElement("告警类型", getRdbWarningType(info.warnType)));
-			parent.insertChild(new TextElement("告警时间", ConvertTypeToString<long>().convertToString(info.timeStamp)));
+			IceUtil::Time time = IceUtil::Time::milliSeconds(info.timeStamp);
+			parent.insertChild(new TextElement("告警时间", time.toString("%Y-%m-%d %H:%M:%S")));
 			parent.insertChild(new TextElement("告警等级", getRdbWarningLevel(info.warningLevel)));
 			parent.insertChild(new TextElement("告警等级", getRdbWarningLevel(info.warningLevel)));
 			parent.insertChild(new TextElement("告警源", info.warnSource));

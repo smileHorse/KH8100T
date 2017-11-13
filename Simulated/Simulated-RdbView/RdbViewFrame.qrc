@@ -8,6 +8,7 @@
     <file>images/delete.png</file>
     <file>images/save.png</file>
     <file>images/refresh.png</file>
+    <file>images/deleteAll.png</file>
     <file>images/hideColumn.png</file>
     <file>images/about.png</file>
   </qresource>

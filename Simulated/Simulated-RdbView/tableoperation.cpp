@@ -99,6 +99,17 @@ bool TableOperation::saveData( const QString& tableName, const QString& mRID, co
 	return m_tablePtr->updateDatas(mRID.toStdString(), values);
 }
 
+// 删除全部数据
+bool TableOperation::deleteAllData( const QString& tableName )
+{
+	if (!getTablePtrByTableName(tableName))
+	{
+		return false;
+	}
+
+	return m_tablePtr->deleteAllData(tableName.toStdString());
+}
+
 void TableOperation::getHidedColumns( const QString& tableName, QList<int>& hideColumns )
 {
 	if (!getTablePtrByTableName(tableName))

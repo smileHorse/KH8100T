@@ -87,6 +87,11 @@ void RdbViewFrame::createActions()
 	refreshAction->setEnabled(false);
 	connect(refreshAction, SIGNAL(triggered()), this, SLOT(refreshData()));
 
+	deleteAllAction = new QAction(QIcon(":/images/deleteAll.png"), QStringLiteral("全部删除"), this);
+	deleteAllAction->setStatusTip(QStringLiteral("删除全部数据"));
+	deleteAllAction->setEnabled(false);
+	connect(deleteAllAction, SIGNAL(triggered()), this, SLOT(deleteAllData()));
+
 	hideTableColumnAction = new QAction(QIcon(":/images/hideColumn.png"), QStringLiteral("隐藏列"), this);
 	hideTableColumnAction->setStatusTip(QStringLiteral("隐藏表格中的指定列"));
 	hideTableColumnAction->setEnabled(true);
@@ -111,6 +116,7 @@ void RdbViewFrame::createMenus()
 	editMenu->addAction(saveAction);
 	editMenu->addAction(refreshAction);
 	editMenu->addSeparator();
+	editMenu->addAction(deleteAllAction);
 	editMenu->addAction(hideTableColumnAction);
 
 	helpMenu = menuBar()->addMenu(QStringLiteral("帮助"));
@@ -131,6 +137,7 @@ void RdbViewFrame::createToolbars()
 	editToolBar->addAction(saveAction);
 	editToolBar->addAction(refreshAction);
 	editToolBar->addSeparator();
+	editToolBar->addAction(deleteAllAction);
 	editToolBar->addAction(hideTableColumnAction);
 }
 
@@ -170,6 +177,7 @@ void RdbViewFrame::refreshDatas( QTreeWidgetItem* item )
 
 		// 填写表数据
 		QList<QStringList> datas = m_tableOperPtr->selectDatas(tableName);
+		deleteAllAction->setEnabled(!datas.isEmpty());
 		for (int i = 0; i < datas.count(); ++i)
 		{
 			int count = m_rdbTableWidget->rowCount();
@@ -468,6 +476,34 @@ bool RdbViewFrame::refreshData()
 {
 	QTreeWidgetItem* item = m_rdbTreeWidget->currentItem();
 	refreshDatas(item);
+	return true;
+}
+
+bool RdbViewFrame::deleteAllData()
+{
+	if (m_tableOperPtr)
+	{
+		// 获取数据表名
+		QString tableName;
+		if (!getCurrentTableName(tableName))
+		{
+			return false;
+		}
+
+		if (m_tableOperPtr->deleteAllData(tableName))
+		{
+			refreshData();
+		}
+		else
+		{
+			QMessageBox::critical(this, QStringLiteral("实时库操作"), QStringLiteral("删除数据失败"));
+		}
+	}
+	else
+	{
+		QMessageBox::critical(this, QStringLiteral("实时库操作"), QStringLiteral("实时库操作指针为空"));
+		return false;
+	}
 	return true;
 }
 

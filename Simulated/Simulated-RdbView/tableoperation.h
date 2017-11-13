@@ -29,6 +29,9 @@ public:
 	// 保存一整行的数据
 	bool	saveData(const QString& tableName, const QString& mRID, const QMap<QString,QString>& values);
 
+	// 删除全部数据
+	bool	deleteAllData(const QString& tableName);
+
 	// 获取需要隐藏的字段
 	void	getHidedColumns(const QString& tableName, QList<int>& hideColumns);
 private:

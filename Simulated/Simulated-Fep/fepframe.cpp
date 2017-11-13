@@ -98,7 +98,7 @@ void FepFrame::createActions()
 
 	processYxTypeEventAction = new QAction(QIcon(":/images/yxtype.png"), QStringLiteral("发布遥信变位事项"), this);
 	processYxTypeEventAction->setStatusTip(QStringLiteral("发布前置机遥信变位事项"));
-	connect(processYxTypeEventAction, SIGNAL(triggered()), m_fepServerThreadPtr, SLOT(processYxTypeEvent()));
+	connect(processYxTypeEventAction, SIGNAL(triggered()), this, SLOT(processYxTypeEvent()));
 
 	processSoeTypeEventAction = new QAction(QIcon(":/images/soetype.png"), QStringLiteral("发布SOE事项"), this);
 	processSoeTypeEventAction->setStatusTip(QStringLiteral("发布前置机SOE事项"));
@@ -234,5 +234,24 @@ void FepFrame::processUnitStateData()
 		processUnitStateDataAction->setStatusTip(QStringLiteral("取消发布终端状态"));
 
 		m_fepServerThreadPtr->processUnitStateData(true);
+	}
+}
+
+void FepFrame::processYxTypeEvent()
+{
+	QString text = processYxTypeEventAction->text();
+	if (text.contains(QStringLiteral("取消")))
+	{
+		processYxTypeEventAction->setText(QStringLiteral("发布遥信变位事项"));
+		processYxTypeEventAction->setStatusTip(QStringLiteral("发布遥信变位事项"));
+
+		m_fepServerThreadPtr->processYxTypeEvent(false);
+	}
+	else
+	{
+		processYxTypeEventAction->setText(QStringLiteral("取消发布遥信变位事项"));
+		processYxTypeEventAction->setStatusTip(QStringLiteral("取消发布遥信变位事项"));
+
+		m_fepServerThreadPtr->processYxTypeEvent(true);
 	}
 }

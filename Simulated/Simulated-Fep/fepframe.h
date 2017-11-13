@@ -42,6 +42,7 @@ private slots:
 	void clearTextEdit();
 
 	void processUnitStateData();
+	void processYxTypeEvent();
 
 private:
 	FepServer*	m_fepServerPtr;

@@ -43,7 +43,8 @@ public slots:
 	void processDataPacket(SelfDataPacket packet);
 	void processDLFault();
 	void processJDFault();
-	void processYxTypeEvent();
+	void processYxTypeEvent(bool isProcess);
+	void processYxTypeEventImpl();
 	void processSoeTypeEvent();
 	void processUnitTypeEvent();
 	void processProTypeEvent();
@@ -53,6 +54,7 @@ private:
 	Ice::CommunicatorPtr m_communicatorPtr;
 	FepData::FepDataManagerPrx	m_fepDataManagerPrx;
 	QSharedPointer<QTimer>	m_unitStateTimer;
+	QSharedPointer<QTimer>	m_yxTypeEventTimer;
 };
 
 #endif

@@ -56,6 +56,18 @@ QStringList BaseTable::getTableFieldNames( const string& tableName )
 	}
 }
 
+bool BaseTable::deleteAllData(const string& tableName)
+{
+	dbAnyCursor cursor;
+	if(!getTableCursor(tableName, cursor))
+	{
+		return false;
+	}
+
+	cursor.removeAll();
+	return true;
+}
+
 bool BaseTable::deleteDataByCursor( dbAnyCursor& cursor, const string& mRID )
 {
 	dbQuery query;
@@ -120,6 +132,104 @@ bool BaseTable::GetDbReference( dbAnyCursor& table, const string rid )
 		return true;
 
 	return false;
+}
+
+// 获取数据表的游标
+bool BaseTable::getTableCursor( const string& tableName, dbAnyCursor& cursor )
+{
+	if (tableName == "GeographicalRegion")
+	{
+		cursor = dbCursor<GeographicalRegion>(dbCursorForUpdate);
+	}
+	else if (tableName == "SubGeographicalRegion")
+	{
+		cursor = dbCursor<SubGeographicalRegion>(dbCursorForUpdate);
+	}
+	else if (tableName == "Area")
+	{
+		cursor = dbCursor<Area>(dbCursorForUpdate);
+	}
+	else if (tableName == "RemoteUnit")
+	{
+		cursor = dbCursor<RemoteUnit>(dbCursorForUpdate);
+	}
+	else if (tableName == "AnalogUnitPoint")
+	{
+		cursor = dbCursor<AnalogUnitPoint>(dbCursorForUpdate);
+	}
+	else if (tableName == "DiscreteUnitPoint")
+	{
+		cursor = dbCursor<DiscreteUnitPoint>(dbCursorForUpdate);
+	}
+	else if (tableName == "ControlUnitPoint")
+	{
+		cursor = dbCursor<ControlUnitPoint>(dbCursorForUpdate);
+	}
+	else if (tableName == "Substation")
+	{
+		cursor = dbCursor<Substation>(dbCursorForUpdate);
+	}
+	else if (tableName == "VoltageLevel")
+	{
+		cursor = dbCursor<VoltageLevel>(dbCursorForUpdate);
+	}
+	else if (tableName == "BusbarSection")
+	{
+		cursor = dbCursor<BusbarSection>(dbCursorForUpdate);
+	}
+	else if (tableName == "Line")
+	{
+		cursor = dbCursor<Line>(dbCursorForUpdate);
+	}
+	else if (tableName == "Breaker")
+	{
+		cursor = dbCursor<Breaker>(dbCursorForUpdate);
+	}
+	else if (tableName == "Analog")
+	{
+		cursor = dbCursor<Analog>(dbCursorForUpdate);
+	}
+	else if (tableName == "Discrete")
+	{
+		cursor = dbCursor<Discrete>(dbCursorForUpdate);
+	}
+	else if (tableName == "Accumulator")
+	{
+		cursor = dbCursor<Accumulator>(dbCursorForUpdate);
+	}
+	else if (tableName == "Command")
+	{
+		cursor = dbCursor<Command>(dbCursorForUpdate);
+	}
+	else if (tableName == "AnalogCurveData")
+	{
+		cursor = dbCursor<AnalogCurveData>(dbCursorForUpdate);
+	}
+	else if (tableName == "PowerTransformer")
+	{
+		cursor = dbCursor<PowerTransformer>(dbCursorForUpdate);
+	}
+	else if (tableName == "TransformerWinding")
+	{
+		cursor = dbCursor<TransformerWinding>(dbCursorForUpdate);
+	}
+	else if (tableName == "ConnectivityNode")
+	{
+		cursor = dbCursor<ConnectivityNode>(dbCursorForUpdate);
+	}
+	else if (tableName == "Terminal")
+	{
+		cursor = dbCursor<Terminal>(dbCursorForUpdate);
+	}
+	else if (tableName == "Step")
+	{
+		cursor = dbCursor<Step>(dbCursorForUpdate);
+	}
+	else
+	{
+		return false;
+	}
+	return true;
 }
 
 GeographicalRegionTable::GeographicalRegionTable( dbDatabase* dbPtr )

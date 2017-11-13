@@ -19,6 +19,7 @@ public:
 	virtual bool	deleteData(const string& mRID) = 0;
 	virtual bool	updateDatas(const string& mRID, const QMap<QString,QString>& values) = 0;
 	virtual QList<QStringList>	selectDatas() = 0;
+	virtual bool	deleteAllData(const string& tableName);
 	virtual void	getHidedColumns(QList<int>& hideColumns) = 0;
 	
 protected:
@@ -27,6 +28,9 @@ protected:
 	virtual	void setFieldValue(dbAnyCursor& anyCursor, const string& field, const string& value){}
 	//获取关联值
 	bool GetDbReference(dbAnyCursor& table, const string rid);
+
+	// 获取数据表的游标
+	bool	getTableCursor(const string& tableName, dbAnyCursor& cursor);
 	
 public:
 	dbDatabase* m_dbPtr;
@@ -256,7 +260,6 @@ public:
 protected:
 	virtual	void setFieldValue(dbAnyCursor& anyCursor, const string& fieldName, const string& value);
 };
-
 
 class CommandTable : public BaseTable
 {
