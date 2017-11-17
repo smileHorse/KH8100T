@@ -28,15 +28,7 @@ int WorkStationServer::run( int argc, char* argv[] )
 			endPoints.toStdString());
 		info.setOperationInfo("获取适配器成功");
 		emit executeOperation(info);
-
-		//RdbRealData::RdbDataOptPrx rdbOptPrx = RdbRealData::RdbDataOptPrx::checkedCast(
-		//	communicator()->stringToProxy("rdb-opt:default -h 192.168.3.25 -p 10003 -t 5000"));
-		//if (rdbOptPrx)
-		//{
-		//	// 查询树
-		//	GetEquipTree(rdbOptPrx);
-		//}
-
+		
 		// 建立子线程用于发送事项和数据
 		if (m_threadPtr)
 		{

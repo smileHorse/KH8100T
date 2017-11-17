@@ -32,6 +32,7 @@ enum GenerateValueMode
 {
 	Random,
 	Specific,
+	Timed,
 	UnKnown
 };
 
@@ -110,6 +111,7 @@ private:
 	QLabel*		valueModeLable;	// 产生值的方式
 	QRadioButton*	specificRadio;
 	QRadioButton*	randomRadio;
+	QRadioButton*	timerRadio;
 
 	QLabel*		sendCountLable;	// 发送次数
 	QLineEdit*	sendCountEdit;

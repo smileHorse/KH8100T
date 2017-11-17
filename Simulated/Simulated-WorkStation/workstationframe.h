@@ -40,6 +40,9 @@ signals:
 	void subscriberRdbRespondSignal(bool isStop);
 	void subscriberAlarmDataSignal(bool isStop);
 	void subscriberFepDataSignal(bool isStop);
+	void subscriberYkFepSignal(bool isStop);
+	void subscriberYkAppSignal(bool isStop);
+	void ykSelectSignal(bool isStop);
 
 public slots:
 	void updateTableWidget(const OperationInfo& info);
@@ -57,6 +60,9 @@ private slots:
 	void subscriberRdbRespond();
 	void subscriberAlarmData();
 	void subscriberFepData();
+	void subscriberYkFep();
+	void subscriberYkApp();
+	void ykSelect();
 	void clearTextEdit();
 	void about();
 
@@ -82,6 +88,9 @@ private:
 	QAction*	subscriberRdbRespondAction;
 	QAction*	subscriberAlarmDataAction;
 	QAction*	subscriberFepDataAction;
+	QAction*	subscriberYkFepAction;
+	QAction*	subscriberYkAppAction;
+	QAction*	ykSelectAction;
 	QAction*	clearAction;
 	QAction*	helpAction;
 

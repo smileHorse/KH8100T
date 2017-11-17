@@ -35,17 +35,17 @@ void ProcessDataDialog::createWidgets()
 	valueModeLable = new QLabel(QStringLiteral("创建值的方式"));
 	specificRadio = new QRadioButton(QStringLiteral("指定"));
 	randomRadio = new QRadioButton(QStringLiteral("随机"));
+	timerRadio = new QRadioButton(QStringLiteral("定时"));
 
 	connect(specificRadio, SIGNAL(clicked()), this, SLOT(generateValue()));
 	connect(randomRadio, SIGNAL(clicked()), this, SLOT(generateValue()));
+	connect(timerRadio, SIGNAL(clicked()), this, SLOT(generateValue()));
 	specificRadio->setChecked(true);
 
-	QButtonGroup* btnGroup = new QButtonGroup;
-	btnGroup->addButton(specificRadio);
-	btnGroup->addButton(randomRadio);
 	QHBoxLayout* radioLayout = new QHBoxLayout;
 	radioLayout->addWidget(specificRadio);
 	radioLayout->addWidget(randomRadio);
+	radioLayout->addWidget(timerRadio);
 	
 	sendCountLable = new QLabel(QStringLiteral("发送次数(0表示循环发送)"));
 	sendCountEdit = new QLineEdit(QStringLiteral("5"));
@@ -168,6 +168,10 @@ GenerateValueMode ProcessDataDialog::getValueMode() const
 	{
 		return Random;
 	}
+	else if (timerRadio->isChecked())
+	{
+		return Timed;
+	}
 	
 	return UnKnown;
 }
@@ -270,8 +274,9 @@ void ProcessDataDialog::generateDdValues()
 
 void ProcessDataDialog::generateValue()
 {
-	GenerateValueMode mode = getValueMode();
-
+	qsrand(QDateTime::currentDateTime().toTime_t());
+	int unitNo = qrand() % 5 + 1;
+	unitNoEdit->setText(QString("%1").arg(unitNo));
 	switch(allDataTypeType)
 	{
 	case Analog:
@@ -306,28 +311,11 @@ void ProcessDataDialog::startProcessData()
 		
 		m_processCount = sendCount;
 		m_timer->start(2000);
-		//if (sendCount == 0)
-		//{
-		//	while(true)
-		//	{
-		//		generateValue();
-		//		SelfDataPacket dataPacket;
-		//		getDataPacket(dataPacket);
-		//		emit start(dataPacket);
-		//	}
-		//}
-		//else if (sendCount > 0)
-		//{
-		//	for (int i = 0; i < sendCount; ++i)
-		//	{
-		//		generateValue();
-		//		SelfDataPacket dataPacket;
-		//		getDataPacket(dataPacket);
-		//		emit start(dataPacket);
-
-		//		QThread::sleep(1);
-		//	}
-		//}
+	}
+	else if (mode == Timed)
+	{
+		// 定时发送数据时，每隔30s发送一次
+		m_timer->start(30000);
 	}
 }
 
@@ -349,12 +337,15 @@ void ProcessDataDialog::processRandomData()
 	getDataPacket(dataPacket);
 	emit start(dataPacket);
 
-	if (m_processCount != 0)
+	GenerateValueMode mode = getValueMode();
+	if (mode == Specific)
 	{
-		if(--m_processCount == 0)
+		if (m_processCount != 0)
 		{
-			cancelProcessData();
+			if(--m_processCount == 0)
+			{
+				cancelProcessData();
+			}
 		}
 	}
-
 }

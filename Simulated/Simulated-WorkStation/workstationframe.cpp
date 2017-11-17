@@ -110,6 +110,21 @@ void WorkStationFrame::createActions()
 	subscriberFepDataAction->setEnabled(false);
 	connect(subscriberFepDataAction, SIGNAL(triggered()), this, SLOT(subscriberFepData()));
 
+	subscriberYkFepAction = new QAction(QIcon(":/images/subscribeFepData.png"), QStringLiteral("订阅遥控请求"), this);
+	subscriberYkFepAction->setStatusTip(QStringLiteral("订阅遥控请求"));
+	subscriberYkFepAction->setEnabled(false);
+	connect(subscriberYkFepAction, SIGNAL(triggered()), this, SLOT(subscriberYkFep()));
+
+	subscriberYkAppAction = new QAction(QIcon(":/images/subscribeFepData.png"), QStringLiteral("订阅遥控响应"), this);
+	subscriberYkAppAction->setStatusTip(QStringLiteral("订阅遥控响应"));
+	subscriberYkAppAction->setEnabled(false);
+	connect(subscriberYkAppAction, SIGNAL(triggered()), this, SLOT(subscriberYkApp()));
+
+	ykSelectAction = new QAction(QIcon(":/images/subscribeFepData.png"), QStringLiteral("遥控选择"), this);
+	ykSelectAction->setStatusTip(QStringLiteral("遥控选择"));
+	ykSelectAction->setEnabled(false);
+	connect(ykSelectAction, SIGNAL(triggered()), this, SLOT(ykSelect()));
+	
 	clearAction = new QAction(QIcon(":/images/clear.png"), QStringLiteral("清空文本"), this);
 	clearAction->setStatusTip(QStringLiteral("清空文本"));
 	connect(clearAction, SIGNAL(triggered()), this, SLOT(clearTextEdit()));
@@ -139,6 +154,10 @@ void WorkStationFrame::createMenus()
 	subscriberMenu->addAction(subscriberRdbRespondAction);
 	subscriberMenu->addAction(subscriberAlarmDataAction);
 	subscriberMenu->addAction(subscriberFepDataAction);
+	subscriberMenu->addAction(subscriberYkFepAction);
+	subscriberMenu->addAction(subscriberYkAppAction);
+	subscriberMenu->addSeparator();
+	subscriberMenu->addAction(ykSelectAction);
 	operMenu->addSeparator();
 	operMenu->addAction(clearAction);
 
@@ -165,6 +184,10 @@ void WorkStationFrame::createToolBars()
 	operToolBar->addAction(subscriberRdbRespondAction);
 	operToolBar->addAction(subscriberAlarmDataAction);
 	operToolBar->addAction(subscriberFepDataAction);
+	operToolBar->addAction(subscriberYkFepAction);
+	operToolBar->addAction(subscriberYkAppAction);
+	operToolBar->addSeparator();
+	operToolBar->addAction(ykSelectAction);
 	operToolBar->addSeparator();
 	operToolBar->addAction(clearAction);
 }
@@ -184,6 +207,9 @@ void WorkStationFrame::createConnects()
 	connect(this, SIGNAL(subscriberRdbRespondSignal(bool)), m_workStationServerThreadPtr, SLOT(subscriberRdbRespond(bool)));
 	connect(this, SIGNAL(subscriberAlarmDataSignal(bool)), m_workStationServerThreadPtr, SLOT(subscriberAlarmData(bool)));
 	connect(this, SIGNAL(subscriberFepDataSignal(bool)), m_workStationServerThreadPtr, SLOT(subscriberFepData(bool)));
+	connect(this, SIGNAL(subscriberYkFepSignal(bool)), m_workStationServerThreadPtr, SLOT(subscriberYkFep(bool)));
+	connect(this, SIGNAL(subscriberYkAppSignal(bool)), m_workStationServerThreadPtr, SLOT(subscriberYkApp(bool)));
+	connect(this, SIGNAL(ykSelectSignal(bool)), m_workStationServerThreadPtr, SLOT(ykSelect(bool)));
 	connect(m_workStationServerThreadPtr, &WorkStationServerThread::executeOperation, 
 		this, &WorkStationFrame::updateTableWidget);
 	connect(m_workStationServerThreadPtr, &WorkStationServerThread::outputReceiveData, 
@@ -225,6 +251,9 @@ void WorkStationFrame::updateActions( bool serverStarted )
 	subscriberRdbRespondAction->setEnabled(serverStarted);
 	subscriberAlarmDataAction->setEnabled(serverStarted);
 	subscriberFepDataAction->setEnabled(serverStarted);
+	subscriberYkFepAction->setEnabled(serverStarted);
+	subscriberYkAppAction->setEnabled(serverStarted);
+	ykSelectAction->setEnabled(serverStarted);
 }
 
 void WorkStationFrame::startServer()
@@ -342,6 +371,63 @@ void WorkStationFrame::subscriberFepData()
 	}
 }
 
+
+void WorkStationFrame::subscriberYkFep()
+{
+	QString text = subscriberYkFepAction->text();
+	if (text.contains(QStringLiteral("取消")))
+	{
+		subscriberYkFepAction->setText(QStringLiteral("订阅遥控请求"));
+		subscriberYkFepAction->setStatusTip(QStringLiteral("订阅遥控请求"));
+
+		emit subscriberYkFepSignal(true);
+	}
+	else
+	{
+		subscriberYkFepAction->setText(QStringLiteral("取消订阅遥控请求"));
+		subscriberYkFepAction->setStatusTip(QStringLiteral("取消订阅遥控请求"));
+
+		emit subscriberYkFepSignal(false);
+	}
+}
+
+void WorkStationFrame::subscriberYkApp()
+{
+	QString text = subscriberYkAppAction->text();
+	if (text.contains(QStringLiteral("取消")))
+	{
+		subscriberYkAppAction->setText(QStringLiteral("订阅遥控响应"));
+		subscriberYkAppAction->setStatusTip(QStringLiteral("订阅遥控响应"));
+
+		emit subscriberYkAppSignal(true);
+	}
+	else
+	{
+		subscriberYkAppAction->setText(QStringLiteral("取消订阅遥控响应"));
+		subscriberYkAppAction->setStatusTip(QStringLiteral("取消订阅遥控响应"));
+
+		emit subscriberYkAppSignal(false);
+	}
+}
+
+void WorkStationFrame::ykSelect()
+{
+	QString text = ykSelectAction->text();
+	if (text.contains(QStringLiteral("取消")))
+	{
+		ykSelectAction->setText(QStringLiteral("遥控选择"));
+		ykSelectAction->setStatusTip(QStringLiteral("遥控选择"));
+
+		emit ykSelectSignal(true);
+	}
+	else
+	{
+		ykSelectAction->setText(QStringLiteral("取消遥控选择"));
+		ykSelectAction->setStatusTip(QStringLiteral("取消遥控选择"));
+
+		emit ykSelectSignal(false);
+	}
+}
 
 void WorkStationFrame::clearTextEdit()
 {

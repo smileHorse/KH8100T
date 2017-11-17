@@ -1398,7 +1398,7 @@ bool AnalogTable::updateDatas( const string& mRID, const QMap<QString,QString>& 
 
 void AnalogTable::getHidedColumns( QList<int>& hideColumns )
 {
-	hideColumns << 2 << 3 << 4 << 5 << 6 << 7 << 8 << 9 << 10 << 11 << 12 << 13 << 14 << 15 << 16 << 17 << 18 
+	hideColumns << 2 << 3 << 4 << 5 << 6 << 7 << 9 << 10 << 11 << 12 << 13 << 14 << 15 << 16 << 17 << 18 
 		<< 19 << 20 << 21 << 22 << 33 << 43 << 47;
 	//hideColumns << 2 << 3 << 4 << 5 << 6 << 7 << 8 << 9 << 10 << 11 << 12 << 13 << 14 << 15 << 16 << 17 << 18 
 	//	<< 19 << 20 << 21 << 23 << 30 << 31 << 32 << 33 << 34 << 35 << 36 << 37 << 38 << 39 << 40 << 41 
@@ -1411,6 +1411,10 @@ void AnalogTable::setFieldValue( dbAnyCursor& anyCursor, const string& fieldName
 	if (fieldName == "name")
 	{
 		cursor->name = value;
+	}
+	else if (fieldName == "unitSymbol")
+	{
+		cursor->unitSymbol = transferType<int4, string>(value);
 	}
 	else if (fieldName == "psr_type")
 	{

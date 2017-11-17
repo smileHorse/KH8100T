@@ -82,6 +82,7 @@
     <ClCompile Include="..\common\basic\textelement.cpp" />
     <ClCompile Include="..\common\slice\cpp\fepdata.cpp" />
     <ClCompile Include="..\common\slice\cpp\rdbdata.cpp" />
+    <ClCompile Include="..\common\slice\cpp\ykdata.cpp" />
     <ClCompile Include="FepDataManagerI.cpp" />
     <ClCompile Include="GeneratedFiles\Debug\moc_workstationframe.cpp">
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">true</ExcludedFromBuild>
@@ -113,6 +114,7 @@
     <ClCompile Include="workstationframe.cpp" />
     <ClCompile Include="workstationserver.cpp" />
     <ClCompile Include="workstationserverthread.cpp" />
+    <ClCompile Include="YkDataManagerI.cpp" />
   </ItemGroup>
   <ItemGroup>
     <CustomBuild Include="workstationframe.h">
@@ -148,9 +150,11 @@
     <ClInclude Include="..\common\basic\textelement.h" />
     <ClInclude Include="..\common\slice\cpp\fepdata.h" />
     <ClInclude Include="..\common\slice\cpp\rdbdata.h" />
+    <ClInclude Include="..\common\slice\cpp\ykdata.h" />
     <ClInclude Include="FepDataManagerI.h" />
     <ClInclude Include="RdbAlarmDataI.h" />
     <ClInclude Include="RdbRealDataI.h" />
+    <ClInclude Include="YkDataManagerI.h" />
     <CustomBuild Include="workstationserverthread.h">
       <AdditionalInputs Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">$(QTDIR)\bin\moc.exe;%(FullPath);%(AdditionalInputs)</AdditionalInputs>
       <Message Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Moc%27ing workstationserverthread.h...</Message>
