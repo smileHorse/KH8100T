@@ -32,16 +32,20 @@ private:
 	void createStatusBar();
 	void createConnects();
 
+	void updateActionText(QAction* action, bool& isStop);
+
 signals:
 	void serverStarted(bool serverStarted);
 	void requestCompleteData();
 	void selectCompleteData();
+	void requestWarningMsgSingal();
 	void subscriberRdbRequestSignal(bool isStop);
 	void subscriberRdbRespondSignal(bool isStop);
 	void subscriberAlarmDataSignal(bool isStop);
 	void subscriberFepDataSignal(bool isStop);
 	void subscriberYkFepSignal(bool isStop);
 	void subscriberYkAppSignal(bool isStop);
+	void subscriberWarningMsgSignal(bool isStop);
 	void ykSelectSignal(bool isStop);
 
 public slots:
@@ -56,12 +60,14 @@ private slots:
 	void requestStormTopoData();
 	void requestRdbData();
 	void requestTopoData();
+	void requestWarningMsg();
 	void subscriberRdbRequest();
 	void subscriberRdbRespond();
 	void subscriberAlarmData();
 	void subscriberFepData();
 	void subscriberYkFep();
 	void subscriberYkApp();
+	void subscribeWarningMsg();
 	void ykSelect();
 	void clearTextEdit();
 	void about();
@@ -84,12 +90,14 @@ private:
 	QAction*	requestStormTopoDataAction;
 	QAction*	requestRdbDataAction;
 	QAction*	requestTopoDataAction;
+	QAction*	requestWarningMsgAction;
 	QAction*	subscriberRdbRequestAction;
 	QAction*	subscriberRdbRespondAction;
 	QAction*	subscriberAlarmDataAction;
 	QAction*	subscriberFepDataAction;
 	QAction*	subscriberYkFepAction;
 	QAction*	subscriberYkAppAction;
+	QAction*	subscriberWarningMsgAction;
 	QAction*	ykSelectAction;
 	QAction*	clearAction;
 	QAction*	helpAction;

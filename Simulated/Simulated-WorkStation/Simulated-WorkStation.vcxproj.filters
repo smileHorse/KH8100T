@@ -104,6 +104,15 @@
     <ClCompile Include="YkDataManagerI.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="..\common\slice\cpp\warningmsg.cpp">
+      <Filter>Slice</Filter>
+    </ClCompile>
+    <ClCompile Include="WarningMsgI.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="WarningTableData.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <CustomBuild Include="workstationframe.h">
@@ -154,6 +163,15 @@
       <Filter>Slice</Filter>
     </ClInclude>
     <ClInclude Include="YkDataManagerI.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="..\common\slice\cpp\warningmsg.h">
+      <Filter>Slice</Filter>
+    </ClInclude>
+    <ClInclude Include="WarningMsgI.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="WarningTableData.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>

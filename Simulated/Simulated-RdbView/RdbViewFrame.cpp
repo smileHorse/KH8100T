@@ -35,6 +35,7 @@ void RdbViewFrame::createWidgets()
 	m_rdbTableWidget = new QTableWidget;
 	m_rdbTableWidget->setWindowTitle(QStringLiteral("ÊµÊ±¿âÄÚÈÝ"));
 	m_rdbTableWidget->setShowGrid(true);
+	m_rdbTableWidget->setSortingEnabled(true);
 	m_rdbTableWidget->setAlternatingRowColors(true);
 
 	QSplitter* splitter = new QSplitter;

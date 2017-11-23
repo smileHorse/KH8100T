@@ -1,13 +1,14 @@
+
 #include "workstationserverthread.h"
 #include "BaseIceStorm.h"
+#include "fepdata.h"
+#include "FepDataManagerI.h"
 #include "OperationInfo.h"
 #include "RdbAlarmDataI.h"
 #include "RdbRealDataI.h"
-#include "FepDataManagerI.h"
+#include "warningmsg.h"
+#include "WarningMsgI.h"
 #include "YkDataManagerI.h"
-#include "rdbdata.h"
-#include "fepdata.h"
-#include "ykdata.h"
 
 #include <string>
 
@@ -24,6 +25,7 @@ WorkStationServerThread::WorkStationServerThread( QObject* parent /*= 0*/ )
 	m_fepDataSubIdentity = "fepdata-subscriber";
 	m_ykFepSubIdentity = "ykfep-subscriber";
 	m_ykAppSubIdentity = "ykapp-subscriber";
+	m_warningMsgSubIdentity = "warningmsg-subscriber";
 }
 
 void WorkStationServerThread::setCommunicatorPtr( Ice::CommunicatorPtr ptr )
@@ -366,10 +368,26 @@ void WorkStationServerThread::selectCompleteData()
 		requestSeq.isStop = false;
 		requestSeq.refreshFreq = 0;
 		RdbRealData::RequestCompleteData	request;
-		request.tableName = "SubGeographicalRegion";
+		request.tableName = "RemoteUnit";
+		requestSeq.seq.push_back(request);
+		requestSeq.dataCount = requestSeq.seq.size();
 
 		RdbRealData::RespondCompleteDataSeq respondSeq;
 		rdbOptPrx->SelectCompleteData(requestSeq, respondSeq);
+	}
+}
+
+void WorkStationServerThread::requestWarningMsg()
+{
+	WarningMsg::WarningMsgFilePrx warningMsgOptPrx = WarningMsg::WarningMsgFilePrx::checkedCast(
+		m_communicatorPtr->stringToProxy("warningmsg-opt:default -h 192.168.3.25 -p 10003 -t 5000"));
+	if (warningMsgOptPrx)
+	{
+		Ice::Long pos = 0;
+		Ice::Int length = 0;
+		std::string fileName = "2017-11-20.msg";
+		WarningMsg::WarningMsgContent content;
+		content = warningMsgOptPrx->getContent(pos, length, fileName);
 	}
 }
 
@@ -553,6 +571,37 @@ void WorkStationServerThread::subscriberYkApp( bool isStop )
 		else
 		{
 			subscribeTopic(m_ykAppPrx, strTopic, type);
+		}
+	}
+	catch(const Ice::Exception& ex)
+	{
+		OperationInfo info(TYPE_CLIENT);
+		info.setOperationInfo(QStringLiteral("订阅/取消订阅遥控响应失败"), QDateTime(), false, ex.what());
+		emit executeOperation(info);
+		return;
+	}
+}
+
+void WorkStationServerThread::subscriberWarningMsg( bool isStop )
+{
+	try 
+	{
+		// 创建订阅接口
+		if (m_warningMsgPrx == NULL)
+		{
+			m_warningMsgPrx = m_objectAdapterPtr->add(new SendWarningMsgI(this), 
+				m_communicatorPtr->stringToIdentity(m_warningMsgSubIdentity));
+		}
+
+		string strTopic = WarningMsg::SendWarningMsgTopic;
+		QString	type = "告警文件";
+		if (isStop)
+		{
+			unSubscribeTopic(m_warningMsgPrx, strTopic, type);
+		}
+		else
+		{
+			subscribeTopic(m_warningMsgPrx, strTopic, type);
 		}
 	}
 	catch(const Ice::Exception& ex)

@@ -90,6 +90,11 @@ void WorkStationFrame::createActions()
 	requestTopoDataAction->setEnabled(false);
 	connect(requestTopoDataAction, SIGNAL(triggered()), this, SLOT(requestTopoData()));
 
+	requestWarningMsgAction = new QAction(QIcon(":/images/requestTopo.png"), QStringLiteral("请求告警文件(Ice)"), this);
+	requestWarningMsgAction->setStatusTip(QStringLiteral("通过Ice请求告警文件"));
+	requestWarningMsgAction->setEnabled(false);
+	connect(requestWarningMsgAction, SIGNAL(triggered()), this, SLOT(requestWarningMsg()));
+
 	subscriberRdbRequestAction = new QAction(QIcon(":/images/subscribeRdbRequest.png"), QStringLiteral("订阅实时数据请求"), this);
 	subscriberRdbRequestAction->setStatusTip(QStringLiteral("订阅实时数据请求"));
 	subscriberRdbRequestAction->setEnabled(false);
@@ -120,6 +125,11 @@ void WorkStationFrame::createActions()
 	subscriberYkAppAction->setEnabled(false);
 	connect(subscriberYkAppAction, SIGNAL(triggered()), this, SLOT(subscriberYkApp()));
 
+	subscriberWarningMsgAction = new QAction(QIcon(":/images/subscribeFepData.png"), QStringLiteral("订阅告警数据"), this);
+	subscriberWarningMsgAction->setStatusTip(QStringLiteral("订阅告警数据"));
+	subscriberWarningMsgAction->setEnabled(false);
+	connect(subscriberWarningMsgAction, SIGNAL(triggered()), this, SLOT(subscribeWarningMsg()));
+
 	ykSelectAction = new QAction(QIcon(":/images/subscribeFepData.png"), QStringLiteral("遥控选择"), this);
 	ykSelectAction->setStatusTip(QStringLiteral("遥控选择"));
 	ykSelectAction->setEnabled(false);
@@ -149,6 +159,7 @@ void WorkStationFrame::createMenus()
 	QMenu* iceMenu = operMenu->addMenu(QIcon(":/images/icemenu.png"), QStringLiteral("Ice"));
 	iceMenu->addAction(requestRdbDataAction);
 	iceMenu->addAction(requestTopoDataAction);
+	iceMenu->addAction(requestWarningMsgAction);
 	QMenu* subscriberMenu = operMenu->addMenu(QIcon(":/images/icemenu.png"), QStringLiteral("IceStorm Subscriber"));
 	subscriberMenu->addAction(subscriberRdbRequestAction);
 	subscriberMenu->addAction(subscriberRdbRespondAction);
@@ -156,6 +167,7 @@ void WorkStationFrame::createMenus()
 	subscriberMenu->addAction(subscriberFepDataAction);
 	subscriberMenu->addAction(subscriberYkFepAction);
 	subscriberMenu->addAction(subscriberYkAppAction);
+	subscriberMenu->addAction(subscriberWarningMsgAction);
 	subscriberMenu->addSeparator();
 	subscriberMenu->addAction(ykSelectAction);
 	operMenu->addSeparator();
@@ -179,6 +191,7 @@ void WorkStationFrame::createToolBars()
 	operToolBar->addSeparator();
 	operToolBar->addAction(requestRdbDataAction);
 	operToolBar->addAction(requestTopoDataAction);
+	operToolBar->addAction(requestWarningMsgAction);
 	operToolBar->addSeparator();
 	operToolBar->addAction(subscriberRdbRequestAction);
 	operToolBar->addAction(subscriberRdbRespondAction);
@@ -186,6 +199,7 @@ void WorkStationFrame::createToolBars()
 	operToolBar->addAction(subscriberFepDataAction);
 	operToolBar->addAction(subscriberYkFepAction);
 	operToolBar->addAction(subscriberYkAppAction);
+	operToolBar->addAction(subscriberWarningMsgAction);
 	operToolBar->addSeparator();
 	operToolBar->addAction(ykSelectAction);
 	operToolBar->addSeparator();
@@ -203,17 +217,41 @@ void WorkStationFrame::createConnects()
 	connect(this, SIGNAL(serverStarted(bool)), this, SLOT(updateActions(bool)));
 	connect(this, SIGNAL(requestCompleteData()), m_workStationServerThreadPtr, SLOT(requestCompleteData()));
 	connect(this, SIGNAL(selectCompleteData()), m_workStationServerThreadPtr, SLOT(selectCompleteData()));
+	connect(this, SIGNAL(requestWarningMsgSingal()), m_workStationServerThreadPtr, SLOT(requestWarningMsg()));
 	connect(this, SIGNAL(subscriberRdbRequestSignal(bool)), m_workStationServerThreadPtr, SLOT(subscriberRdbRequest(bool)));
 	connect(this, SIGNAL(subscriberRdbRespondSignal(bool)), m_workStationServerThreadPtr, SLOT(subscriberRdbRespond(bool)));
 	connect(this, SIGNAL(subscriberAlarmDataSignal(bool)), m_workStationServerThreadPtr, SLOT(subscriberAlarmData(bool)));
 	connect(this, SIGNAL(subscriberFepDataSignal(bool)), m_workStationServerThreadPtr, SLOT(subscriberFepData(bool)));
 	connect(this, SIGNAL(subscriberYkFepSignal(bool)), m_workStationServerThreadPtr, SLOT(subscriberYkFep(bool)));
 	connect(this, SIGNAL(subscriberYkAppSignal(bool)), m_workStationServerThreadPtr, SLOT(subscriberYkApp(bool)));
+	connect(this, SIGNAL(subscriberWarningMsgSignal(bool)), m_workStationServerThreadPtr, SLOT(subscriberWarningMsg(bool)));
 	connect(this, SIGNAL(ykSelectSignal(bool)), m_workStationServerThreadPtr, SLOT(ykSelect(bool)));
 	connect(m_workStationServerThreadPtr, &WorkStationServerThread::executeOperation, 
 		this, &WorkStationFrame::updateTableWidget);
 	connect(m_workStationServerThreadPtr, &WorkStationServerThread::outputReceiveData, 
 		this, &WorkStationFrame::updateTextEdit);
+}
+
+void WorkStationFrame::updateActionText(QAction* action, bool& isStop)
+{
+	QString text = action->text();
+	QString str = QStringLiteral("取消");
+	if (text.contains(str))
+	{
+		QString newText = text.right(text.length() - text.indexOf(str) - 2);
+		action->setText(newText);
+		action->setStatusTip(newText);
+
+		isStop = true;
+	}
+	else
+	{
+		QString newText = str + text;
+		action->setText(newText);
+		action->setStatusTip(newText);
+
+		isStop = false;
+	}
 }
 
 void WorkStationFrame::updateTableWidget( const OperationInfo& info )
@@ -247,12 +285,14 @@ void WorkStationFrame::updateActions( bool serverStarted )
 	requestStormTopoDataAction->setEnabled(serverStarted);
 	requestRdbDataAction->setEnabled(serverStarted);
 	requestTopoDataAction->setEnabled(serverStarted);
+	requestWarningMsgAction->setEnabled(serverStarted);
 	subscriberRdbRequestAction->setEnabled(serverStarted);
 	subscriberRdbRespondAction->setEnabled(serverStarted);
 	subscriberAlarmDataAction->setEnabled(serverStarted);
 	subscriberFepDataAction->setEnabled(serverStarted);
 	subscriberYkFepAction->setEnabled(serverStarted);
 	subscriberYkAppAction->setEnabled(serverStarted);
+	subscriberWarningMsgAction->setEnabled(serverStarted);
 	ykSelectAction->setEnabled(serverStarted);
 }
 
@@ -294,139 +334,67 @@ void WorkStationFrame::requestTopoData()
 
 }
 
+void WorkStationFrame::requestWarningMsg()
+{
+	emit requestWarningMsgSingal();
+}
+
 void WorkStationFrame::subscriberRdbRequest()
 {
-	QString text = subscriberRdbRequestAction->text();
-	if (text.contains(QStringLiteral("取消")))
-	{
-		subscriberRdbRequestAction->setText(QStringLiteral("订阅实时数据请求"));
-		subscriberRdbRequestAction->setStatusTip(QStringLiteral("订阅实时数据请求"));
-
-		emit subscriberRdbRequestSignal(true);
-	}
-	else
-	{
-		subscriberRdbRequestAction->setText(QStringLiteral("取消订阅实时数据请求"));
-		subscriberRdbRequestAction->setStatusTip(QStringLiteral("取消订阅实时数据请求"));
-
-		emit subscriberRdbRequestSignal(false);
-	}
+	bool isStop = false;
+	updateActionText(subscriberRdbRequestAction, isStop);
+	emit subscriberRdbRequestSignal(isStop);
 }
 
 
 void WorkStationFrame::subscriberRdbRespond()
 {
-	QString text = subscriberRdbRespondAction->text();
-	if (text.contains(QStringLiteral("取消")))
-	{
-		subscriberRdbRespondAction->setText(QStringLiteral("订阅实时数据响应"));
-		subscriberRdbRespondAction->setStatusTip(QStringLiteral("订阅实时数据响应"));
-
-		emit subscriberRdbRespondSignal(true);
-	}
-	else
-	{
-		subscriberRdbRespondAction->setText(QStringLiteral("取消订阅实时数据响应"));
-		subscriberRdbRespondAction->setStatusTip(QStringLiteral("取消订阅实时数据响应"));
-
-		emit subscriberRdbRespondSignal(false);
-	}
+	bool isStop = false;
+	updateActionText(subscriberRdbRespondAction, isStop);
+	emit subscriberRdbRespondSignal(isStop);
 }
 
 void WorkStationFrame::subscriberAlarmData()
 {
-	QString text = subscriberAlarmDataAction->text();
-	if (text.contains(QStringLiteral("取消")))
-	{
-		subscriberAlarmDataAction->setText(QStringLiteral("订阅报警数据"));
-		subscriberAlarmDataAction->setStatusTip(QStringLiteral("订阅报警数据"));
-
-		emit subscriberAlarmDataSignal(true);
-	}
-	else
-	{
-		subscriberAlarmDataAction->setText(QStringLiteral("取消订阅报警数据"));
-		subscriberAlarmDataAction->setStatusTip(QStringLiteral("取消订阅报警数据"));
-
-		emit subscriberAlarmDataSignal(false);
-	}
+	bool isStop = false;
+	updateActionText(subscriberAlarmDataAction, isStop);
+	emit subscriberAlarmDataSignal(isStop);
 }
 
 void WorkStationFrame::subscriberFepData()
 {
-	QString text = subscriberFepDataAction->text();
-	if (text.contains(QStringLiteral("取消")))
-	{
-		subscriberFepDataAction->setText(QStringLiteral("订阅前置机数据"));
-		subscriberFepDataAction->setStatusTip(QStringLiteral("订阅前置机数据"));
-
-		emit subscriberFepDataSignal(true);
-	}
-	else
-	{
-		subscriberFepDataAction->setText(QStringLiteral("取消订阅前置机数据"));
-		subscriberFepDataAction->setStatusTip(QStringLiteral("取消订阅前置机数据"));
-
-		emit subscriberFepDataSignal(false);
-	}
+	bool isStop = false;
+	updateActionText(subscriberFepDataAction, isStop);
+	emit subscriberFepDataSignal(isStop);
 }
 
 
 void WorkStationFrame::subscriberYkFep()
 {
-	QString text = subscriberYkFepAction->text();
-	if (text.contains(QStringLiteral("取消")))
-	{
-		subscriberYkFepAction->setText(QStringLiteral("订阅遥控请求"));
-		subscriberYkFepAction->setStatusTip(QStringLiteral("订阅遥控请求"));
-
-		emit subscriberYkFepSignal(true);
-	}
-	else
-	{
-		subscriberYkFepAction->setText(QStringLiteral("取消订阅遥控请求"));
-		subscriberYkFepAction->setStatusTip(QStringLiteral("取消订阅遥控请求"));
-
-		emit subscriberYkFepSignal(false);
-	}
+	bool isStop = false;
+	updateActionText(subscriberYkFepAction, isStop);
+	emit subscriberYkFepSignal(isStop);
 }
 
 void WorkStationFrame::subscriberYkApp()
 {
-	QString text = subscriberYkAppAction->text();
-	if (text.contains(QStringLiteral("取消")))
-	{
-		subscriberYkAppAction->setText(QStringLiteral("订阅遥控响应"));
-		subscriberYkAppAction->setStatusTip(QStringLiteral("订阅遥控响应"));
+	bool isStop = false;
+	updateActionText(subscriberYkAppAction, isStop);
+	emit subscriberYkAppSignal(isStop);
+}
 
-		emit subscriberYkAppSignal(true);
-	}
-	else
-	{
-		subscriberYkAppAction->setText(QStringLiteral("取消订阅遥控响应"));
-		subscriberYkAppAction->setStatusTip(QStringLiteral("取消订阅遥控响应"));
-
-		emit subscriberYkAppSignal(false);
-	}
+void WorkStationFrame::subscribeWarningMsg()
+{
+	bool isStop = false;
+	updateActionText(subscriberWarningMsgAction, isStop);
+	emit subscriberWarningMsgSignal(isStop);
 }
 
 void WorkStationFrame::ykSelect()
 {
-	QString text = ykSelectAction->text();
-	if (text.contains(QStringLiteral("取消")))
-	{
-		ykSelectAction->setText(QStringLiteral("遥控选择"));
-		ykSelectAction->setStatusTip(QStringLiteral("遥控选择"));
-
-		emit ykSelectSignal(true);
-	}
-	else
-	{
-		ykSelectAction->setText(QStringLiteral("取消遥控选择"));
-		ykSelectAction->setStatusTip(QStringLiteral("取消遥控选择"));
-
-		emit ykSelectSignal(false);
-	}
+	bool isStop = false;
+	updateActionText(ykSelectAction, isStop);
+	emit ykSelectSignal(isStop);
 }
 
 void WorkStationFrame::clearTextEdit()

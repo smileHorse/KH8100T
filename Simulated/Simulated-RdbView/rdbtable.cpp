@@ -516,7 +516,7 @@ QList<QStringList> RemoteUnitTable::selectDatas()
 			str << cursor->mRID << "," << cursor->IEDID << "," << cursor->IEDName << "," << cursor->IEDType << "," 
 				<< cursor->timeStamp << "," << cursor->status << "," << cursor->channelState1 << "," 
 				<< cursor->channelState2 << "," << cursor->errorRate << "," << cursor->safeDays << "," 
-				<< cursor->dayRate << "," << cursor->monthRate;
+				<< cursor->dayRate << "," << cursor->monthRate << cursor->ec_type << cursor->ec_rid;
 
 			QString value = QString().fromStdString(str.str());
 			
@@ -574,6 +574,14 @@ void RemoteUnitTable::setFieldValue( dbAnyCursor& anyCursor, const string& field
 	else if (fieldName == "IEDType")
 	{
 		cursor->IEDType = transferType<int4, string>(value);
+	}
+	else if (fieldName == "ec_type")
+	{
+		cursor->ec_type = value;
+	}
+	else if (fieldName == "ec_rid")
+	{
+		cursor->ec_rid = value;
 	}
 }
 

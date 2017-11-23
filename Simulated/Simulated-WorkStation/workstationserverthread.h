@@ -1,8 +1,8 @@
 #ifndef WORKSTATIONSERVERTHREAD_H
 #define WORKSTATIONSERVERTHREAD_H
 
-#include "rdbdata.h"
 #include "ykdata.h"
+#include "rdbdata.h"
 
 #include <string>
 #include <QtCore/QtCore>
@@ -64,12 +64,14 @@ public slots:
 private slots:
 	void requestCompleteData();
 	void selectCompleteData();
+	void requestWarningMsg();
 	void subscriberRdbRequest(bool isStop);
 	void subscriberRdbRespond(bool isStop);
 	void subscriberAlarmData(bool isStop);
 	void subscriberFepData(bool isStop);
 	void subscriberYkFep(bool isStop);
 	void subscriberYkApp(bool isStop);
+	void subscriberWarningMsg(bool isStop);
 	void ykSelect(bool isStop);
 
 private:
@@ -82,6 +84,7 @@ private:
 	Ice::ObjectPrx  m_fepDataPrx;			// 前置机数据响应订阅接口
 	Ice::ObjectPrx  m_ykFepPrx;				// 遥控数据请求订阅接口
 	Ice::ObjectPrx  m_ykAppPrx;				// 遥控数据响应订阅接口
+	Ice::ObjectPrx  m_warningMsgPrx;		// 告警数据响应订阅接口
 
 	RdbRealData::RdbRealDataRequestPrx	m_rdbRealDataRequestPrx;
 	Yk::YkFepManagerPrx					m_ykFepManagerPrx;
@@ -95,6 +98,7 @@ private:
 	string		m_fepDataSubIdentity;
 	string		m_ykFepSubIdentity;
 	string		m_ykAppSubIdentity;
+	string		m_warningMsgSubIdentity;
 };
 
 #endif

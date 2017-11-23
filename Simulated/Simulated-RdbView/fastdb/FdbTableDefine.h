@@ -203,6 +203,9 @@ public:
 	real8	dayRate;	// 日投运率
 	real8	monthRate;	// 月投运率
 
+	std::string ec_type;	//设备所属设备容器的psrType	
+	std::string	ec_rid;		//设备所属设备容器的RID
+
 	int update_unitdata(std::string timeStamp, int status, int channelState1, int channelState2, int errorRate)
 	{
 		int  value_changed = 0;
@@ -234,7 +237,9 @@ public:
 					FIELD(errorRate),
 					FIELD(safeDays),
 					FIELD(dayRate),
-					FIELD(monthRate)));
+					FIELD(monthRate),
+					FIELD(ec_type),
+					FIELD(ec_rid)));
 };
 
 //遥测点表（AnalogUnitPoint）

@@ -18,8 +18,8 @@
 // </auto-generated>
 //
 
-#ifndef __rdbdata_h__
-#define __rdbdata_h__
+#ifndef __cpp_rdbdata_h__
+#define __cpp_rdbdata_h__
 
 #include <IceUtil/PushDisableWarnings.h>
 #include <Ice/ProxyF.h>
@@ -1021,6 +1021,7 @@ enum RdbWarningType
     FaEvent,
     WaveEvent,
     GraphEvent,
+    RfwEvent,
     AllEvent
 };
 
@@ -1818,7 +1819,7 @@ struct StreamableTraits< ::RdbWarningData::RdbWarningType>
 {
     static const StreamHelperCategory helper = StreamHelperCategoryEnum;
     static const int minValue = 0;
-    static const int maxValue = 11;
+    static const int maxValue = 12;
     static const int minWireSize = 1;
     static const bool fixedLength = false;
 };
