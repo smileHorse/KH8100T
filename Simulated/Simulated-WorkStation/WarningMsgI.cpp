@@ -135,39 +135,37 @@ void SendWarningMsgI::sendFinished( const ::std::string& title, const ::Ice::Cur
 	}
 	*/
 
-	QFile file(QString().fromStdString(title));
-	if (!file.open(QIODevice::ReadOnly))
+	FILE* inf = NULL;
+	if ((inf = fopen(title.c_str(), "r+b")) == NULL)
 	{
-		m_threadPtr->outputOperationData(QStringLiteral("读取告警文件错误"));
+		m_threadPtr->outputOperationData(QStringLiteral("打开告警文件出错..."));
 		return;
 	}
 
-	QDataStream in(&file);
-	in.setVersion(QDataStream::Qt_5_0);
-	while(!in.atEnd())
+	while(!feof(inf))
 	{
-		QString str;
 		int type;
-		in >> type;
+		int nItems = fread(&type, sizeof(int), 1, inf);
+		if (nItems <= 0)
+		{
+			break;
+		}
+
 		switch(type)
 		{
 		case CWarningDataManager::Table_Alarm_Limit:
 			{
-				CAlarmLimitTableData data;
-				in >> data.id >> data.datet;
-				in >> data.station >> data.equipName >> data.line >> data.dataName >> data.state >> data.limitVal
-					>> data.currVal >> data.sms_flag;
-				in >> data.warnSource >> data.warnLevel;
-				data.transformToQString(str);
+				QSharedPointer<CAlarmLimitTableData> data = QSharedPointer<CAlarmLimitTableData>::create();
+				data->readFromBinaryFile(inf);
+
+				QString str;
+				data->transformToQString(str);
+				m_threadPtr->outputOperationData(str);
 				break;
 			}
 		default:
-			{
-				str = QStringLiteral("未知");
-				break;
-			}
+			break;
 		}
-		m_threadPtr->outputOperationData(str);
 	}
 
 	m_threadPtr->outputOperationData(QStringLiteral("结束读取告警文件"));

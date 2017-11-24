@@ -41,8 +41,6 @@ public:
 class CAlarmTableDataImpl
 {
 public:
-	// 将长整型转换为日期类型
-	QString convertDateTimeToQStr(long long timestamp);
 	
 	// 将标准string转换为QString
 	QString	convertStdStrToQStr(const string& str);
@@ -55,6 +53,12 @@ public:
 	
 	// 将int转换为QString
 	QString	convertIntToQStr(int value);
+
+	// 将QString写入文件
+	void writeQStrToFile(FILE* outf, const QString& str);
+
+	// 从文件中读取QString
+	void readQStrFromFile(FILE* inf, QString& str);
 };
 
 // 告警表通用数据
@@ -74,6 +78,12 @@ public:
 	virtual void getDataFieldImpl(QStringList& strList) const = 0;
 
 	virtual	int getAlarmTableDataType() const = 0;
+
+	virtual bool writeToBinaryFile(FILE* outf);
+	virtual void writeToBinaryFileImpl(FILE* outf) = 0;
+
+	virtual bool readFromBinaryFile(FILE* inf);
+	virtual void readFromBinaryFileImpl(FILE* inf) = 0;
 	
 protected:
 	CAlarmTableDataImpl	m_impl;
@@ -99,6 +109,10 @@ public:
 	virtual void getDataFieldImpl(QStringList& strList) const;
 
 	virtual	int getAlarmTableDataType() const;
+
+	virtual void writeToBinaryFileImpl(FILE* outf);
+
+	virtual void readFromBinaryFileImpl(FILE* inf);
 public:
 	QString	station;
 	QString	equipName;
@@ -122,6 +136,10 @@ public:
 	virtual void getDataFieldImpl(QStringList& strList) const;
 
 	virtual	int getAlarmTableDataType() const;
+
+	virtual void writeToBinaryFileImpl(FILE* outf);
+
+	virtual void readFromBinaryFileImpl(FILE* inf);
 	
 public:
 	QString	station;
@@ -145,6 +163,10 @@ public:
 	virtual void getDataFieldImpl(QStringList& strList) const;
 
 	virtual	int getAlarmTableDataType() const;
+
+	virtual void writeToBinaryFileImpl(FILE* outf);
+
+	virtual void readFromBinaryFileImpl(FILE* inf);
 	
 public:
 	QString	station;
@@ -167,6 +189,10 @@ public:
 	virtual void getDataFieldImpl(QStringList& strList) const;
 
 	virtual	int getAlarmTableDataType() const;
+
+	virtual void writeToBinaryFileImpl(FILE* outf);
+
+	virtual void readFromBinaryFileImpl(FILE* inf);
 
 public:
 	int		type;
@@ -192,6 +218,10 @@ public:
 
 	virtual	int getAlarmTableDataType() const;
 
+	virtual void writeToBinaryFileImpl(FILE* outf);
+
+	virtual void readFromBinaryFileImpl(FILE* inf);
+
 public:
 	QString	type;
 	QString	host;
@@ -211,6 +241,10 @@ public:
 	virtual void getDataFieldImpl(QStringList& strList) const;
 
 	virtual	int getAlarmTableDataType() const;
+
+	virtual void writeToBinaryFileImpl(FILE* outf);
+
+	virtual void readFromBinaryFileImpl(FILE* inf);
 
 public:
 	int		deviceId;
@@ -241,6 +275,10 @@ public:
 
 	virtual	int getAlarmTableDataType() const;
 
+	virtual void writeToBinaryFileImpl(FILE* outf);
+
+	virtual void readFromBinaryFileImpl(FILE* inf);
+
 public:
 	int		deviceId;
 	QString	station;
@@ -262,6 +300,10 @@ public:
 
 	virtual	int getAlarmTableDataType() const;
 
+	virtual void writeToBinaryFileImpl(FILE* outf);
+
+	virtual void readFromBinaryFileImpl(FILE* inf);
+
 public:
 	QString	graphId;
 	QString	graphName;
@@ -282,6 +324,10 @@ public:
 
 	virtual	int getAlarmTableDataType() const;
 
+	virtual void writeToBinaryFileImpl(FILE* outf);
+
+	virtual void readFromBinaryFileImpl(FILE* inf);
+
 public:
 	QString	faultId;
 	QString	content;
@@ -299,6 +345,10 @@ public:
 	virtual void getDataFieldImpl(QStringList& strList) const;
 
 	virtual	int getAlarmTableDataType() const;
+
+	virtual void writeToBinaryFileImpl(FILE* outf);
+
+	virtual void readFromBinaryFileImpl(FILE* inf);
 
 public:
 	QString	line;
@@ -323,6 +373,10 @@ public:
 	virtual void getDataFieldImpl(QStringList& strList) const;
 
 	virtual	int getAlarmTableDataType() const;
+
+	virtual void writeToBinaryFileImpl(FILE* outf);
+
+	virtual void readFromBinaryFileImpl(FILE* inf);
 
 public:
 	QString	station;
