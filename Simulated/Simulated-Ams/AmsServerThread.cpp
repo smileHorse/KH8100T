@@ -18,6 +18,11 @@ void AmsServerThread::setRole(QString role)
 	server.setRole(role.toStdString());
 }
 
+void AmsServerThread::configHostPort(QString host, int port )
+{
+	server.setHostPort(host.toStdString(), port);
+}
+
 void AmsServerThread::setParam( int argc, char* argv[] )
 {
 	m_argc = argc;

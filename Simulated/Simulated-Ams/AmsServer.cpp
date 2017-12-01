@@ -74,3 +74,8 @@ void AmsServer::setRole( const string& role )
 {
 	((CAmsAppI*)amsApp.get())->setRole(role);
 }
+
+void AmsServer::setHostPort( const string& host, int port )
+{
+	((CAmsAppI*)amsApp.get())->setDataSrvInfo(host, port);
+}

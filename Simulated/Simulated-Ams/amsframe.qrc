@@ -5,5 +5,6 @@
     	<file>images/about.png</file>
       <file>images/master.png</file>
       <file>images/slave.png</file>
+      <file>images/config.png</file>
     </qresource>
 </RCC>

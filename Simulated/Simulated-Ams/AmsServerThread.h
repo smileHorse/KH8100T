@@ -25,6 +25,7 @@ signals:
 
 public slots:
 	void setRole(QString role);
+	void configHostPort(QString host, int port);
 
 private:
 	int		m_argc;

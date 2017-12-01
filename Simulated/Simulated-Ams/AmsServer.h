@@ -18,6 +18,7 @@ public:
 
 public:
 	void setRole(const string& role);
+	void setHostPort(const string& host, int port);
 
 private:
 	AmsServerThread*	m_threadPtr;

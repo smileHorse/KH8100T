@@ -57,9 +57,13 @@ void AmsFrame::createActions()
 	setMasterAction->setEnabled(false);
 	connect(setMasterAction, SIGNAL(triggered()), this, SLOT(setMasterRole()));
 
-	setSlaveAction = new QAction(QIcon(":/images/about.png"), QStringLiteral("返回备角色"), this);
+	setSlaveAction = new QAction(QIcon(":/images/slave.png"), QStringLiteral("返回备角色"), this);
 	setSlaveAction->setStatusTip(QStringLiteral("返回备角色"));
 	connect(setSlaveAction, SIGNAL(triggered()), this, SLOT(setSlaveRole()));
+
+	configAction = new QAction(QIcon(":/images/config.png"), QStringLiteral("配置主机端口"), this);
+	configAction->setStatusTip(QStringLiteral("配置主机端口"));
+	connect(configAction, SIGNAL(triggered()), this, SLOT(configHostPort()));
 
 	helpAction = new QAction(QIcon(":/images/about.png"), QStringLiteral("关于"), this);
 	helpAction->setStatusTip(QStringLiteral("关于程序的介绍"));
@@ -74,6 +78,7 @@ void AmsFrame::createMenus()
 	operMenu = menuBar()->addMenu(QStringLiteral("操作"));
 	operMenu->addAction(setMasterAction);
 	operMenu->addAction(setSlaveAction);
+	operMenu->addAction(configAction);
 }
 
 void AmsFrame::createToolbar()
@@ -84,6 +89,7 @@ void AmsFrame::createToolbar()
 	operToolbar = addToolBar(QStringLiteral("操作"));
 	operToolbar->addAction(setMasterAction);
 	operToolbar->addAction(setSlaveAction);
+	operToolbar->addAction(configAction);
 }
 
 void AmsFrame::createStatusBar()
@@ -115,6 +121,7 @@ void AmsFrame::startServer()
 	connect(thread, &AmsServerThread::executeOperation, this, &AmsFrame::updateTableWidget);
 	connect(thread, SIGNAL(finished()), thread, SLOT(deleteLater()));
 	connect(this, SIGNAL(setRole(QString)), thread, SLOT(setRole(QString)));
+	connect(this, SIGNAL(configHostPort(QString, int)), thread, SLOT(configHostPort(QString, int)));
 	thread->start();
 }
 
@@ -148,4 +155,19 @@ void AmsFrame::setSlaveRole()
 {
 	hasSetRole(false);
 	emit setRole(ROLE_SLAVE);
+}
+
+void AmsFrame::configHostPort()
+{
+	QInputDialog inputDlg;
+	QString title = QStringLiteral("配置主机");
+	QString label = QStringLiteral("主机Ip: ");
+	QString host = QInputDialog::getText(this, title, label, QLineEdit::Normal, "192.168.3.25");
+	if (!host.isEmpty())
+	{
+		label = QStringLiteral("主机端口: ");
+		int port = QInputDialog::getInt(this, title, label, 10003);
+
+		emit configHostPort(host, port);
+	}
 }

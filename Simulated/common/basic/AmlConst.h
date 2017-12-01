@@ -10,6 +10,7 @@
 #define AMLCONST_H
 
 #include <string>
+#include <stdio.h>
 
 #define ROLE_MASTER	"master"
 #define ROLE_SLAVE	"slave"
@@ -22,14 +23,20 @@
 #define TYPE_CLIENT		5
 
 #define ICE_TIMEOUT		3000
+#define FAULT_TIME		12
 
-#define	ICESTORM_TOPICMANAGER_PORT	10000
-#define ICESTORM_PUBLISH_PORT		10001
-#define AMS_ADAPTER_PORT			10002
-#define DATASRV_ADAPTER_PORT		10003
-#define SLAVE_DATASRV_ADAPTER_PORT	10004
-#define FEP_ADAPTER_PORT			10005
-#define WORKSTATION_ADAPTER_PORT	10006
+#define AMS_ADAPTER			"amsAdapter"
+#define DATASRV_ADAPTER		"datasrvAdapter"
+#define FEP_ADAPTER			"fepAdapter"
+#define ICESTORM_INSTANCE	"server-icestorm/TopicManager : "
+
+#define TRANSFER_BUFFER_SIZE	BUFSIZ
+
+static void getType(char *strType, int type)
+{
+	memset(strType, 0, 5);
+	sprintf(strType, "%d", type);
+}
 
 #endif
 

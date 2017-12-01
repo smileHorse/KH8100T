@@ -31,6 +31,7 @@ private:
 
 signals:
 	void setRole(QString role);
+	void configHostPort(QString host, int port);
 
 public slots:
 	// 开始执行服务
@@ -41,6 +42,7 @@ private slots:
 	void updateTableWidget(const OperationInfo& info);
 	void setMasterRole();
 	void setSlaveRole();
+	void configHostPort();
 
 private:
 	int		m_argc;
@@ -51,6 +53,7 @@ private:
 	QAction*	exitAction;
 	QAction*	setMasterAction;
 	QAction*	setSlaveAction;
+	QAction*	configAction;
 	QAction*	helpAction;
 
 	QMenu*	fileMenu;
