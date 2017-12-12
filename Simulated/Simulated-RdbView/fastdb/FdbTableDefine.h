@@ -1501,11 +1501,15 @@ public:
 //遥测越限状态
 //0-越上上限；1-越上限；2-越限回归；3-越下限；4-越下下限
 
-#define UP_HH_LIMIT		0 //越上上限
-#define UP_H_LIMIT		1 //越上限
-#define NORMAL_LIMIT	2 //越限回归
-#define LOW_L_LIMIT		3 //越下限
-#define LOW_LL_LIMIT	4 //越下下限
+#define UP_HH_LIMIT			0 //越上上限
+#define UP_H_LIMIT			1 //越上限
+#define NORMAL_LIMIT		2 //越限回归
+#define LOW_L_LIMIT			3 //越下限
+#define LOW_LL_LIMIT		4 //越下下限
+#define UP_HH_LIMIT_RET		5 //越上上限回归
+#define UP_H_LIMIT_RET		6 //越上限回归
+#define LOW_LL_LIMIT_RET	7 //越下下限回归
+#define LOW_L_LIMIT_RET		8 //越下限回归
 // Analog represents an analog Measurement.
 //##ModelId=40E50BEE0226
 class Analog: public Measurement

@@ -516,7 +516,7 @@ QList<QStringList> RemoteUnitTable::selectDatas()
 			str << cursor->mRID << "," << cursor->IEDID << "," << cursor->IEDName << "," << cursor->IEDType << "," 
 				<< cursor->timeStamp << "," << cursor->status << "," << cursor->channelState1 << "," 
 				<< cursor->channelState2 << "," << cursor->errorRate << "," << cursor->safeDays << "," 
-				<< cursor->dayRate << "," << cursor->monthRate << cursor->ec_type << cursor->ec_rid;
+				<< cursor->dayRate << "," << cursor->monthRate << "," << cursor->ec_type << "," << cursor->ec_rid;
 
 			QString value = QString().fromStdString(str.str());
 			
