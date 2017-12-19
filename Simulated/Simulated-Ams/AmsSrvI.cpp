@@ -59,13 +59,4 @@ void CAmsAppI::setDataSrvInfo( const string& ip, int port )
 void CAmsAppI::setRole( const string& role )
 {
 	m_role = role;
-
-	if (role == ROLE_MASTER)
-	{
-		setDataSrvInfo(dataSrvInfo.ip, DATASRV_ADAPTER_PORT);
-	}
-	else
-	{
-		setDataSrvInfo(dataSrvInfo.ip, SLAVE_DATASRV_ADAPTER_PORT);
-	}
 }

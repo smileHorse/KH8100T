@@ -32,6 +32,9 @@
 
 #define TRANSFER_BUFFER_SIZE	BUFSIZ
 
+#define DATASRV_ADAPTER_PORT		10003
+#define SLAVE_DATASRV_ADAPTER_PORT	10004
+
 static void getType(char *strType, int type)
 {
 	memset(strType, 0, 5);
