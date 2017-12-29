@@ -24,6 +24,11 @@ void TransferFileByCThread::run()
 	{
 		transferFilePrx = _frame->getTransferFilePublisher();
 	}
+	if (transferFilePrx == 0)
+	{
+		emit emitExecuteInfo(QStringLiteral("获取传输文件接口失败: 传输接口为空"));
+		return;
+	}
 
 	// 打开文件
 	FILE* inFile = NULL;
@@ -33,29 +38,36 @@ void TransferFileByCThread::run()
 		return;
 	}
 
-	// 读取文件内容并发送
-	char buffer[TransferBufferSize] = { 0 };
-	int count = 0;
-	QString fileName = _filePath.right(_filePath.length() - _filePath.lastIndexOf('/') - 1);
-	while((count = fread(buffer, sizeof(char), TransferBufferSize, inFile)) > 0)
+	try
 	{
-		TransferFileSpace::Bytes fileDatas;
-		fileDatas.resize(count);
-		for (int i = 0; i < count; ++i)
+		// 读取文件内容并发送
+		char buffer[TransferBufferSize] = { 0 };
+		int count = 0;
+		QString fileName = _filePath.right(_filePath.length() - _filePath.lastIndexOf('/') - 1);
+		while((count = fread(buffer, sizeof(char), TransferBufferSize, inFile)) > 0)
 		{
-			fileDatas[i] = buffer[i];
+			TransferFileSpace::Bytes fileDatas;
+			fileDatas.resize(count);
+			for (int i = 0; i < count; ++i)
+			{
+				fileDatas[i] = buffer[i];
+			}
+			transferFilePrx->sendFile(fileName.toStdString(), fileDatas);
 		}
-		transferFilePrx->sendFile(fileName.toStdString(), fileDatas);
-	}
 
-	if (count < 0)
-	{
-		emit emitExecuteInfo(QStringLiteral("文件 %1 发送失败: 读取文件时发送错误").arg(_filePath));
+		if (count < 0)
+		{
+			emit emitExecuteInfo(QStringLiteral("文件 %1 发送失败: 读取文件时发送错误").arg(_filePath));
+		}
+		else
+		{
+			emit emitExecuteInfo(QStringLiteral("文件 %1 发送成功").arg(_filePath));
+		}
 	}
-	else
+	catch(const Ice::Exception& ex)
 	{
-		emit emitExecuteInfo(QStringLiteral("文件 %1 发送成功").arg(_filePath));
-	}
+		emit emitExecuteInfo(QStringLiteral("文件 %1 发送失败: %2").arg(_filePath).arg(ex.what()));
+	}	
 
 	// 关闭文件
 	fclose(inFile);

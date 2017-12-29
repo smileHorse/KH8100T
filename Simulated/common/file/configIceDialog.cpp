@@ -24,9 +24,9 @@ void ConfigIceDialog::createDialogs()
 	iceIpLabel->setBuddy(iceIpLineEdit);
 	icePortLabel = new QLabel(QStringLiteral("Ice服务端口:"));
 	icePortLabel->setBuddy(icePortSpinBox);
-	iceOffsideIpLabel = new QLabel(QStringLiteral("Ice服务IP:"));
+	iceOffsideIpLabel = new QLabel(QStringLiteral("对侧Ice服务IP:"));
 	iceOffsideIpLabel->setBuddy(iceIpLineEdit);
-	iceOffsidePortLabel = new QLabel(QStringLiteral("Ice服务端口:"));
+	iceOffsidePortLabel = new QLabel(QStringLiteral("对侧Ice服务端口:"));
 	iceOffsidePortLabel->setBuddy(icePortSpinBox);
 	iceStormIpLabel = new QLabel(QStringLiteral("IceStorm服务IP:"));
 	iceStormIpLabel->setBuddy(iceStormIpLineEdit);

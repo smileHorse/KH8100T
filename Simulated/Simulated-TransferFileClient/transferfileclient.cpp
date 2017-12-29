@@ -3,14 +3,14 @@
 #include <string>
 
 #include "BaseIceStorm.h"
-#include "transferFileByCThread.h"
-#include "transferfileserver.h"
+#include "transferfileclient.h"
+#include "transferFileNewI.h"
 
 using namespace std;
 
-TransferFileServer::TransferFileServer(QWidget *parent)
+TransferFileClient::TransferFileClient(QWidget *parent)
 	: QMainWindow(parent), transferMode(Transfer_Ice), fileOperMode(FileOper_Text), fileOperInterface(FileInter_C), 
-	adapterIdentify(serverAdapterIdentify), 
+	adapterIdentify(clientAdapterIdentify), 
 	m_communicatorPtr(0), m_objectAdapterPtr(0), 
 	m_transferFilePrx(0), m_transferFilePublisher(0)
 {
@@ -23,23 +23,23 @@ TransferFileServer::TransferFileServer(QWidget *parent)
 	updateUi();
 }
 
-TransferFileServer::~TransferFileServer()
+TransferFileClient::~TransferFileClient()
 {
 
 }
 
-void TransferFileServer::createWidgets()
+void TransferFileClient::createWidgets()
 {
 	textEdit = new QTextEdit;
 	textEdit->setReadOnly(true);
 	setCentralWidget(textEdit);
 
 	setWindowIcon(QIcon(":/icon.png"));
-	setWindowTitle(QStringLiteral("传输文件--服务端"));
+	setWindowTitle(QStringLiteral("传输文件--客户端"));
 	resize(800, 600);
 }
 
-void TransferFileServer::createActions()
+void TransferFileClient::createActions()
 {
 	iceAction = createActionImpl(QIcon(":/ice.png"), QStringLiteral("Ice"), 
 		QStringLiteral("通过Ice传输文件"), SLOT(useIce()));
@@ -57,7 +57,7 @@ void TransferFileServer::createActions()
 		QStringLiteral("使用C++接口操作文件"), SLOT(useCPlusPlus()));
 
 	selectFileAction = createActionImpl(QIcon(":/selectFile.png"), QStringLiteral("选择文件"), 
-		QStringLiteral("选择要发送的文件"), SLOT(selectFile()));
+		QStringLiteral("选择要请求的文件"), SLOT(selectFile()));
 	clearTextEditAction = createActionImpl(QIcon(":/clear.png"), QStringLiteral("清空文本框"), 
 		QStringLiteral("清空文本框"), SLOT(clearTextEdit()));
 	closeAction = createActionImpl(QIcon(":/close.png"), QStringLiteral("退出程序"), 
@@ -71,7 +71,7 @@ void TransferFileServer::createActions()
 		QStringLiteral("停止Ice服务"), SLOT(stopIceServer()));
 }
 
-QAction* TransferFileServer::createActionImpl( const QIcon& icon, const QString& text, const QString& statusTip, 
+QAction* TransferFileClient::createActionImpl( const QIcon& icon, const QString& text, const QString& statusTip, 
 	const char* slot)
 {
 	QAction* action = new QAction(icon, text, this);
@@ -80,7 +80,7 @@ QAction* TransferFileServer::createActionImpl( const QIcon& icon, const QString&
 	return action;
 }
 
-void TransferFileServer::createMenus()
+void TransferFileClient::createMenus()
 {
 	QMenu* transferModeMenu = menuBar()->addMenu(QStringLiteral("文件传输方式"));
 	transferModeMenu->addAction(iceAction);
@@ -105,7 +105,7 @@ void TransferFileServer::createMenus()
 	iceMenu->addAction(stopIceAction);
 }
 
-void TransferFileServer::createToolBars()
+void TransferFileClient::createToolBars()
 {
 	QToolBar* transferModeBar = addToolBar(QStringLiteral("文件传输方式"));
 	transferModeBar->addAction(iceAction);
@@ -130,12 +130,12 @@ void TransferFileServer::createToolBars()
 	iceBar->addAction(stopIceAction);
 }
 
-void TransferFileServer::createStatusBar()
+void TransferFileClient::createStatusBar()
 {
 	statusBar()->showMessage(QStringLiteral("准备就绪"));
 }
 
-void TransferFileServer::updateUi()
+void TransferFileClient::updateUi()
 {
 	iceAction->setEnabled(transferMode != Transfer_Ice);
 	iceStormAction->setEnabled(transferMode != Transfer_IceStorm);
@@ -147,7 +147,7 @@ void TransferFileServer::updateUi()
 	useCPlusPlusAction->setEnabled(fileOperInterface != FileInter_CPlusPlus);
 }
 
-void TransferFileServer::transferFile( const QString& filePath )
+void TransferFileClient::transferFile( const QString& filePath )
 {
 	if (getFileOperInterface() == FileInter_C)
 	{
@@ -159,55 +159,52 @@ void TransferFileServer::transferFile( const QString& filePath )
 	}
 }
 
-void TransferFileServer::transferFile_C( const QString& filePath )
+void TransferFileClient::transferFile_C( const QString& filePath )
 {
-	TransferFileByCThread* thread = new TransferFileByCThread(this, filePath);
-	connect(thread, SIGNAL(finished()), thread, SLOT(deleteLater()));
-	thread->start();
 }
 
-void TransferFileServer::transferFile_CPlusPlus( const QString& filePath )
+void TransferFileClient::transferFile_CPlusPlus( const QString& filePath )
 {
 
 }
 
-void TransferFileServer::useIce()
+void TransferFileClient::useIce()
 {
 	transferMode = Transfer_Ice;
 	updateUi();
 }
 
-void TransferFileServer::useIceStorm()
+void TransferFileClient::useIceStorm()
 {
 	transferMode = Transfer_IceStorm;
 	updateUi();
 }
 
-void TransferFileServer::useText()
+void TransferFileClient::useText()
 {
 	fileOperMode = FileOper_Text;
 	updateUi();
 }
 
-void TransferFileServer::useBinary()
+void TransferFileClient::useBinary()
 {
 	fileOperMode = FileOper_Binary;
 	updateUi();
 }
 
-void TransferFileServer::useC()
+void TransferFileClient::useC()
 {
 	fileOperInterface = FileInter_C;
 	updateUi();
 }
 
-void TransferFileServer::useCPlusPlus()
+void TransferFileClient::useCPlusPlus()
 {
 	fileOperInterface = FileInter_CPlusPlus;
 	updateUi();
 }
 
-void TransferFileServer::selectFile()
+void TransferFileClient::selectFile()
 {
 	QString filePath = QFileDialog::getOpenFileName(this, QStringLiteral("选择文件"));
 	if (filePath.isEmpty())
@@ -220,7 +217,7 @@ void TransferFileServer::selectFile()
 	transferFile(filePath);
 }
 
-void TransferFileServer::clearTextEdit()
+void TransferFileClient::clearTextEdit()
 {
 	if (textEdit)
 	{
@@ -228,7 +225,7 @@ void TransferFileServer::clearTextEdit()
 	}
 }
 
-void TransferFileServer::configIceServer()
+void TransferFileClient::configIceServer()
 {
 	ConfigIceDialog dialog;
 	if (dialog.exec() == QDialog::Accepted)
@@ -238,7 +235,7 @@ void TransferFileServer::configIceServer()
 	}
 }
 
-void TransferFileServer::startIceServer()
+void TransferFileClient::startIceServer()
 {
 	if (m_communicatorPtr)
 	{
@@ -255,9 +252,12 @@ void TransferFileServer::startIceServer()
 		m_objectAdapterPtr = m_communicatorPtr->createObjectAdapterWithEndpoints(adapterIdentify.toStdString(), 
 			endPoints.toStdString());
 
+		m_objectAdapterPtr->add(new TransferFileI(this), 
+			m_communicatorPtr->stringToIdentity(clientProxyIdentify.toStdString()));
+
 		m_objectAdapterPtr->activate();
 
-		updateTextEdit(QStringLiteral("服务端 -- Ice服务启动成功"));
+		updateTextEdit(QStringLiteral("客户端 -- Ice服务启动成功"));
 	}
 	catch(const Ice::Exception& ex)
 	{
@@ -265,7 +265,7 @@ void TransferFileServer::startIceServer()
 	}
 }
 
-void TransferFileServer::stopIceServer()
+void TransferFileClient::stopIceServer()
 {
 	if (m_communicatorPtr)
 	{
@@ -276,7 +276,7 @@ void TransferFileServer::stopIceServer()
 			m_communicatorPtr = 0;
 			m_objectAdapterPtr = 0;
 
-			updateTextEdit(QStringLiteral("服务端 -- Ice服务停止成功"));
+			updateTextEdit(QStringLiteral("客户端 -- Ice服务停止成功"));
 		}
 		catch(const Ice::Exception& ex)
 		{
@@ -285,7 +285,7 @@ void TransferFileServer::stopIceServer()
 	}
 }
 
-void TransferFileServer::updateTextEdit( const QString& text )
+void TransferFileClient::updateTextEdit( const QString& text )
 {
 	if (textEdit)
 	{
@@ -296,28 +296,28 @@ void TransferFileServer::updateTextEdit( const QString& text )
 	}
 }
 
-TransferMode TransferFileServer::getTransferMode() const
+TransferMode TransferFileClient::getTransferMode() const
 {
 	return transferMode;
 }
 
-FileOperMode TransferFileServer::getFileOperMode() const
+FileOperMode TransferFileClient::getFileOperMode() const
 {
 	return fileOperMode;
 }
 
-FileOperInterface TransferFileServer::getFileOperInterface() const
+FileOperInterface TransferFileClient::getFileOperInterface() const
 {
 	return fileOperInterface;
 }
 
-TransferFileSpace::TransferFilePrx TransferFileServer::getTransferFilePrx()
+TransferFileSpace::TransferFilePrx TransferFileClient::getTransferFilePrx()
 {
 	if (m_transferFilePrx == 0)
 	{
 		try
 		{
-			QString proxy = QString("%1: tcp -h %2 -p %3").arg(clientProxyIdentify).
+			QString proxy = QString("%1: tcp -h %2 -p %3").arg(serverAdapterIdentify).
 				arg(configIceInfo.iceOffsideIp).arg(configIceInfo.iceOffsidePort);
 			m_transferFilePrx = TransferFileSpace::TransferFilePrx::checkedCast(
 				m_communicatorPtr->stringToProxy(proxy.toStdString()));
@@ -340,7 +340,7 @@ TransferFileSpace::TransferFilePrx TransferFileServer::getTransferFilePrx()
 	return m_transferFilePrx;
 }
 
-TransferFileSpace::TransferFilePrx TransferFileServer::getTransferFilePublisher()
+TransferFileSpace::TransferFilePrx TransferFileClient::getTransferFilePublisher()
 {
 	if (m_transferFilePublisher == 0)
 	{

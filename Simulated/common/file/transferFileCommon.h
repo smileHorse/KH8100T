@@ -30,6 +30,9 @@ extern const QString serverAdapterIdentify;
 // 传输服务客户端适配器名称
 extern const QString clientAdapterIdentify;
 
+// 传输服务客户端代理接口名称
+extern const QString clientProxyIdentify;
+
 // 每次传输的缓存大小
 #define TransferBufferSize	4096
 
