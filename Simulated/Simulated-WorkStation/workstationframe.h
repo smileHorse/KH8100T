@@ -37,6 +37,7 @@ private:
 signals:
 	void serverStarted(bool serverStarted);
 	void requestCompleteData();
+	void requestStormTopoDataSingal();
 	void selectCompleteData();
 	void requestWarningMsgSingal();
 	void subscriberRdbRequestSignal(bool isStop);

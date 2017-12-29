@@ -1,5 +1,10 @@
 ﻿#include "BaseIceStorm.h"
 
+#include <sstream>
+
+std::string BaseIceStorm::m_iceStormIp = "127.0.0.1";
+int BaseIceStorm::m_iceStormPort = 10000;
+
 /** 
 * icestorm订阅方法
 *
@@ -15,83 +20,83 @@ bool BaseIceStorm::Subscriber(Ice::CommunicatorPtr &communicatorPtr, Ice::Object
 	bool blnValue = true;
 	try
 	{
-			IceStorm::TopicPrx topic = GetTopicProxy(communicatorPtr, strTopic);
-			if(topic != 0)
-			{	
-				//设置qos
-				IceStorm::QoS qos;
-				if(strDeliverModel == "twoway")
+		IceStorm::TopicPrx topic = GetTopicProxy(communicatorPtr, strTopic);
+		if(topic != 0)
+		{	
+			//设置qos
+			IceStorm::QoS qos;
+			if(strDeliverModel == "twoway")
+			{
+				if(strReliability != "")
 				{
-					if(strReliability != "")
-					{
-						qos["reliability"] = "ordered";
-					}
-					if(strRetryCount != "")
-					{
-						qos["retryCount"] = strRetryCount;
-					}
+					qos["reliability"] = "ordered";
 				}
-		
-		
-				//设置订阅者传输方式，分为twoway,oneway,batch_oneway,双向传输，不用设置，默认为twoway
-				if (strDeliverModel == "twoway" || strDeliverModel == "oneway" || strDeliverModel == "batch_oneway")
+				if(strRetryCount != "")
 				{
-					if(strDeliverModel == "oneway")
-					{
-						objectPrx = objectPrx->ice_oneway();
-					}
-					else if(strDeliverModel == "batch_oneway")
-					{
-						objectPrx = objectPrx->ice_batchOneway();
-					}
+					qos["retryCount"] = strRetryCount;
+				}
+			}
+		
+		
+			//设置订阅者传输方式，分为twoway,oneway,batch_oneway,双向传输，不用设置，默认为twoway
+			if (strDeliverModel == "twoway" || strDeliverModel == "oneway" || strDeliverModel == "batch_oneway")
+			{
+				if(strDeliverModel == "oneway")
+				{
+					objectPrx = objectPrx->ice_oneway();
+				}
+				else if(strDeliverModel == "batch_oneway")
+				{
+					objectPrx = objectPrx->ice_batchOneway();
+				}
 					
 		
-					//订阅
-					int bz = 0;
-					while(bz++ < 3)
+				//订阅
+				int bz = 0;
+				while(bz++ < 3)
+				{
+					try
 					{
-						try
+						topic->subscribeAndGetPublisher(qos, objectPrx);
+						blnValue = true;
+						break;
+						/*Ice::ObjectPrx pub = 
+						if(pub != NULL)
 						{
-							topic->subscribeAndGetPublisher(qos, objectPrx);
 							blnValue = true;
-							break;
-							/*Ice::ObjectPrx pub = 
-							if(pub != NULL)
-							{
-								blnValue = true;
-							}
-							else
-							{
-								blnValue = false;
-							}*/
 						}
-						catch(const IceStorm::AlreadySubscribed &ex)
-						{
-							//blnValue = false;
-						}
-						catch(const IceStorm::BadQoS &ex)
+						else
 						{
 							blnValue = false;
-						}
+						}*/
 					}
-				}
-				else
-				{
-					blnValue = false;
+					catch(const IceStorm::AlreadySubscribed &ex)
+					{
+						//blnValue = false;
+					}
+					catch(const IceStorm::BadQoS &ex)
+					{
+						blnValue = false;
+					}
 				}
 			}
 			else
 			{
 				blnValue = false;
 			}
+		}
+		else
+		{
+			blnValue = false;
+		}
 	}
 	catch(Ice::Exception &ex)
 	{
-			blnValue = false;
+		blnValue = false;
 	}
 	catch(...)
 	{
-			blnValue = false;
+		blnValue = false;
 	}
 	
 	
@@ -104,83 +109,83 @@ bool BaseIceStorm::Subscriber(Ice::CommunicatorPtr &communicatorPtr, Ice::Object
 	bool blnValue = true;
 	try
 	{
-			IceStorm::TopicPrx topic = GetTopicProxy(communicatorPtr, strTopic);
-			if(topic != 0)
-			{	
-				//设置qos
-				IceStorm::QoS qos;
-				if(strDeliverModel == "twoway")
+		IceStorm::TopicPrx topic = GetTopicProxy(communicatorPtr, strTopic);
+		if(topic != 0)
+		{	
+			//设置qos
+			IceStorm::QoS qos;
+			if(strDeliverModel == "twoway")
+			{
+				if(strReliability != "")
 				{
-					if(strReliability != "")
-					{
-						qos["reliability"] = "ordered";
-					}
-					if(strRetryCount != "")
-					{
-						qos["retryCount"] = strRetryCount;
-					}
+					qos["reliability"] = "ordered";
 				}
-		
-		
-				//设置订阅者传输方式，分为twoway,oneway,batch_oneway,双向传输，不用设置，默认为twoway
-				if (strDeliverModel == "twoway" || strDeliverModel == "oneway" || strDeliverModel == "batch_oneway")
+				if(strRetryCount != "")
 				{
-					if(strDeliverModel == "oneway")
-					{
-						objectPrx = objectPrx->ice_oneway();
-					}
-					else if(strDeliverModel == "batch_oneway")
-					{
-						objectPrx = objectPrx->ice_batchOneway();
-					}
+					qos["retryCount"] = strRetryCount;
+				}
+			}
+		
+		
+			//设置订阅者传输方式，分为twoway,oneway,batch_oneway,双向传输，不用设置，默认为twoway
+			if (strDeliverModel == "twoway" || strDeliverModel == "oneway" || strDeliverModel == "batch_oneway")
+			{
+				if(strDeliverModel == "oneway")
+				{
+					objectPrx = objectPrx->ice_oneway();
+				}
+				else if(strDeliverModel == "batch_oneway")
+				{
+					objectPrx = objectPrx->ice_batchOneway();
+				}
 					
 		
-					//订阅
-					int bz = 0;
-					while(bz++ < 3)
+				//订阅
+				int bz = 0;
+				while(bz++ < 3)
+				{
+					try
 					{
-						try
+						proxyPrx=topic->subscribeAndGetPublisher(qos, objectPrx);
+						blnValue = true;
+						break;
+						/*Ice::ObjectPrx pub = 
+						if(pub != NULL)
 						{
-							proxyPrx=topic->subscribeAndGetPublisher(qos, objectPrx);
 							blnValue = true;
-							break;
-							/*Ice::ObjectPrx pub = 
-							if(pub != NULL)
-							{
-								blnValue = true;
-							}
-							else
-							{
-								blnValue = false;
-							}*/
 						}
-						catch(const IceStorm::AlreadySubscribed &ex)
-						{
-							//blnValue = false;
-						}
-						catch(const IceStorm::BadQoS &ex)
+						else
 						{
 							blnValue = false;
-						}
+						}*/
 					}
-				}
-				else
-				{
-					blnValue = false;
+					catch(const IceStorm::AlreadySubscribed &ex)
+					{
+						//blnValue = false;
+					}
+					catch(const IceStorm::BadQoS &ex)
+					{
+						blnValue = false;
+					}
 				}
 			}
 			else
 			{
 				blnValue = false;
 			}
+		}
+		else
+		{
+			blnValue = false;
+		}
 	}
 	catch(Ice::Exception &ex)
 	{
-			blnValue = false;
+		blnValue = false;
 	}
 	catch(...)
 	{
-			blnValue = false;
+		blnValue = false;
 	}
 	
 	
@@ -250,7 +255,6 @@ Ice::ObjectPrx BaseIceStorm::GetPublisher(Ice::CommunicatorPtr &communicatorPtr,
 	}
 	catch(Ice::Exception &ex)
 	{
-		throw ex;
 	}
 	catch(...)
 	{
@@ -267,8 +271,11 @@ Ice::ObjectPrx BaseIceStorm::GetPublisher(Ice::CommunicatorPtr &communicatorPtr,
 */
 IceStorm::TopicPrx BaseIceStorm::GetTopicProxy(Ice::CommunicatorPtr &communicatorPtr, std::string &strTopic)
 {
+	std::stringstream stream;
+	stream << "server-icestorm/TopicManager:default -h " << m_iceStormIp << " -p " << m_iceStormPort;
+	std::string proxyStr = stream.str();
 	IceStorm::TopicManagerPrx manager = IceStorm::TopicManagerPrx::checkedCast(
-		communicatorPtr->stringToProxy("server-icestorm/TopicManager:default -h 192.168.3.25 -p 10000"));
+		communicatorPtr->stringToProxy(proxyStr));
 	if(manager == 0)
 	{
 		throw "得到 IceStorm::TopicManager 失败!";
@@ -293,4 +300,15 @@ IceStorm::TopicPrx BaseIceStorm::GetTopicProxy(Ice::CommunicatorPtr &communicato
 	}
 
 	return topic;
+}
+
+/** 
+* 配置IceStorm服务器的ip和port
+*
+* @return 
+*/
+void BaseIceStorm::SetIceStormIpAndPort( const std::string& ip, int port )
+{
+	m_iceStormIp = ip;
+	m_iceStormPort = port;
 }

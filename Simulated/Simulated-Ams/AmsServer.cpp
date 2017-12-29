@@ -3,8 +3,6 @@
 #include "AmsServerThread.h"
 #include "OperationInfo.h"
 
-#include <QtWidgets/QMessageBox>
-
 using namespace Amssrv;
 
 AmsServer::AmsServer(AmsServerThread* threadPtr)

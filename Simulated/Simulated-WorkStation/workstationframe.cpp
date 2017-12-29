@@ -216,6 +216,7 @@ void WorkStationFrame::createConnects()
 	qRegisterMetaType<OperationInfo>("OperationInfo");
 	connect(this, SIGNAL(serverStarted(bool)), this, SLOT(updateActions(bool)));
 	connect(this, SIGNAL(requestCompleteData()), m_workStationServerThreadPtr, SLOT(requestCompleteData()));
+	connect(this, SIGNAL(requestStormTopoDataSingal()), m_workStationServerThreadPtr, SLOT(requestStormTopoData()));
 	connect(this, SIGNAL(selectCompleteData()), m_workStationServerThreadPtr, SLOT(selectCompleteData()));
 	connect(this, SIGNAL(requestWarningMsgSingal()), m_workStationServerThreadPtr, SLOT(requestWarningMsg()));
 	connect(this, SIGNAL(subscriberRdbRequestSignal(bool)), m_workStationServerThreadPtr, SLOT(subscriberRdbRequest(bool)));
@@ -321,7 +322,7 @@ void WorkStationFrame::requestStormRdbData()
 
 void WorkStationFrame::requestStormTopoData()
 {
-
+	emit requestStormTopoDataSingal();
 }
 
 void WorkStationFrame::requestRdbData()

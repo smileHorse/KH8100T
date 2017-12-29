@@ -63,6 +63,7 @@ public slots:
 
 private slots:
 	void requestCompleteData();
+	void requestStormTopoData();
 	void selectCompleteData();
 	void requestWarningMsg();
 	void subscriberRdbRequest(bool isStop);

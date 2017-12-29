@@ -53,6 +53,17 @@ public:
 	* @return TopicPrx:主题对象代理
 	*/
 	static IceStorm::TopicPrx GetTopicProxy(Ice::CommunicatorPtr &communicatorPtr, std::string &strTopic);
+
+	/** 
+	* 配置IceStorm服务器的ip和port
+	*
+	* @return 
+	*/
+	static void SetIceStormIpAndPort(const std::string& ip, int port);	
+
+private:
+	static std::string	m_iceStormIp;		// IceStorm服务器的ip
+	static int		m_iceStormPort;		// IceStorm服务器的port
 };
 
 #endif

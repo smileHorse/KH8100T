@@ -34,6 +34,7 @@
 
 #define DATASRV_ADAPTER_PORT		10003
 #define SLAVE_DATASRV_ADAPTER_PORT	10004
+#define WORKSTATION_ADAPTER_PORT	10005
 
 static void getType(char *strType, int type)
 {

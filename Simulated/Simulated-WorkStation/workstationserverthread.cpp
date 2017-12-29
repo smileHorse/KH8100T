@@ -129,7 +129,7 @@ bool WorkStationServerThread::getRdbRealDataRequestPublisher()
 	}
 
 	// 获取实时数据请求的发布者
-	string topicName = Yk::YkFepTopic;
+	string topicName = RdbRealData::strRealRequestTopic;
 	QString type = "实时数据请求";
 	Ice::ObjectPrx proxy;
 	if (!getPublisher(topicName, type, proxy))
@@ -352,6 +352,40 @@ void WorkStationServerThread::requestCompleteData()
 	{
 		QString error = QString().fromStdString(ex.what());
 		emit outputReceiveData(QString("请求全部实时数据失败:%1").arg(error));
+	}
+}
+
+void WorkStationServerThread::requestStormTopoData()
+{
+	try 
+	{
+		int count = 0;
+		while(true)
+		{
+			if (!getRdbRealDataRequestPublisher())
+			{
+				return;
+			}
+
+			RdbRealData::RequestTopoDataSeq	dataSeq;
+			dataSeq.id = qrand();
+			dataSeq.requestId = count++;
+			dataSeq.requestNode = "mmi192.168.3.25";
+			dataSeq.isStop = false;
+			dataSeq.refreshFreq = 3;
+			
+			m_rdbRealDataRequestPrx->SendTopoDataRequest(dataSeq);
+
+			QString text("%1 请求拓扑数据 %2-%3-%4");
+			QTime currTime = QDateTime::currentDateTime().time();
+			text = text.arg(count).arg(currTime.hour()).arg(currTime.minute()).arg(currTime.second());
+			emit outputReceiveData(text);
+		}
+	}
+	catch(const Ice::Exception& ex)
+	{
+		QString error = QString().fromStdString(ex.what());
+		emit outputReceiveData(QString("请求拓扑数据失败:%1").arg(error));
 	}
 }
 
