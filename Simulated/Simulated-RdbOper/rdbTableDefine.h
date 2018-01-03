@@ -5,6 +5,8 @@
 #include <string>
 #include <vector>
 
+#include "xmlStreamReader.h"
+
 using namespace std;
 
 // 实时库表工厂类
@@ -46,8 +48,13 @@ public:
 	// 获取工厂名
 	static string getTableName(int index);
 
+	// 初始化实时库结构
+	static void initRdbStruct();
+
 private:
 	static string	sat_table_names[RdbTable_Count];
+
+	static RdbStruct	_rdbStruct;
 };
 
 #endif

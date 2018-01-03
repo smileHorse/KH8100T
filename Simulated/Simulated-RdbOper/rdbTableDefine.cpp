@@ -1,4 +1,6 @@
 
+#include <QtWidgets/QtWidgets>
+
 #include "rdbTableDefine.h"
 
 string RdbTableFactory::sat_table_names[] = 
@@ -31,13 +33,34 @@ string RdbTableFactory::sat_table_names[] =
 	"VariableDefinition"
 };
 
+RdbStruct RdbTableFactory::_rdbStruct = RdbStruct();
+
 // 获取工厂名
 std::string RdbTableFactory::getTableName(int index)
 {
-	if (index < 0 || index >= RdbTable_Count)
+	//if (index < 0 || index >= RdbTable_Count)
+	//{
+	//	throw "getTableName() out of range";
+	//}
+
+	//return sat_table_names[index];
+
+	initRdbStruct();
+	return _rdbStruct.tables[index].name.toStdString();
+}
+
+void RdbTableFactory::initRdbStruct()
+{
+	if (!_rdbStruct.isEmpty())
 	{
-		throw "getTableName() out of range";
+		return;
 	}
 
-	return sat_table_names[index];
+	XmlStreamReader reader;
+	if(!reader.readFile("conf/rdbtable.xml", _rdbStruct))
+	{
+		QMessageBox::warning(0, QStringLiteral("初始实时库结构"), QStringLiteral("初始失败"));
+		return;
+	}
 }
+

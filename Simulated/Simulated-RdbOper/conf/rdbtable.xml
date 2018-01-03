@@ -1,0 +1,7 @@
+<?xml version="1.0"?>
+<rdb>
+	<table name="Gerographic">
+		<field type = "string">mRID</field>
+		<field type = "string">name</field>
+	</table>
+</rdb>
