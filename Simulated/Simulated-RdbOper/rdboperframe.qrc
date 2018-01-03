@@ -1,0 +1,10 @@
+<RCC>
+    <qresource prefix="/">
+      <file alias="icon.png">images/icon.png</file>
+      <file alias="quit.png">images/quit.png</file>
+      <file alias="configServer.png">images/configServer.png</file>
+      <file alias="startServer.png">images/startServer.png</file>
+      <file alias="stopServer.png">images/stopServer.png</file>
+      <file alias="select.png">images/select.png</file>
+    </qresource>
+</RCC>
