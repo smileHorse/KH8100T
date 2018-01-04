@@ -3,64 +3,65 @@
 
 #include "rdbTableDefine.h"
 
-string RdbTableFactory::sat_table_names[] = 
-{
-	"GeographicalRegion",
-	"SubGeographicalRegion",
-	"Area",
-	"RemoteUnit",
-	"AnalogUnitPoint",
-	"DiscreteUnitPoint",
-	"ControlUnitPoint",
-	"Analog",
-	"Discrete",
-	"Accumulator",
-	"Command",
-	"AnalogCurveData",
-	"BaseVoltage",
-	"Substation",
-	"VoltageLevel",
-	"BusbarSection",
-	"Line",
-	"ACLineSegment",
-	"Breaker",
-	"Disconnector",
-	"PowerTransformer",
-	"TransformerWinding",
-	"ConnectivityNode",
-	"Terminal",
-	"FormulaDefinition",
-	"VariableDefinition"
-};
-
 RdbStruct RdbTableFactory::_rdbStruct = RdbStruct();
 
-// 获取工厂名
-std::string RdbTableFactory::getTableName(int index)
-{
-	//if (index < 0 || index >= RdbTable_Count)
-	//{
-	//	throw "getTableName() out of range";
-	//}
-
-	//return sat_table_names[index];
-
-	initRdbStruct();
-	return _rdbStruct.tables[index].name.toStdString();
-}
-
-void RdbTableFactory::initRdbStruct()
+bool RdbTableFactory::initRdbStruct()
 {
 	if (!_rdbStruct.isEmpty())
 	{
-		return;
+		return true;
 	}
 
 	XmlStreamReader reader;
 	if(!reader.readFile("conf/rdbtable.xml", _rdbStruct))
 	{
 		QMessageBox::warning(0, QStringLiteral("初始实时库结构"), QStringLiteral("初始失败"));
-		return;
+		return false;
 	}
+
+	return true;
+}
+
+// 获取工厂个数
+int RdbTableFactory::getTableCount()
+{
+	if(!initRdbStruct())
+	{
+		return 0;
+	}
+	return _rdbStruct.getTableCount();
+}
+
+// 获取工厂名
+QString RdbTableFactory::getTableName(int index)
+{
+	if(!initRdbStruct())
+	{
+		return "";
+	}
+
+	return _rdbStruct.getTableName(index);
+}
+
+// 获取实时库中所有的表名
+QStringList RdbTableFactory::getTableNames()
+{
+	if (!initRdbStruct())
+	{
+		return QStringList();
+	}
+
+	return _rdbStruct.getTableNames();
+}
+
+// 获取实时库中表的字段名
+QStringList RdbTableFactory::getTableFields( const QString& tableName )
+{
+	if (!initRdbStruct())
+	{
+		return QStringList();
+	}
+
+	return _rdbStruct.getTableFields(tableName);
 }
 

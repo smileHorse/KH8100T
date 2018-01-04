@@ -20,14 +20,21 @@ struct RdbTableStruct
 };
 
 // 实时库结构
-struct RdbStruct 
+class RdbStruct 
 {
-	QVector<RdbTableStruct>	tables;
+public:	
+	RdbStruct();
 
-	bool isEmpty() const
-	{
-		return tables.isEmpty();
-	}
+	void addRdbTableStruct(const RdbTableStruct& table);
+
+	int getTableCount() const;
+	QString getTableName(int index) const;
+	QStringList getTableNames() const;
+	QStringList getTableFields(const QString& tableName) const;
+	bool isEmpty() const;
+
+private:
+	QVector<RdbTableStruct>	tables;
 };
 
 class XmlStreamReader

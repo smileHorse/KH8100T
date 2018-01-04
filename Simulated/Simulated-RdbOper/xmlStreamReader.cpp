@@ -3,6 +3,65 @@
 
 #include "xmlStreamReader.h"
 
+
+RdbStruct::RdbStruct()
+{
+	tables.clear();
+}
+
+void RdbStruct::addRdbTableStruct( const RdbTableStruct& table )
+{
+	tables.push_back(table);
+}
+
+int RdbStruct::getTableCount() const
+{
+	return tables.size();
+}
+
+QString RdbStruct::getTableName( int index ) const
+{
+	int tableCount = getTableCount();
+	if (index < 0 || index >= tableCount)
+	{
+		throw "getTableName index out of range";
+	}
+
+	return tables[index].name;
+}
+
+QStringList RdbStruct::getTableNames() const
+{
+	QStringList list;
+	foreach(const RdbTableStruct& table, tables)
+	{
+		list << table.name;
+	}
+	return list;
+}
+
+QStringList RdbStruct::getTableFields(const QString& tableName) const
+{
+	QStringList list;
+	foreach(const RdbTableStruct& table, tables)
+	{
+		if (table.name == tableName)
+		{
+			foreach(const RdbFieldStruct& field, table.fields)
+			{
+				list << field.fieldName;
+			}
+			break;
+		}
+	}
+	return list;
+}
+
+bool RdbStruct::isEmpty() const
+{
+	return tables.isEmpty();
+}
+
 bool XmlStreamReader::readFile( const QString& fileName, RdbStruct& rdbStruct )
 {
 	QFile file(fileName);
@@ -109,7 +168,7 @@ void XmlStreamReader::readTableElement(RdbStruct& rdbStruct)
 		}
 	}
 
-	rdbStruct.tables.push_back(tableStruct);
+	rdbStruct.addRdbTableStruct(tableStruct);
 }
 
 void XmlStreamReader::readFieldElement(RdbTableStruct& tableStruct)

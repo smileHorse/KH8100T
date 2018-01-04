@@ -39,6 +39,7 @@ private slots:
 	void selectDefaultData();
 	void selectSpecficData();
 	void selectCompleteData();
+	void addRecord();
 	void updateTableView();
 	void updateStatusBar(const QString& text, int timeout = 2000);
 

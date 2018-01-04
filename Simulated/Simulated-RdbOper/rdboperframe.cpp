@@ -1,8 +1,12 @@
 
 #include <QtWidgets/QtWidgets>
 
+#include "addRecordDialog.h"
 #include "rdboperframe.h"
-#include "rdbTableModel.h"
+#include "rdbTableDefine.h"
+#include "selectCompleteDataDialog.h"
+#include "selectDefaultDataDialog.h"
+#include "selectSpecficDataDialog.h"
 
 RdbOperFrame::RdbOperFrame(QWidget *parent)
 	: QMainWindow(parent), m_adapterIdentify("SimulatedRdbOpt")
@@ -24,7 +28,9 @@ RdbOperFrame::~RdbOperFrame()
 void RdbOperFrame::createWidget()
 {
 	listView = new QListView;
-	listView->setModel(new RdbTableNameModel);
+	QStringList tableNames = RdbTableFactory::getTableNames();
+	QStringListModel* listModel = new QStringListModel(tableNames);
+	listView->setModel(listModel);
 
 	tableView = new QTableView;
 
@@ -38,7 +44,7 @@ void RdbOperFrame::createWidget()
 
 	setWindowTitle(QStringLiteral("实时库操作"));
 	setWindowIcon(QIcon(":/icon.png"));
-	resize(800, 600);
+	resize(1000, 800);
 }
 
 void RdbOperFrame::createActions()
@@ -59,6 +65,9 @@ void RdbOperFrame::createActions()
 		QStringLiteral("查询指定数据"), SLOT(selectSpecficData())); 
 	selectCompleteDataAction = createActionImpl(QIcon(":/select.png"), QStringLiteral("查询全部数据"), 
 		QStringLiteral("查询全部数据"), SLOT(selectCompleteData())); 
+	
+	addRecordAction = createActionImpl(QIcon(":/addRecord.png"), QStringLiteral("插入记录"), 
+		QStringLiteral("插入记录"), SLOT(addRecord()));
 }
 
 QAction* RdbOperFrame::createActionImpl(const QIcon& icon, const QString& text, const QString& statusTip, const char* slot)
@@ -84,6 +93,8 @@ void RdbOperFrame::createMenus()
 	operMenu->addAction(selectDefaultDataAction);
 	operMenu->addAction(selectSpecficDataAction);
 	operMenu->addAction(selectCompleteDataAction);
+	operMenu->addSeparator();
+	operMenu->addAction(addRecordAction);
 }
 
 void RdbOperFrame::createToolBars()
@@ -100,6 +111,8 @@ void RdbOperFrame::createToolBars()
 	operToolBar->addAction(selectDefaultDataAction);
 	operToolBar->addAction(selectSpecficDataAction);
 	operToolBar->addAction(selectCompleteDataAction);
+	operToolBar->addSeparator();
+	operToolBar->addAction(addRecordAction);
 }
 
 void RdbOperFrame::createStatusBar()
@@ -203,31 +216,8 @@ void RdbOperFrame::selectDefaultData()
 		return;
 	}
 
-	try
-	{
-		RequestDefaultDataSeq reqSeq;
-		reqSeq.id = 1;
-		reqSeq.requestId = 1;
-		reqSeq.requestNode = "localhost";
-		reqSeq.isStop = true;
-		reqSeq.refreshFreq = 0;
-		
-		RequestDefaultData reqData;
-		reqData.tableName = "Area";
-		reqData.fieldName = "name";
-		reqData.fieldValue = "111";
-
-		reqSeq.seq.push_back(reqData);
-		reqSeq.dataCount = reqSeq.seq.size();
-
-		RespondDefaultDataSeq repSeq;
-		m_rdbDataOptPrx->SelectDefaultData(reqSeq, repSeq);
-	}
-	catch(const Ice::Exception& ex)
-	{
-		QMessageBox::warning(this, QStringLiteral("查询默认数据"), 
-			QStringLiteral("查询数据失败: %1").arg(ex.what()));
-	}
+	SelectDefaultDataDialog	selectDialog(m_rdbDataOptPrx);
+	selectDialog.exec();
 }
 
 void RdbOperFrame::selectSpecficData()
@@ -237,15 +227,8 @@ void RdbOperFrame::selectSpecficData()
 		return;
 	}
 
-	try
-	{
-		//m_rdbDataOptPrx->SelectSpecificData(reqSeq, repSeq);
-	}
-	catch(const Ice::Exception& ex)
-	{
-		QMessageBox::warning(this, QStringLiteral("查询指定数据"), 
-			QStringLiteral("查询数据失败: %1").arg(ex.what()));
-	}
+	SelectSpecficDataDialog	selectDialog(m_rdbDataOptPrx);
+	selectDialog.exec();
 }
 
 void RdbOperFrame::selectCompleteData()
@@ -255,15 +238,19 @@ void RdbOperFrame::selectCompleteData()
 		return;
 	}
 
-	try
+	SelectCompleteDataDialog	selectDialog(m_rdbDataOptPrx);
+	selectDialog.exec();
+}
+
+void RdbOperFrame::addRecord()
+{
+	if (!getRdbDataOptPrx())
 	{
-		//m_rdbDataOptPrx->SelectCompleteData(reqSeq, repSeq);
+		return;
 	}
-	catch(const Ice::Exception& ex)
-	{
-		QMessageBox::warning(this, QStringLiteral("查询全部数据"), 
-			QStringLiteral("查询数据失败: %1").arg(ex.what()));
-	}
+
+	AddRecordDialog	addDialog(m_rdbDataOptPrx);
+	addDialog.exec();
 }
 
 void RdbOperFrame::updateTableView()
