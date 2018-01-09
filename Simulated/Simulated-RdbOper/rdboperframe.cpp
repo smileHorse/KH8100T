@@ -2,11 +2,13 @@
 #include <QtWidgets/QtWidgets>
 
 #include "addRecordDialog.h"
+#include "deleteRecordDialog.h"
 #include "rdboperframe.h"
 #include "rdbTableDefine.h"
 #include "selectCompleteDataDialog.h"
 #include "selectDefaultDataDialog.h"
 #include "selectSpecficDataDialog.h"
+#include "updateRecordDialog.h"
 
 RdbOperFrame::RdbOperFrame(QWidget *parent)
 	: QMainWindow(parent), m_adapterIdentify("SimulatedRdbOpt")
@@ -68,6 +70,10 @@ void RdbOperFrame::createActions()
 	
 	addRecordAction = createActionImpl(QIcon(":/addRecord.png"), QStringLiteral("插入记录"), 
 		QStringLiteral("插入记录"), SLOT(addRecord()));
+	updateRecordAction = createActionImpl(QIcon(":/updateRecord.png"), QStringLiteral("更新记录"), 
+		QStringLiteral("更新记录"), SLOT(updateRecord()));
+	deleteRecordAction = createActionImpl(QIcon(":/deleteRecord.png"), QStringLiteral("删除记录"), 
+		QStringLiteral("删除记录"), SLOT(deleteRecord()));
 }
 
 QAction* RdbOperFrame::createActionImpl(const QIcon& icon, const QString& text, const QString& statusTip, const char* slot)
@@ -95,6 +101,8 @@ void RdbOperFrame::createMenus()
 	operMenu->addAction(selectCompleteDataAction);
 	operMenu->addSeparator();
 	operMenu->addAction(addRecordAction);
+	operMenu->addAction(updateRecordAction);
+	operMenu->addAction(deleteRecordAction);
 }
 
 void RdbOperFrame::createToolBars()
@@ -113,6 +121,8 @@ void RdbOperFrame::createToolBars()
 	operToolBar->addAction(selectCompleteDataAction);
 	operToolBar->addSeparator();
 	operToolBar->addAction(addRecordAction);
+	operToolBar->addAction(updateRecordAction);
+	operToolBar->addAction(deleteRecordAction);
 }
 
 void RdbOperFrame::createStatusBar()
@@ -251,6 +261,28 @@ void RdbOperFrame::addRecord()
 
 	AddRecordDialog	addDialog(m_rdbDataOptPrx);
 	addDialog.exec();
+}
+
+void RdbOperFrame::updateRecord()
+{
+	if (!getRdbDataOptPrx())
+	{
+		return;
+	}
+
+	UpdateRecordDialog	updateDialog(m_rdbDataOptPrx);
+	updateDialog.exec();
+}
+
+void RdbOperFrame::deleteRecord()
+{
+	if (!getRdbDataOptPrx())
+	{
+		return;
+	}
+
+	DeleteRecordDialog	deleteDialog(m_rdbDataOptPrx);
+	deleteDialog.exec();
 }
 
 void RdbOperFrame::updateTableView()

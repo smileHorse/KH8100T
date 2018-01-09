@@ -102,8 +102,7 @@ void SelectSpecficDataDialog::updateTableWidget(const RespondSpecficDataSeq& rep
 	}
 
 	QStringList headerLabels;
-	headerLabels << "id" << "requestId" << "requestNode" << "dataCount" 
-		<< "tableName" << "dataRid";
+	headerLabels << "dataRid";
 	if (!repSeq.seq.empty())
 	{
 		for (int i = 0; i < repSeq.seq.at(0).fieldSeq.size(); ++i)
@@ -114,36 +113,20 @@ void SelectSpecficDataDialog::updateTableWidget(const RespondSpecficDataSeq& rep
 	dataTableWidget->setRowCount(headerLabels.size());
 	dataTableWidget->setVerticalHeaderLabels(headerLabels);
 
-	dataTableWidget->insertColumn(0);
-	dataTableWidget->setItem(0, 0, new QTableWidgetItem(QString().number(repSeq.id)));
-	dataTableWidget->setItem(1, 0, new QTableWidgetItem(QString().number(repSeq.requestId)));
-	dataTableWidget->setItem(2, 0, new QTableWidgetItem(QString().fromStdString(repSeq.requestNode)));
-	dataTableWidget->setItem(3, 0, new QTableWidgetItem(QString().number(repSeq.dataCount)));
-	if (!repSeq.seq.empty())
+	for (size_t i = 0; i < repSeq.seq.size(); ++i)
 	{
-		dataTableWidget->setItem(4, 0, new QTableWidgetItem(QString().fromStdString(repSeq.seq.at(0).tableName)));
-		dataTableWidget->setItem(5, 0, new QTableWidgetItem(QString().fromStdString(repSeq.seq.at(0).dataRid)));
-		for (int i = 0; i < repSeq.seq.at(0).dataValues.size(); ++i)
+		dataTableWidget->insertColumn(i);
+
+		QTableWidgetItem* ridItem = new QTableWidgetItem(QString().fromStdString(repSeq.seq.at(0).dataRid));
+		dataTableWidget->setItem(0, i, ridItem);
+		for (int j = 0; j < repSeq.seq.at(i).dataValues.size(); ++j)
 		{
-			dataTableWidget->setItem(i + 6, 0, 
-				new QTableWidgetItem(QString().fromStdString(repSeq.seq.at(0).dataValues.at(i))));
+			QTableWidgetItem* item = new QTableWidgetItem(QString().fromStdString(repSeq.seq.at(i).dataValues.at(j)));
+			item->setTextAlignment(Qt::AlignHCenter | Qt::AlignVCenter);
+			dataTableWidget->setItem(j + 1, i, item);
 		}
 	}
 	dataTableWidget->resizeColumnsToContents();
-
-	rowCount = dataTableWidget->rowCount();
-	columnCount = dataTableWidget->columnCount();
-	for (int row = 0; row < rowCount; ++row)
-	{
-		for (int col = 0; col < columnCount; ++col)
-		{
-			QTableWidgetItem* item = dataTableWidget->item(row, col);
-			if (item)
-			{
-				item->setTextAlignment(Qt::AlignHCenter | Qt::AlignVCenter);
-			}
-		}
-	}
 }
 
 void SelectSpecficDataDialog::tableNameChanged( const QString& tableName )

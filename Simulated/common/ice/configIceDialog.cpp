@@ -16,6 +16,7 @@ void ConfigIceDialog::createDialogs()
 	iceOffsideIpLineEdit = new QLineEdit("192.168.3.25");
 	iceOffsidePortSpinBox = new QSpinBox;
 	iceOffsidePortSpinBox->setRange(10000, 11000);
+	iceOffsidePortSpinBox->setValue(10003);
 	iceStormIpLineEdit = new QLineEdit("192.168.3.226");
 	iceStormPortSpinBox = new QSpinBox;
 	iceStormPortSpinBox->setRange(10000, 11000);

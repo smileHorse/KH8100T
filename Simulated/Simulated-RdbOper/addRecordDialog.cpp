@@ -1,4 +1,6 @@
 
+#include <IceUtil/IceUtil.h>
+
 #include "addRecordDialog.h"
 #include "rdbTableDefine.h"
 
@@ -26,7 +28,7 @@ void AddRecordDialog::createWidgets()
 
 	tableValueTableWidget = new QTableWidget;
 	tableValueTableWidget->setAlternatingRowColors(true);
-	tableValueTableWidget->resize(400, 800);
+	tableValueTableWidget->setMinimumSize(400, 600);
 	updateTableWidget(tableNameComboBox->currentText());
 
 	addButton = new QPushButton(QIcon(":/addRecord.png"), QStringLiteral("Ôö¼Ó¼ÇÂ¼"));
@@ -61,6 +63,9 @@ void AddRecordDialog::addRecord()
 {
 	int columnCount = tableValueTableWidget->columnCount();
 	tableValueTableWidget->insertColumn(columnCount);
+
+	QString guid = QString().fromStdString(IceUtil::generateUUID());
+	tableValueTableWidget->setItem(0, columnCount, new QTableWidgetItem(guid));
 }
 
 void AddRecordDialog::saveRecords()

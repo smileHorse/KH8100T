@@ -1,5 +1,152 @@
 <?xml version="1.0"?>
 <rdb>
+	<table name="ConfigFaultDesc">
+		<field type = "string">mRID</field>
+		<field type = "string">manufactId</field>
+		<field type = "int">lineType</field>
+		<field type = "int">protectTypeNo</field>
+		<field type = "bool">protectHasValue</field>
+		<field type = "string">name</field>
+		<field type = "string">units</field>
+		<field type = "double">modulus</field>
+	</table>	
+	<table name="ConfigYxDesc">
+		<field type = "string">mRID</field>
+		<field type = "int">yxType</field>
+		<field type = "int">yxValue</field>
+		<field type = "string">name</field>
+	</table>
+	<table name="DevManufacturer">
+		<field type = "string">mRID</field>
+		<field type = "string">name</field>
+	</table>
+	<table name="DevDeviceType">
+		<field type = "string">mRID</field>
+		<field type = "string">name</field>
+		<field type = "string">manufacturer</field>
+	</table>
+	<table name="DevSettingLine">
+		<field type = "string">mRID</field>
+		<field type = "int">no</field>
+		<field type = "string">manufacturer</field>
+		<field type = "string">deviceType</field>
+		<field type = "int">lineType</field>
+		<field type = "int">settingWay</field>
+		<field type = "int">startProNo</field>
+		<field type = "int">endProNo</field>
+		<field type = "int">protectNum</field>
+		<field type = "int">fc</field>
+		<field type = "int">proTypeVal</field>
+		<field type = "int">funType</field>
+	</table>
+	<table name="DevSettingType">
+		<field type = "string">mRID</field>
+		<field type = "int">no</field>
+		<field type = "string">manufacturer</field>
+		<field type = "string">deviceType</field>
+		<field type = "int">lineType</field>
+		<field type = "int">settingNo</field>
+		<field type = "string">settingName</field>
+		<field type = "int">proTypeVal</field>
+		<field type = "int">settingType</field>
+		<field type = "int">saveType</field>
+		<field type = "int">startSingle</field>
+		<field type = "int">endSingle</field>
+		<field type = "int">startLine</field>
+		<field type = "int">endLine</field>
+		<field type = "int">infoAddr</field>
+		<field type = "double">modulus</field>
+		<field type = "string">units</field>
+		<field type = "int">settingLevel</field>
+		<field type = "int">funType</field>
+		<field type = "int">qpm</field>
+	</table>
+
+	<table name="FepPartition">
+		<field type = "string">mRID</field>
+		<field type = "string">name</field>
+	</table>
+	<table name="FepSection">
+		<field type = "string">mRID</field>
+		<field type = "string">name</field>
+		<field type = "string">partition</field>
+	</table>
+	<table name="FepProtocol">
+		<field type = "string">mRID</field>
+		<field type = "int">protocolNo</field>
+		<field type = "string">name</field>
+		<field type = "int">type</field>
+		<field type = "bool">isUse</field>
+		<field type = "string">paramLine</field>
+		<field type = "int">commCount</field>
+		<field type = "int">unitCount</field>
+		<field type = "string">partition</field>
+		<field type = "string">section</field>
+	</table>
+	<table name="FepChannel">
+		<field type = "string">mRID</field>
+		<field type = "int">channelId</field>
+		<field type = "string">param</field>
+		<field type = "string">protocol</field>
+	</table>
+	<table name="FepProtocolUnit">
+		<field type = "string">mRID</field>
+		<field type = "string">protocolId</field>
+		<field type = "int">deviceId</field>
+	</table>
+
+	<table name="SystemRole">
+		<field type = "string">mRID</field>
+		<field type = "string">roleName</field>
+		<field type = "int">permission</field>
+		<field type = "string">roleDesc</field>
+	</table>
+	<table name="SystemUser">
+		<field type = "string">mRID</field>
+		<field type = "string">loginId</field>
+		<field type = "string">loginName</field>
+		<field type = "string">userPwd</field>
+		<field type = "string">roleId</field>
+		<field type = "string">userName</field>
+	</table>
+	<table name="SystemPhone">
+		<field type = "string">mRID</field>
+		<field type = "string">name</field>
+		<field type = "string">phone</field>
+	</table>
+	<table name="SystemMsgCfg">
+		<field type = "string">mRID</field>
+		<field type = "int">type</field>
+		<field type = "int">state</field>
+	</table>
+
+	<table name="WavWaveConfig">
+		<field type = "string">mRID</field>
+		<field type = "int">deviceId</field>
+		<field type = "int">configNo</field>
+		<field type = "string">dataName</field>
+		<field type = "int">maxVal</field>
+		<field type = "string">unit</field>
+		<field type = "double">modulus</field>
+		<field type = "string">color</field>
+		<field type = "int">belongBmp</field>
+		<field type = "int">protectLineNo</field>
+		<field type = "int">channelNo</field>
+	</table>
+	<table name="WavTrendCurve">
+		<field type = "string">mRID</field>
+		<field type = "int">deviceId</field>
+		<field type = "string">ycDesc</field>
+		<field type = "int">no</field>
+		<field type = "int">ycIndex</field>
+		<field type = "double">modulus</field>
+		<field type = "int">analogType</field>
+		<field type = "string">curveColor</field>
+		<field type = "int">coordinateNo</field>
+		<field type = "string">reserved</field>
+	</table>
+
+
 	<table name="GeographicalRegion">
 		<field type = "string">mRID</field>
 		<field type = "string">name</field>
@@ -28,12 +175,37 @@
 	</table>
 	<table name="RemoteUnit">
 		<field type = "string">mRID</field>
-		<field type = "string">name</field>
-		<field type = "string">localName</field>
-		<field type = "string">pathName</field>
-		<field type = "string">aliasName</field>
-		<field type = "string">description</field>
-		<field type = "string">name</field>
+		<field type = "int">IEDID</field>
+		<field type = "string">IEDName</field>
+		<field type = "int">IEDType</field>
+		<field type = "string">timeStamp</field>
+		<field type = "int">status</field>
+		<field type = "int">channelState1</field>
+		<field type = "int">channelState2</field>
+		<field type = "int">errorRate</field>
+		<field type = "int">safeDays</field>
+		<field type = "float">dayRate</field>
+		<field type = "float">monthRate</field>
+		<field type = "string">ec_type</field>
+		<field type = "string">ec_rid</field>
+		<field type = "int">unitType</field>
+		<field type = "int">replyTimeouts</field>
+		<field type = "int">faultJudgeCount</field>
+		<field type = "string">paramLine</field>
+		<field type = "bool">isTrans</field>
+		<field type = "bool">manuGetRFW</field>
+		<field type = "int">statNo</field>
+		<field type = "string">manufacturer</field>
+		<field type = "string">deviceType</field>
+		<field type = "int">yxNum</field>
+		<field type = "int">ycNum</field>
+		<field type = "int">ddNum</field>
+		<field type = "string">groupNo</field>
+		<field type = "string">voltage</field>
+		<field type = "string">electric</field>
+		<field type = "string">facTime</field>
+		<field type = "string">runTime</field>
+		<field type = "string">reserved</field>
 	</table>
 	<table name="AnalogUnitPoint">
 		<field type = "string">mRID</field>
@@ -186,7 +358,9 @@
 		<field type = "string">pathName</field>
 		<field type = "string">aliasName</field>
 		<field type = "string">description</field>
-		<field type = "string">name</field>
+		<field type = "string">ce_type</field>
+		<field type = "string">ce_rid</field>
+		<field type = "string">connectivity_node</field>
 	</table>
 	<table name="FormulaDefinition">
 		<field type = "string">mRID</field>

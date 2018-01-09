@@ -96,21 +96,15 @@ void SelectDefaultDataDialog::updateTableWidget(const RespondDefaultDataSeq& rep
 	}
 
 	QStringList headerLabels;
-	headerLabels << "id" << "requestId" << "requestNode" << "dataCount" 
-		<< "tableName" << "dataRid" << "dataValue";
+	headerLabels << "dataRid" << "dataValue";
 	dataTableWidget->setRowCount(headerLabels.size());
 	dataTableWidget->setVerticalHeaderLabels(headerLabels);
 
-	dataTableWidget->insertColumn(0);
-	dataTableWidget->setItem(0, 0, new QTableWidgetItem(QString().number(repSeq.id)));
-	dataTableWidget->setItem(1, 0, new QTableWidgetItem(QString().number(repSeq.requestId)));
-	dataTableWidget->setItem(2, 0, new QTableWidgetItem(QString().fromStdString(repSeq.requestNode)));
-	dataTableWidget->setItem(3, 0, new QTableWidgetItem(QString().number(repSeq.dataCount)));
-	if (!repSeq.seq.empty())
+	for (size_t i = 0; i < repSeq.seq.size(); ++i)
 	{
-		dataTableWidget->setItem(4, 0, new QTableWidgetItem(QString().fromStdString(repSeq.seq.at(0).tableName)));
-		dataTableWidget->setItem(5, 0, new QTableWidgetItem(QString().fromStdString(repSeq.seq.at(0).dataRid)));
-		dataTableWidget->setItem(6, 0, new QTableWidgetItem(QString().fromStdString(repSeq.seq.at(0).dataValue)));
+		dataTableWidget->insertColumn(i);
+		dataTableWidget->setItem(0, i, new QTableWidgetItem(QString().fromStdString(repSeq.seq.at(i).dataRid)));
+		dataTableWidget->setItem(1, i, new QTableWidgetItem(QString().fromStdString(repSeq.seq.at(i).dataValue)));
 	}
 	dataTableWidget->resizeColumnsToContents();
 
