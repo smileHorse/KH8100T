@@ -1,5 +1,11 @@
-#include "rdboperframe.h"
+
 #include <QtWidgets/QApplication>
+
+#include "logger.h"
+#include "rdboperframe.h"
+
+//初始化日志操作类
+Logger CLogger::my_logger = CLogger::init("./logger/DataCenter.log4");
 
 int main(int argc, char *argv[])
 {

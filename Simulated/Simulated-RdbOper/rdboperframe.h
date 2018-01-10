@@ -42,6 +42,7 @@ private slots:
 	void addRecord();
 	void updateRecord();
 	void deleteRecord();
+	void randomInsert();
 	void updateTableView();
 	void updateStatusBar(const QString& text, int timeout = 2000);
 
@@ -59,6 +60,8 @@ private:
 	QAction*	selectDefaultDataAction;
 	QAction*	selectSpecficDataAction;
 	QAction*	selectCompleteDataAction;
+
+	QAction*	randomInsertAction;
 
 	QListView*	listView;
 	QTableView*	tableView;

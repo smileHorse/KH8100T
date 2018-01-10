@@ -36,6 +36,9 @@
     <Filter Include="slice">
       <UniqueIdentifier>{6e9864a3-cf53-4b7e-bb60-a9f7f11ca6ce}</UniqueIdentifier>
     </Filter>
+    <Filter Include="log">
+      <UniqueIdentifier>{477aef72-f9fa-4a6e-937a-4e74d5145932}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="main.cpp">
@@ -107,6 +110,48 @@
     <ClCompile Include="GeneratedFiles\Release\moc_addRecordDialog.cpp">
       <Filter>Generated Files\Release</Filter>
     </ClCompile>
+    <ClCompile Include="updateRecordDialog.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="deleteRecordDialog.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="GeneratedFiles\Debug\moc_deleteRecordDialog.cpp">
+      <Filter>Generated Files\Debug</Filter>
+    </ClCompile>
+    <ClCompile Include="GeneratedFiles\Release\moc_deleteRecordDialog.cpp">
+      <Filter>Generated Files\Release</Filter>
+    </ClCompile>
+    <ClCompile Include="GeneratedFiles\Debug\moc_updateRecordDialog.cpp">
+      <Filter>Generated Files\Debug</Filter>
+    </ClCompile>
+    <ClCompile Include="GeneratedFiles\Release\moc_updateRecordDialog.cpp">
+      <Filter>Generated Files\Release</Filter>
+    </ClCompile>
+    <ClCompile Include="..\common\log\logger.cpp">
+      <Filter>log</Filter>
+    </ClCompile>
+    <ClCompile Include="randomInsertDialog.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="GeneratedFiles\Debug\moc_randomInsertDialog.cpp">
+      <Filter>Generated Files\Debug</Filter>
+    </ClCompile>
+    <ClCompile Include="GeneratedFiles\Release\moc_randomInsertDialog.cpp">
+      <Filter>Generated Files\Release</Filter>
+    </ClCompile>
+    <ClCompile Include="randomInsertThread.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="GeneratedFiles\Debug\moc_randomInsertThread.cpp">
+      <Filter>Generated Files\Debug</Filter>
+    </ClCompile>
+    <ClCompile Include="GeneratedFiles\Release\moc_randomInsertThread.cpp">
+      <Filter>Generated Files\Release</Filter>
+    </ClCompile>
+    <ClCompile Include="mRIDXmlHandler.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <CustomBuild Include="rdboperframe.h">
@@ -130,6 +175,18 @@
     <CustomBuild Include="addRecordDialog.h">
       <Filter>Header Files</Filter>
     </CustomBuild>
+    <CustomBuild Include="deleteRecordDialog.h">
+      <Filter>Header Files</Filter>
+    </CustomBuild>
+    <CustomBuild Include="updateRecordDialog.h">
+      <Filter>Header Files</Filter>
+    </CustomBuild>
+    <CustomBuild Include="randomInsertDialog.h">
+      <Filter>Header Files</Filter>
+    </CustomBuild>
+    <CustomBuild Include="randomInsertThread.h">
+      <Filter>Header Files</Filter>
+    </CustomBuild>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\common\slice\cpp\rdbdata.h">
@@ -139,6 +196,12 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="xmlStreamReader.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="..\common\log\logger.h">
+      <Filter>log</Filter>
+    </ClInclude>
+    <ClInclude Include="mRIDXmlHandler.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>

@@ -57,6 +57,18 @@ QStringList RdbStruct::getTableFields(const QString& tableName) const
 	return list;
 }
 
+void RdbStruct::getTableFields( const QString& tableName, RdbFieldStructList& fields ) const
+{
+	foreach(const RdbTableStruct& table, tables)
+	{
+		if (table.name == tableName)
+		{
+			fields = table.fields.toList();
+			break;
+		}
+	}
+}
+
 bool RdbStruct::isEmpty() const
 {
 	return tables.isEmpty();

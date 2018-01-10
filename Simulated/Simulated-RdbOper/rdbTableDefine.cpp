@@ -65,3 +65,14 @@ QStringList RdbTableFactory::getTableFields( const QString& tableName )
 	return _rdbStruct.getTableFields(tableName);
 }
 
+// 获取实时库中表的字段信息
+void RdbTableFactory::getTableFields( const QString& tableName, RdbFieldStructList& fields )
+{
+	if (!initRdbStruct())
+	{
+		return;
+	}
+
+	_rdbStruct.getTableFields(tableName, fields);
+}
+

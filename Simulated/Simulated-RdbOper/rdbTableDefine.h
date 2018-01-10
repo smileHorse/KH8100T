@@ -24,6 +24,9 @@ public:
 	// 获取实时库中表的字段名
 	static QStringList getTableFields(const QString& tableName);
 
+	// 获取实时库中表的字段信息
+	static void getTableFields(const QString& tableName, RdbFieldStructList& fields);
+
 private:
 	static RdbStruct	_rdbStruct;
 };

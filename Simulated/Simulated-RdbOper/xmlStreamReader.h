@@ -11,6 +11,7 @@ struct RdbFieldStruct
 	QString fieldName;
 	QString	fieldType;
 };
+typedef QList<RdbFieldStruct>	RdbFieldStructList;
 
 // 实时库表结构
 struct RdbTableStruct
@@ -31,6 +32,7 @@ public:
 	QString getTableName(int index) const;
 	QStringList getTableNames() const;
 	QStringList getTableFields(const QString& tableName) const;
+	void getTableFields(const QString& tableName, RdbFieldStructList& fields) const;
 	bool isEmpty() const;
 
 private:

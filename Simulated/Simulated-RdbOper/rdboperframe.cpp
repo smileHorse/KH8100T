@@ -3,6 +3,7 @@
 
 #include "addRecordDialog.h"
 #include "deleteRecordDialog.h"
+#include "randomInsertDialog.h"
 #include "rdboperframe.h"
 #include "rdbTableDefine.h"
 #include "selectCompleteDataDialog.h"
@@ -74,6 +75,9 @@ void RdbOperFrame::createActions()
 		QStringLiteral("更新记录"), SLOT(updateRecord()));
 	deleteRecordAction = createActionImpl(QIcon(":/deleteRecord.png"), QStringLiteral("删除记录"), 
 		QStringLiteral("删除记录"), SLOT(deleteRecord()));
+
+	randomInsertAction = createActionImpl(QIcon(":/random.png"), QStringLiteral("插入随机数据"), 
+		QStringLiteral("插入随机数据"), SLOT(randomInsert()));
 }
 
 QAction* RdbOperFrame::createActionImpl(const QIcon& icon, const QString& text, const QString& statusTip, const char* slot)
@@ -103,6 +107,8 @@ void RdbOperFrame::createMenus()
 	operMenu->addAction(addRecordAction);
 	operMenu->addAction(updateRecordAction);
 	operMenu->addAction(deleteRecordAction);
+	operMenu->addSeparator();
+	operMenu->addAction(randomInsertAction);
 }
 
 void RdbOperFrame::createToolBars()
@@ -123,6 +129,8 @@ void RdbOperFrame::createToolBars()
 	operToolBar->addAction(addRecordAction);
 	operToolBar->addAction(updateRecordAction);
 	operToolBar->addAction(deleteRecordAction);
+	operToolBar->addSeparator();
+	operToolBar->addAction(randomInsertAction);
 }
 
 void RdbOperFrame::createStatusBar()
@@ -283,6 +291,17 @@ void RdbOperFrame::deleteRecord()
 
 	DeleteRecordDialog	deleteDialog(m_rdbDataOptPrx);
 	deleteDialog.exec();
+}
+
+void RdbOperFrame::randomInsert()
+{
+	if (!getRdbDataOptPrx())
+	{
+		return;
+	}
+
+	RandomInsertDialog	randomInsertDialog(m_rdbDataOptPrx);
+	randomInsertDialog.exec();
 }
 
 void RdbOperFrame::updateTableView()

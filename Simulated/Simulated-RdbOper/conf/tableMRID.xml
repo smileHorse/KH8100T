@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<rdb>
+    <table tableName="Area"/>
+    <table tableName="GeographicalRegion">
+        <mRID>5be943cd-b3c6-4e82-b691-9d4078f55a00</mRID>
+        <mRID>07ce9628-3ed4-4cb8-9ffa-1c6b039cb43b</mRID>
+        <mRID>0b66a411-7e33-4a90-86d2-4995dbd5a6d0</mRID>
+        <mRID>6ed7733f-91a5-4d5d-858a-2346818474dd</mRID>
+        <mRID>05821970-1f53-4d1c-9f20-56bf1c6ad029</mRID>
+        <mRID>c26706de-55c2-4b73-9048-44bcad8ac22d</mRID>
+        <mRID>455bee14-5757-4a0e-897a-b0ea6bdbac72</mRID>
+        <mRID>63da79d0-8a0c-4726-80a1-4f980f30c9c9</mRID>
+        <mRID>5cb05fd6-8f16-436a-b86e-d10a74d435d2</mRID>
+        <mRID>7b13c0eb-698c-4c08-b397-6404a1e5a3e5</mRID>
+        <mRID>65e6432b-412e-4a61-9855-9dd5bcc78c4b</mRID>
+        <mRID>f931c9d4-6766-4014-a7ac-411c4fb6a2dd</mRID>
+    </table>
+</rdb>

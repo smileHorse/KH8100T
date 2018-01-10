@@ -1,5 +1,243 @@
 <?xml version="1.0"?>
 <rdb>
+	<table name="GeographicalRegion">
+		<field type = "string">mRID</field>
+		<field type = "string">name</field>
+		<field type = "string">localName</field>
+		<field type = "string">pathName</field>
+		<field type = "string">aliasName</field>
+		<field type = "string">description</field>
+	</table>
+	<table name="SubGeographicalRegion">
+		<field type = "string">mRID</field>
+		<field type = "string">name</field>
+		<field type = "string">localName</field>
+		<field type = "string">pathName</field>
+		<field type = "string">aliasName</field>
+		<field type = "string">description</field>
+		<field type = "GeographicalRegion">region</field>
+	</table>
+	<table name="Area">
+		<field type = "string">mRID</field>
+		<field type = "string">name</field>
+		<field type = "string">localName</field>
+		<field type = "string">pathName</field>
+		<field type = "string">aliasName</field>
+		<field type = "string">description</field>
+		<field type = "Area">psrType</field>
+		<field type = "SubGeographicalRegion">ec_type</field>
+		<field type = "SubGeographicalRegion">ec_rid</field>
+	</table>
+	<table name="Substation">
+		<field type = "string">mRID</field>
+		<field type = "string">name</field>
+		<field type = "string">localName</field>
+		<field type = "string">pathName</field>
+		<field type = "string">aliasName</field>
+		<field type = "string">description</field>
+		<field type = "Substation">psrType</field>
+		<field type = "SubGeographicalRegion">ec_type</field>
+		<field type = "SubGeographicalRegion">ec_rid</field>
+	</table>
+	<table name="BusbarSection">
+		<field type = "string">mRID</field>
+		<field type = "string">name</field>
+		<field type = "string">localName</field>
+		<field type = "string">pathName</field>
+		<field type = "string">aliasName</field>
+		<field type = "string">description</field>
+		<field type = "string">name</field>
+	</table>
+	<table name="Line">
+		<field type = "string">mRID</field>
+		<field type = "string">name</field>
+		<field type = "string">localName</field>
+		<field type = "string">pathName</field>
+		<field type = "string">aliasName</field>
+		<field type = "string">description</field>
+		<field type = "string">name</field>
+	</table>
+	<table name="Breaker">
+		<field type = "string">mRID</field>
+		<field type = "string">name</field>
+		<field type = "string">localName</field>
+		<field type = "string">pathName</field>
+		<field type = "string">aliasName</field>
+		<field type = "string">description</field>
+		<field type = "string">name</field>
+	</table>
+	<table name="Disconnector">
+		<field type = "string">mRID</field>
+		<field type = "string">name</field>
+		<field type = "string">localName</field>
+		<field type = "string">pathName</field>
+		<field type = "string">aliasName</field>
+		<field type = "string">description</field>
+		<field type = "string">name</field>
+	</table>
+	<table name="PowerTransformer">
+		<field type = "string">mRID</field>
+		<field type = "string">name</field>
+		<field type = "string">localName</field>
+		<field type = "string">pathName</field>
+		<field type = "string">aliasName</field>
+		<field type = "string">description</field>
+		<field type = "string">name</field>
+	</table>
+	<table name="TransformerWinding">
+		<field type = "string">mRID</field>
+		<field type = "string">name</field>
+		<field type = "string">localName</field>
+		<field type = "string">pathName</field>
+		<field type = "string">aliasName</field>
+		<field type = "string">description</field>
+		<field type = "string">name</field>
+	</table>
+	<table name="RemoteUnit">
+		<field type = "string">mRID</field>
+		<field type = "int">IEDID</field>
+		<field type = "string">IEDName</field>
+		<field type = "int">IEDType</field>
+		<field type = "string">timeStamp</field>
+		<field type = "int">status</field>
+		<field type = "int">channelState1</field>
+		<field type = "int">channelState2</field>
+		<field type = "int">errorRate</field>
+		<field type = "int">safeDays</field>
+		<field type = "float">dayRate</field>
+		<field type = "float">monthRate</field>
+		<field type = "string">ec_type</field>
+		<field type = "string">ec_rid</field>
+		<field type = "int">unitType</field>
+		<field type = "int">replyTimeouts</field>
+		<field type = "int">faultJudgeCount</field>
+		<field type = "string">paramLine</field>
+		<field type = "bool">isTrans</field>
+		<field type = "bool">manuGetRFW</field>
+		<field type = "int">statNo</field>
+		<field type = "string">manufacturer</field>
+		<field type = "string">deviceType</field>
+		<field type = "int">yxNum</field>
+		<field type = "int">ycNum</field>
+		<field type = "int">ddNum</field>
+		<field type = "string">groupNo</field>
+		<field type = "string">voltage</field>
+		<field type = "string">electric</field>
+		<field type = "string">facTime</field>
+		<field type = "string">runTime</field>
+		<field type = "string">reserved</field>
+	</table>
+	<table name="AnalogUnitPoint">
+		<field type = "string">mRID</field>
+		<field type = "string">name</field>
+		<field type = "string">localName</field>
+		<field type = "string">pathName</field>
+		<field type = "string">aliasName</field>
+		<field type = "string">description</field>
+		<field type = "string">name</field>
+	</table>
+	<table name="DiscreteUnitPoint">
+		<field type = "string">mRID</field>
+		<field type = "string">name</field>
+		<field type = "string">localName</field>
+		<field type = "string">pathName</field>
+		<field type = "string">aliasName</field>
+		<field type = "string">description</field>
+		<field type = "string">name</field>
+	</table>
+	<table name="ControlUnitPoint">
+		<field type = "string">mRID</field>
+		<field type = "string">name</field>
+		<field type = "string">localName</field>
+		<field type = "string">pathName</field>
+		<field type = "string">aliasName</field>
+		<field type = "string">description</field>
+		<field type = "string">name</field>
+	</table>
+	<table name="Analog">
+		<field type = "string">mRID</field>
+		<field type = "string">name</field>
+		<field type = "string">localName</field>
+		<field type = "string">pathName</field>
+		<field type = "string">aliasName</field>
+		<field type = "string">description</field>
+		<field type = "string">name</field>
+	</table>
+	<table name="Discrete">
+		<field type = "string">mRID</field>
+		<field type = "string">name</field>
+		<field type = "string">localName</field>
+		<field type = "string">pathName</field>
+		<field type = "string">aliasName</field>
+		<field type = "string">description</field>
+		<field type = "string">name</field>
+	</table>
+	<table name="Accumulator">
+		<field type = "string">mRID</field>
+		<field type = "string">name</field>
+		<field type = "string">localName</field>
+		<field type = "string">pathName</field>
+		<field type = "string">aliasName</field>
+		<field type = "string">description</field>
+		<field type = "string">name</field>
+	</table>
+	<table name="Command">
+		<field type = "string">mRID</field>
+		<field type = "string">name</field>
+		<field type = "string">localName</field>
+		<field type = "string">pathName</field>
+		<field type = "string">aliasName</field>
+		<field type = "string">description</field>
+		<field type = "string">name</field>
+	</table>
+	<table name="AnalogCurveData">
+		<field type = "string">mRID</field>
+		<field type = "string">name</field>
+		<field type = "string">localName</field>
+		<field type = "string">pathName</field>
+		<field type = "string">aliasName</field>
+		<field type = "string">description</field>
+		<field type = "string">name</field>
+	</table>
+	<table name="ConnectivityNode">
+		<field type = "string">mRID</field>
+		<field type = "string">name</field>
+		<field type = "string">localName</field>
+		<field type = "string">pathName</field>
+		<field type = "string">aliasName</field>
+		<field type = "string">description</field>
+		<field type = "string">name</field>
+	</table>
+	<table name="Terminal">
+		<field type = "string">mRID</field>
+		<field type = "string">name</field>
+		<field type = "string">localName</field>
+		<field type = "string">pathName</field>
+		<field type = "string">aliasName</field>
+		<field type = "string">description</field>
+		<field type = "string">ce_type</field>
+		<field type = "string">ce_rid</field>
+		<field type = "string">connectivity_node</field>
+	</table>
+	<table name="FormulaDefinition">
+		<field type = "string">mRID</field>
+		<field type = "string">name</field>
+		<field type = "string">localName</field>
+		<field type = "string">pathName</field>
+		<field type = "string">aliasName</field>
+		<field type = "string">description</field>
+		<field type = "string">name</field>
+	</table>
+	<table name="VariableDefinition">
+		<field type = "string">mRID</field>
+		<field type = "string">name</field>
+		<field type = "string">localName</field>
+		<field type = "string">pathName</field>
+		<field type = "string">aliasName</field>
+		<field type = "string">description</field>
+		<field type = "string">name</field>
+	</table>
+
 	<table name="ConfigFaultDesc">
 		<field type = "string">mRID</field>
 		<field type = "string">manufactId</field>
@@ -144,240 +382,5 @@
 		<field type = "string">curveColor</field>
 		<field type = "int">coordinateNo</field>
 		<field type = "string">reserved</field>
-	</table>
-
-
-	<table name="GeographicalRegion">
-		<field type = "string">mRID</field>
-		<field type = "string">name</field>
-		<field type = "string">localName</field>
-		<field type = "string">pathName</field>
-		<field type = "string">aliasName</field>
-		<field type = "string">description</field>
-	</table>
-	<table name="SubGeographicalRegion">
-		<field type = "string">mRID</field>
-		<field type = "string">name</field>
-		<field type = "string">localName</field>
-		<field type = "string">pathName</field>
-		<field type = "string">aliasName</field>
-		<field type = "string">description</field>
-		<field type = "string">name</field>
-	</table>
-	<table name="Area">
-		<field type = "string">mRID</field>
-		<field type = "string">name</field>
-		<field type = "string">localName</field>
-		<field type = "string">pathName</field>
-		<field type = "string">aliasName</field>
-		<field type = "string">description</field>
-		<field type = "string">name</field>
-	</table>
-	<table name="RemoteUnit">
-		<field type = "string">mRID</field>
-		<field type = "int">IEDID</field>
-		<field type = "string">IEDName</field>
-		<field type = "int">IEDType</field>
-		<field type = "string">timeStamp</field>
-		<field type = "int">status</field>
-		<field type = "int">channelState1</field>
-		<field type = "int">channelState2</field>
-		<field type = "int">errorRate</field>
-		<field type = "int">safeDays</field>
-		<field type = "float">dayRate</field>
-		<field type = "float">monthRate</field>
-		<field type = "string">ec_type</field>
-		<field type = "string">ec_rid</field>
-		<field type = "int">unitType</field>
-		<field type = "int">replyTimeouts</field>
-		<field type = "int">faultJudgeCount</field>
-		<field type = "string">paramLine</field>
-		<field type = "bool">isTrans</field>
-		<field type = "bool">manuGetRFW</field>
-		<field type = "int">statNo</field>
-		<field type = "string">manufacturer</field>
-		<field type = "string">deviceType</field>
-		<field type = "int">yxNum</field>
-		<field type = "int">ycNum</field>
-		<field type = "int">ddNum</field>
-		<field type = "string">groupNo</field>
-		<field type = "string">voltage</field>
-		<field type = "string">electric</field>
-		<field type = "string">facTime</field>
-		<field type = "string">runTime</field>
-		<field type = "string">reserved</field>
-	</table>
-	<table name="AnalogUnitPoint">
-		<field type = "string">mRID</field>
-		<field type = "string">name</field>
-		<field type = "string">localName</field>
-		<field type = "string">pathName</field>
-		<field type = "string">aliasName</field>
-		<field type = "string">description</field>
-		<field type = "string">name</field>
-	</table>
-	<table name="DiscreteUnitPoint">
-		<field type = "string">mRID</field>
-		<field type = "string">name</field>
-		<field type = "string">localName</field>
-		<field type = "string">pathName</field>
-		<field type = "string">aliasName</field>
-		<field type = "string">description</field>
-		<field type = "string">name</field>
-	</table>
-	<table name="ControlUnitPoint">
-		<field type = "string">mRID</field>
-		<field type = "string">name</field>
-		<field type = "string">localName</field>
-		<field type = "string">pathName</field>
-		<field type = "string">aliasName</field>
-		<field type = "string">description</field>
-		<field type = "string">name</field>
-	</table>
-	<table name="Analog">
-		<field type = "string">mRID</field>
-		<field type = "string">name</field>
-		<field type = "string">localName</field>
-		<field type = "string">pathName</field>
-		<field type = "string">aliasName</field>
-		<field type = "string">description</field>
-		<field type = "string">name</field>
-	</table>
-	<table name="Discrete">
-		<field type = "string">mRID</field>
-		<field type = "string">name</field>
-		<field type = "string">localName</field>
-		<field type = "string">pathName</field>
-		<field type = "string">aliasName</field>
-		<field type = "string">description</field>
-		<field type = "string">name</field>
-	</table>
-	<table name="Accumulator">
-		<field type = "string">mRID</field>
-		<field type = "string">name</field>
-		<field type = "string">localName</field>
-		<field type = "string">pathName</field>
-		<field type = "string">aliasName</field>
-		<field type = "string">description</field>
-		<field type = "string">name</field>
-	</table>
-	<table name="Command">
-		<field type = "string">mRID</field>
-		<field type = "string">name</field>
-		<field type = "string">localName</field>
-		<field type = "string">pathName</field>
-		<field type = "string">aliasName</field>
-		<field type = "string">description</field>
-		<field type = "string">name</field>
-	</table>
-	<table name="AnalogCurveData">
-		<field type = "string">mRID</field>
-		<field type = "string">name</field>
-		<field type = "string">localName</field>
-		<field type = "string">pathName</field>
-		<field type = "string">aliasName</field>
-		<field type = "string">description</field>
-		<field type = "string">name</field>
-	</table>
-	<table name="Substation">
-		<field type = "string">mRID</field>
-		<field type = "string">name</field>
-		<field type = "string">localName</field>
-		<field type = "string">pathName</field>
-		<field type = "string">aliasName</field>
-		<field type = "string">description</field>
-		<field type = "string">name</field>
-	</table>
-	<table name="BusbarSection">
-		<field type = "string">mRID</field>
-		<field type = "string">name</field>
-		<field type = "string">localName</field>
-		<field type = "string">pathName</field>
-		<field type = "string">aliasName</field>
-		<field type = "string">description</field>
-		<field type = "string">name</field>
-	</table>
-	<table name="Line">
-		<field type = "string">mRID</field>
-		<field type = "string">name</field>
-		<field type = "string">localName</field>
-		<field type = "string">pathName</field>
-		<field type = "string">aliasName</field>
-		<field type = "string">description</field>
-		<field type = "string">name</field>
-	</table>
-	<table name="Breaker">
-		<field type = "string">mRID</field>
-		<field type = "string">name</field>
-		<field type = "string">localName</field>
-		<field type = "string">pathName</field>
-		<field type = "string">aliasName</field>
-		<field type = "string">description</field>
-		<field type = "string">name</field>
-	</table>
-	<table name="Disconnector">
-		<field type = "string">mRID</field>
-		<field type = "string">name</field>
-		<field type = "string">localName</field>
-		<field type = "string">pathName</field>
-		<field type = "string">aliasName</field>
-		<field type = "string">description</field>
-		<field type = "string">name</field>
-	</table>
-	<table name="PowerTransformer">
-		<field type = "string">mRID</field>
-		<field type = "string">name</field>
-		<field type = "string">localName</field>
-		<field type = "string">pathName</field>
-		<field type = "string">aliasName</field>
-		<field type = "string">description</field>
-		<field type = "string">name</field>
-	</table>
-	<table name="TransformerWinding">
-		<field type = "string">mRID</field>
-		<field type = "string">name</field>
-		<field type = "string">localName</field>
-		<field type = "string">pathName</field>
-		<field type = "string">aliasName</field>
-		<field type = "string">description</field>
-		<field type = "string">name</field>
-	</table>
-	<table name="ConnectivityNode">
-		<field type = "string">mRID</field>
-		<field type = "string">name</field>
-		<field type = "string">localName</field>
-		<field type = "string">pathName</field>
-		<field type = "string">aliasName</field>
-		<field type = "string">description</field>
-		<field type = "string">name</field>
-	</table>
-	<table name="Terminal">
-		<field type = "string">mRID</field>
-		<field type = "string">name</field>
-		<field type = "string">localName</field>
-		<field type = "string">pathName</field>
-		<field type = "string">aliasName</field>
-		<field type = "string">description</field>
-		<field type = "string">ce_type</field>
-		<field type = "string">ce_rid</field>
-		<field type = "string">connectivity_node</field>
-	</table>
-	<table name="FormulaDefinition">
-		<field type = "string">mRID</field>
-		<field type = "string">name</field>
-		<field type = "string">localName</field>
-		<field type = "string">pathName</field>
-		<field type = "string">aliasName</field>
-		<field type = "string">description</field>
-		<field type = "string">name</field>
-	</table>
-	<table name="VariableDefinition">
-		<field type = "string">mRID</field>
-		<field type = "string">name</field>
-		<field type = "string">localName</field>
-		<field type = "string">pathName</field>
-		<field type = "string">aliasName</field>
-		<field type = "string">description</field>
-		<field type = "string">name</field>
 	</table>
 </rdb>
