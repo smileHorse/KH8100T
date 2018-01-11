@@ -1,6 +1,6 @@
 
 #include "randomInsertDialog.h"
-#include "rdbTableDefine.h"
+#include "rdbTableFactory.h"
 
 RandomInsertDialog::RandomInsertDialog(const RdbDataOptPrx& rdbDataOptPrx,  QWidget* parent /*= 0*/ )
 	: QDialog(parent),m_rdbDataOptPrx(rdbDataOptPrx)
@@ -21,6 +21,7 @@ void RandomInsertDialog::createWidgets()
 	tableNameComboBox->addItems(tableNames);
 
 	countSpinBox = new QSpinBox;
+	countSpinBox->setRange(1, 20000000);
 
 	progressBar = new QProgressBar;
 	progressBar->setMinimum(0);
@@ -83,7 +84,7 @@ void RandomInsertDialog::stopInsertData()
 
 	if (m_thread.isRunning())
 	{
-		m_thread.setStop(false);
+		m_thread.setStop(true);
 	}
 }
 

@@ -5,7 +5,7 @@
 #include "deleteRecordDialog.h"
 #include "randomInsertDialog.h"
 #include "rdboperframe.h"
-#include "rdbTableDefine.h"
+#include "rdbTableFactory.h"
 #include "selectCompleteDataDialog.h"
 #include "selectDefaultDataDialog.h"
 #include "selectSpecficDataDialog.h"

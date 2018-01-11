@@ -1,6 +1,6 @@
 
 #include "deleteRecordDialog.h"
-#include "rdbTableDefine.h"
+#include "rdbTableFactory.h"
 
 DeleteRecordDialog::DeleteRecordDialog(const RdbDataOptPrx& rdbDataOptPrx, QWidget* parent /*= 0*/ )
 	: QDialog(parent), m_rdbDataOptPrx(rdbDataOptPrx)

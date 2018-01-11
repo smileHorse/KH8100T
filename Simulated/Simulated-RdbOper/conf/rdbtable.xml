@@ -46,7 +46,12 @@
 		<field type = "string">pathName</field>
 		<field type = "string">aliasName</field>
 		<field type = "string">description</field>
-		<field type = "string">name</field>
+		<field type = "BusbarSection">psrType</field>
+		<field type = "Substation">ec_type</field>
+		<field type = "Substation">ec_rid</field>
+		<field type = "int">phase</field>
+		<field type = "bool">powerPoint</field>
+		<field type = "string">base_voltage</field>
 	</table>
 	<table name="Line">
 		<field type = "string">mRID</field>
@@ -55,7 +60,14 @@
 		<field type = "string">pathName</field>
 		<field type = "string">aliasName</field>
 		<field type = "string">description</field>
-		<field type = "string">name</field>
+		<field type = "Line">psrType</field>
+		<field type = "string">voltageLevel</field>
+		<field type = "Substation">ec_type</field>
+		<field type = "Substation">ec_rid</field>
+		<field type = "int">ctRatio</field>
+		<field type = "int">ptRatio</field>
+		<field type = "int">lineType</field>
+		<field type = "int">lineNo</field>
 	</table>
 	<table name="Breaker">
 		<field type = "string">mRID</field>
@@ -64,7 +76,29 @@
 		<field type = "string">pathName</field>
 		<field type = "string">aliasName</field>
 		<field type = "string">description</field>
-		<field type = "string">name</field>
+		<field type = "Breaker">psrType</field>
+		<field type = "Substation">ec_type</field>
+		<field type = "Substation">ec_rid</field>
+		<field type = "int">phase</field>
+		<field type = "bool">powerPoint</field>
+		<field type = "string">base_voltage</field>
+		<field type = "bool">normalOpen</field>
+		<field type = "int">switchOnCount</field>
+		<field type = "string">switchOnDate</field>
+		<field type = "string">switchTranMode</field>
+		<field type = "string">switchCommandType</field>
+		<field type = "string">brandFlag</field>
+		<field type = "int">ratedCurrent</field>
+		<field type = "int">inTransitTime</field>
+		<field type = "bool">faFlag</field>
+		<field type = "bool">PowerPointFlag</field>
+		<field type = "double">PPThreshold</field>
+		<field type = "int">FTUNo</field>
+		<field type = "int">EventID</field>
+		<field type = "bool">WaveDirFlag</field>
+		<field type = "double">factorDL</field>
+		<field type = "double">factorJD</field>
+		<field type = "bool">breakerImportant</field>
 	</table>
 	<table name="Disconnector">
 		<field type = "string">mRID</field>
@@ -73,7 +107,18 @@
 		<field type = "string">pathName</field>
 		<field type = "string">aliasName</field>
 		<field type = "string">description</field>
-		<field type = "string">name</field>
+		<field type = "Disconnector">psrType</field>
+		<field type = "Substation">ec_type</field>
+		<field type = "Substation">ec_rid</field>
+		<field type = "int">phase</field>
+		<field type = "bool">powerPoint</field>
+		<field type = "string">base_voltage</field>
+		<field type = "bool">normalOpen</field>
+		<field type = "int">switchOnCount</field>
+		<field type = "string">switchOnDate</field>
+		<field type = "string">switchTranMode</field>
+		<field type = "string">switchCommandType</field>
+		<field type = "string">brandFlag</field>
 	</table>
 	<table name="PowerTransformer">
 		<field type = "string">mRID</field>
@@ -82,7 +127,15 @@
 		<field type = "string">pathName</field>
 		<field type = "string">aliasName</field>
 		<field type = "string">description</field>
-		<field type = "string">name</field>
+		<field type = "PowerTransformer">psrType</field>
+		<field type = "Substation">ec_type</field>
+		<field type = "Substation">ec_rid</field>
+		<field type = "int">bmagSat</field>
+		<field type = "int">magBaseU</field>
+		<field type = "int">magSatFlux</field>
+		<field type = "int">phases</field>
+		<field type = "int">transfCoolingType</field>
+		<field type = "int">transformerType</field>
 	</table>
 	<table name="TransformerWinding">
 		<field type = "string">mRID</field>
@@ -91,7 +144,31 @@
 		<field type = "string">pathName</field>
 		<field type = "string">aliasName</field>
 		<field type = "string">description</field>
-		<field type = "string">name</field>
+		<field type = "TransformerWinding">psrType</field>
+		<field type = "Substation">ec_type</field>
+		<field type = "Substation">ec_rid</field>
+		<field type = "int">phase</field>
+		<field type = "string">base_voltage</field>
+		<field type = "bool">powerPoint</field>
+		<field type = "int">b</field>
+		<field type = "int">b0</field>
+		<field type = "int">connectionType</field>
+		<field type = "int">emergencyS</field>
+		<field type = "int">g</field>
+		<field type = "int">g0</field>
+		<field type = "bool">grounded</field>
+		<field type = "int">insulationU</field>
+		<field type = "int">r</field>
+		<field type = "int">r0</field>
+		<field type = "int">ratedU</field>
+		<field type = "int">ratedS</field>
+		<field type = "int">rground</field>
+		<field type = "int">shortTermS</field>
+		<field type = "int">windingType</field>
+		<field type = "int">x</field>
+		<field type = "int">x0</field>
+		<field type = "int">xground</field>
+		<field type = "PowerTransformer">power_tranformer</field>
 	</table>
 	<table name="RemoteUnit">
 		<field type = "string">mRID</field>
@@ -106,8 +183,8 @@
 		<field type = "int">safeDays</field>
 		<field type = "float">dayRate</field>
 		<field type = "float">monthRate</field>
-		<field type = "string">ec_type</field>
-		<field type = "string">ec_rid</field>
+		<field type = "Substation">ec_type</field>
+		<field type = "Substation">ec_rid</field>
 		<field type = "int">unitType</field>
 		<field type = "int">replyTimeouts</field>
 		<field type = "int">faultJudgeCount</field>
@@ -115,8 +192,8 @@
 		<field type = "bool">isTrans</field>
 		<field type = "bool">manuGetRFW</field>
 		<field type = "int">statNo</field>
-		<field type = "string">manufacturer</field>
-		<field type = "string">deviceType</field>
+		<field type = "DevManufacturer">manufacturer</field>
+		<field type = "DevDeviceType">deviceType</field>
 		<field type = "int">yxNum</field>
 		<field type = "int">ycNum</field>
 		<field type = "int">ddNum</field>
@@ -129,31 +206,23 @@
 	</table>
 	<table name="AnalogUnitPoint">
 		<field type = "string">mRID</field>
-		<field type = "string">name</field>
-		<field type = "string">localName</field>
-		<field type = "string">pathName</field>
-		<field type = "string">aliasName</field>
-		<field type = "string">description</field>
-		<field type = "string">name</field>
+		<field type = "int">IEDID</field>
+		<field type = "int">YcIndex</field>
+		<field type = "string">YcName</field>
 	</table>
 	<table name="DiscreteUnitPoint">
 		<field type = "string">mRID</field>
-		<field type = "string">name</field>
-		<field type = "string">localName</field>
-		<field type = "string">pathName</field>
-		<field type = "string">aliasName</field>
-		<field type = "string">description</field>
-		<field type = "string">name</field>
+		<field type = "int">IEDID</field>
+		<field type = "int">YxIndex</field>
+		<field type = "string">YxName</field>
 	</table>
 	<table name="ControlUnitPoint">
 		<field type = "string">mRID</field>
-		<field type = "string">name</field>
-		<field type = "string">localName</field>
-		<field type = "string">pathName</field>
-		<field type = "string">aliasName</field>
-		<field type = "string">description</field>
-		<field type = "string">name</field>
+		<field type = "int">IEDID</field>
+		<field type = "int">CommandID</field>
+		<field type = "string">CommandName</field>
 	</table>
+
 	<table name="Analog">
 		<field type = "string">mRID</field>
 		<field type = "string">name</field>
@@ -261,7 +330,7 @@
 	<table name="DevDeviceType">
 		<field type = "string">mRID</field>
 		<field type = "string">name</field>
-		<field type = "string">manufacturer</field>
+		<field type = "DevManufacturer">manufacturer</field>
 	</table>
 	<table name="DevSettingLine">
 		<field type = "string">mRID</field>

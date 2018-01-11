@@ -154,6 +154,7 @@
     <ClCompile Include="randomInsertThread.cpp" />
     <ClCompile Include="rdboperframe.cpp" />
     <ClCompile Include="rdbTableDefine.cpp" />
+    <ClCompile Include="rdbTableFactory.cpp" />
     <ClCompile Include="selectCompleteDataDialog.cpp" />
     <ClCompile Include="selectDefaultDataDialog.cpp" />
     <ClCompile Include="selectSpecficDataDialog.cpp" />
@@ -282,6 +283,7 @@
       <Outputs Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">.\GeneratedFiles\$(ConfigurationName)\moc_%(Filename).cpp</Outputs>
       <Command Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">"$(QTDIR)\bin\moc.exe"  "%(FullPath)" -o ".\GeneratedFiles\$(ConfigurationName)\moc_%(Filename).cpp"  -DUNICODE -DWIN32 -DWIN64 -DQT_DLL -DQT_NO_DEBUG -DNDEBUG -DQT_CORE_LIB -DQT_GUI_LIB -DQT_WIDGETS_LIB "-I.\GeneratedFiles" "-I." "-I$(QTDIR)\include" "-I.\GeneratedFiles\$(ConfigurationName)\." "-I$(QTDIR)\include\QtCore" "-I$(QTDIR)\include\QtGui" "-I$(QTDIR)\include\QtWidgets"</Command>
     </CustomBuild>
+    <ClInclude Include="rdbTableFactory.h" />
     <ClInclude Include="xmlStreamReader.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />

@@ -2,7 +2,7 @@
 #include <IceUtil/IceUtil.h>
 
 #include "addRecordDialog.h"
-#include "rdbTableDefine.h"
+#include "rdbTableFactory.h"
 
 AddRecordDialog::AddRecordDialog(const RdbDataOptPrx& rdbDataOptPrx, QWidget* parent /*= 0*/ )
 	: QDialog(parent), m_rdbDataOptPrx(rdbDataOptPrx)

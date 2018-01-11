@@ -1,5 +1,5 @@
 
-#include "rdbTableDefine.h"
+#include "rdbTableFactory.h"
 #include "selectCompleteDataDialog.h"
 
 SelectCompleteDataDialog::SelectCompleteDataDialog(const RdbDataOptPrx& rdbDataOptPrx,  QWidget* parent /*= 0*/)

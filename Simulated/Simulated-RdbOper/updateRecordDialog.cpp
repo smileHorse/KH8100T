@@ -1,6 +1,6 @@
 
 #include "updateRecordDialog.h"
-#include "rdbTableDefine.h"
+#include "rdbTableFactory.h"
 
 UpdateRecordDialog::UpdateRecordDialog(const RdbDataOptPrx& rdbDataOptPrx, QWidget* parent /*= 0*/ )
 	: QDialog(parent), m_rdbDataOptPrx(rdbDataOptPrx)

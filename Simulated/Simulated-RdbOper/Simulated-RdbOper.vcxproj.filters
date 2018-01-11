@@ -152,6 +152,9 @@
     <ClCompile Include="mRIDXmlHandler.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="rdbTableFactory.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <CustomBuild Include="rdboperframe.h">
@@ -202,6 +205,9 @@
       <Filter>log</Filter>
     </ClInclude>
     <ClInclude Include="mRIDXmlHandler.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="rdbTableFactory.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>

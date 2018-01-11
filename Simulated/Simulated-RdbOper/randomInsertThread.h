@@ -26,7 +26,6 @@ protected:
 
 private:
 	void getRandomDataValues(const QString& tableName, RdbRealData::Strings& dataValues);
-	string generateTableMRID(const QString& tableName);
 	void logData(const QString& tableName, RdbRealData::Strings& dataValues);
 
 	void readTableMRIDs();
@@ -41,7 +40,5 @@ private:
 	QString			m_tableName;
 	int				m_count;
 	RdbDataOptPrx	m_rdbDataOptPrx;
-
-	QMap< QString, QVector<string> > m_tableMRIDs;	// 所有表的mRID
 };
 #endif
