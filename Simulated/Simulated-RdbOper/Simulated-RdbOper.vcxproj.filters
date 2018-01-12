@@ -155,6 +155,15 @@
     <ClCompile Include="rdbTableFactory.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="efficencyAnalyse.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="GeneratedFiles\Debug\moc_efficencyAnalyse.cpp">
+      <Filter>Generated Files\Debug</Filter>
+    </ClCompile>
+    <ClCompile Include="GeneratedFiles\Release\moc_efficencyAnalyse.cpp">
+      <Filter>Generated Files\Release</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <CustomBuild Include="rdboperframe.h">
@@ -188,6 +197,9 @@
       <Filter>Header Files</Filter>
     </CustomBuild>
     <CustomBuild Include="randomInsertThread.h">
+      <Filter>Header Files</Filter>
+    </CustomBuild>
+    <CustomBuild Include="efficencyAnalyse.h">
       <Filter>Header Files</Filter>
     </CustomBuild>
   </ItemGroup>

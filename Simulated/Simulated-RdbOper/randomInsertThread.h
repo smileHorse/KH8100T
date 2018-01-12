@@ -34,6 +34,7 @@ private:
 signals:
 	void updateInsertCount(int value);
 	void updateResultText(const QString& text);
+	void resetRdbDataOptPrx();
 
 private:
 	bool			m_stop;

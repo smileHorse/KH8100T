@@ -562,7 +562,7 @@ void AnalogUnitPointTable::getRandomValuesImpl( const RdbFieldStructList& fields
 	int value1 = analogUnitPointCount / PointCountPerRemoteUnit;
 	int value2 = analogUnitPointCount % PointCountPerRemoteUnit;
 	int iedIndex = value1 + 1;
-	int ycIndex = value1 * 10 + value2;
+	int ycIndex = value2 + 1;
 
 	// 为字段赋予随机值
 	foreach(const RdbFieldStruct& field, fields)
@@ -609,7 +609,7 @@ void DiscreteUnitPointTable::getRandomValuesImpl( const RdbFieldStructList& fiel
 	int value1 = discreteUnitPointCount / PointCountPerRemoteUnit;
 	int value2 = discreteUnitPointCount % PointCountPerRemoteUnit;
 	int iedIndex = value1 + 1;
-	int yxIndex = value1 * 10 + value2;
+	int yxIndex = value2 + 1;
 
 	// 为字段赋予随机值
 	foreach(const RdbFieldStruct& field, fields)
@@ -656,7 +656,7 @@ void ControlUnitPointTable::getRandomValuesImpl( const RdbFieldStructList& field
 	int value1 = controlUnitPointCount / PointCountPerRemoteUnit;
 	int value2 = controlUnitPointCount % PointCountPerRemoteUnit;
 	int iedIndex = value1 + 1;
-	int ykIndex = value1 * 10 + value2;
+	int ykIndex = value2 + 1;
 
 	// 为字段赋予随机值
 	foreach(const RdbFieldStruct& field, fields)

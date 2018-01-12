@@ -5,7 +5,7 @@
 #include "rdbTableFactory.h"
 
 RandomInsertThread::RandomInsertThread(QObject* parent /*= 0*/ )
-	: QThread(parent), m_stop(false), m_count(0)
+	: QThread(parent), m_stop(false), m_count(0), m_rdbDataOptPrx(0)
 {
 	readTableMRIDs();
 }
@@ -27,7 +27,10 @@ void RandomInsertThread::setCount( int count )
 
 void RandomInsertThread::setRdbDataOptPrx( const RdbDataOptPrx& rdbDataOptPrx )
 {
-	m_rdbDataOptPrx = rdbDataOptPrx;
+	if (!m_rdbDataOptPrx)
+	{
+		m_rdbDataOptPrx = rdbDataOptPrx;
+	}
 }
 
 void RandomInsertThread::run()
@@ -38,6 +41,13 @@ void RandomInsertThread::run()
 	qsrand(QTime::currentTime().msec());
 	while(!m_stop && count < m_count)
 	{
+		if (!m_rdbDataOptPrx)
+		{
+			emit resetRdbDataOptPrx();
+			QThread::sleep(20);
+			continue;
+		}
+
 		RespondCompleteDataSeq repSeq;
 		repSeq.id = 1;
 		repSeq.requestId = 1;
@@ -53,18 +63,27 @@ void RandomInsertThread::run()
 		logData(m_tableName, data.dataValues);
 		
 		RespondCompleteDataSequence repSequence;
-		bool result = m_rdbDataOptPrx->InsertData(repSeq, repSequence);
-		if (result)
+		try
 		{
-			++successCount;
-			RdbTableFactory::insertMRID(m_tableName, data.dataValues.at(0));
-			RdbLog(CLogger::Log_INFO, "插入成功");
+			bool result = m_rdbDataOptPrx->InsertData(repSeq, repSequence);
+			if (result)
+			{
+				++successCount;
+				RdbTableFactory::insertMRID(m_tableName, data.dataValues.at(0));
+				RdbLog(CLogger::Log_INFO, "插入成功");
+			}
+			else
+			{
+				++failCount;
+				RdbLog(CLogger::Log_INFO, "!!!!!!!!!!!!!! 插入失败 !!!!!!!!!!!!!!!");
+			}
 		}
-		else
+		catch(const Ice::Exception& ex)
 		{
-			++failCount;
-			RdbLog(CLogger::Log_INFO, "!!!!!!!!!!!!!! 插入失败 !!!!!!!!!!!!!!!");
-		}
+			m_rdbDataOptPrx = 0;
+			RdbLog(CLogger::Log_ERROR, "插入数据时出现异常: %s", ex.what());
+			continue;
+		}		
 
 		++count;
 		emit updateInsertCount(count);

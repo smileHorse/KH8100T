@@ -1,10 +1,12 @@
 
 #include "randomInsertDialog.h"
+#include "rdboperframe.h"
 #include "rdbTableFactory.h"
 
 RandomInsertDialog::RandomInsertDialog(const RdbDataOptPrx& rdbDataOptPrx,  QWidget* parent /*= 0*/ )
 	: QDialog(parent),m_rdbDataOptPrx(rdbDataOptPrx)
 {
+	m_rdbFrame = (RdbOperFrame*)parent;
 	createWidgets();
 	createLayout();
 	createConnectes();
@@ -59,6 +61,7 @@ void RandomInsertDialog::createConnectes()
 
 	connect(&m_thread, SIGNAL(updateInsertCount(int)), this, SLOT(updateProgessBar(int)));
 	connect(&m_thread, SIGNAL(updateResultText(const QString&)), this, SLOT(updateTextEdit(const QString&)));
+	connect(&m_thread, SIGNAL(resetRdbDataOptPrx()), this, SLOT(resetThreadRdbDataOptPrx()));
 	connect(&m_thread, SIGNAL(finished()), this, SLOT(threadFinish()));
 }
 
@@ -102,6 +105,12 @@ void RandomInsertDialog::updateTextEdit( const QString& text )
 	resultTextEdit->insertPlainText(text);
 	resultTextEdit->insertPlainText("\n");
 	resultTextEdit->moveCursor(QTextCursor::End);
+}
+
+void RandomInsertDialog::resetThreadRdbDataOptPrx()
+{
+	m_rdbDataOptPrx = m_rdbFrame->regetRdbDataOptPrx();
+	m_thread.setRdbDataOptPrx(m_rdbDataOptPrx);
 }
 
 void RandomInsertDialog::threadFinish()

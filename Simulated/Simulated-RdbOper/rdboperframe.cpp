@@ -3,6 +3,7 @@
 
 #include "addRecordDialog.h"
 #include "deleteRecordDialog.h"
+#include "efficencyAnalyse.h"
 #include "randomInsertDialog.h"
 #include "rdboperframe.h"
 #include "rdbTableFactory.h"
@@ -26,6 +27,24 @@ RdbOperFrame::RdbOperFrame(QWidget *parent)
 RdbOperFrame::~RdbOperFrame()
 {
 
+}
+
+// 重新获取实时库操作代理
+RdbRealData::RdbDataOptPrx RdbOperFrame::regetRdbDataOptPrx()
+{
+	m_rdbDataOptPrx = 0;
+
+	try
+	{
+		QString proxy = QString("rdb-opt: tcp -h %1 -p %2").arg(m_configIceInfo.iceOffsideIp).
+			arg(m_configIceInfo.iceOffsidePort);
+		m_rdbDataOptPrx = RdbDataOptPrx::checkedCast(m_communicatorPtr->stringToProxy(proxy.toStdString()));
+	}
+	catch(const Ice::Exception& ex)
+	{
+		m_rdbDataOptPrx = 0;
+	}
+	return m_rdbDataOptPrx;
 }
 
 void RdbOperFrame::createWidget()
@@ -78,6 +97,9 @@ void RdbOperFrame::createActions()
 
 	randomInsertAction = createActionImpl(QIcon(":/random.png"), QStringLiteral("插入随机数据"), 
 		QStringLiteral("插入随机数据"), SLOT(randomInsert()));
+
+	analyseAction = createActionImpl(QIcon(":/analyse.png"), QStringLiteral("效率分析"), 
+		QStringLiteral("效率分析"), SLOT(efficiencyAnalyse()));
 }
 
 QAction* RdbOperFrame::createActionImpl(const QIcon& icon, const QString& text, const QString& statusTip, const char* slot)
@@ -109,6 +131,8 @@ void RdbOperFrame::createMenus()
 	operMenu->addAction(deleteRecordAction);
 	operMenu->addSeparator();
 	operMenu->addAction(randomInsertAction);
+	operMenu->addSeparator();
+	operMenu->addAction(analyseAction);
 }
 
 void RdbOperFrame::createToolBars()
@@ -131,6 +155,8 @@ void RdbOperFrame::createToolBars()
 	operToolBar->addAction(deleteRecordAction);
 	operToolBar->addSeparator();
 	operToolBar->addAction(randomInsertAction);
+	operToolBar->addSeparator();
+	operToolBar->addAction(analyseAction);
 }
 
 void RdbOperFrame::createStatusBar()
@@ -300,8 +326,18 @@ void RdbOperFrame::randomInsert()
 		return;
 	}
 
-	RandomInsertDialog	randomInsertDialog(m_rdbDataOptPrx);
+	RandomInsertDialog	randomInsertDialog(m_rdbDataOptPrx, this);
 	randomInsertDialog.exec();
+}
+
+void RdbOperFrame::efficiencyAnalyse()
+{
+	QString fileName = QFileDialog::getOpenFileName(this, QStringLiteral("打开文件"), ".");
+	if (!fileName.isEmpty())
+	{
+		EfficiencyAnalyseThread* analysePtr = new EfficiencyAnalyseThread(fileName);
+		analysePtr->start();
+	}
 }
 
 void RdbOperFrame::updateTableView()

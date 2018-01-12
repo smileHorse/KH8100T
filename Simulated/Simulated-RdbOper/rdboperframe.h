@@ -21,6 +21,9 @@ public:
 	RdbOperFrame(QWidget *parent = 0);
 	~RdbOperFrame();
 
+	// 重新获取实时库操作代理
+	RdbDataOptPrx regetRdbDataOptPrx();
+
 private:
 	void createWidget();
 	void createActions();
@@ -43,6 +46,7 @@ private slots:
 	void updateRecord();
 	void deleteRecord();
 	void randomInsert();
+	void efficiencyAnalyse();
 	void updateTableView();
 	void updateStatusBar(const QString& text, int timeout = 2000);
 
@@ -62,6 +66,8 @@ private:
 	QAction*	selectCompleteDataAction;
 
 	QAction*	randomInsertAction;
+
+	QAction*	analyseAction;
 
 	QListView*	listView;
 	QTableView*	tableView;

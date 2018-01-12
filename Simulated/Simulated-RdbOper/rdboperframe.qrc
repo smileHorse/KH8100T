@@ -12,5 +12,6 @@
       <file alias="deleteRecord.png">images/deleteRecord.png</file>
       <file alias="save.png">images/save.png</file>
       <file alias="random.png">images/random.png</file>
+      <file alias="analyse.png">images/analyse.png</file>
     </qresource>
 </RCC>

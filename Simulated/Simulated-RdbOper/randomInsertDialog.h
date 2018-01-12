@@ -6,6 +6,8 @@
 #include "randomInsertThread.h"
 #include "rdbdata.h"
 
+class RdbOperFrame;
+
 using namespace RdbRealData;
 
 class RandomInsertDialog : public QDialog
@@ -25,6 +27,7 @@ private slots:
 	void stopInsertData();
 	void updateProgessBar(int value);
 	void updateTextEdit(const QString& text);
+	void resetThreadRdbDataOptPrx();
 	void threadFinish();
 
 private:
@@ -37,6 +40,7 @@ private:
 	
 	RandomInsertThread	m_thread;
 
+	RdbOperFrame*	m_rdbFrame;
 	RdbDataOptPrx	m_rdbDataOptPrx;
 };
 
