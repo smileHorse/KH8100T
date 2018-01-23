@@ -43,9 +43,11 @@
 namespace
 {
 
-const ::std::string __TransferRdbLogger__TransferRdbLoggerInfo__transferRdbLogger_name = "transferRdbLogger";
-
 const ::std::string __TransferRdbLogger__TransferRdbLoggerInfo__transferRdbLoggerBinary_name = "transferRdbLoggerBinary";
+
+const ::std::string __TransferRdbLogger__TransferRdbLoggerInfo__transferFinished_name = "transferFinished";
+
+const ::std::string __TransferRdbLogger__TransferRdbLoggerInfo__syncRdbFinished_name = "syncRdbFinished";
 
 }
 ::IceProxy::Ice::Object* ::IceProxy::TransferRdbLogger::upCast(::IceProxy::TransferRdbLogger::TransferRdbLoggerInfo* p) { return p; }
@@ -64,50 +66,6 @@ void
         v = new ::IceProxy::TransferRdbLogger::TransferRdbLoggerInfo;
         v->__copyFrom(proxy);
     }
-}
-
-void
-IceProxy::TransferRdbLogger::TransferRdbLoggerInfo::transferRdbLogger(const ::std::string& __p_title, const ::std::string& __p_data, const ::Ice::Context* __ctx)
-{
-    ::IceInternal::Outgoing __og(this, __TransferRdbLogger__TransferRdbLoggerInfo__transferRdbLogger_name, ::Ice::Normal, __ctx);
-    try
-    {
-        ::IceInternal::BasicStream* __os = __og.startWriteParams(::Ice::DefaultFormat);
-        __os->write(__p_title);
-        __os->write(__p_data);
-        __og.endWriteParams();
-    }
-    catch(const ::Ice::LocalException& __ex)
-    {
-        __og.abort(__ex);
-    }
-    __invoke(__og);
-}
-
-::Ice::AsyncResultPtr
-IceProxy::TransferRdbLogger::TransferRdbLoggerInfo::begin_transferRdbLogger(const ::std::string& __p_title, const ::std::string& __p_data, const ::Ice::Context* __ctx, const ::IceInternal::CallbackBasePtr& __del, const ::Ice::LocalObjectPtr& __cookie)
-{
-    ::IceInternal::OutgoingAsyncPtr __result = new ::IceInternal::OutgoingAsync(this, __TransferRdbLogger__TransferRdbLoggerInfo__transferRdbLogger_name, __del, __cookie);
-    try
-    {
-        __result->prepare(__TransferRdbLogger__TransferRdbLoggerInfo__transferRdbLogger_name, ::Ice::Normal, __ctx);
-        ::IceInternal::BasicStream* __os = __result->startWriteParams(::Ice::DefaultFormat);
-        __os->write(__p_title);
-        __os->write(__p_data);
-        __result->endWriteParams();
-        __result->invoke();
-    }
-    catch(const ::Ice::Exception& __ex)
-    {
-        __result->abort(__ex);
-    }
-    return __result;
-}
-
-void
-IceProxy::TransferRdbLogger::TransferRdbLoggerInfo::end_transferRdbLogger(const ::Ice::AsyncResultPtr& __result)
-{
-    __end(__result, __TransferRdbLogger__TransferRdbLoggerInfo__transferRdbLogger_name);
 }
 
 void
@@ -152,6 +110,79 @@ void
 IceProxy::TransferRdbLogger::TransferRdbLoggerInfo::end_transferRdbLoggerBinary(const ::Ice::AsyncResultPtr& __result)
 {
     __end(__result, __TransferRdbLogger__TransferRdbLoggerInfo__transferRdbLoggerBinary_name);
+}
+
+void
+IceProxy::TransferRdbLogger::TransferRdbLoggerInfo::transferFinished(const ::std::string& __p_title, const ::Ice::Context* __ctx)
+{
+    ::IceInternal::Outgoing __og(this, __TransferRdbLogger__TransferRdbLoggerInfo__transferFinished_name, ::Ice::Normal, __ctx);
+    try
+    {
+        ::IceInternal::BasicStream* __os = __og.startWriteParams(::Ice::DefaultFormat);
+        __os->write(__p_title);
+        __og.endWriteParams();
+    }
+    catch(const ::Ice::LocalException& __ex)
+    {
+        __og.abort(__ex);
+    }
+    __invoke(__og);
+}
+
+::Ice::AsyncResultPtr
+IceProxy::TransferRdbLogger::TransferRdbLoggerInfo::begin_transferFinished(const ::std::string& __p_title, const ::Ice::Context* __ctx, const ::IceInternal::CallbackBasePtr& __del, const ::Ice::LocalObjectPtr& __cookie)
+{
+    ::IceInternal::OutgoingAsyncPtr __result = new ::IceInternal::OutgoingAsync(this, __TransferRdbLogger__TransferRdbLoggerInfo__transferFinished_name, __del, __cookie);
+    try
+    {
+        __result->prepare(__TransferRdbLogger__TransferRdbLoggerInfo__transferFinished_name, ::Ice::Normal, __ctx);
+        ::IceInternal::BasicStream* __os = __result->startWriteParams(::Ice::DefaultFormat);
+        __os->write(__p_title);
+        __result->endWriteParams();
+        __result->invoke();
+    }
+    catch(const ::Ice::Exception& __ex)
+    {
+        __result->abort(__ex);
+    }
+    return __result;
+}
+
+void
+IceProxy::TransferRdbLogger::TransferRdbLoggerInfo::end_transferFinished(const ::Ice::AsyncResultPtr& __result)
+{
+    __end(__result, __TransferRdbLogger__TransferRdbLoggerInfo__transferFinished_name);
+}
+
+void
+IceProxy::TransferRdbLogger::TransferRdbLoggerInfo::syncRdbFinished(const ::Ice::Context* __ctx)
+{
+    ::IceInternal::Outgoing __og(this, __TransferRdbLogger__TransferRdbLoggerInfo__syncRdbFinished_name, ::Ice::Normal, __ctx);
+    __og.writeEmptyParams();
+    __invoke(__og);
+}
+
+::Ice::AsyncResultPtr
+IceProxy::TransferRdbLogger::TransferRdbLoggerInfo::begin_syncRdbFinished(const ::Ice::Context* __ctx, const ::IceInternal::CallbackBasePtr& __del, const ::Ice::LocalObjectPtr& __cookie)
+{
+    ::IceInternal::OutgoingAsyncPtr __result = new ::IceInternal::OutgoingAsync(this, __TransferRdbLogger__TransferRdbLoggerInfo__syncRdbFinished_name, __del, __cookie);
+    try
+    {
+        __result->prepare(__TransferRdbLogger__TransferRdbLoggerInfo__syncRdbFinished_name, ::Ice::Normal, __ctx);
+        __result->writeEmptyParams();
+        __result->invoke();
+    }
+    catch(const ::Ice::Exception& __ex)
+    {
+        __result->abort(__ex);
+    }
+    return __result;
+}
+
+void
+IceProxy::TransferRdbLogger::TransferRdbLoggerInfo::end_syncRdbFinished(const ::Ice::AsyncResultPtr& __result)
+{
+    __end(__result, __TransferRdbLogger__TransferRdbLoggerInfo__syncRdbFinished_name);
 }
 
 const ::std::string&
@@ -208,21 +239,6 @@ TransferRdbLogger::TransferRdbLoggerInfo::ice_staticId()
 }
 
 ::Ice::DispatchStatus
-TransferRdbLogger::TransferRdbLoggerInfo::___transferRdbLogger(::IceInternal::Incoming& __inS, const ::Ice::Current& __current)
-{
-    __checkMode(::Ice::Normal, __current.mode);
-    ::IceInternal::BasicStream* __is = __inS.startReadParams();
-    ::std::string __p_title;
-    ::std::string __p_data;
-    __is->read(__p_title);
-    __is->read(__p_data);
-    __inS.endReadParams();
-    transferRdbLogger(__p_title, __p_data, __current);
-    __inS.__writeEmptyParams();
-    return ::Ice::DispatchOK;
-}
-
-::Ice::DispatchStatus
 TransferRdbLogger::TransferRdbLoggerInfo::___transferRdbLoggerBinary(::IceInternal::Incoming& __inS, const ::Ice::Current& __current)
 {
     __checkMode(::Ice::Normal, __current.mode);
@@ -237,6 +253,29 @@ TransferRdbLogger::TransferRdbLoggerInfo::___transferRdbLoggerBinary(::IceIntern
     return ::Ice::DispatchOK;
 }
 
+::Ice::DispatchStatus
+TransferRdbLogger::TransferRdbLoggerInfo::___transferFinished(::IceInternal::Incoming& __inS, const ::Ice::Current& __current)
+{
+    __checkMode(::Ice::Normal, __current.mode);
+    ::IceInternal::BasicStream* __is = __inS.startReadParams();
+    ::std::string __p_title;
+    __is->read(__p_title);
+    __inS.endReadParams();
+    transferFinished(__p_title, __current);
+    __inS.__writeEmptyParams();
+    return ::Ice::DispatchOK;
+}
+
+::Ice::DispatchStatus
+TransferRdbLogger::TransferRdbLoggerInfo::___syncRdbFinished(::IceInternal::Incoming& __inS, const ::Ice::Current& __current)
+{
+    __checkMode(::Ice::Normal, __current.mode);
+    __inS.readEmptyParams();
+    syncRdbFinished(__current);
+    __inS.__writeEmptyParams();
+    return ::Ice::DispatchOK;
+}
+
 namespace
 {
 const ::std::string __TransferRdbLogger__TransferRdbLoggerInfo_all[] =
@@ -245,7 +284,8 @@ const ::std::string __TransferRdbLogger__TransferRdbLoggerInfo_all[] =
     "ice_ids",
     "ice_isA",
     "ice_ping",
-    "transferRdbLogger",
+    "syncRdbFinished",
+    "transferFinished",
     "transferRdbLoggerBinary"
 };
 
@@ -254,7 +294,7 @@ const ::std::string __TransferRdbLogger__TransferRdbLoggerInfo_all[] =
 ::Ice::DispatchStatus
 TransferRdbLogger::TransferRdbLoggerInfo::__dispatch(::IceInternal::Incoming& in, const ::Ice::Current& current)
 {
-    ::std::pair< const ::std::string*, const ::std::string*> r = ::std::equal_range(__TransferRdbLogger__TransferRdbLoggerInfo_all, __TransferRdbLogger__TransferRdbLoggerInfo_all + 6, current.operation);
+    ::std::pair< const ::std::string*, const ::std::string*> r = ::std::equal_range(__TransferRdbLogger__TransferRdbLoggerInfo_all, __TransferRdbLogger__TransferRdbLoggerInfo_all + 7, current.operation);
     if(r.first == r.second)
     {
         throw ::Ice::OperationNotExistException(__FILE__, __LINE__, current.id, current.facet, current.operation);
@@ -280,9 +320,13 @@ TransferRdbLogger::TransferRdbLoggerInfo::__dispatch(::IceInternal::Incoming& in
         }
         case 4:
         {
-            return ___transferRdbLogger(in, current);
+            return ___syncRdbFinished(in, current);
         }
         case 5:
+        {
+            return ___transferFinished(in, current);
+        }
+        case 6:
         {
             return ___transferRdbLoggerBinary(in, current);
         }

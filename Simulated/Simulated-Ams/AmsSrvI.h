@@ -23,10 +23,16 @@ public:
 		const ::std::string& section,	const ::Ice::Current& /* = ::Ice::Current */);
 
 	virtual void Quit(const ::Amssrv::ServerNode&, const ::Ice::Current& /* = ::Ice::Current() */);
+	
+	virtual void shiftRole(const ::std::string&, const ::std::string&, const ::std::string&, ::Ice::Int, const ::std::string&, const ::std::string&, const ::std::string&, const ::Ice::Current& = ::Ice::Current());
 
 	virtual string GetRole(const ::std::string& strServerName, const ::Ice::Current& /* = ::Ice::Current */) const;
 
 	virtual void HeartBeat(const ::std::string&, const ::Ice::Current& /* = ::Ice::Current() */);
+
+	virtual ::Amssrv::ServerNodeSeq getServerNodeList(const ::Ice::Current& = ::Ice::Current());
+
+	virtual void setServerNodeList(const ::Amssrv::ServerNodeSeq&, const ::Ice::Current& = ::Ice::Current());
 
 public:
 	void setDataSrvInfo(const string& ip, int port);

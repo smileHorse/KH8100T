@@ -186,6 +186,13 @@ bool RdbOperFrame::getRdbDataOptPrx()
 		
 		return true;
 	}
+	catch(const Ice::ConnectTimeoutException& ex)
+	{
+		QMessageBox::warning(this, QStringLiteral("获取实时库数据代理"), 
+			QStringLiteral("获取代理失败: %1").arg(ex.what()));
+		m_rdbDataOptPrx = 0;
+		return false;
+	}
 	catch(const Ice::Exception& ex)
 	{
 		QMessageBox::warning(this, QStringLiteral("获取实时库数据代理"), 

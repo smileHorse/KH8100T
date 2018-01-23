@@ -72,6 +72,11 @@ void RandomInsertDialog::insertData()
 
 	QString tableName = tableNameComboBox->currentText();
 	int		count = countSpinBox->value();
+	
+	if (m_thread.isRunning())
+	{
+		m_thread.quit();
+	}
 
 	m_thread.setStop(false);
 	m_thread.setTableName(tableName);

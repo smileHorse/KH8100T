@@ -362,7 +362,7 @@ module RdbWarningData
 	
 	//LimitEvent 越限, SoeEvent SOE, YxEvent 遥信变位, UnitEvent 终端状态, SysEvent 系统事项, OperEvent 操作事项, 
 	//RelayEvent 保护事项, FaultEvent 故障事项, FaEvent FA告警, GraphEvent 画面事项, RfwEvent录波事项,AllEvent所有告警事项(客户端查询时用)
-	enum RdbWarningType {LimitEvent,SoeEvent,YxEvent,UnitEvent,SysEvent,OperEvent,RelayEvent,FaultEvent,FaEvent,WaveEvent,GraphEvent, RfwEvent录波事项, AllEvent};//告警类型
+	enum RdbWarningType {LimitEvent,SoeEvent,YxEvent,UnitEvent,SysEvent,OperEvent,RelayEvent,FaultEvent,FaEvent,WaveEvent,GraphEvent, RfwEvent, AllEvent};//告警类型
 
 	["java:type:java.util.ArrayList<String>"]
 	sequence<string> Strings;

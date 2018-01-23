@@ -44,15 +44,11 @@ module WarningMsg
         ["cpp:const","nonmutating"] WarningMsgContent getContent(long pos, int length, string strFilename) ;
     };
 
-    ["java:type:java.util.ArrayList<byte>"]   sequence<byte> Bytes;
-    
+    sequence<byte> Bytes;    
     const string SendWarningMsgTopic = "SendWarningMsg";  // 主题
     interface SendWarningMsg
     {
         void sendWarningMsgBinary(string title, Bytes datas);
-
-        // 文件传输完毕
-        void sendFinished(string title);
     };
 };
  

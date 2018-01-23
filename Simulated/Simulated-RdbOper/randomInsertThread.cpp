@@ -65,6 +65,8 @@ void RandomInsertThread::run()
 		RespondCompleteDataSequence repSequence;
 		try
 		{
+			RdbDataOptPrx rdbDataOptPrx_timeout = RdbDataOptPrx::uncheckedCast(
+					m_rdbDataOptPrx->ice_timeout(5000));
 			bool result = m_rdbDataOptPrx->InsertData(repSeq, repSequence);
 			if (result)
 			{
@@ -82,7 +84,7 @@ void RandomInsertThread::run()
 		{
 			m_rdbDataOptPrx = 0;
 			RdbLog(CLogger::Log_ERROR, "插入数据时出现异常: %s", ex.what());
-			continue;
+			break;;
 		}		
 
 		++count;
@@ -105,7 +107,7 @@ void RandomInsertThread::run()
 		emit updateResultText(text);
 	}
 	m_stop = false;
-	saveTableMRIDs();
+	//saveTableMRIDs();
 }
 
 void RandomInsertThread::getRandomDataValues( const QString& tableName, RdbRealData::Strings& dataValues )

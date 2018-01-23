@@ -49,6 +49,16 @@ module Aml{
 	    
 	    /**
 	     *
+	     * 查询前置机当前Server的角色
+	     *
+	     * @return string:返回角色值,master代表主,slave代表从
+	     * @throws AmlException:其它原因
+	     *
+	     **/
+	    ["cpp:const","nonmutating"] string GetFepRole(out string strPart, out string strSec)throws CAmlException;
+	    
+	    /**
+	     *
 	     * 设置当前Server的角色
 	     *
 	     * @parameter role:角色值,master代表主,slave代表从

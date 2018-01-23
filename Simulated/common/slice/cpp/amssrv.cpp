@@ -55,9 +55,15 @@ const ::std::string __Amssrv__CAmsApp__FinishRegister_name = "FinishRegister";
 
 const ::std::string __Amssrv__CAmsApp__Quit_name = "Quit";
 
+const ::std::string __Amssrv__CAmsApp__shiftRole_name = "shiftRole";
+
 const ::std::string __Amssrv__CAmsApp__GetRole_name = "GetRole";
 
 const ::std::string __Amssrv__CAmsApp__HeartBeat_name = "HeartBeat";
+
+const ::std::string __Amssrv__CAmsApp__getServerNodeList_name = "getServerNodeList";
+
+const ::std::string __Amssrv__CAmsApp__setServerNodeList_name = "setServerNodeList";
 
 }
 
@@ -653,6 +659,60 @@ IceProxy::Amssrv::CAmsApp::end_Quit(const ::Ice::AsyncResultPtr& __result)
     __end(__result, __Amssrv__CAmsApp__Quit_name);
 }
 
+void
+IceProxy::Amssrv::CAmsApp::shiftRole(const ::std::string& __p_strType, const ::std::string& __p_strServerName, const ::std::string& __p_strIp, ::Ice::Int __p_port, const ::std::string& __p_strRole, const ::std::string& __p_strPart, const ::std::string& __p_strSec, const ::Ice::Context* __ctx)
+{
+    ::IceInternal::Outgoing __og(this, __Amssrv__CAmsApp__shiftRole_name, ::Ice::Normal, __ctx);
+    try
+    {
+        ::IceInternal::BasicStream* __os = __og.startWriteParams(::Ice::DefaultFormat);
+        __os->write(__p_strType);
+        __os->write(__p_strServerName);
+        __os->write(__p_strIp);
+        __os->write(__p_port);
+        __os->write(__p_strRole);
+        __os->write(__p_strPart);
+        __os->write(__p_strSec);
+        __og.endWriteParams();
+    }
+    catch(const ::Ice::LocalException& __ex)
+    {
+        __og.abort(__ex);
+    }
+    __invoke(__og);
+}
+
+::Ice::AsyncResultPtr
+IceProxy::Amssrv::CAmsApp::begin_shiftRole(const ::std::string& __p_strType, const ::std::string& __p_strServerName, const ::std::string& __p_strIp, ::Ice::Int __p_port, const ::std::string& __p_strRole, const ::std::string& __p_strPart, const ::std::string& __p_strSec, const ::Ice::Context* __ctx, const ::IceInternal::CallbackBasePtr& __del, const ::Ice::LocalObjectPtr& __cookie)
+{
+    ::IceInternal::OutgoingAsyncPtr __result = new ::IceInternal::OutgoingAsync(this, __Amssrv__CAmsApp__shiftRole_name, __del, __cookie);
+    try
+    {
+        __result->prepare(__Amssrv__CAmsApp__shiftRole_name, ::Ice::Normal, __ctx);
+        ::IceInternal::BasicStream* __os = __result->startWriteParams(::Ice::DefaultFormat);
+        __os->write(__p_strType);
+        __os->write(__p_strServerName);
+        __os->write(__p_strIp);
+        __os->write(__p_port);
+        __os->write(__p_strRole);
+        __os->write(__p_strPart);
+        __os->write(__p_strSec);
+        __result->endWriteParams();
+        __result->invoke();
+    }
+    catch(const ::Ice::Exception& __ex)
+    {
+        __result->abort(__ex);
+    }
+    return __result;
+}
+
+void
+IceProxy::Amssrv::CAmsApp::end_shiftRole(const ::Ice::AsyncResultPtr& __result)
+{
+    __end(__result, __Amssrv__CAmsApp__shiftRole_name);
+}
+
 ::std::string
 IceProxy::Amssrv::CAmsApp::GetRole(const ::std::string& __p_strServerName, const ::Ice::Context* __ctx)
 {
@@ -783,6 +843,7 @@ IceProxy::Amssrv::CAmsApp::end_GetRole(const ::Ice::AsyncResultPtr& __result)
 void
 IceProxy::Amssrv::CAmsApp::HeartBeat(const ::std::string& __p_strServerName, const ::Ice::Context* __ctx)
 {
+    __checkTwowayOnly(__Amssrv__CAmsApp__HeartBeat_name);
     ::IceInternal::Outgoing __og(this, __Amssrv__CAmsApp__HeartBeat_name, ::Ice::Normal, __ctx);
     try
     {
@@ -794,12 +855,28 @@ IceProxy::Amssrv::CAmsApp::HeartBeat(const ::std::string& __p_strServerName, con
     {
         __og.abort(__ex);
     }
-    __invoke(__og);
+    if(!__og.invoke())
+    {
+        try
+        {
+            __og.throwUserException();
+        }
+        catch(const ::Amssrv::CAmsException&)
+        {
+            throw;
+        }
+        catch(const ::Ice::UserException& __ex)
+        {
+            ::Ice::UnknownUserException __uue(__FILE__, __LINE__, __ex.ice_name());
+            throw __uue;
+        }
+    }
 }
 
 ::Ice::AsyncResultPtr
 IceProxy::Amssrv::CAmsApp::begin_HeartBeat(const ::std::string& __p_strServerName, const ::Ice::Context* __ctx, const ::IceInternal::CallbackBasePtr& __del, const ::Ice::LocalObjectPtr& __cookie)
 {
+    __checkAsyncTwowayOnly(__Amssrv__CAmsApp__HeartBeat_name);
     ::IceInternal::OutgoingAsyncPtr __result = new ::IceInternal::OutgoingAsync(this, __Amssrv__CAmsApp__HeartBeat_name, __del, __cookie);
     try
     {
@@ -816,10 +893,218 @@ IceProxy::Amssrv::CAmsApp::begin_HeartBeat(const ::std::string& __p_strServerNam
     return __result;
 }
 
+#ifdef ICE_CPP11
+
+::Ice::AsyncResultPtr
+IceProxy::Amssrv::CAmsApp::__begin_HeartBeat(const ::std::string& __p_strServerName, const ::Ice::Context* __ctx, const ::IceInternal::Function<void ()>& __response, const ::IceInternal::Function<void (const ::Ice::Exception&)>& __exception, const ::IceInternal::Function<void (bool)>& __sent)
+{
+    class Cpp11CB : public ::IceInternal::Cpp11FnCallbackNC
+    {
+    public:
+
+        Cpp11CB(const ::std::function<void ()>& responseFunc, const ::std::function<void (const ::Ice::Exception&)>& exceptionFunc, const ::std::function<void (bool)>& sentFunc) :
+            ::IceInternal::Cpp11FnCallbackNC(exceptionFunc, sentFunc),
+            _response(responseFunc)
+        {
+            CallbackBase::checkCallback(true, responseFunc || exceptionFunc != nullptr);
+        }
+
+        virtual void completed(const ::Ice::AsyncResultPtr& __result) const
+        {
+            ::Amssrv::CAmsAppPrx __proxy = ::Amssrv::CAmsAppPrx::uncheckedCast(__result->getProxy());
+            try
+            {
+                __proxy->end_HeartBeat(__result);
+            }
+            catch(const ::Ice::Exception& ex)
+            {
+                Cpp11FnCallbackNC::exception(__result, ex);
+                return;
+            }
+            if(_response != nullptr)
+            {
+                _response();
+            }
+        }
+    
+    private:
+        
+        ::std::function<void ()> _response;
+    };
+    return begin_HeartBeat(__p_strServerName, __ctx, new Cpp11CB(__response, __exception, __sent));
+}
+#endif
+
 void
 IceProxy::Amssrv::CAmsApp::end_HeartBeat(const ::Ice::AsyncResultPtr& __result)
 {
-    __end(__result, __Amssrv__CAmsApp__HeartBeat_name);
+    ::Ice::AsyncResult::__check(__result, this, __Amssrv__CAmsApp__HeartBeat_name);
+    if(!__result->__wait())
+    {
+        try
+        {
+            __result->__throwUserException();
+        }
+        catch(const ::Amssrv::CAmsException&)
+        {
+            throw;
+        }
+        catch(const ::Ice::UserException& __ex)
+        {
+            throw ::Ice::UnknownUserException(__FILE__, __LINE__, __ex.ice_name());
+        }
+    }
+    __result->__readEmptyParams();
+}
+
+::Amssrv::ServerNodeSeq
+IceProxy::Amssrv::CAmsApp::getServerNodeList(const ::Ice::Context* __ctx)
+{
+    __checkTwowayOnly(__Amssrv__CAmsApp__getServerNodeList_name);
+    ::IceInternal::Outgoing __og(this, __Amssrv__CAmsApp__getServerNodeList_name, ::Ice::Normal, __ctx);
+    __og.writeEmptyParams();
+    if(!__og.invoke())
+    {
+        try
+        {
+            __og.throwUserException();
+        }
+        catch(const ::Ice::UserException& __ex)
+        {
+            ::Ice::UnknownUserException __uue(__FILE__, __LINE__, __ex.ice_name());
+            throw __uue;
+        }
+    }
+    ::Amssrv::ServerNodeSeq __ret;
+    ::IceInternal::BasicStream* __is = __og.startReadParams();
+    __is->read(__ret);
+    __og.endReadParams();
+    return __ret;
+}
+
+::Ice::AsyncResultPtr
+IceProxy::Amssrv::CAmsApp::begin_getServerNodeList(const ::Ice::Context* __ctx, const ::IceInternal::CallbackBasePtr& __del, const ::Ice::LocalObjectPtr& __cookie)
+{
+    __checkAsyncTwowayOnly(__Amssrv__CAmsApp__getServerNodeList_name);
+    ::IceInternal::OutgoingAsyncPtr __result = new ::IceInternal::OutgoingAsync(this, __Amssrv__CAmsApp__getServerNodeList_name, __del, __cookie);
+    try
+    {
+        __result->prepare(__Amssrv__CAmsApp__getServerNodeList_name, ::Ice::Normal, __ctx);
+        __result->writeEmptyParams();
+        __result->invoke();
+    }
+    catch(const ::Ice::Exception& __ex)
+    {
+        __result->abort(__ex);
+    }
+    return __result;
+}
+
+#ifdef ICE_CPP11
+
+::Ice::AsyncResultPtr
+IceProxy::Amssrv::CAmsApp::__begin_getServerNodeList(const ::Ice::Context* __ctx, const ::IceInternal::Function<void (const ::Amssrv::ServerNodeSeq&)>& __response, const ::IceInternal::Function<void (const ::Ice::Exception&)>& __exception, const ::IceInternal::Function<void (bool)>& __sent)
+{
+    class Cpp11CB : public ::IceInternal::Cpp11FnCallbackNC
+    {
+    public:
+
+        Cpp11CB(const ::std::function<void (const ::Amssrv::ServerNodeSeq&)>& responseFunc, const ::std::function<void (const ::Ice::Exception&)>& exceptionFunc, const ::std::function<void (bool)>& sentFunc) :
+            ::IceInternal::Cpp11FnCallbackNC(exceptionFunc, sentFunc),
+            _response(responseFunc)
+        {
+            CallbackBase::checkCallback(true, responseFunc || exceptionFunc != nullptr);
+        }
+
+        virtual void completed(const ::Ice::AsyncResultPtr& __result) const
+        {
+            ::Amssrv::CAmsAppPrx __proxy = ::Amssrv::CAmsAppPrx::uncheckedCast(__result->getProxy());
+            ::Amssrv::ServerNodeSeq __ret;
+            try
+            {
+                __ret = __proxy->end_getServerNodeList(__result);
+            }
+            catch(const ::Ice::Exception& ex)
+            {
+                Cpp11FnCallbackNC::exception(__result, ex);
+                return;
+            }
+            if(_response != nullptr)
+            {
+                _response(__ret);
+            }
+        }
+    
+    private:
+        
+        ::std::function<void (const ::Amssrv::ServerNodeSeq&)> _response;
+    };
+    return begin_getServerNodeList(__ctx, new Cpp11CB(__response, __exception, __sent));
+}
+#endif
+
+::Amssrv::ServerNodeSeq
+IceProxy::Amssrv::CAmsApp::end_getServerNodeList(const ::Ice::AsyncResultPtr& __result)
+{
+    ::Ice::AsyncResult::__check(__result, this, __Amssrv__CAmsApp__getServerNodeList_name);
+    ::Amssrv::ServerNodeSeq __ret;
+    if(!__result->__wait())
+    {
+        try
+        {
+            __result->__throwUserException();
+        }
+        catch(const ::Ice::UserException& __ex)
+        {
+            throw ::Ice::UnknownUserException(__FILE__, __LINE__, __ex.ice_name());
+        }
+    }
+    ::IceInternal::BasicStream* __is = __result->__startReadParams();
+    __is->read(__ret);
+    __result->__endReadParams();
+    return __ret;
+}
+
+void
+IceProxy::Amssrv::CAmsApp::setServerNodeList(const ::Amssrv::ServerNodeSeq& __p_serNodeSeq, const ::Ice::Context* __ctx)
+{
+    ::IceInternal::Outgoing __og(this, __Amssrv__CAmsApp__setServerNodeList_name, ::Ice::Normal, __ctx);
+    try
+    {
+        ::IceInternal::BasicStream* __os = __og.startWriteParams(::Ice::DefaultFormat);
+        __os->write(__p_serNodeSeq);
+        __og.endWriteParams();
+    }
+    catch(const ::Ice::LocalException& __ex)
+    {
+        __og.abort(__ex);
+    }
+    __invoke(__og);
+}
+
+::Ice::AsyncResultPtr
+IceProxy::Amssrv::CAmsApp::begin_setServerNodeList(const ::Amssrv::ServerNodeSeq& __p_serNodeSeq, const ::Ice::Context* __ctx, const ::IceInternal::CallbackBasePtr& __del, const ::Ice::LocalObjectPtr& __cookie)
+{
+    ::IceInternal::OutgoingAsyncPtr __result = new ::IceInternal::OutgoingAsync(this, __Amssrv__CAmsApp__setServerNodeList_name, __del, __cookie);
+    try
+    {
+        __result->prepare(__Amssrv__CAmsApp__setServerNodeList_name, ::Ice::Normal, __ctx);
+        ::IceInternal::BasicStream* __os = __result->startWriteParams(::Ice::DefaultFormat);
+        __os->write(__p_serNodeSeq);
+        __result->endWriteParams();
+        __result->invoke();
+    }
+    catch(const ::Ice::Exception& __ex)
+    {
+        __result->abort(__ex);
+    }
+    return __result;
+}
+
+void
+IceProxy::Amssrv::CAmsApp::end_setServerNodeList(const ::Ice::AsyncResultPtr& __result)
+{
+    __end(__result, __Amssrv__CAmsApp__setServerNodeList_name);
 }
 
 const ::std::string&
@@ -1116,6 +1401,31 @@ Amssrv::CAmsApp::___Quit(::IceInternal::Incoming& __inS, const ::Ice::Current& _
 }
 
 ::Ice::DispatchStatus
+Amssrv::CAmsApp::___shiftRole(::IceInternal::Incoming& __inS, const ::Ice::Current& __current)
+{
+    __checkMode(::Ice::Normal, __current.mode);
+    ::IceInternal::BasicStream* __is = __inS.startReadParams();
+    ::std::string __p_strType;
+    ::std::string __p_strServerName;
+    ::std::string __p_strIp;
+    ::Ice::Int __p_port;
+    ::std::string __p_strRole;
+    ::std::string __p_strPart;
+    ::std::string __p_strSec;
+    __is->read(__p_strType);
+    __is->read(__p_strServerName);
+    __is->read(__p_strIp);
+    __is->read(__p_port);
+    __is->read(__p_strRole);
+    __is->read(__p_strPart);
+    __is->read(__p_strSec);
+    __inS.endReadParams();
+    shiftRole(__p_strType, __p_strServerName, __p_strIp, __p_port, __p_strRole, __p_strPart, __p_strSec, __current);
+    __inS.__writeEmptyParams();
+    return ::Ice::DispatchOK;
+}
+
+::Ice::DispatchStatus
 Amssrv::CAmsApp::___GetRole(::IceInternal::Incoming& __inS, const ::Ice::Current& __current) const
 {
     __checkMode(::Ice::Normal, __current.mode);
@@ -1146,7 +1456,40 @@ Amssrv::CAmsApp::___HeartBeat(::IceInternal::Incoming& __inS, const ::Ice::Curre
     ::std::string __p_strServerName;
     __is->read(__p_strServerName);
     __inS.endReadParams();
-    HeartBeat(__p_strServerName, __current);
+    try
+    {
+        HeartBeat(__p_strServerName, __current);
+        __inS.__writeEmptyParams();
+        return ::Ice::DispatchOK;
+    }
+    catch(const ::Amssrv::CAmsException& __ex)
+    {
+        __inS.__writeUserException(__ex, ::Ice::DefaultFormat);
+    }
+    return ::Ice::DispatchUserException;
+}
+
+::Ice::DispatchStatus
+Amssrv::CAmsApp::___getServerNodeList(::IceInternal::Incoming& __inS, const ::Ice::Current& __current)
+{
+    __checkMode(::Ice::Normal, __current.mode);
+    __inS.readEmptyParams();
+    ::Amssrv::ServerNodeSeq __ret = getServerNodeList(__current);
+    ::IceInternal::BasicStream* __os = __inS.__startWriteParams(::Ice::DefaultFormat);
+    __os->write(__ret);
+    __inS.__endWriteParams(true);
+    return ::Ice::DispatchOK;
+}
+
+::Ice::DispatchStatus
+Amssrv::CAmsApp::___setServerNodeList(::IceInternal::Incoming& __inS, const ::Ice::Current& __current)
+{
+    __checkMode(::Ice::Normal, __current.mode);
+    ::IceInternal::BasicStream* __is = __inS.startReadParams();
+    ::Amssrv::ServerNodeSeq __p_serNodeSeq;
+    __is->read(__p_serNodeSeq);
+    __inS.endReadParams();
+    setServerNodeList(__p_serNodeSeq, __current);
     __inS.__writeEmptyParams();
     return ::Ice::DispatchOK;
 }
@@ -1160,10 +1503,13 @@ const ::std::string __Amssrv__CAmsApp_all[] =
     "HeartBeat",
     "Quit",
     "Register",
+    "getServerNodeList",
     "ice_id",
     "ice_ids",
     "ice_isA",
-    "ice_ping"
+    "ice_ping",
+    "setServerNodeList",
+    "shiftRole"
 };
 
 }
@@ -1171,7 +1517,7 @@ const ::std::string __Amssrv__CAmsApp_all[] =
 ::Ice::DispatchStatus
 Amssrv::CAmsApp::__dispatch(::IceInternal::Incoming& in, const ::Ice::Current& current)
 {
-    ::std::pair< const ::std::string*, const ::std::string*> r = ::std::equal_range(__Amssrv__CAmsApp_all, __Amssrv__CAmsApp_all + 9, current.operation);
+    ::std::pair< const ::std::string*, const ::std::string*> r = ::std::equal_range(__Amssrv__CAmsApp_all, __Amssrv__CAmsApp_all + 12, current.operation);
     if(r.first == r.second)
     {
         throw ::Ice::OperationNotExistException(__FILE__, __LINE__, current.id, current.facet, current.operation);
@@ -1201,19 +1547,31 @@ Amssrv::CAmsApp::__dispatch(::IceInternal::Incoming& in, const ::Ice::Current& c
         }
         case 5:
         {
-            return ___ice_id(in, current);
+            return ___getServerNodeList(in, current);
         }
         case 6:
         {
-            return ___ice_ids(in, current);
+            return ___ice_id(in, current);
         }
         case 7:
         {
-            return ___ice_isA(in, current);
+            return ___ice_ids(in, current);
         }
         case 8:
         {
+            return ___ice_isA(in, current);
+        }
+        case 9:
+        {
             return ___ice_ping(in, current);
+        }
+        case 10:
+        {
+            return ___setServerNodeList(in, current);
+        }
+        case 11:
+        {
+            return ___shiftRole(in, current);
         }
     }
 

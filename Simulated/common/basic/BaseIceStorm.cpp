@@ -2,7 +2,7 @@
 
 #include <sstream>
 
-std::string BaseIceStorm::m_iceStormIp = "192.168.3.197";
+std::string BaseIceStorm::m_iceStormIp = "192.168.3.25";
 int BaseIceStorm::m_iceStormPort = 10000;
 
 /** 

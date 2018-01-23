@@ -47,8 +47,6 @@ const ::std::string __WarningMsg__WarningMsgFile__getContent_name = "getContent"
 
 const ::std::string __WarningMsg__SendWarningMsg__sendWarningMsgBinary_name = "sendWarningMsgBinary";
 
-const ::std::string __WarningMsg__SendWarningMsg__sendFinished_name = "sendFinished";
-
 }
 
 namespace Ice
@@ -268,48 +266,6 @@ IceProxy::WarningMsg::SendWarningMsg::end_sendWarningMsgBinary(const ::Ice::Asyn
     __end(__result, __WarningMsg__SendWarningMsg__sendWarningMsgBinary_name);
 }
 
-void
-IceProxy::WarningMsg::SendWarningMsg::sendFinished(const ::std::string& __p_title, const ::Ice::Context* __ctx)
-{
-    ::IceInternal::Outgoing __og(this, __WarningMsg__SendWarningMsg__sendFinished_name, ::Ice::Normal, __ctx);
-    try
-    {
-        ::IceInternal::BasicStream* __os = __og.startWriteParams(::Ice::DefaultFormat);
-        __os->write(__p_title);
-        __og.endWriteParams();
-    }
-    catch(const ::Ice::LocalException& __ex)
-    {
-        __og.abort(__ex);
-    }
-    __invoke(__og);
-}
-
-::Ice::AsyncResultPtr
-IceProxy::WarningMsg::SendWarningMsg::begin_sendFinished(const ::std::string& __p_title, const ::Ice::Context* __ctx, const ::IceInternal::CallbackBasePtr& __del, const ::Ice::LocalObjectPtr& __cookie)
-{
-    ::IceInternal::OutgoingAsyncPtr __result = new ::IceInternal::OutgoingAsync(this, __WarningMsg__SendWarningMsg__sendFinished_name, __del, __cookie);
-    try
-    {
-        __result->prepare(__WarningMsg__SendWarningMsg__sendFinished_name, ::Ice::Normal, __ctx);
-        ::IceInternal::BasicStream* __os = __result->startWriteParams(::Ice::DefaultFormat);
-        __os->write(__p_title);
-        __result->endWriteParams();
-        __result->invoke();
-    }
-    catch(const ::Ice::Exception& __ex)
-    {
-        __result->abort(__ex);
-    }
-    return __result;
-}
-
-void
-IceProxy::WarningMsg::SendWarningMsg::end_sendFinished(const ::Ice::AsyncResultPtr& __result)
-{
-    __end(__result, __WarningMsg__SendWarningMsg__sendFinished_name);
-}
-
 const ::std::string&
 IceProxy::WarningMsg::SendWarningMsg::ice_staticId()
 {
@@ -512,19 +468,6 @@ WarningMsg::SendWarningMsg::___sendWarningMsgBinary(::IceInternal::Incoming& __i
     return ::Ice::DispatchOK;
 }
 
-::Ice::DispatchStatus
-WarningMsg::SendWarningMsg::___sendFinished(::IceInternal::Incoming& __inS, const ::Ice::Current& __current)
-{
-    __checkMode(::Ice::Normal, __current.mode);
-    ::IceInternal::BasicStream* __is = __inS.startReadParams();
-    ::std::string __p_title;
-    __is->read(__p_title);
-    __inS.endReadParams();
-    sendFinished(__p_title, __current);
-    __inS.__writeEmptyParams();
-    return ::Ice::DispatchOK;
-}
-
 namespace
 {
 const ::std::string __WarningMsg__SendWarningMsg_all[] =
@@ -533,7 +476,6 @@ const ::std::string __WarningMsg__SendWarningMsg_all[] =
     "ice_ids",
     "ice_isA",
     "ice_ping",
-    "sendFinished",
     "sendWarningMsgBinary"
 };
 
@@ -542,7 +484,7 @@ const ::std::string __WarningMsg__SendWarningMsg_all[] =
 ::Ice::DispatchStatus
 WarningMsg::SendWarningMsg::__dispatch(::IceInternal::Incoming& in, const ::Ice::Current& current)
 {
-    ::std::pair< const ::std::string*, const ::std::string*> r = ::std::equal_range(__WarningMsg__SendWarningMsg_all, __WarningMsg__SendWarningMsg_all + 6, current.operation);
+    ::std::pair< const ::std::string*, const ::std::string*> r = ::std::equal_range(__WarningMsg__SendWarningMsg_all, __WarningMsg__SendWarningMsg_all + 5, current.operation);
     if(r.first == r.second)
     {
         throw ::Ice::OperationNotExistException(__FILE__, __LINE__, current.id, current.facet, current.operation);
@@ -567,10 +509,6 @@ WarningMsg::SendWarningMsg::__dispatch(::IceInternal::Incoming& in, const ::Ice:
             return ___ice_ping(in, current);
         }
         case 4:
-        {
-            return ___sendFinished(in, current);
-        }
-        case 5:
         {
             return ___sendWarningMsgBinary(in, current);
         }

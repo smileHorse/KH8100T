@@ -41,8 +41,11 @@ module Amssrv{
 		string sectionId;//分段id
 		string sectionName;//分段名称
 		string preRole;//预定角色
+		string runRole;//运行角色
+		string runPartName;//运行分区
+		string runSecName;//运行分段
 	};
-	
+	sequence<ServerNode>  ServerNodeSeq;
 	
 	/**
 	 *
@@ -77,8 +80,8 @@ module Amssrv{
 	     *
 	     * 预先注册，得到预订角色
 	     *
-	     * @parameter strType:节点类型
-	     * @parameter ipVect:注册节点的ip列表
+	     * @parameter strType:节点类型（数据服务器：1，前置机：2，应用管理：3，Icestorm:4，客户端:5）
+	     * @parameter ipVect:注册节点的ip列表，客户端只提供一个ip
 	     * @parameter num:注册次数
 	     * @parameter ServerNode:返回节点的信息
 	     * @return 预订角色(unknow/master/slave)
@@ -115,6 +118,19 @@ module Amssrv{
 	    
 	    /**
 	     *
+	     * 角色切换
+	     *
+	     * @parameter strServerName:Server名称信息
+	     * @parameter strIp:ip信息
+	     * @parameter port:端口信息
+	     * @parameter strRole:切换角色
+	     * @return void
+	     *
+	     **/
+	    void shiftRole(string strType, string strServerName, string strIp, int port, string strRole, string strPart, string strSec);
+	    
+	    /**
+	     *
 	     * 查询指定Server名称的角色
 	     *
 	     * @return string:返回角色值,master代表主,slave代表从，unknow代表未知
@@ -125,7 +141,13 @@ module Amssrv{
 	    
 	    
 	    //心跳函数
-	    void HeartBeat(string strServerName);
+	    void HeartBeat(string strServerName)throws CAmsException;
+	    
+	    //得到所有节点列表
+	    ServerNodeSeq getServerNodeList();
+	    
+	    //保存节点列表信息
+	    void setServerNodeList(ServerNodeSeq serNodeSeq);
 	};
 };
 

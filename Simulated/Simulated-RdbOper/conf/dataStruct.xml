@@ -1,0 +1,88 @@
+<?xml version="1.0"?>
+<rdb>
+	<GlobalParam>
+		<!-- 变电站的个数 即单元的个数 -->
+		<SubstationCount>0</SubstationCount>
+		<AnalogSuffix>
+			<value>Ua</value>
+			<value>Ub</value>
+			<value>Uc</value>
+			<value>Ia</value>
+			<value>Ib</value>
+			<value>Ic</value>
+		</AnalogSuffix>
+		<DiscreteSuffix>
+			<value>开关位置</value>
+			<value>远方操作闭锁</value>
+			<value>闭锁状态</value>
+			<value>远方就地位置</value>
+			<value>压力告警</value>
+		</DiscreteSuffix>
+		<CommandSuffix>
+			<value>开关分合</value>
+			<value>电池活化</value>
+		</CommandSuffix>
+	</GlobalParam>
+
+	<DevManufacturer name="山东科汇">
+		<DevDeviceType name="类型" count="5">
+		</DevDeviceType>
+	</DevManufacturer>
+	<DevManufacturer name="南京南瑞">
+		<DevDeviceType name="类型" count="5">
+		</DevDeviceType>
+	</DevManufacturer>
+	
+	<GeographicalRegion name="区域">
+		<SubGeographicalRegion name="子区域" count="5">
+			<Substation name="变电站" count="10">
+				<BusbarSection name="母线" count="4">
+					<Analog maxValue="200" minValue="50" normalValue="100" hhLimitValue="220" hLimitValue="210" lLimitValue="40" llLimitValue="30">
+					</Analog>
+				</BusbarSection>
+				<Line name="线路" count="4">
+				</Line>
+				<Breaker name="开关" count="20">
+					<Analog maxValue="200" minValue="50" normalValue="100" hhLimitValue="220" hLimitValue="210" lLimitValue="40" llLimitValue="30">
+					</Analog>
+					<Discrete>
+					</Discrete>
+					<Command>
+					</Command>
+				</Breaker>
+				<Disconnector name="刀闸" count="20">
+					<Analog maxValue="200" minValue="50" normalValue="100" hhLimitValue="220" hLimitValue="210" lLimitValue="40" llLimitValue="30">
+					</Analog>
+					<Discrete>
+					</Discrete>
+					<Command>
+					</Command>
+				</Disconnector>
+				<PowerTransformer name="变压器" count="2">
+					<TransformerWinding name="绕组" count="2">						
+						<Analog maxValue="200" minValue="50" normalValue="100" hhLimitValue="220" hLimitValue="210" lLimitValue="40" llLimitValue="30">
+						</Analog>
+						<Discrete>
+						</Discrete>
+						<Command>
+						</Command>
+					</TransformerWinding>
+				</PowerTransformer>
+
+				<RemoteUnit name="单元" count="1">
+					<AnalogUnitPoint name="遥测">
+					</AnalogUnitPoint>
+					<DiscreteUnitPoint name="遥信">
+					</DiscreteUnitPoint>
+					<ControlUnitPoint name="遥控">
+					</ControlUnitPoint>
+				</RemoteUnit>
+			</Substation>
+
+			<Area name="区间" count="10">
+				<Substation name="车站" count="10">
+				</Substation>
+			</Area>
+		</SubGeographicalRegion>
+	</GeographicalRegion>
+</rdb>

@@ -60,3 +60,47 @@ void CAmsAppI::setRole( const string& role )
 {
 	m_role = role;
 }
+
+ServerNodeSeq CAmsAppI::getServerNodeList( const ::Ice::Current& /*= ::Ice::Current()*/ )
+{
+	ServerNodeSeq seq;
+	ServerNode node;
+	
+	node.type = TYPE_AMS;
+	node.ip = "192.168.3.25";
+	node.port = 10002;
+	node.runRole = "master";
+	seq.push_back(node);
+
+	node.port = 10003;
+	node.runRole = "slave";
+	seq.push_back(node);
+
+	node.type = TYPE_DATASRV;
+	node.ip = "192.168.3.25";
+	node.port = 10003;
+	node.runRole = "master";
+	seq.push_back(node);
+
+	node.ip = "192.168.3.235";
+	node.runRole = "slave";
+	seq.push_back(node);
+
+	node.type = TYPE_ICESTORM;
+	node.ip = "192.168.3.25";
+	node.port = 10000;
+	node.runRole = "master";
+	seq.push_back(node);
+
+	return seq;
+}
+
+void CAmsAppI::setServerNodeList( const ::Amssrv::ServerNodeSeq&, const ::Ice::Current& /*= ::Ice::Current()*/ )
+{
+
+}
+
+void CAmsAppI::shiftRole( const ::std::string&, const ::std::string&, const ::std::string&, ::Ice::Int, const ::std::string&, const ::std::string&, const ::std::string&, const ::Ice::Current& /*= ::Ice::Current()*/ )
+{
+
+}

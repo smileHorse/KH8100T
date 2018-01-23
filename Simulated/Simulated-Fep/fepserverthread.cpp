@@ -138,7 +138,6 @@ void FepServerThread::setCommunicatorPtr( Ice::CommunicatorPtr ptr )
 
 void FepServerThread::run()
 {
-
 }
 
 bool FepServerThread::getFepDataPublisher()
