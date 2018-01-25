@@ -2,6 +2,7 @@
 #include "FdbTableDefine.h"
 #include "tableoperation.h"
 #include "hidecolumndialog.h"
+#include "xmlStreamReader.h"
 
 #include <QtWidgets/QtWidgets>
 
@@ -97,6 +98,11 @@ void RdbViewFrame::createActions()
 	hideTableColumnAction->setStatusTip(QStringLiteral("隐藏表格中的指定列"));
 	hideTableColumnAction->setEnabled(true);
 	connect(hideTableColumnAction, SIGNAL(triggered()), this, SLOT(hideTableColumn()));
+	
+	importXmlAction = new QAction(QIcon(":/images/hideColumn.png"), QStringLiteral("导入XML文件"), this);
+	importXmlAction->setStatusTip(QStringLiteral("导入XML文件"));
+	importXmlAction->setEnabled(true);
+	connect(importXmlAction, SIGNAL(triggered()), this, SLOT(importXml()));
 
 	aboutAction = new QAction(QIcon(":/images/about.png"), QStringLiteral("关于"), this);
 	aboutAction->setStatusTip(QStringLiteral("关于程序"));
@@ -119,6 +125,8 @@ void RdbViewFrame::createMenus()
 	editMenu->addSeparator();
 	editMenu->addAction(deleteAllAction);
 	editMenu->addAction(hideTableColumnAction);
+	editMenu->addSeparator();
+	editMenu->addAction(importXmlAction);
 
 	helpMenu = menuBar()->addMenu(QStringLiteral("帮助"));
 	helpMenu->addAction(aboutAction);
@@ -140,6 +148,8 @@ void RdbViewFrame::createToolbars()
 	editToolBar->addSeparator();
 	editToolBar->addAction(deleteAllAction);
 	editToolBar->addAction(hideTableColumnAction);
+	editToolBar->addSeparator();
+	editToolBar->addAction(importXmlAction);
 }
 
 void RdbViewFrame::createStatusBar()
@@ -347,9 +357,121 @@ void RdbViewFrame::tableItemChanged( QTableWidgetItem* current, QTableWidgetItem
 	}
 }
 
+void RdbViewFrame::importXml()
+{
+	QString filePath = QFileDialog::getOpenFileName(this, QStringLiteral("选择文件"), ".");
+	if (filePath.isEmpty())
+	{
+		return;
+	}
+
+	QFile file(filePath);
+	if (!file.open(QFile::ReadOnly | QFile::Text))
+	{
+		QMessageBox::warning(this, QStringLiteral("打开文件失败"), QStringLiteral("无法打开指定XML文件"));
+		return;
+	}
+
+	XmlStreamReader xmlReader;
+	RdbStruct rdbDatas;
+	xmlReader.readFile(filePath, rdbDatas);
+
+	foreach(RdbTableStruct table, rdbDatas.tables)
+	{
+		if (table.name == "RemoteUnit")
+		{
+			foreach(RdbDataStruct data, table.datas)
+			{
+				RemoteUnit info;
+				info.status = info.channelState1 = info.channelState2 = 0;
+				info.errorRate = info.safeDays = info.dayRate = info.monthRate = 0;
+				foreach(RdbFieldStruct field, data.fields)
+				{
+					if (field.fieldValue.isEmpty())
+					{
+						continue;
+					}
+
+					if (field.fieldName == "mRID")
+					{
+						info.mRID = field.fieldValue.toStdString();
+					}
+					else if (field.fieldName == "IEDID")
+					{
+						info.IEDID = field.fieldValue.toInt();
+					}
+					else if (field.fieldName == "IEDNAME")
+					{
+						info.IEDName = field.fieldValue.toStdString();
+					}
+					else if (field.fieldName == "IEDTYPE")
+					{
+						info.IEDType = field.fieldValue.toInt();
+					}
+					else if (field.fieldName == "ec_type")
+					{
+						info.ec_type = field.fieldValue.toStdString();
+					}
+					else if (field.fieldName == "ec_rid")
+					{
+						info.ec_rid = field.fieldValue.toStdString();
+					}
+				}
+				insert(info);
+				m_dbPtr->commit();
+			}
+		}
+		else if (table.name == "Line")
+		{
+			foreach(RdbDataStruct data, table.datas)
+			{
+				Line info;
+				info.ctRatio = info.ptRatio = 0.0;
+				info.lineNo = info.lineType = 0;
+				info.psrType = "Line";
+				info.ec_type = "Substation";
+				foreach(RdbFieldStruct field, data.fields)
+				{
+					if (field.fieldValue.isEmpty())
+					{
+						continue;
+					}
+
+					if (field.fieldName == "mRID")
+					{
+						info.mRID = field.fieldValue.toStdString();
+					}
+					else if (field.fieldName == "name")
+					{
+						info.name = field.fieldValue.toStdString();
+					}
+					else if (field.fieldName == "psrType")
+					{
+						info.psrType = field.fieldValue.toStdString();
+					}
+					else if (field.fieldName == "voltageLevel")
+					{
+						info.voltageLevel = field.fieldValue.toStdString();
+					}
+					else if (field.fieldName == "ec_type")
+					{
+						info.ec_type = field.fieldValue.toStdString();
+					}
+					else if (field.fieldName == "ec_rid")
+					{
+						info.ec_rid = field.fieldValue.toStdString();
+					}
+				}
+				insert(info);
+				m_dbPtr->commit();
+			}
+		}
+	}
+}
+
 bool RdbViewFrame::openRdbDatabase()
 {
-	if (!m_dbPtr->open("serverdb1"))
+	if (!m_dbPtr->open("serverdb"))
 	{
 		emit databaseOpenState(false);
 		QMessageBox::critical(this, QStringLiteral("实时库操作"), QStringLiteral("数据库打开失败"));

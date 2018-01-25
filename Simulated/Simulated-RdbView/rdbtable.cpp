@@ -1154,7 +1154,7 @@ void LineTable::setFieldValue( dbAnyCursor& anyCursor, const string& fieldName, 
 	}
 	else if (fieldName == "lineType")
 	{
-		cursor->lineType = value;
+		cursor->lineType = transferType<int4, string>(value);
 	}
 	else if (fieldName == "lineNo")
 	{

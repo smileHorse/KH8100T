@@ -76,6 +76,19 @@ class AnalogCurveData;
 class FormulaDefinition;
 class VariableDefinition;
 
+class DevManufacturer;
+class DevDeviceType;
+class DevSettingLine;
+class DevSettingType;
+
+class FepPartition;
+class FepSection;
+class FepProtocol;
+class FepChannel;
+
+class SystemRole;
+class SystemUser;
+
 //为所有需要命名属性的类提供一个通用命名属性的基类
 // This is a root class to provide common naming attributes for all classes
 // needing naming attributes
@@ -182,6 +195,16 @@ public:
 
 };
 
+// 量测采集设备类型
+enum RemoteUnitType
+{
+	RemoteUnit_Rtu = 0,		// RTU
+	RemoteUnit_Prp,			// 保护装置
+	RemoteUnit_Ftu,			// FTU
+	RemoteUnit_Stu,			// STU
+	RemoteUnit_Other		// 其他
+};
+
 //量测采集设备
 class RemoteUnit
 {
@@ -205,6 +228,27 @@ public:
 
 	std::string ec_type;	//设备所属设备容器的psrType	
 	std::string	ec_rid;		//设备所属设备容器的RID
+
+	int4	unitType;	// 设备类型
+
+	int			replyTimeouts;		// 无响应时间
+	int			faultJudgeCount;	// 故障判定次数
+	std::string	paramLine;			// 参数
+	bool		isTrans;			// 是否转发
+	bool		manuGetRFW;			// 是否人工录波
+	int			statNo;				// 站址
+	int			yxNum;				// 遥信个数
+	int			ycNum;				// 遥测个数
+	int			ddNum;				// 电度个数
+	std::string	groupNo;			// 所属组
+	std::string voltage;			// 电压
+	std::string electric;			// 电流
+	std::string facTime;			// 出厂时间
+	std::string runTime;			// 投运时间
+	std::string reserved;			// 备注
+
+	dbReference<DevManufacturer>	manufacturer;	// 所属厂家
+	dbReference<DevDeviceType>		deviceType;		// 设备型号
 
 	int update_unitdata(std::string timeStamp, int status, int channelState1, int channelState2, int errorRate)
 	{
@@ -239,7 +283,26 @@ public:
 					FIELD(dayRate),
 					FIELD(monthRate),
 					FIELD(ec_type),
-					FIELD(ec_rid)));
+					FIELD(ec_rid),
+					FIELD(unitType),
+					FIELD(replyTimeouts),
+					FIELD(faultJudgeCount),
+					FIELD(paramLine),
+					FIELD(isTrans),
+					FIELD(manuGetRFW),
+					FIELD(statNo),
+					FIELD(yxNum),
+					FIELD(ycNum),
+					FIELD(ddNum),
+					FIELD(groupNo),
+					FIELD(voltage),
+					FIELD(electric),
+					FIELD(facTime),
+					FIELD(runTime),
+					FIELD(reserved),
+					RELATION(manufacturer, remoteUnits),
+					RELATION(deviceType, remoteUnits)
+					));
 };
 
 //遥测点表（AnalogUnitPoint）
@@ -1699,6 +1762,126 @@ public:
 
 	}
 
+	// 检查是否产生复归告警
+	bool checkResetStatus(int oldStatus, int& status, double& limitValue)
+	{
+		bool result = true;
+		switch(limitStatus)
+		{
+		case NORMAL_LIMIT:
+			{
+				switch(oldStatus)
+				{
+				case UP_HH_LIMIT:
+					status = UP_HH_LIMIT_RET;
+					limitValue = hhLimitValue;
+					break;
+				case UP_H_LIMIT:
+					status = UP_H_LIMIT_RET;
+					limitValue = hLimitValue;
+					break;
+				case LOW_L_LIMIT:
+					status = LOW_L_LIMIT_RET;
+					limitValue = lLimitValue;
+					break;
+				case LOW_LL_LIMIT:
+					status = LOW_LL_LIMIT_RET;
+					limitValue = llLimitValue;
+					break;
+				default:
+					result = false;
+					break;
+				}
+			}
+			break;
+		case UP_HH_LIMIT:
+			{
+				switch(oldStatus)
+				{
+				case LOW_L_LIMIT:
+					status = LOW_L_LIMIT_RET;
+					limitValue = lLimitValue;
+					break;
+				case LOW_LL_LIMIT:
+					status = LOW_LL_LIMIT_RET;
+					limitValue = llLimitValue;
+					break;
+				default:
+					result = false;
+					break;
+				}
+			}
+			break;
+		case UP_H_LIMIT:
+			{
+				switch(oldStatus)
+				{
+				case UP_HH_LIMIT:
+					status = UP_HH_LIMIT_RET;
+					limitValue = hhLimitValue;
+					break;
+				case LOW_L_LIMIT:
+					status = LOW_L_LIMIT_RET;
+					limitValue = lLimitValue;
+					break;
+				case LOW_LL_LIMIT:
+					status = LOW_LL_LIMIT_RET;
+					limitValue = llLimitValue;
+					break;
+				default:
+					result = false;
+					break;
+				}
+			}
+			break;
+		case LOW_L_LIMIT:
+			{
+				switch(oldStatus)
+				{
+				case UP_HH_LIMIT:
+					status = UP_HH_LIMIT_RET;
+					limitValue = hhLimitValue;
+					break;
+				case UP_H_LIMIT:
+					status = UP_H_LIMIT_RET;
+					limitValue = hLimitValue;
+					break;
+				case LOW_LL_LIMIT:
+					status = LOW_LL_LIMIT_RET;
+					limitValue = llLimitValue;
+					break;
+				default:
+					result = false;
+					break;
+				}
+			}
+			break;
+		case LOW_LL_LIMIT:
+			{
+				switch(oldStatus)
+				{
+				case UP_HH_LIMIT:
+					status = UP_HH_LIMIT_RET;
+					limitValue = hhLimitValue;
+					break;
+				case UP_H_LIMIT:
+					status = UP_H_LIMIT_RET;
+					limitValue = hLimitValue;
+					break;
+				default:
+					result = false;
+					break;
+				}
+			}
+			break;
+		default:
+			result = false;
+			break;
+		}
+
+		return result;
+	}
+
 	TYPE_DESCRIPTOR((SUPERCLASS(Measurement),
 
 					KEY(saveReport,INDEXED|HASHED),
@@ -1823,7 +2006,7 @@ public:
 		max_vl = 0;
 		min_vl = 0;
 
-		for (int i = 0; i < pointValues.length(); i++)
+		for (size_t i = 0; i < pointValues.length(); i++)
 		{
 			if (pointValues.getat(i).isValid)
 			{
@@ -1914,12 +2097,12 @@ public:
 			actual_values.append(value);
 		}
 
-		int valid_count = actual_values.length();
+		size_t valid_count = actual_values.length();
 		if (valid_count > pointValues.length())
 			valid_count = pointValues.length();
 
 		CurvePointValue vl;
-		for (int i = 0; i < pointValues.length(); i++)
+		for (size_t i = 0; i < pointValues.length(); i++)
 		{
 			if (i < valid_count)
 			{
@@ -1972,7 +2155,7 @@ public:
 		date = rec_date;
 
 		//复位值(注意：从1开始)
-		for (int i = 1; i < pointValues.length(); i++)
+		for (size_t i = 1; i < pointValues.length(); i++)
 			pointValues.putat(i, vl);
 
 		updateLimit = false;
@@ -1985,12 +2168,12 @@ public:
 	}
 
 	//设置值
-	bool setValue(int seq_id, double value, dbDateTime& update_tm)
+	bool setValue(int seq_id, double value, dbDateTime& )
 	{
-		if ((seq_id < 0) || (seq_id >= pointValues.length()))
+		if ((seq_id < 0) || (seq_id >= (int)pointValues.length()))
 			return false;
 
-		if (seq_id < pointValues.length())
+		if (seq_id < (int)pointValues.length())
 		{
 			CurvePointValue vl;
 			vl.isValid = true;
@@ -2009,7 +2192,7 @@ public:
 	{
 		//printf("come here 1 CompleteData:%d - %g\r\n",seq_id,value);
 
-		if ((seq_id < 0) || (seq_id >= pointValues.length()))
+		if ((seq_id < 0) || (seq_id >= (int)pointValues.length()))
 			return;
 
 		//printf("come here 2 CompleteData:%d - %g\r\n",seq_id,value);
@@ -2018,7 +2201,7 @@ public:
 		{
 			if (!pointValues.getat(i).isValid)//补全
 			{
-				if (i < pointValues.length())
+				if (i < (int)pointValues.length())
 				{
 					CurvePointValue vl;
 					vl.isValid = true;
@@ -2280,7 +2463,7 @@ public:
 	real8	ctRatio;	// CT变比
 	real8	ptRatio;	// PT变比
 
-	std::string	lineType;	// 线路类型
+	int4	lineType;	// 线路类型
 	int4	lineNo;		// 线路号
 
 	TYPE_DESCRIPTOR((SUPERCLASS(EquipmentContainer),
@@ -2859,5 +3042,400 @@ public:
 		FIELD(lowStep)
 		));
 };
+
+// 告警描述表
+class ConfigFaultDesc
+{
+public:
+	std::string	mRID;					// 告警描述id
+	std::string	manufactId;				// 设备厂商id
+	int			lineType;				// 线路类型
+	int			protectTypeNo;			// 保护类型号
+	bool		protectHasValue;		// 有无事项值
+	std::string	name;					// 名称
+	std::string	units;					// 单位
+	real8		modulus;				// 系数
+
+	TYPE_DESCRIPTOR((
+		KEY(mRID, INDEXED | HASHED),
+		FIELD(manufactId),
+		FIELD(lineType),
+		FIELD(protectTypeNo),
+		FIELD(protectHasValue),
+		FIELD(name),
+		FIELD(units),
+		FIELD(modulus)
+		));
+};
+
+// 遥信描述表
+class ConfigYxDesc
+{
+public:
+	std::string	mRID;		// 遥信描述id
+	int			yxType;		// 遥信类型
+	int			yxValue;	// 遥信值
+	std::string	name;		// 名称
+
+	TYPE_DESCRIPTOR((
+		KEY(mRID, INDEXED | HASHED),
+		FIELD(yxType),
+		FIELD(yxValue),
+		FIELD(name)
+		));
+};
+
+// 设备厂家表
+class DevManufacturer
+{
+public:
+	std::string	mRID;		// 厂家id
+	std::string	name;		// 厂家名称
+	dbArray< dbReference<DevDeviceType> >	deviceTypes;	// 设备型号
+	dbArray< dbReference<RemoteUnit> >	remoteUnits;		// 单元
+	dbArray< dbReference<DevSettingLine> >	settingLines;	// 整定线路
+	dbArray< dbReference<DevSettingType> >	settingTypes;	// 整定类型
+
+	TYPE_DESCRIPTOR((
+		KEY(mRID, INDEXED | HASHED),
+		FIELD(name),
+		RELATION(deviceTypes, manufacturer),
+		RELATION(remoteUnits, manufacturer),
+		RELATION(settingLines, manufacturer),
+		RELATION(settingTypes, manufacturer)
+		));
+};
+
+// 设备型号表
+class DevDeviceType
+{
+public:
+	std::string	mRID;		// 设备型号id
+	std::string	name;		// 设备型号名称
+	dbReference<DevManufacturer>	manufacturer;	// 所属厂家
+	dbArray< dbReference<RemoteUnit> > remoteUnits;	// 单元
+	dbArray< dbReference<DevSettingLine> >	settingLines;	// 整定线路
+	dbArray< dbReference<DevSettingType> >	settingTypes;	// 整定类型
+
+	TYPE_DESCRIPTOR((
+		KEY(mRID, INDEXED | HASHED),
+		FIELD(name),
+		RELATION(manufacturer, deviceTypes),
+		RELATION(remoteUnits, deviceType),
+		RELATION(settingLines, deviceType),
+		RELATION(settingTypes, deviceType)
+		));
+};
+
+// 整定线路类型表
+class DevSettingLine
+{
+public:
+	std::string	mRID;			// 设备型号id
+	int			no;				// 序号
+	int			lineType;		// 线路类型
+	int			settingWay;		// 整定方式
+	int			startProNo;		// 起始保护号
+	int			endProNo;		// 终止保护号
+	int			protectNum;		// 保护个数
+	int			fc;				// 功能码
+	int			proTypeVal;		// 保护类型大小
+	int			funType;		// 功能类型
+
+	dbReference<DevManufacturer>	manufacturer;	// 设备厂商
+	dbReference<DevDeviceType>		deviceType;		// 设备类型
+
+	TYPE_DESCRIPTOR((
+		KEY(mRID, INDEXED | HASHED),
+		FIELD(no),
+		FIELD(lineType),
+		FIELD(settingWay),
+		FIELD(startProNo),
+		FIELD(endProNo),
+		FIELD(protectNum),
+		FIELD(fc),
+		FIELD(proTypeVal),
+		FIELD(funType),
+		RELATION(manufacturer, settingLines),
+		RELATION(deviceType, settingLines)
+		));
+};
+
+// 整定类型表
+class DevSettingType
+{
+public:
+	std::string	mRID;			// 设备型号id
+	int			no;				// 序号
+	int			lineType;		// 线路类型
+	int			settingNo;		// 整定类型号
+	std::string	settingName;	// 整定类型名称
+	int			proTypeVal;		// 保护类型号
+	int			settingType;	// 定值类型
+	int			saveType;		// 存储类型
+	int			startSingle;	// 起始(单一)
+	int			endSingle;		// 终止(单一)
+	int			startLine;		// 起始(线路)
+	int			endLine;		// 终止(线路)
+	int			infoAddr;		// 信息地址
+	real8		modulus;		// 系数
+	std::string	units;			// 单位
+	int			settingLevel;	// 整定级别
+	int			funType;		// 功能类型
+	int			qpm;			// QPM
+
+	dbReference<DevManufacturer>	manufacturer;	// 设备厂商
+	dbReference<DevDeviceType>		deviceType;		// 设备类型
+
+	TYPE_DESCRIPTOR((
+		KEY(mRID, INDEXED | HASHED),
+		FIELD(no),
+		FIELD(lineType),
+		FIELD(settingNo),
+		FIELD(settingName),
+		FIELD(proTypeVal),
+		FIELD(settingType),
+		FIELD(saveType),
+		FIELD(startSingle),
+		FIELD(endSingle),
+		FIELD(startLine),
+		FIELD(endLine),
+		FIELD(infoAddr),
+		FIELD(modulus),
+		FIELD(units),
+		FIELD(settingLevel),
+		FIELD(funType),
+		FIELD(qpm),
+		RELATION(manufacturer, settingTypes),
+		RELATION(deviceType, settingTypes)
+		));
+};
+
+// 分区表
+class FepPartition
+{
+public:
+	std::string	mRID;								// 分区id
+	std::string	name;								// 分区名称
+	dbArray< dbReference<FepSection> > sections;	// 分段
+	dbArray< dbReference<FepProtocol> > protocols;	// 规约
+
+	TYPE_DESCRIPTOR((
+		KEY(mRID, INDEXED | HASHED),
+		FIELD(name),
+		RELATION(sections, partition),
+		RELATION(protocols, partition)
+		));
+};
+
+// 分段表
+class FepSection
+{
+public:
+	std::string	mRID;						// 分段id
+	std::string	name;						// 分段名称
+	dbReference<FepPartition> partition;	// 分区id
+	dbArray< dbReference<FepProtocol> > protocols;	// 规约
+
+	TYPE_DESCRIPTOR((
+		KEY(mRID, INDEXED | HASHED),
+		FIELD(name),
+		RELATION(partition, sections),
+		RELATION(protocols, section)
+		));
+};
+
+// 规约表
+class FepProtocol
+{
+public:
+	std::string	mRID;						// 规约id
+	int			protocolNo;					// 规约号码
+	std::string	name;						// 规约名称
+	int			type;						// 规约类型
+	bool		isUse;						// 是否使用
+	std::string	paramLine;					// 参数
+	int			commCount;					// 通道个数
+	int			unitCount;					// 单元个数
+	dbReference<FepPartition>	partition;	// 所属分区
+	dbReference<FepSection>		section;	// 所属分段
+	dbArray< dbReference<FepChannel> > channels;	// 通道
+
+	TYPE_DESCRIPTOR((
+		KEY(mRID, INDEXED | HASHED),
+		FIELD(protocolNo),
+		FIELD(name),
+		FIELD(type),
+		FIELD(isUse),
+		FIELD(paramLine),
+		FIELD(commCount),
+		FIELD(unitCount),
+		RELATION(partition, protocols),
+		RELATION(section, protocols),
+		RELATION(channels, protocol)
+		));
+};
+
+// 通道表
+class FepChannel
+{
+public:
+	std::string	mRID;			// 通道id
+	int			channelId;		// 通道号
+	std::string	param;			// 参数
+	dbReference<FepProtocol>	protocol;		// 规约id
+
+	TYPE_DESCRIPTOR((
+		KEY(mRID, INDEXED | HASHED),
+		FIELD(channelId),
+		FIELD(param),
+		RELATION(protocol, channels)
+		));
+};
+
+// 规约单元关联表
+class FepProtocolUnit
+{
+public:
+	std::string	mRID;			// id
+	std::string	protocolId;		// 所属规约
+	int			deviceId;		// 所属单元
+
+	TYPE_DESCRIPTOR((
+		KEY(mRID, INDEXED | HASHED),
+		FIELD(protocolId),
+		FIELD(deviceId)
+		));
+};
+
+// 角色表
+class SystemRole
+{
+public:
+	std::string	mRID;			// 角色id
+	std::string	roleName;		// 名称
+	int			permission;		// 权限状态
+	std::string roleDesc;		// 描述
+
+	TYPE_DESCRIPTOR((
+		KEY(mRID, INDEXED | HASHED),
+		FIELD(roleName),
+		FIELD(permission),
+		FIELD(roleDesc)
+		));
+};
+
+// 用户表
+class SystemUser
+{
+public:
+	std::string	mRID;			// 用户id
+	std::string	loginId;		// 登录id
+	std::string	loginName;		// 登录名称
+	std::string userPwd;		// 密码
+	std::string roleId;			// 角色
+	std::string userName;		// 名称
+
+	TYPE_DESCRIPTOR((
+		KEY(mRID, INDEXED | HASHED),
+		FIELD(loginId),
+		FIELD(loginName),
+		FIELD(userPwd),
+		FIELD(roleId),
+		FIELD(userName)
+		));
+};
+
+// 电话号码表
+class SystemPhone
+{
+public:
+	std::string	mRID;		// id
+	std::string	name;		// 名称
+	std::string	phone;		// 电话号码
+
+	TYPE_DESCRIPTOR((
+		KEY(mRID, INDEXED | HASHED),
+		FIELD(name),
+		FIELD(phone)
+		));
+};
+
+// 短信配置表
+class SystemMsgCfg
+{
+public:
+	std::string	mRID;		// id
+	int			type;		// 类型
+	int			state;		// 状态
+
+	TYPE_DESCRIPTOR((
+		KEY(mRID, INDEXED | HASHED),
+		FIELD(type),
+		FIELD(state)
+		));
+};
+
+// 录波参数表
+class WavWaveConfig
+{
+public:
+	std::string	mRID;			// id
+	int			deviceId;		// 单元号
+	int			configNo;		// 序号
+	std::string dataName;		// 数据名称
+	int			maxVal;			// 最大值
+	std::string unit;			// 单位
+	real8		modulus;		// 系数
+	std::string color;			// 曲线颜色
+	int			belongBmp;		// 所属画面
+	int			protectLineNo;	// 所属线路号
+	int			channelNo;		// 通道号
+
+	TYPE_DESCRIPTOR((
+		KEY(mRID, INDEXED | HASHED),
+		FIELD(deviceId),
+		FIELD(configNo),
+		FIELD(dataName),
+		FIELD(maxVal),
+		FIELD(unit),
+		FIELD(modulus),
+		FIELD(color),
+		FIELD(belongBmp),
+		FIELD(protectLineNo),
+		FIELD(channelNo)
+		));
+};
+
+// 趋势曲线参数表
+class WavTrendCurve
+{
+public:
+	std::string	mRID;			// id
+	int			deviceId;		// 单元号
+	std::string	ycDesc;			// 描述
+	int			no;				// 序号
+	int			ycIndex;		// 遥测点号
+	real8		modulus;		// 系数
+	int			analogType;		// 遥测类型
+	std::string curveColor;		// 曲线颜色
+	int			coordinateNo;	// 坐标系号
+	std::string reserved;		// 预留
+
+	TYPE_DESCRIPTOR((
+		KEY(mRID, INDEXED | HASHED),
+		FIELD(deviceId),
+		FIELD(ycDesc),
+		FIELD(no),
+		FIELD(ycIndex),
+		FIELD(modulus),
+		FIELD(analogType),
+		FIELD(curveColor),
+		FIELD(coordinateNo),
+		FIELD(reserved)
+		));
+};
+
+
 #endif
 

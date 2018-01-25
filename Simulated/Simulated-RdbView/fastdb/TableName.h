@@ -27,5 +27,7 @@
 #define AnalogUnitPoint_ID 			"AnalogUnitPoint"
 #define DiscreteUnitPoint_ID 		"DiscreteUnitPoint"
 #define ControlUnitPoint_ID 		"ControlUnitPoint"
+#define DevManufacturer_ID 			"DevManufacturer"
+#define ConfigFaultDesc_ID			"ConfigFaultDesc"
 
 #endif

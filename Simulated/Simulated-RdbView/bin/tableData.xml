@@ -1,0 +1,360 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<rdb>
+	<table name="RemoteUnit">
+		<data>			
+			<mRID>{e1b162a4-b341-4d55-a4d4-364516b39f6a}</mRID>
+			<IEDID>1</IEDID>
+			<IEDNAME>22</IEDNAME>
+			<IEDTYPE>1</IEDTYPE>
+			<ec_type>Substation</ec_type>
+			<ec_rid>{ee0eb6e2-a159-41b8-91a4-736c474a4ee9}</ec_rid>
+		</data>
+
+		<data>			
+			<mRID>{b8a37d40-b2aa-405f-8380-b5b13d01e3ec}</mRID>
+			<IEDID>2</IEDID>
+			<IEDNAME>002</IEDNAME>
+			<IEDTYPE>1</IEDTYPE>
+			<ec_type></ec_type>
+			<ec_rid></ec_rid>
+		</data>
+
+		<data>			
+			<mRID>{00c392b0-7b82-434c-8c08-a6d728ec7358}</mRID>
+			<IEDID>3</IEDID>
+			<IEDNAME>33</IEDNAME>
+			<IEDTYPE>1</IEDTYPE>
+			<ec_type>Substation</ec_type>
+			<ec_rid>f5623c6c-a829-4ce3-a05d-8ff73eea50df</ec_rid>
+		</data>
+
+		<data>			
+			<mRID>{62f9c5a6-066f-4866-bf4e-ea8fc4e06732}</mRID>
+			<IEDID>4</IEDID>
+			<IEDNAME>瓦窑滩车站IED</IEDNAME>
+			<IEDTYPE>1</IEDTYPE>
+			<ec_type></ec_type>
+			<ec_rid></ec_rid>
+		</data>
+
+		<data>			
+			<mRID>{297597fd-7ad0-4d41-93c8-c80554b5d479}</mRID>
+			<IEDID>5</IEDID>
+			<IEDNAME>005</IEDNAME>
+			<IEDTYPE>1</IEDTYPE>
+			<ec_type></ec_type>
+			<ec_rid></ec_rid>
+		</data>
+
+		<data>			
+			<mRID>{50aa9364-cdc7-459d-80cf-086873774ad0}</mRID>
+			<IEDID>11</IEDID>
+			<IEDNAME>陶卜齐配电所1</IEDNAME>
+			<IEDTYPE>1</IEDTYPE>
+			<ec_type>Substation</ec_type>
+			<ec_rid>f5623c6c-a829-4ce3-a05d-8ff73eea50df</ec_rid>
+		</data>
+
+		<data>			
+			<mRID>{4ea24264-762d-43e6-90d9-4af82aa9875e}</mRID>
+			<IEDID>12</IEDID>
+			<IEDNAME>卓资山配电所</IEDNAME>
+			<IEDTYPE>1</IEDTYPE>
+			<ec_type>Substation</ec_type>
+			<ec_rid>b309fb1e-b2d0-4f33-8538-bc628588fe2c</ec_rid>
+		</data>
+
+		<data>			
+			<mRID>{baab3886-46b9-449a-806f-f5b100cada4e}</mRID>
+			<IEDID>13</IEDID>
+			<IEDNAME>民族站</IEDNAME>
+			<IEDTYPE>1</IEDTYPE>
+			<ec_type>Substation</ec_type>
+			<ec_rid>cd924572-a45a-420e-b2e9-4a85afb21f9c</ec_rid>
+		</data>
+
+		<data>			
+			<mRID>{e8722314-07c6-42bb-a057-01a77156fbc7}</mRID>
+			<IEDID>14</IEDID>
+			<IEDNAME>旗下营</IEDNAME>
+			<IEDTYPE>1</IEDTYPE>
+			<ec_type>Substation</ec_type>
+			<ec_rid>7c9d9949-a3dc-4021-a1e9-3e01968e2676</ec_rid>
+		</data>
+
+		<data>			
+			<mRID>{2de77814-5afd-48c3-acbd-b8135f06009a}</mRID>
+			<IEDID>15</IEDID>
+			<IEDNAME>三道营</IEDNAME>
+			<IEDTYPE>1</IEDTYPE>
+			<ec_type>Substation</ec_type>
+			<ec_rid>90656027-c851-41f1-8154-4153bf762ab1</ec_rid>
+		</data>
+
+		<data>			
+			<mRID>{994b2cc2-3130-4457-8442-6b3fef1ccd13}</mRID>
+			<IEDID>16</IEDID>
+			<IEDNAME>福生庄</IEDNAME>
+			<IEDTYPE>1</IEDTYPE>
+			<ec_type>Substation</ec_type>
+			<ec_rid>717ac72d-d193-4dd6-806d-a75b51372497</ec_rid>
+		</data>
+
+		<data>			
+			<mRID>d0b299bf-6e71-479d-96be-4b5c94bd0ccd</mRID>
+			<IEDID>0</IEDID>
+			<IEDNAME>test</IEDNAME>
+			<IEDTYPE>1</IEDTYPE>
+			<ec_type>Substation</ec_type>
+			<ec_rid>{7ed0d84b-b346-4667-830a-fa3ed0abe0f0}</ec_rid>
+		</data>
+	</table>
+
+	<table name="Line">
+		<data>			
+			<mRID>{c500d58a-9da3-4d39-a5d6-d8670fa1f515}</mRID>
+			<name>贯通大金线</name>
+			<voltageLevel>{ee0eb6e2-a159-41b8-91a4-736c474a4ee9}</voltageLevel>
+			<ec_rid>{ee0eb6e2-a159-41b8-91a4-736c474a4ee9}</ec_rid>
+		</data>
+
+		<data>
+			<mRID>{48870988-b38a-4efa-a47c-3fbd14c994de}</mRID>
+			<name>自闭大金线</name>
+			<voltageLevel>10kV</voltageLevel>
+			<ec_rid>{ee0eb6e2-a159-41b8-91a4-736c474a4ee9}</ec_rid>
+		</data>
+
+		<data>
+			<mRID>{92748b79-70f2-4503-8fa0-771a41d3458d}</mRID>
+			<name>贯通金大线</name>
+			<voltageLevel>10kV</voltageLevel>
+			<ec_rid>{fccaa516-9dbd-4bac-9aa0-861ddab3d26d}</ec_rid>
+		</data>
+
+		<data>
+			<mRID>{c90fb16b-2134-475b-b1ec-18fefe8f6011}</mRID>
+			<name>自闭金大线</name>
+			<voltageLevel>10kV</voltageLevel>
+			<ec_rid>{fccaa516-9dbd-4bac-9aa0-861ddab3d26d}</ec_rid>
+		</data>
+
+		<data>
+			<mRID>61d9b989-0a9e-4fb5-b326-bc7395a6e42c</mRID>
+			<name>line1</name>
+			<voltageLevel>ffce4e59-0f9f-4d4f-ae58-958ab3488673</voltageLevel>
+			<ec_rid>ffce4e59-0f9f-4d4f-ae58-958ab3488673</ec_rid>
+		</data>
+
+		<data>
+			<mRID>a0127ba0-66dc-4c3f-a5fe-ba8aed4865f5</mRID>
+			<name>贯通线路</name>
+			<voltageLevel>cd924572-a45a-420e-b2e9-4a85afb21f9c</voltageLevel>
+			<ec_rid>cd924572-a45a-420e-b2e9-4a85afb21f9c</ec_rid>
+		</data>
+
+		<data>
+			<mRID>c836c1ab-67b2-4f6d-9e2c-78a0ec4ff439</mRID>
+			<name>自闭线路</name>
+			<voltageLevel>cd924572-a45a-420e-b2e9-4a85afb21f9c</voltageLevel>
+			<ec_rid>cd924572-a45a-420e-b2e9-4a85afb21f9c</ec_rid>
+		</data>
+
+		<data>
+			<mRID>4d2e7bf9-3a0f-4c4d-ab79-2e2a0efff7f5</mRID>
+			<name>贯通线路</name>
+			<voltageLevel>90656027-c851-41f1-8154-4153bf762ab1</voltageLevel>
+			<ec_rid>90656027-c851-41f1-8154-4153bf762ab1</ec_rid>
+		</data>
+
+		<data>
+			<mRID>c014e4c2-9890-4757-8718-d395bc410947</mRID>
+			<name>自闭线路</name>
+			<voltageLevel>90656027-c851-41f1-8154-4153bf762ab1</voltageLevel>
+			<ec_rid>90656027-c851-41f1-8154-4153bf762ab1</ec_rid>
+		</data>
+
+		<data>
+			<mRID>d171acd1-5c65-4a7b-ba23-2773ecba5a52</mRID>
+			<name>贯通线路</name>
+			<voltageLevel>717ac72d-d193-4dd6-806d-a75b51372497</voltageLevel>
+			<ec_rid>717ac72d-d193-4dd6-806d-a75b51372497</ec_rid>
+		</data>
+
+		<data>
+			<mRID>e63c8499-bfbf-455f-bd0b-5fa40adfc120</mRID>
+			<name>自闭线路</name>
+			<voltageLevel>717ac72d-d193-4dd6-806d-a75b51372497</voltageLevel>
+			<ec_rid>717ac72d-d193-4dd6-806d-a75b51372497</ec_rid>
+		</data>
+
+		<data>
+			<mRID>bb1ce678-e50d-4986-8aad-50df9fb31fe1</mRID>
+			<name>贯通线路</name>
+			<voltageLevel>7c9d9949-a3dc-4021-a1e9-3e01968e2676</voltageLevel>
+			<ec_rid>7c9d9949-a3dc-4021-a1e9-3e01968e2676</ec_rid>
+		</data>
+
+		<data>
+			<mRID>c2844755-f55a-4d2b-a223-372e07506868</mRID>
+			<name>自闭线路</name>
+			<voltageLevel>7c9d9949-a3dc-4021-a1e9-3e01968e2676</voltageLevel>
+			<ec_rid>7c9d9949-a3dc-4021-a1e9-3e01968e2676</ec_rid>
+		</data>
+
+		<data>
+			<mRID>e20856af-2e28-4cf7-8576-97d2bc73f8e3</mRID>
+			<name>自闭三</name>
+			<voltageLevel>f5623c6c-a829-4ce3-a05d-8ff73eea50df</voltageLevel>
+			<ec_rid>f5623c6c-a829-4ce3-a05d-8ff73eea50df</ec_rid>
+		</data>
+
+		<data>
+			<mRID>5fd31383-1f51-4cbb-a973-9f2713942cd3</mRID>
+			<name>222</name>
+			<voltageLevel>f5623c6c-a829-4ce3-a05d-8ff73eea50df</voltageLevel>
+			<ec_rid>f5623c6c-a829-4ce3-a05d-8ff73eea50df</ec_rid>
+		</data>
+
+		<data>
+			<mRID>c0739d6d-42b5-4c57-88a1-052f296f7c1b</mRID>
+			<name>馈线1</name>
+			<voltageLevel>3cb80cc5-af55-47d2-9448-0d63cf2b478c</voltageLevel>
+			<ec_rid>3cb80cc5-af55-47d2-9448-0d63cf2b478c</ec_rid>
+		</data>
+
+		<data>
+			<mRID>23cd91f4-8ffc-4ac5-8219-ef1ca44b1abb</mRID>
+			<name>馈线2</name>
+			<voltageLevel>3cb80cc5-af55-47d2-9448-0d63cf2b478c</voltageLevel>
+			<ec_rid>3cb80cc5-af55-47d2-9448-0d63cf2b478c</ec_rid>
+		</data>
+
+		<data>
+			<mRID>8a445f1a-e7df-4086-b5b1-4cb74c9655b0</mRID>
+			<name>馈线1</name>
+			<voltageLevel>89985588-4c5e-400d-aa95-8fe86fca1fbe</voltageLevel>
+			<ec_rid>3cb80cc5-af55-47d2-9448-0d63cf2b478c</ec_rid>
+		</data>
+
+		<data>
+			<mRID>fe8d5050-3fca-4112-955d-ab8ba8e81623</mRID>
+			<name>馈线2</name>
+			<voltageLevel>89985588-4c5e-400d-aa95-8fe86fca1fbe</voltageLevel>
+			<ec_rid>3cb80cc5-af55-47d2-9448-0d63cf2b478c</ec_rid>
+		</data>
+
+		<data>
+			<mRID>b4d22737-87f9-4b12-97d4-8c042b271542</mRID>
+			<name>馈线1</name>
+			<voltageLevel>60db5c2f-525b-4a76-aa4f-af4f69db4e5f</voltageLevel>
+			<ec_rid>3cb80cc5-af55-47d2-9448-0d63cf2b478c</ec_rid>
+		</data>
+
+		<data>
+			<mRID>ad368de1-b990-491b-85d8-1763743261ca</mRID>
+			<name>馈线2</name>
+			<voltageLevel>60db5c2f-525b-4a76-aa4f-af4f69db4e5f</voltageLevel>
+			<ec_rid>3cb80cc5-af55-47d2-9448-0d63cf2b478c</ec_rid>
+		</data>
+
+		<data>
+			<mRID>9c62a8ff-7511-4013-8386-7cde1c72c796</mRID>
+			<name>馈线1</name>
+			<voltageLevel></voltageLevel>
+			<ec_rid>3cb80cc5-af55-47d2-9448-0d63cf2b478c</ec_rid>
+		</data>
+
+		<data>
+			<mRID>ad095349-8478-45df-b338-ac0e12d2f409</mRID>
+			<name>馈线2</name>
+			<voltageLevel></voltageLevel>
+			<ec_rid>3cb80cc5-af55-47d2-9448-0d63cf2b478c</ec_rid>
+		</data>
+
+		<data>
+			<mRID>47e2d658-b489-4eb6-bacd-6e632789460e</mRID>
+			<name>馈线3</name>
+			<voltageLevel></voltageLevel>
+			<ec_rid>3cb80cc5-af55-47d2-9448-0d63cf2b478c</ec_rid>
+		</data>
+
+		<data>
+			<mRID>6d5a1845-b100-4968-a76d-e2b0fa758b31</mRID>
+			<name>馈线4</name>
+			<voltageLevel>f49a8c3d-9d98-4654-9a39-74b04cc6a49b</voltageLevel>
+			<ec_rid>f49a8c3d-9d98-4654-9a39-74b04cc6a49b</ec_rid>
+		</data>
+
+		<data>
+
+			<mRID>376bd256-e728-444f-8fc4-dc87dd139e0a</mRID>
+			<name>馈线1</name>
+			<voltageLevel>0e15729c-29f8-4bad-a407-4819e8e70c1f</voltageLevel>
+			<ec_rid>3cb80cc5-af55-47d2-9448-0d63cf2b478c</ec_rid>
+		</data>
+
+		<data>
+			<mRID>5ac803fd-795c-4bfc-9e2e-a8c1fa4ca3b3</mRID>
+			<name>馈线2</name>
+			<voltageLevel>0e15729c-29f8-4bad-a407-4819e8e70c1f</voltageLevel>
+			<ec_rid>3cb80cc5-af55-47d2-9448-0d63cf2b478c</ec_rid>
+		</data>
+
+		<data>
+			<mRID>2fecb644-22a9-4717-85ab-b1b79e1af328</mRID>
+			<name>馈线1</name>
+			<voltageLevel></voltageLevel>
+			<ec_rid>3cb80cc5-af55-47d2-9448-0d63cf2b478c</ec_rid>
+		</data>
+
+		<data>
+			<mRID>8c3177f0-61bb-4ac6-bc1c-fca5f6e2aebe</mRID>
+			<name>馈线2</name>
+			<voltageLevel></voltageLevel>
+			<ec_rid>3cb80cc5-af55-47d2-9448-0d63cf2b478c</ec_rid>
+		</data>
+
+		<data>
+			<mRID>9f3565be-74d0-4214-a2a1-61048176ff4c</mRID>
+			<name>馈线1</name>
+			<voltageLevel>3e42ad14-064d-4245-b753-b09e9e93b7bd</voltageLevel>
+			<ec_rid>3cb80cc5-af55-47d2-9448-0d63cf2b478c</ec_rid>
+		</data>
+
+		<data>
+			<mRID>59413147-edae-4126-bb45-b08e370d9d3c</mRID>
+			<name>馈线2</name>
+			<voltageLevel>3e42ad14-064d-4245-b753-b09e9e93b7bd</voltageLevel>
+			<ec_rid>3cb80cc5-af55-47d2-9448-0d63cf2b478c</ec_rid>
+		</data>
+
+		<data>
+			<mRID>cf76e90f-454e-43df-a54a-0a35aad3a606</mRID>
+			<name>馈线1</name>
+			<voltageLevel></voltageLevel>
+			<ec_rid>3cb80cc5-af55-47d2-9448-0d63cf2b478c</ec_rid>
+		</data>
+
+		<data>
+			<mRID>34d42463-97a0-4851-8bed-4044c2b3346b</mRID>
+			<name>馈线2</name>
+			<voltageLevel></voltageLevel>
+			<ec_rid>3cb80cc5-af55-47d2-9448-0d63cf2b478c</ec_rid>
+		</data>
+
+		<data>
+			<mRID>a911102d-5e5a-445f-9e1c-572bf511c860</mRID>
+			<name>馈线3</name>
+			<voltageLevel></voltageLevel>
+			<ec_rid>3cb80cc5-af55-47d2-9448-0d63cf2b478c</ec_rid>
+		</data>
+
+		<data>
+			<mRID>1a6973b7-04a4-4d74-a8cc-8d5eae1e93a3</mRID>
+			<name>馈线4</name>
+			<voltageLevel>f49a8c3d-9d98-4654-9a39-74b04cc6a49b</voltageLevel>
+			<ec_rid>f49a8c3d-9d98-4654-9a39-74b04cc6a49b</ec_rid>
+		</data>
+	</table>
+</rdb>

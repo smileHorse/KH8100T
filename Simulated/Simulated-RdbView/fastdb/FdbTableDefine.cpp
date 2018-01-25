@@ -45,3 +45,25 @@ REGISTER( FormulaDefinition);
 REGISTER( VariableDefinition);
 
 REGISTER(Step);
+
+REGISTER(ConfigFaultDesc);
+REGISTER(ConfigYxDesc);
+
+REGISTER(DevManufacturer);
+REGISTER(DevDeviceType);
+REGISTER(DevSettingLine);
+REGISTER(DevSettingType);
+
+REGISTER(FepPartition);
+REGISTER(FepSection);
+REGISTER(FepProtocol);
+REGISTER(FepChannel);
+REGISTER(FepProtocolUnit);
+
+REGISTER(SystemRole);
+REGISTER(SystemUser);
+REGISTER(SystemPhone);
+REGISTER(SystemMsgCfg);
+
+REGISTER(WavWaveConfig);
+REGISTER(WavTrendCurve);

@@ -61,6 +61,7 @@ private slots:
 	void updateTableWidget(QTreeWidgetItem* current, QTreeWidgetItem* previous);
 	void treeItemChanged(QTreeWidgetItem* current, QTreeWidgetItem* previous);
 	void tableItemChanged(QTableWidgetItem* current, QTableWidgetItem* previous);
+	void importXml();
 
 private:
 	dbDatabase*	m_dbPtr;
@@ -78,6 +79,7 @@ private:
 	QAction*	refreshAction;
 	QAction*	deleteAllAction;
 	QAction*	hideTableColumnAction;
+	QAction*	importXmlAction;
 	QAction*	aboutAction;
 
 	QMenu*	fileMenu;

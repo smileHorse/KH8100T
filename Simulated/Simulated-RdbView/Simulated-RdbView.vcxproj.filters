@@ -74,6 +74,9 @@
     <ClCompile Include="GeneratedFiles\Release\moc_hidecolumndialog.cpp">
       <Filter>Generated Files\Release</Filter>
     </ClCompile>
+    <ClCompile Include="xmlStreamReader.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <CustomBuild Include="RdbViewFrame.h">
@@ -100,6 +103,9 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="rdbtable.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="xmlStreamReader.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>
