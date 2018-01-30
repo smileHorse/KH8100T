@@ -471,15 +471,23 @@ void RdbViewFrame::importXml()
 
 bool RdbViewFrame::openRdbDatabase()
 {
-	if (!m_dbPtr->open("serverdb"))
+	try
 	{
-		emit databaseOpenState(false);
-		QMessageBox::critical(this, QStringLiteral("实时库操作"), QStringLiteral("数据库打开失败"));
+		if (!m_dbPtr->open("serverdb1"))
+		{
+			emit databaseOpenState(false);
+			QMessageBox::critical(this, QStringLiteral("实时库操作"), QStringLiteral("数据库打开失败"));
+			return false;
+		}
+
+		emit databaseOpenState(true);
+		return true;
+	}
+	catch(const dbException& ex)
+	{
+		QMessageBox::critical(this, QStringLiteral("实时库操作"), QStringLiteral("%1").arg(ex.getMsg()));
 		return false;
 	}
-
-	emit databaseOpenState(true);
-	return true;
 }
 
 bool RdbViewFrame::closeRdbDatabase()

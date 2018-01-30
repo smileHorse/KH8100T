@@ -562,7 +562,7 @@
 	<table name="SystemRole">
 		<field type = "string">mRID</field>
 		<field type = "string">roleName</field>
-		<field type = "int">permission</field>
+		<field type = "string">permission</field>
 		<field type = "string">roleDesc</field>
 	</table>
 	<table name="SystemUser">

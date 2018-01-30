@@ -182,7 +182,9 @@ bool RdbOperFrame::getRdbDataOptPrx()
 	{
 		QString proxy = QString("rdb-opt: tcp -h %1 -p %2").arg(m_configIceInfo.iceOffsideIp).
 				arg(m_configIceInfo.iceOffsidePort);
-		m_rdbDataOptPrx = RdbDataOptPrx::checkedCast(m_communicatorPtr->stringToProxy(proxy.toStdString()));
+		m_rdbDataOptPrx = RdbDataOptPrx::checkedCast(
+			m_communicatorPtr->stringToProxy(proxy.toStdString())->ice_timeout(5000)
+			);
 		
 		return true;
 	}

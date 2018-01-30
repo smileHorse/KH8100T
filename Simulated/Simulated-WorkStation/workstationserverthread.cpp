@@ -408,6 +408,9 @@ void WorkStationServerThread::selectCompleteData()
 
 		RdbRealData::RespondCompleteDataSeq respondSeq;
 		rdbOptPrx->SelectCompleteData(requestSeq, respondSeq);
+
+		::RdbRealData::TopoIslandInfoSeq islandInfoSeq;
+		rdbOptPrx->GetTopoIslandInfo(islandInfoSeq);
 	}
 }
 

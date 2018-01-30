@@ -3,6 +3,8 @@
 
 #include "mRIDXmlHandler.h"
 
+#define TABLEMRID_FILEPATH	"../conf/tableMRID.xml"
+
 MRIDXmlHandler::MRIDXmlHandler()
 {
 
@@ -10,7 +12,7 @@ MRIDXmlHandler::MRIDXmlHandler()
 
 bool MRIDXmlHandler::writeXml( const QMap< QString, QVector<string> >& dataValues )
 {
-	QString fileName = "./conf/tableMRID.xml";
+	QString fileName = TABLEMRID_FILEPATH;
 	QFile file(fileName);
 	if (!file.open(QFile::WriteOnly | QFile::Text))
 	{
@@ -40,7 +42,7 @@ bool MRIDXmlHandler::writeXml( const QMap< QString, QVector<string> >& dataValue
 
 bool MRIDXmlHandler::readXml( QMap< QString, QVector<string> >& dataValues )
 {
-	QString fileName = "./conf/tableMRID.xml";
+	QString fileName = TABLEMRID_FILEPATH;
 	QFile file(fileName);
 	if (!file.open(QFile::ReadOnly | QFile::Text))
 	{

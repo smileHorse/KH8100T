@@ -12,14 +12,14 @@ void ConfigIceDialog::createDialogs()
 {
 	iceIpLineEdit = new QLineEdit("192.168.3.25");
 	icePortSpinBox = new QSpinBox;
-	icePortSpinBox->setRange(10006, 11000);
+	icePortSpinBox->setRange(10006, 12000);
 	iceOffsideIpLineEdit = new QLineEdit("192.168.3.25");
 	iceOffsidePortSpinBox = new QSpinBox;
-	iceOffsidePortSpinBox->setRange(10000, 11000);
+	iceOffsidePortSpinBox->setRange(10000, 12000);
 	iceOffsidePortSpinBox->setValue(10003);
 	iceStormIpLineEdit = new QLineEdit("192.168.3.226");
 	iceStormPortSpinBox = new QSpinBox;
-	iceStormPortSpinBox->setRange(10000, 11000);
+	iceStormPortSpinBox->setRange(10000, 12000);
 
 	iceIpLabel = new QLabel(QStringLiteral("Ice·þÎñIP:"));
 	iceIpLabel->setBuddy(iceIpLineEdit);

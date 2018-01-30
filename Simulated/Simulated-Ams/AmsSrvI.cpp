@@ -73,7 +73,7 @@ ServerNodeSeq CAmsAppI::getServerNodeList( const ::Ice::Current& /*= ::Ice::Curr
 	seq.push_back(node);
 
 	node.port = 10003;
-	node.runRole = "slave";
+	node.runRole = "unknown";
 	seq.push_back(node);
 
 	node.type = TYPE_DATASRV;

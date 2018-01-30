@@ -18,7 +18,7 @@ bool RdbTableFactory::initRdbStruct()
 	}
 
 	XmlStreamReader reader;
-	if(!reader.readFile("conf/rdbtable.xml", _rdbStruct))
+	if(!reader.readFile("../conf/rdbtable.xml", _rdbStruct))
 	{
 		QMessageBox::warning(0, QStringLiteral("初始实时库结构"), QStringLiteral("初始失败"));
 		return false;
