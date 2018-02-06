@@ -46,6 +46,38 @@ int AmsServer::run( int argc, char* argv[] )
 			string dataSrvIp = props->getPropertyWithDefault("DataSrvIp", "192.168.3.25");
 			int dataSrvPort = props->getPropertyAsIntWithDefault("DataSrvPort", DATASRV_ADAPTER_PORT);
 			((CAmsAppI*)amsApp.get())->setDataSrvInfo(dataSrvIp, dataSrvPort);
+
+			ServerNodeSeq serverNodes;
+			ServerNode node;
+			node.type = TYPE_AMS;
+			node.ip = props->getPropertyWithDefault("Ams1_ip", "192.168.3.25");
+			node.port = props->getPropertyAsIntWithDefault("Ams1_port", 10002);
+			node.runRole = props->getPropertyWithDefault("Ams1_runRole", "master");
+			serverNodes.push_back(node);
+
+			node.ip = props->getPropertyWithDefault("Ams2_ip", "192.168.3.15");
+			node.port = props->getPropertyAsIntWithDefault("Ams2_port", 10002);
+			node.runRole = props->getPropertyWithDefault("Ams2_runRole", "slave");
+			serverNodes.push_back(node);
+
+			node.type = TYPE_DATASRV;
+			node.ip = props->getPropertyWithDefault("Datasvr1_ip", "192.168.3.25");
+			node.port = props->getPropertyAsIntWithDefault("Datasvr1_port", 10003);
+			node.runRole = props->getPropertyWithDefault("Datasvr1_runRole", "master");
+			serverNodes.push_back(node);
+
+
+			node.ip = props->getPropertyWithDefault("Datasvr2_ip", "192.168.3.15");
+			node.port = props->getPropertyAsIntWithDefault("Datasvr2_port", 10003);
+			node.runRole = props->getPropertyWithDefault("Datasvr2_runRole", "slave");
+			serverNodes.push_back(node);
+
+			node.type = TYPE_ICESTORM;
+			node.ip = props->getPropertyWithDefault("IceStrom1_ip", "192.168.3.25");
+			node.port = props->getPropertyAsIntWithDefault("IceStrom1_port", 10000);
+			node.runRole = props->getPropertyWithDefault("IceStrom1_runRole", "master");
+			serverNodes.push_back(node);
+			amsApp->setServerNodeList(serverNodes);
 		}
 
 		adapter->activate();

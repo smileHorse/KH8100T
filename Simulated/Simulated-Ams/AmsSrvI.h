@@ -45,5 +45,7 @@ private:
 	::Amssrv::ServerNode	dataSrvInfo;	// 数据服务器节点信息
 
 	string	m_role;		// 当前角色
+
+	::Amssrv::ServerNodeSeq	serverNodes;	// 服务节点
 };
 #endif

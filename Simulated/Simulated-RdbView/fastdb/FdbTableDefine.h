@@ -3314,7 +3314,7 @@ class SystemRole
 public:
 	std::string	mRID;			// 角色id
 	std::string	roleName;		// 名称
-	int			permission;		// 权限状态
+	std::string	permission;		// 权限状态
 	std::string roleDesc;		// 描述
 
 	TYPE_DESCRIPTOR((

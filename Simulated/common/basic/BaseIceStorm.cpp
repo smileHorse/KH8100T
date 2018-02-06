@@ -2,7 +2,7 @@
 
 #include <sstream>
 
-std::string BaseIceStorm::m_iceStormIp = "192.168.3.25";
+std::string BaseIceStorm::m_iceStormIp = "192.168.3.197";
 int BaseIceStorm::m_iceStormPort = 10000;
 
 /** 
@@ -238,6 +238,14 @@ Ice::ObjectPrx BaseIceStorm::GetPublisher(Ice::CommunicatorPtr &communicatorPtr,
 	try
 	{
 		IceStorm::TopicPrx topic = GetTopicProxy(communicatorPtr, strTopic);
+
+		IceStorm::LinkInfoSeq linkInfos = topic->getLinkInfoSeq();
+		for (int i = 0; i < linkInfos.size(); ++i)
+		{
+			IceStorm::LinkInfo linkInfo = linkInfos[i];
+			std::string name = linkInfo.name;
+		}
+
 		if(topic != 0)
 		{
 			Ice::ObjectPrx objectPrx = topic->getPublisher();
