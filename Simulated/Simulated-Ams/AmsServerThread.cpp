@@ -18,6 +18,11 @@ void AmsServerThread::setRole(QString role)
 	server.setRole(role.toStdString());
 }
 
+void AmsServerThread::changeRole( QString role )
+{
+	server.changeRole(role.toStdString());
+}
+
 void AmsServerThread::configHostPort(QString host, int port )
 {
 	server.setHostPort(host.toStdString(), port);

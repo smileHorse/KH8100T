@@ -245,6 +245,12 @@
 		<field type = "int">CommandID</field>
 		<field type = "string">CommandName</field>
 	</table>
+	<table name="AccumulatorUnitPoint">
+		<field type = "string">mRID</field>
+		<field type = "int">IEDID</field>
+		<field type = "int">ddIndex</field>
+		<field type = "string">ddName</field>
+	</table>
 	<table name="Analog">
 		<field type = "string">mRID</field>
 		<field type = "string">name</field>
@@ -369,6 +375,28 @@
 		<field type = "int">ftuUnitId</field>
 		<field type = "int">ftuPointId</field>
 		<field type = "string">ftuVlDesc</field>
+		<field type = "bool">saveReport</field>
+		<field type = "double">modulus</field>
+		<field type = "int">type</field>
+		<field type = "int">tag</field>
+		<field type = "double">preValue</field>
+		<field type = "double">high1Kwh</field>
+		<field type = "double">high2Kwh</field>
+		<field type = "double">low1Kwh</field>
+		<field type = "double">low2Kwh</field>
+		<field type = "double">hourKwh</field>
+		<field type = "double">dayLowKwh</field>
+		<field type = "double">dayHighKwh</field>
+		<field type = "double">dayNormalKwh</field>
+		<field type = "double">dayKwh</field>
+		<field type = "double">monthLowKwh</field>
+		<field type = "double">monthHighKwh</field>
+		<field type = "double">monthNormalKwh</field>
+		<field type = "double">monthKwh</field>
+		<field type = "double">yearLowKwh</field>
+		<field type = "double">yearHighKwh</field>
+		<field type = "double">yearNormalKwh</field>
+		<field type = "double">yearKwh</field>
 	</table>
 	<table name="Command">
 		<field type = "string">mRID</field>

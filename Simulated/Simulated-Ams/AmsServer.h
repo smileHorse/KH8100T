@@ -1,6 +1,7 @@
 #ifndef AMSSERVER_H
 #define AMSSERVER_H
 
+#include "aml.h"
 #include "AmsSrvI.h"
 
 #include <Ice/ice.h>
@@ -18,11 +19,15 @@ public:
 
 public:
 	void setRole(const string& role);
+	void changeRole(const string& role);
 	void setHostPort(const string& host, int port);
 
 private:
 	AmsServerThread*	m_threadPtr;
 	Amssrv::CAmsAppPtr	amsApp;
+
+	string	m_dataSrvHost;
+	int		m_dataSrvPort;
 };
 
 #endif

@@ -3,7 +3,7 @@
 # "Hello". The following line sets the endpoints for this
 # adapter.
 #
-AmsApp.Endpoints=tcp -h 192.168.3.25 -p 10002
+AmsApp.Endpoints=tcp -h 192.168.3.25 -p 10002 -t 1
 
 AdapterName = AmsApp
 AmsAppName = amsApp
@@ -54,3 +54,5 @@ Ice.Warn.Connections=1
 # 1 = trace protocol messages
 #
 #Ice.Trace.Protocol=1
+
+Ice.Override.Timeout=1000

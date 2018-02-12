@@ -31,6 +31,7 @@ private:
 
 signals:
 	void setRole(QString role);
+	void changeRole(QString role);
 	void configHostPort(QString host, int port);
 
 public slots:
@@ -42,6 +43,7 @@ private slots:
 	void updateTableWidget(const OperationInfo& info);
 	void setMasterRole();
 	void setSlaveRole();
+	void changeRole();
 	void configHostPort();
 
 private:
@@ -53,6 +55,7 @@ private:
 	QAction*	exitAction;
 	QAction*	setMasterAction;
 	QAction*	setSlaveAction;
+	QAction*	changeRoleAction;
 	QAction*	configAction;
 	QAction*	helpAction;
 

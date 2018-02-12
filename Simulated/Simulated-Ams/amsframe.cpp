@@ -61,6 +61,10 @@ void AmsFrame::createActions()
 	setSlaveAction->setStatusTip(QStringLiteral("返回备角色"));
 	connect(setSlaveAction, SIGNAL(triggered()), this, SLOT(setSlaveRole()));
 
+	changeRoleAction = new QAction(QIcon(":/images/slave.png"), QStringLiteral("切换角色"), this);
+	changeRoleAction->setStatusTip(QStringLiteral("切换数据服务器角色"));
+	connect(changeRoleAction, SIGNAL(triggered()), this, SLOT(changeRole()));
+
 	configAction = new QAction(QIcon(":/images/config.png"), QStringLiteral("配置主机端口"), this);
 	configAction->setStatusTip(QStringLiteral("配置主机端口"));
 	connect(configAction, SIGNAL(triggered()), this, SLOT(configHostPort()));
@@ -78,6 +82,7 @@ void AmsFrame::createMenus()
 	operMenu = menuBar()->addMenu(QStringLiteral("操作"));
 	operMenu->addAction(setMasterAction);
 	operMenu->addAction(setSlaveAction);
+	operMenu->addAction(changeRoleAction);
 	operMenu->addAction(configAction);
 }
 
@@ -89,6 +94,7 @@ void AmsFrame::createToolbar()
 	operToolbar = addToolBar(QStringLiteral("操作"));
 	operToolbar->addAction(setMasterAction);
 	operToolbar->addAction(setSlaveAction);
+	operToolbar->addAction(changeRoleAction);
 	operToolbar->addAction(configAction);
 }
 
@@ -121,6 +127,7 @@ void AmsFrame::startServer()
 	connect(thread, &AmsServerThread::executeOperation, this, &AmsFrame::updateTableWidget);
 	connect(thread, SIGNAL(finished()), thread, SLOT(deleteLater()));
 	connect(this, SIGNAL(setRole(QString)), thread, SLOT(setRole(QString)));
+	connect(this, SIGNAL(changeRole(QString)), thread, SLOT(changeRole(QString)));
 	connect(this, SIGNAL(configHostPort(QString, int)), thread, SLOT(configHostPort(QString, int)));
 	thread->start();
 }
@@ -155,6 +162,15 @@ void AmsFrame::setSlaveRole()
 {
 	hasSetRole(false);
 	emit setRole(ROLE_SLAVE);
+}
+
+void AmsFrame::changeRole()
+{
+	QString role = QInputDialog::getText(this, "切换数据服务器角色", "角色:", QLineEdit::Normal, "slave");
+	if (!role.isEmpty())
+	{
+		emit changeRole(role);
+	}
 }
 
 void AmsFrame::configHostPort()
