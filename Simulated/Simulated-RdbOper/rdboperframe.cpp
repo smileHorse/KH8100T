@@ -10,6 +10,7 @@
 #include "selectCompleteDataDialog.h"
 #include "selectDefaultDataDialog.h"
 #include "selectSpecficDataDialog.h"
+#include "structInsertThread.h"
 #include "updateRecordDialog.h"
 
 RdbOperFrame::RdbOperFrame(QWidget *parent)
@@ -97,6 +98,8 @@ void RdbOperFrame::createActions()
 
 	randomInsertAction = createActionImpl(QIcon(":/random.png"), QStringLiteral("插入随机数据"), 
 		QStringLiteral("插入随机数据"), SLOT(randomInsert()));
+	structInsertAction = createActionImpl(QIcon(":/random.png"), QStringLiteral("插入结构化数据"), 
+		QStringLiteral("插入结构化数据"), SLOT(structInsert()));
 
 	analyseAction = createActionImpl(QIcon(":/analyse.png"), QStringLiteral("效率分析"), 
 		QStringLiteral("效率分析"), SLOT(efficiencyAnalyse()));
@@ -131,6 +134,7 @@ void RdbOperFrame::createMenus()
 	operMenu->addAction(deleteRecordAction);
 	operMenu->addSeparator();
 	operMenu->addAction(randomInsertAction);
+	operMenu->addAction(structInsertAction);
 	operMenu->addSeparator();
 	operMenu->addAction(analyseAction);
 }
@@ -155,6 +159,7 @@ void RdbOperFrame::createToolBars()
 	operToolBar->addAction(deleteRecordAction);
 	operToolBar->addSeparator();
 	operToolBar->addAction(randomInsertAction);
+	operToolBar->addAction(structInsertAction);
 	operToolBar->addSeparator();
 	operToolBar->addAction(analyseAction);
 }
@@ -337,6 +342,17 @@ void RdbOperFrame::randomInsert()
 
 	RandomInsertDialog	randomInsertDialog(m_rdbDataOptPrx, this);
 	randomInsertDialog.exec();
+}
+
+void RdbOperFrame::structInsert()
+{
+	if (!getRdbDataOptPrx())
+	{
+		return;
+	}
+
+	StructInsertThread* structInsertThread = new StructInsertThread(m_rdbDataOptPrx);
+	structInsertThread->start();
 }
 
 void RdbOperFrame::efficiencyAnalyse()

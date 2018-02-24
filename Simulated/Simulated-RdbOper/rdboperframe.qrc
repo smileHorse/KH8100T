@@ -7,6 +7,8 @@
       <file alias="stopServer.png">images/stopServer.png</file>
       <file alias="select.png">images/select.png</file>
       <file alias="stop.png">images/stop.png</file>
+      <file alias="export.png">images/export.png</file>
+      <file alias="import.png">images/import.png</file>
       <file alias="addRecord.png">images/addRecord.png</file>
       <file alias="updateRecord.png">images/updateRecord.png</file>
       <file alias="deleteRecord.png">images/deleteRecord.png</file>

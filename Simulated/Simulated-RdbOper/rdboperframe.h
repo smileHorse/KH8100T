@@ -46,6 +46,7 @@ private slots:
 	void updateRecord();
 	void deleteRecord();
 	void randomInsert();
+	void structInsert();
 	void efficiencyAnalyse();
 	void updateTableView();
 	void updateStatusBar(const QString& text, int timeout = 2000);
@@ -66,6 +67,7 @@ private:
 	QAction*	selectCompleteDataAction;
 
 	QAction*	randomInsertAction;
+	QAction*	structInsertAction;
 
 	QAction*	analyseAction;
 

@@ -2,6 +2,8 @@
 #include "rdbTableFactory.h"
 #include "selectCompleteDataDialog.h"
 
+#define TEXT_SEPERATOR	"%"
+
 SelectCompleteDataDialog::SelectCompleteDataDialog(const RdbDataOptPrx& rdbDataOptPrx,  QWidget* parent /*= 0*/)
 	: QDialog(parent), m_rdbDataOptPrx(rdbDataOptPrx)
 {
@@ -42,6 +44,8 @@ void SelectCompleteDataDialog::createWidgets()
 
 	queryButton = new QPushButton(QIcon(":/select.png"), QStringLiteral("查询"));
 	stopQueryButton = new QPushButton(QIcon(":/stop.png"), QStringLiteral("停止查询"));
+	exportButton = new QPushButton(QIcon(":/export.png"), QStringLiteral("导出"));
+	importButton = new QPushButton(QIcon(":/import.png"), QStringLiteral("导入"));
 
 	dataTableWidget = new QTableWidget;
 	dataTableWidget->setSelectionMode(QAbstractItemView::SingleSelection);
@@ -65,6 +69,8 @@ void SelectCompleteDataDialog::createLayout()
 	QHBoxLayout* buttonLayout = new QHBoxLayout;
 	buttonLayout->addWidget(queryButton);
 	buttonLayout->addWidget(stopQueryButton);
+	buttonLayout->addWidget(exportButton);
+	buttonLayout->addWidget(importButton);
 
 	QVBoxLayout* mainLayout = new QVBoxLayout;
 	mainLayout->addLayout(formLayout);
@@ -79,6 +85,8 @@ void SelectCompleteDataDialog::createConnectes()
 	connect(tableNameComboBox, SIGNAL(currentTextChanged(const QString&)), this, SLOT(tableNameChanged(const QString&)));
 	connect(queryButton, SIGNAL(clicked()), this, SLOT(queryData()));
 	connect(stopQueryButton, SIGNAL(clicked()), this, SLOT(stopQueryData()));
+	connect(exportButton, SIGNAL(clicked()), this, SLOT(exportDatas()));
+	connect(importButton, SIGNAL(clicked()), this, SLOT(importDatas()));
 }
 
 void SelectCompleteDataDialog::updateTableWidget(const RespondCompleteDataSeq& repSeq)
@@ -116,6 +124,8 @@ void SelectCompleteDataDialog::updateTableWidget(const RespondCompleteDataSeq& r
 void SelectCompleteDataDialog::tableNameChanged( const QString& tableName )
 {
 	fieldNameComboBox->clear();
+	fieldNameComboBox->addItem("");
+
 	m_currFieldNames.clear();
 	m_currFieldNames = RdbTableFactory::getTableFields(tableName);
 	if (!m_currFieldNames.isEmpty())
@@ -166,4 +176,123 @@ void SelectCompleteDataDialog::queryData()
 void SelectCompleteDataDialog::stopQueryData()
 {
 
+}
+
+void SelectCompleteDataDialog::exportDatas()
+{
+	QString fileName = QFileDialog::getSaveFileName(this, QStringLiteral("导出数据"), ".");
+	if (fileName.isEmpty())
+	{
+		return;
+	}
+
+	QFile file(fileName);
+	if (!file.open(QIODevice::WriteOnly | QIODevice::Text))
+	{
+		QMessageBox::warning(this, QStringLiteral("导出数据"), QStringLiteral("文件打开失败"));
+		return;
+	}
+
+	QTextStream out(&file);
+	out << tableNameComboBox->currentText() << "\n";
+
+	int rowCount = dataTableWidget->rowCount();
+	int colCount = dataTableWidget->columnCount();
+	for (int i = 0; i < colCount; ++i)
+	{
+		for (int j = 0; j < rowCount; ++j)
+		{
+			out << (j == 0 ? "" : TEXT_SEPERATOR);
+			QTableWidgetItem* item = dataTableWidget->item(j, i);
+			if (item)
+			{
+				out << item->text();
+			}
+			else
+			{
+				out << "";
+			}
+		}
+
+		out << "\n";
+	}
+
+	file.close();
+	QMessageBox::information(this, QStringLiteral("导出数据"), QStringLiteral("导出成功"));
+}
+
+void SelectCompleteDataDialog::importDatas()
+{
+	QString fileName = QFileDialog::getOpenFileName(this, QStringLiteral("导入数据"), ".");
+	if (fileName.isEmpty())
+	{
+		return;
+	}
+
+	QFile file(fileName);
+	if (!file.open(QIODevice::ReadOnly | QIODevice::Text))
+	{
+		QMessageBox::warning(this, QStringLiteral("导入数据"), QStringLiteral("文件打开失败"));
+		return;
+	}
+
+	QTextStream in(&file);
+
+	// 获取表名
+	QString tableName = in.readLine();
+	if(tableName.isNull())
+	{
+		return;
+	}
+
+	// 获取数据
+	QString line = in.readLine();
+	QList<QStringList>	datas;
+	while(!line.isNull())
+	{
+		QStringList strs = line.split(TEXT_SEPERATOR);
+		datas.push_back(strs);
+		line = in.readLine();
+	}
+
+	if (!m_rdbDataOptPrx)
+	{
+		QMessageBox::warning(this, QStringLiteral("插入数据"), QStringLiteral("插入失败: Ice代理为空"));
+		return;
+	}
+
+	try
+	{
+		RespondCompleteDataSeq repSeq;
+
+		foreach(QStringList strs, datas)
+		{
+			RespondCompleteData data;
+			data.tableName = tableName.toStdString();
+			foreach(QString str, strs)
+			{
+				data.dataValues.push_back(str.toStdString());
+			}
+
+			repSeq.seq.push_back(data);
+		}
+		
+		RespondCompleteDataSequence repSequence;
+		bool ret = m_rdbDataOptPrx->InsertData(repSeq, repSequence);
+		if (!ret)
+		{
+			QMessageBox::warning(this, QStringLiteral("导入数据"), 
+				QStringLiteral("导入数据失败"));
+		}
+		else
+		{
+			QMessageBox::warning(this, QStringLiteral("导入数据"), 
+				QStringLiteral("导入数据成功"));
+		}
+	}
+	catch(const Ice::Exception& ex)
+	{
+		QMessageBox::warning(this, QStringLiteral("导入数据"), 
+			QStringLiteral("导入数据失败: %1").arg(ex.what()));
+	}
 }

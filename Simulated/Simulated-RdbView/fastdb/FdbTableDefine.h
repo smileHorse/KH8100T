@@ -362,6 +362,23 @@ public:
 			));
 };
 
+//电度点表(AccumulatorUnitPoint)
+class AccumulatorUnitPoint
+{
+public:
+	std::string mRID;	//	记录ID
+
+	int IEDID;			//	IED设备号
+	int ddIndex;		//	电度号
+	std::string ddName;	//	电度描述
+
+	TYPE_DESCRIPTOR((KEY(mRID,INDEXED|HASHED),
+		FIELD(IEDID),
+		FIELD(ddIndex),
+		FIELD(ddName)
+		));
+};
+
 // The kind of regulation model.   For example regulating voltage, reactive
 // power, active power, etc.
 //##ModelId=3748506400EC
@@ -1649,6 +1666,9 @@ public:
 
 	//61850规约值描述
 	std::string ftuVlDesc;
+
+	//档位序号
+	int4 dw_order;
 	
 	//关联的曲线数据
 	dbReference<AnalogCurveData> analog_curve;
@@ -1909,6 +1929,8 @@ public:
 					KEY(ftuUnitId,INDEXED|HASHED),
 					KEY(ftuPointId,INDEXED|HASHED),
 					KEY(ftuVlDesc,INDEXED|HASHED),
+
+					FIELD(dw_order),
 
 					OWNER(analog_curve, analog),
 					OWNER(analog_formula, analog)
@@ -2369,6 +2391,12 @@ public:
 	//61850规约值描述
 	std::string ftuVlDesc;
 
+	//档位编号
+	int4 dw;
+
+	//档位起始号
+	int4 dw_order;
+
 
 	//判断更新数据是否为开关开关变位
 	bool IsBreakChangeValue(unsigned char old_vl, unsigned char vl)
@@ -2406,9 +2434,27 @@ public:
 					FIELD(value),
 					KEY(ftuUnitId,INDEXED|HASHED),
 					KEY(ftuPointId,INDEXED|HASHED),
-					KEY(ftuVlDesc,INDEXED|HASHED)
+					KEY(ftuVlDesc,INDEXED|HASHED),
+					FIELD(dw),
+					FIELD(dw_order)
 			));
 
+};
+
+// 电度类型
+enum AccumulatorType
+{
+	HARD_KWH_TYPE = 0,		// 脉冲电度
+	SOFT_KWH_TYPE			// 积分电度
+};
+
+// 电度计算方式
+enum AccumulatorTag
+{
+	KWH_IN_MIN_OUT_TYPE = 0,	// 正负相抵计算
+	KWH_IN_ADD_OUT_TYPE,		// 正负相加计算
+	KWH_IN_TYPE,				// 只计算正电度
+	KWH_OUT_TYPE				// 只计算负电度
 };
 
 // Accumulator represents a accumulated (counted) Measurement, e.g. an energy
@@ -2435,13 +2481,57 @@ public:
 	//61850规约值描述
 	std::string ftuVlDesc;
 
+	bool saveReport;		// 是否保存报表
+	double modulus;			// 系数
+	int type;				// 电度类型，AccumulatorType类型
+	int	tag;				// 计算方式, AccumulatorTag类型
+	double preValue;		// 前一帧值
+	double high1Kwh;		// 高峰一段电度
+	double high2Kwh;		// 高峰二段电度
+	double low1Kwh;			// 低谷一段电度
+	double low2Kwh;			// 低谷二段电度
+	double hourKwh;			// 时电度
+	double dayLowKwh;		// 日低谷电度
+	double dayHighKwh;		// 日高峰电度
+	double dayNormalKwh;	// 日平谷电度
+	double dayKwh;			// 日电度
+	double monthLowKwh;		// 月低谷电度
+	double monthHighKwh;	// 月高峰电度
+	double monthNormalKwh;	// 月平谷电度
+	double monthKwh;		// 月电度
+	double yearLowKwh;		// 年低谷电度
+	double yearHighKwh;		// 年高峰电度
+	double yearNormalKwh;	// 年平谷电度
+	double yearKwh;			// 年电度
 
 	TYPE_DESCRIPTOR((SUPERCLASS(Measurement),
 					FIELD(maxValue),
 					FIELD(value),
 					KEY(ftuUnitId,INDEXED|HASHED),
 					KEY(ftuPointId,INDEXED|HASHED),
-					KEY(ftuVlDesc,INDEXED|HASHED)
+					KEY(ftuVlDesc,INDEXED|HASHED),
+					FIELD(saveReport),
+					FIELD(modulus),
+					FIELD(type),
+					FIELD(tag),
+					FIELD(preValue),
+					FIELD(high1Kwh),
+					FIELD(high2Kwh),
+					FIELD(low1Kwh),
+					FIELD(low2Kwh),
+					FIELD(hourKwh),
+					FIELD(dayLowKwh),
+					FIELD(dayHighKwh),
+					FIELD(dayNormalKwh),
+					FIELD(dayKwh),
+					FIELD(monthLowKwh),
+					FIELD(monthHighKwh),
+					FIELD(monthNormalKwh),
+					FIELD(monthKwh),
+					FIELD(yearLowKwh),
+					FIELD(yearHighKwh),
+					FIELD(yearNormalKwh),
+					FIELD(yearKwh)
 			));
 
 };
@@ -2761,6 +2851,24 @@ public:
 	//##ModelId=3A8A8F6C00F5
 	int transformerType;
 
+	//档位
+	int stall;
+
+	//档位计算方法
+	int stallCalcu;
+
+	//厂号
+	int4 FTUNo;
+
+	//起始遥信号
+	int4 startDiscrete;
+
+	//数目
+	int4 discreteNum;
+
+	//遥调号
+	int4 controlNo;
+
 	// A transformer has windings
 	//##ModelId=3530DBBF0121
 	//TransformerWinding TransformerWindings;
@@ -2775,6 +2883,12 @@ public:
 					FIELD(phases),
 					FIELD(transfCoolingType),
 					FIELD(transformerType),
+					FIELD(stall),
+					FIELD(stallCalcu),
+					FIELD(FTUNo),
+					FIELD(startDiscrete),
+					FIELD(discreteNum),
+					FIELD(controlNo),
 					RELATION(transformer_windings,power_tranformer )));
 };
 
@@ -3082,6 +3196,33 @@ public:
 		FIELD(yxType),
 		FIELD(yxValue),
 		FIELD(name)
+		));
+};
+
+// 电度时段表
+class AccumulatorTimeSegment
+{
+public:
+	std::string	mRID;		// 遥信描述id
+	int			up1Start;	// 第一高峰时段起点
+	int			up1End;		// 第一高峰时段终点
+	int			low1Start;	// 第一低谷时段起点
+	int			low1End;	// 第一低谷时段终点
+	int			up2Start;	// 第二高峰时段起点
+	int			up2End;		// 第二高峰时段终点
+	int			low2Start;	// 第二低谷时段起点
+	int			low2End;	// 第二低谷时段终点
+
+	TYPE_DESCRIPTOR((
+		KEY(mRID, INDEXED | HASHED),
+		FIELD(up1Start),
+		FIELD(up1End),
+		FIELD(low1Start),
+		FIELD(low1End),
+		FIELD(up2Start),
+		FIELD(up2End),
+		FIELD(low2Start),
+		FIELD(low2End)
 		));
 };
 

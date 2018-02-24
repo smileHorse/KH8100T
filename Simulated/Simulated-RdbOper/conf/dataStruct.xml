@@ -1,8 +1,6 @@
 <?xml version="1.0"?>
 <rdb>
 	<GlobalParam>
-		<!-- 变电站的个数 即单元的个数 -->
-		<SubstationCount>0</SubstationCount>
 		<AnalogSuffix>
 			<value>Ua</value>
 			<value>Ub</value>
@@ -22,61 +20,60 @@
 			<value>开关分合</value>
 			<value>电池活化</value>
 		</CommandSuffix>
+		<AccumulatorSuffix>
+			<value>开关分合</value>
+			<value>电池活化</value>
+		</AccumulatorSuffix>
 	</GlobalParam>
 
 	<DevManufacturer name="山东科汇">
-		<DevDeviceType name="类型" count="5">
+		<DevDeviceType name="设备类型" count="5">
 		</DevDeviceType>
 	</DevManufacturer>
 	<DevManufacturer name="南京南瑞">
-		<DevDeviceType name="类型" count="5">
+		<DevDeviceType name="设备类型" count="5">
 		</DevDeviceType>
 	</DevManufacturer>
 	
-	<GeographicalRegion name="区域">
+	<GeographicalRegion name="区域" mRID="{4052eb18-055a-4f38-8e48-85797e25ed3b}">
 		<SubGeographicalRegion name="子区域" count="5">
 			<Substation name="变电站" count="10">
+				<RemoteUnit name="单元" count="1">
+					<AnalogUnitPoint name="遥测" count="100">
+					</AnalogUnitPoint>
+					<DiscreteUnitPoint name="遥信" count="100">
+					</DiscreteUnitPoint>
+					<ControlUnitPoint name="遥控" count="100">
+					</ControlUnitPoint>
+					<AccumulatorUnitPoint name="电度" count="100">
+					</AccumulatorUnitPoint>
+				</RemoteUnit>
+
 				<BusbarSection name="母线" count="4">
-					<Analog maxValue="200" minValue="50" normalValue="100" hhLimitValue="220" hLimitValue="210" lLimitValue="40" llLimitValue="30">
-					</Analog>
+					<Analog maxValue="200" minValue="50" normalValue="100" hhLimitValue="220" hLimitValue="210" lLimitValue="40" llLimitValue="30"></Analog>
 				</BusbarSection>
 				<Line name="线路" count="4">
 				</Line>
 				<Breaker name="开关" count="20">
-					<Analog maxValue="200" minValue="50" normalValue="100" hhLimitValue="220" hLimitValue="210" lLimitValue="40" llLimitValue="30">
-					</Analog>
-					<Discrete>
-					</Discrete>
-					<Command>
-					</Command>
+					<Analog maxValue="200" minValue="50" normalValue="100" hhLimitValue="220" hLimitValue="210" lLimitValue="40" llLimitValue="30"></Analog>
+					<Discrete></Discrete>
+					<Command></Command>
+					<Accumulator></Accumulator>
 				</Breaker>
 				<Disconnector name="刀闸" count="20">
-					<Analog maxValue="200" minValue="50" normalValue="100" hhLimitValue="220" hLimitValue="210" lLimitValue="40" llLimitValue="30">
-					</Analog>
-					<Discrete>
-					</Discrete>
-					<Command>
-					</Command>
+					<Analog maxValue="200" minValue="50" normalValue="100" hhLimitValue="220" hLimitValue="210" lLimitValue="40" llLimitValue="30"></Analog>
+					<Discrete></Discrete>
+					<Command></Command>
+					<Accumulator></Accumulator>
 				</Disconnector>
 				<PowerTransformer name="变压器" count="2">
 					<TransformerWinding name="绕组" count="2">						
-						<Analog maxValue="200" minValue="50" normalValue="100" hhLimitValue="220" hLimitValue="210" lLimitValue="40" llLimitValue="30">
-						</Analog>
-						<Discrete>
-						</Discrete>
-						<Command>
-						</Command>
+						<Analog maxValue="200" minValue="50" normalValue="100" hhLimitValue="220" hLimitValue="210" lLimitValue="40" llLimitValue="30"></Analog>
+						<Discrete></Discrete>
+						<Command></Command>
+						<Accumulator></Accumulator>
 					</TransformerWinding>
 				</PowerTransformer>
-
-				<RemoteUnit name="单元" count="1">
-					<AnalogUnitPoint name="遥测">
-					</AnalogUnitPoint>
-					<DiscreteUnitPoint name="遥信">
-					</DiscreteUnitPoint>
-					<ControlUnitPoint name="遥控">
-					</ControlUnitPoint>
-				</RemoteUnit>
 			</Substation>
 
 			<Area name="区间" count="10">

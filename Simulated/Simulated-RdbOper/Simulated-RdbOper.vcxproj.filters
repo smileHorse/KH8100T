@@ -164,6 +164,18 @@
     <ClCompile Include="GeneratedFiles\Release\moc_efficencyAnalyse.cpp">
       <Filter>Generated Files\Release</Filter>
     </ClCompile>
+    <ClCompile Include="structInsertThread.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="GeneratedFiles\Debug\moc_structInsertThread.cpp">
+      <Filter>Generated Files\Debug</Filter>
+    </ClCompile>
+    <ClCompile Include="GeneratedFiles\Release\moc_structInsertThread.cpp">
+      <Filter>Generated Files\Release</Filter>
+    </ClCompile>
+    <ClCompile Include="dataStructXmlReader.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <CustomBuild Include="rdboperframe.h">
@@ -202,6 +214,9 @@
     <CustomBuild Include="efficencyAnalyse.h">
       <Filter>Header Files</Filter>
     </CustomBuild>
+    <CustomBuild Include="structInsertThread.h">
+      <Filter>Header Files</Filter>
+    </CustomBuild>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\common\slice\cpp\rdbdata.h">
@@ -220,6 +235,9 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="rdbTableFactory.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="dataStructXmlReader.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>

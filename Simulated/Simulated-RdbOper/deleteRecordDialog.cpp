@@ -222,6 +222,7 @@ void DeleteRecordDialog::clearTableWidget()
 void DeleteRecordDialog::tableNameChanged( const QString& tableName )
 {
 	fieldNameComboBox->clear();
+	fieldNameComboBox->addItem("");
 	QStringList tableFields = RdbTableFactory::getTableFields(tableName);
 	fieldNameComboBox->addItems(tableFields);
 	if (!tableFields.isEmpty())

@@ -24,6 +24,8 @@ private slots:
 	void tableNameChanged(const QString& tableName);
 	void queryData();
 	void stopQueryData();
+	void exportDatas();
+	void importDatas();
 
 private:
 	QSpinBox*		idSpinBox;
@@ -37,6 +39,8 @@ private:
 
 	QPushButton*	queryButton;
 	QPushButton*	stopQueryButton;
+	QPushButton*	exportButton;
+	QPushButton*	importButton;
 	QTableWidget*	dataTableWidget;
 
 	RdbDataOptPrx	m_rdbDataOptPrx;

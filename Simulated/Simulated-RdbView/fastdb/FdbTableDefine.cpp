@@ -13,6 +13,7 @@ REGISTER( RemoteUnit );
 REGISTER( AnalogUnitPoint );
 REGISTER( DiscreteUnitPoint );
 REGISTER( ControlUnitPoint );
+REGISTER( AccumulatorUnitPoint );
 
 REGISTER( Terminal );
 REGISTER( BaseVoltage);
@@ -48,6 +49,7 @@ REGISTER(Step);
 
 REGISTER(ConfigFaultDesc);
 REGISTER(ConfigYxDesc);
+REGISTER(AccumulatorTimeSegment);
 
 REGISTER(DevManufacturer);
 REGISTER(DevDeviceType);

@@ -159,6 +159,12 @@
 		<field type = "int">phases</field>
 		<field type = "int">transfCoolingType</field>
 		<field type = "int">transformerType</field>
+		<field type = "int">stall</field>
+		<field type = "int">stallCalcu</field>
+		<field type = "int">FTUNo</field>
+		<field type = "int">startDiscrete</field>
+		<field type = "int">discreteNum</field>
+		<field type = "int">controlNo</field>
 	</table>
 	<table name="TransformerWinding">
 		<field type = "string">mRID</field>
@@ -300,6 +306,7 @@
 		<field type = "string">ftuVlDesc</field>
 		<field type = "double">hlimitDead</field>
 		<field type = "double">llimitDead</field>
+		<field type = "int">dw_order</field>
 	</table>
 	<table name="Discrete">
 		<field type = "string">mRID</field>
@@ -339,6 +346,8 @@
 		<field type = "int">ftuUnitId</field>
 		<field type = "int">ftuPointId</field>
 		<field type = "string">ftuVlDesc</field>
+		<field type = "int">dw</field>
+		<field type = "int">dw_order</field>
 	</table>
 	<table name="Accumulator">
 		<field type = "string">mRID</field>
