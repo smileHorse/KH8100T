@@ -47,6 +47,7 @@ private slots:
 	void deleteRecord();
 	void randomInsert();
 	void structInsert();
+	void structInsertFinished();
 	void efficiencyAnalyse();
 	void updateTableView();
 	void updateStatusBar(const QString& text, int timeout = 2000);

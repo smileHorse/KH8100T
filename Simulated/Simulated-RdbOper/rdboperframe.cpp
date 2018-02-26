@@ -352,7 +352,13 @@ void RdbOperFrame::structInsert()
 	}
 
 	StructInsertThread* structInsertThread = new StructInsertThread(m_rdbDataOptPrx);
+	connect(structInsertThread, SIGNAL(finished()), this, SLOT(structInsertFinished()));
 	structInsertThread->start();
+}
+
+void RdbOperFrame::structInsertFinished()
+{
+	QMessageBox::information(this, QStringLiteral("结构化数据导入"), QStringLiteral("导入完成"));
 }
 
 void RdbOperFrame::efficiencyAnalyse()

@@ -124,6 +124,10 @@ private:
 
 	bool insertAccumulator(const DataStruct& parent);
 
+	bool insertSelf(DataStruct& dataStruct);
+
+	void insertChildren(const DataStruct& parent);
+
 	bool insertRdbData(const QString& tableName, const vector<string>& fieldValues);
 
 	void getRandomDeviceTypeInfo(QString& manufacturer, QString& deviceType);
@@ -136,6 +140,13 @@ private:
 
 	QStringList getAccumulatorSuffix();
 
+	int getDataStructCount(const DataStruct& dataStruct);
+
+	QString createName(const QString& parentName, const QString& childName, int index);
+	QString createName(const QString& childName, int index);
+	QString	createName(const QString& parentName, const QString& childName);
+
+	QString createPathName(const QString& parentPath, const QString& childName);
 
 	void createNewUnitId();
 	QString getUnitId();

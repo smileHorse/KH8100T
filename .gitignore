@@ -1,0 +1,14 @@
+#忽略所有的生成文件
+*.exe
+*.sdf
+*.ilk
+*.pdb
+*.opensdf
+*.suo
+
+#忽略以下指定目录
+Simulated/IceStorm/db/
+Simulated/*/Debug/
+Simulated/*/GeneratedFiles/
+Simulated/*/ipch/
+Simulated/*/Win32/

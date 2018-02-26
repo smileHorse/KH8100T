@@ -19,9 +19,13 @@
 #define IEDNAME				"IEDName"
 #define DEVICETYPE			"deviceType"
 #define YCINDEX				"YcIndex"
+#define YCNAME				"YcName"
 #define YXINDEX				"YxIndex"
+#define YXNAME				"YxName"
 #define COMMANDID			"CommandID"
+#define COMMANDNAME			"CommandName"
 #define DDINDEX				"ddIndex"
+#define DDNAME				"ddName"
 #define POWERTRANSFORMER	"power_tranformer"
 #define PSR_TYPE			"psr_type"
 #define PSR_RID				"psr_rid"
@@ -165,49 +169,34 @@ bool StructInsertThread::loadRdbDataStruct()
 bool StructInsertThread::insertDevManufacturer()
 {
 	// 获取设备厂家信息
-	DataStructList devManufacturers = rdbDataStruct.getSpecificChildrens(DevManufacturer);
-	foreach(DataStruct devManufacturer, devManufacturers)
+	DataStructList dataStructs = rdbDataStruct.getSpecificChildrens(DevManufacturer);
+	foreach(DataStruct dataStruct, dataStructs)
 	{
-		// 获取字段值
-		vector<string> fieldValues;
-		devManufacturer.getFieldValues(fieldValues);
-		devManufacturer.modifyAttribute(MRID, QString::fromStdString(fieldValues[0]));
-
-		bool result = insertRdbData(devManufacturer.name, fieldValues);
-		if (result)
-		{
-			// 插入设备类型
-			insertDeviceType(devManufacturer);
-		}
+		insertSelf(dataStruct);
 	}
 	return true;
 }
 
-bool StructInsertThread::insertDeviceType( const DataStruct& devManufacturer )
+bool StructInsertThread::insertDeviceType( const DataStruct& parent )
 {
 	// 获取设备类型信息
-	DataStructList deviceTypes = devManufacturer.getSpecificChildrens(DevDeviceType);
-	foreach(DataStruct deviceType, deviceTypes)
+	QString parentMrid = parent.getSepecificAttribute(MRID);
+	QString parentName = parent.getSepecificAttribute(NAME);
+	DataStructList dataStructs = parent.getSpecificChildrens(DevDeviceType);
+	foreach(DataStruct temp, dataStructs)
 	{
-		int count = deviceType.getSepecificAttribute(COUNT).toInt();
-		if (count <= 0)
-		{
-			count = 1;
-		}
-		QString name = deviceType.getSepecificAttribute(NAME);
+		int count = getDataStructCount(temp);
+		QString name = temp.getSepecificAttribute(NAME);
 		for (int i = 0; i < count; ++i)
 		{
-			deviceType.modifyAttribute(NAME, QString("%1-%2").arg(name).arg(i + 1));
-			deviceType.modifyAttribute(MANUFACTURER, devManufacturer.getSepecificAttribute(MRID));
+			DataStruct dataStruct = temp;
+			dataStruct.modifyAttribute(NAME, createName(parentName, name, i + 1));
+			dataStruct.modifyAttribute(MANUFACTURER, parentMrid);
 
-			// 获取字段值
-			vector<string> fieldValues;
-			deviceType.getFieldValues(fieldValues);
-			deviceType.modifyAttribute(MRID, QString::fromStdString(fieldValues[0]));
-			bool result = insertRdbData(deviceType.name, fieldValues);
+			bool result = insertSelf(dataStruct);
 			if (result)
 			{
-				deviceTypeDataStructs.append(deviceType);
+				deviceTypeDataStructs.append(dataStruct);
 			}
 		}
 	}
@@ -230,34 +219,23 @@ bool StructInsertThread::insertGeographicalRegion()
 bool StructInsertThread::insertSubGeographicalRegion(const DataStruct& parent)
 {
 	// 获取信息
+	QString parentName = parent.getSepecificAttribute(NAME);
+	QString parentMrid = parent.getSepecificAttribute(MRID);
 	DataStructList dataStructs = parent.getSpecificChildrens(SubGeographicalRegion);
 	foreach(DataStruct temp, dataStructs)
 	{
-		int count = temp.getSepecificAttribute(COUNT).toInt();
-		if (count <= 0)
-		{
-			count = 1;
-		}
+		int count = getDataStructCount(temp);
 		QString name = temp.getSepecificAttribute(NAME);
 		for (int i = 0; i < count; ++i)
 		{
 			DataStruct dataStruct = temp;
-			QString childName = QString("%1-%2").arg(name).arg(i + 1);
+			QString childName = createName(name, i + 1);
 			dataStruct.modifyAttribute(NAME, childName);
-			QString pathName = QString("%1/%2").arg(parent.getSepecificAttribute(NAME)).arg(childName);
+			QString pathName = createPathName(parentName, childName);
 			dataStruct.modifyAttribute(PATHNAME, pathName);
-			dataStruct.modifyAttribute(REGION, parent.getSepecificAttribute(MRID));
+			dataStruct.modifyAttribute(REGION, parentMrid);
 
-			// 获取字段值
-			vector<string> fieldValues;
-			dataStruct.getFieldValues(fieldValues);
-			dataStruct.modifyAttribute(MRID, QString::fromStdString(fieldValues[0]));
-			bool result = insertRdbData(dataStruct.name, fieldValues);
-			if (result)
-			{
-				insertArea(dataStruct);
-				insertSubstation(dataStruct);
-			}
+			insertSelf(dataStruct);
 		}
 	}
 
@@ -267,34 +245,25 @@ bool StructInsertThread::insertSubGeographicalRegion(const DataStruct& parent)
 bool StructInsertThread::insertArea( const DataStruct& parent )
 {
 	// 获取信息
+	QString parentMrid = parent.getSepecificAttribute(MRID);
+	QString parentName = parent.getSepecificAttribute(NAME);
+	QString parentPath = parent.getSepecificAttribute(PATHNAME);
 	DataStructList dataStructs = parent.getSpecificChildrens(Area);
 	foreach(DataStruct temp, dataStructs)
 	{
-		int count = temp.getSepecificAttribute(COUNT).toInt();
-		if (count <= 0)
-		{
-			count = 1;
-		}
+		int count = getDataStructCount(temp);
 		QString name = temp.getSepecificAttribute(NAME);
 		for (int i = 0; i < count; ++i)
 		{
 			DataStruct dataStruct = temp;
-			QString childName = QString("%1-%2").arg(name).arg(i + 1);
+			QString childName = createName(parentName, name, i + 1);
 			dataStruct.modifyAttribute(NAME, childName);
-			QString pathName = QString("%1/%2").arg(parent.getSepecificAttribute(PATHNAME)).arg(childName);
+			QString pathName = createPathName(parentPath, childName);
 			dataStruct.modifyAttribute(PATHNAME, pathName);
 			dataStruct.modifyAttribute(EC_TYPE, parent.name);
-			dataStruct.modifyAttribute(EC_RID, parent.getSepecificAttribute(MRID));
+			dataStruct.modifyAttribute(EC_RID, parentMrid);
 
-			// 获取字段值
-			vector<string> fieldValues;
-			dataStruct.getFieldValues(fieldValues);
-			dataStruct.modifyAttribute(MRID, QString::fromStdString(fieldValues[0]));
-			bool result = insertRdbData(dataStruct.name, fieldValues);
-			if (result)
-			{
-				insertSubstation(dataStruct);
-			}
+			insertSelf(dataStruct);
 		}
 	}
 
@@ -304,39 +273,25 @@ bool StructInsertThread::insertArea( const DataStruct& parent )
 bool StructInsertThread::insertSubstation( const DataStruct& parent )
 {
 	// 获取信息
+	QString parentMrid = parent.getSepecificAttribute(MRID);
+	QString parentName = parent.getSepecificAttribute(NAME);
+	QString parentPath = parent.getSepecificAttribute(PATHNAME);
 	DataStructList dataStructs = parent.getSpecificChildrens(Substation);
 	foreach(DataStruct temp, dataStructs)
 	{
-		int count = temp.getSepecificAttribute(COUNT).toInt();
-		if (count <= 0)
-		{
-			count = 1;
-		}
+		int count = getDataStructCount(temp);
 		QString name = temp.getSepecificAttribute(NAME);
 		for (int i = 0; i < count; ++i)
 		{
 			DataStruct dataStruct = temp;
-			QString childName = QString("%1-%2").arg(name).arg(i + 1);
+			QString childName = createName(parentName, name, i + 1);
 			dataStruct.modifyAttribute(NAME, childName);
-			QString pathName = QString("%1/%2").arg(parent.getSepecificAttribute(PATHNAME)).arg(childName);
+			QString pathName = createPathName(parentPath, childName);
 			dataStruct.modifyAttribute(PATHNAME, pathName);
 			dataStruct.modifyAttribute(EC_TYPE, parent.name);
-			dataStruct.modifyAttribute(EC_RID, parent.getSepecificAttribute(MRID));
+			dataStruct.modifyAttribute(EC_RID, parentMrid);
 
-			// 获取字段值
-			vector<string> fieldValues;
-			dataStruct.getFieldValues(fieldValues);
-			dataStruct.modifyAttribute(MRID, QString::fromStdString(fieldValues[0]));
-			bool result = insertRdbData(dataStruct.name, fieldValues);
-			if (result)
-			{
-				insertRemoteUnit(dataStruct);
-				insertBusbarSection(dataStruct);
-				insertLine(dataStruct);
-				insertBreaker(dataStruct);
-				insertDisconnector(dataStruct);
-				insertPowerTransformer(dataStruct);
-			}
+			insertSelf(dataStruct);
 		}
 	}
 
@@ -349,20 +304,17 @@ bool StructInsertThread::insertRemoteUnit( const DataStruct& parent )
 	DataStructList dataStructs = parent.getSpecificChildrens(RemoteUnit);
 	foreach(DataStruct temp, dataStructs)
 	{
-		int count = temp.getSepecificAttribute(COUNT).toInt();
-		if (count <= 0)
-		{
-			count = 1;
-		}
+		int count = getDataStructCount(temp);
 		QString name = temp.getSepecificAttribute(NAME);
 		for (int i = 0; i < count; ++i)
 		{
 			DataStruct dataStruct = temp;
 			createNewUnitId();
 			
-			dataStruct.modifyAttribute(IEDID, getUnitId());
+			QString iedId = getUnitId();
+			dataStruct.modifyAttribute(IEDID, iedId);
 
-			QString childName = QString("%1-%2").arg(name).arg(i + 1);
+			QString childName = createName(name, iedId);
 			dataStruct.modifyAttribute(IEDNAME, childName);
 
 			QString manufacturer, deviceType;
@@ -370,18 +322,7 @@ bool StructInsertThread::insertRemoteUnit( const DataStruct& parent )
 			dataStruct.modifyAttribute(MANUFACTURER, manufacturer);
 			dataStruct.modifyAttribute(DEVICETYPE, deviceType);
 
-			// 获取字段值
-			vector<string> fieldValues;
-			dataStruct.getFieldValues(fieldValues);
-			dataStruct.modifyAttribute(MRID, QString::fromStdString(fieldValues[0]));
-			bool result = insertRdbData(dataStruct.name, fieldValues);
-			if (result)
-			{
-				insertAnalogUnitPoint(dataStruct);
-				insertDiscreteUnitPoint(dataStruct);
-				insertControlUnitPoint(dataStruct);
-				insertAccumulatorUnitPoint(dataStruct);
-			}
+			insertSelf(dataStruct);
 		}
 	}
 
@@ -412,15 +353,7 @@ bool StructInsertThread::insertBusbarSection( const DataStruct& parent )
 			dataStruct.modifyAttribute(EC_TYPE, parent.name);
 			dataStruct.modifyAttribute(EC_RID, parent.getSepecificAttribute(MRID));
 
-			// 获取字段值
-			vector<string> fieldValues;
-			dataStruct.getFieldValues(fieldValues);
-			dataStruct.modifyAttribute(MRID, QString::fromStdString(fieldValues[0]));
-			bool result = insertRdbData(dataStruct.name, fieldValues);
-			if (result)
-			{
-				insertAnalog(dataStruct);
-			}
+			insertSelf(dataStruct);
 		}
 	}
 
@@ -451,11 +384,7 @@ bool StructInsertThread::insertLine( const DataStruct& parent )
 			dataStruct.modifyAttribute(EC_TYPE, parent.name);
 			dataStruct.modifyAttribute(EC_RID, parent.getSepecificAttribute(MRID));
 
-			// 获取字段值
-			vector<string> fieldValues;
-			dataStruct.getFieldValues(fieldValues);
-			dataStruct.modifyAttribute(MRID, QString::fromStdString(fieldValues[0]));
-			bool result = insertRdbData(dataStruct.name, fieldValues);
+			insertSelf(dataStruct);
 		}
 	}
 
@@ -486,18 +415,7 @@ bool StructInsertThread::insertBreaker( const DataStruct& parent )
 			dataStruct.modifyAttribute(EC_TYPE, parent.name);
 			dataStruct.modifyAttribute(EC_RID, parent.getSepecificAttribute(MRID));
 
-			// 获取字段值
-			vector<string> fieldValues;
-			dataStruct.getFieldValues(fieldValues);
-			dataStruct.modifyAttribute(MRID, QString::fromStdString(fieldValues[0]));
-			bool result = insertRdbData(dataStruct.name, fieldValues);
-			if (result)
-			{
-				insertAnalog(dataStruct);
-				insertDiscrete(dataStruct);
-				insertCommand(dataStruct);
-				insertAccumulator(dataStruct);
-			}
+			insertSelf(dataStruct);
 		}
 	}
 
@@ -528,18 +446,7 @@ bool StructInsertThread::insertDisconnector( const DataStruct& parent )
 			dataStruct.modifyAttribute(EC_TYPE, parent.name);
 			dataStruct.modifyAttribute(EC_RID, parent.getSepecificAttribute(MRID));
 
-			// 获取字段值
-			vector<string> fieldValues;
-			dataStruct.getFieldValues(fieldValues);
-			dataStruct.modifyAttribute(MRID, QString::fromStdString(fieldValues[0]));
-			bool result = insertRdbData(dataStruct.name, fieldValues);
-			if (result)
-			{
-				insertAnalog(dataStruct);
-				insertDiscrete(dataStruct);
-				insertCommand(dataStruct);
-				insertAccumulator(dataStruct);
-			}
+			insertSelf(dataStruct);
 		}
 	}
 
@@ -570,15 +477,7 @@ bool StructInsertThread::insertPowerTransformer( const DataStruct& parent )
 			dataStruct.modifyAttribute(EC_TYPE, parent.name);
 			dataStruct.modifyAttribute(EC_RID, parent.getSepecificAttribute(MRID));
 
-			// 获取字段值
-			vector<string> fieldValues;
-			dataStruct.getFieldValues(fieldValues);
-			dataStruct.modifyAttribute(MRID, QString::fromStdString(fieldValues[0]));
-			bool result = insertRdbData(dataStruct.name, fieldValues);
-			if (result)
-			{
-				insertTransformerWinding(dataStruct);
-			}
+			insertSelf(dataStruct);
 		}
 	}
 
@@ -613,18 +512,7 @@ bool StructInsertThread::insertTransformerWinding( const DataStruct& parent )
 
 			dataStruct.modifyAttribute(POWERTRANSFORMER, parent.getSepecificAttribute(MRID));
 
-			// 获取字段值
-			vector<string> fieldValues;
-			dataStruct.getFieldValues(fieldValues);
-			dataStruct.modifyAttribute(MRID, QString::fromStdString(fieldValues[0]));
-			bool result = insertRdbData(dataStruct.name, fieldValues);
-			if (result)
-			{
-				insertAnalog(dataStruct);
-				insertDiscrete(dataStruct);
-				insertCommand(dataStruct);
-				insertAccumulator(dataStruct);
-			}
+			insertSelf(dataStruct);
 		}
 	}
 
@@ -634,30 +522,18 @@ bool StructInsertThread::insertTransformerWinding( const DataStruct& parent )
 bool StructInsertThread::insertAnalogUnitPoint( const DataStruct& parent )
 {
 	// 获取信息
-	DataStructList dataStructs = parent.getSpecificChildrens(AnalogUnitPoint);
-	foreach(DataStruct temp, dataStructs)
-	{
-		int count = temp.getSepecificAttribute(COUNT).toInt();
-		if (count <= 0)
-		{
-			count = 1;
-		}
-		QString iedId = parent.getSepecificAttribute(IEDID);
-		for (int i = 0; i < count; ++i)
-		{
-			DataStruct dataStruct = temp;
-			dataStruct.modifyAttribute(IEDID, iedId);
+	DataStruct dataStruct;
+	dataStruct.name = AnalogUnitPoint;
 
-			QString index = QString("%1").arg(i);
-			dataStruct.modifyAttribute(YCINDEX, index);
+	QString iedId = parent.getSepecificAttribute(FTUUNITID);
+	QString index = parent.getSepecificAttribute(FTUPOINTID);
+	QString desc = parent.getSepecificAttribute(NAME);
 
-			// 获取字段值
-			vector<string> fieldValues;
-			dataStruct.getFieldValues(fieldValues);
-			dataStruct.modifyAttribute(MRID, QString::fromStdString(fieldValues[0]));
-			insertRdbData(dataStruct.name, fieldValues);
-		}
-	}
+	dataStruct.modifyAttribute(IEDID, iedId);
+	dataStruct.modifyAttribute(YCINDEX, index);
+	dataStruct.modifyAttribute(YCNAME, desc);
+
+	insertSelf(dataStruct);
 
 	return true;
 }
@@ -665,30 +541,18 @@ bool StructInsertThread::insertAnalogUnitPoint( const DataStruct& parent )
 bool StructInsertThread::insertDiscreteUnitPoint( const DataStruct& parent )
 {
 	// 获取信息
-	DataStructList dataStructs = parent.getSpecificChildrens(DiscreteUnitPoint);
-	foreach(DataStruct temp, dataStructs)
-	{
-		int count = temp.getSepecificAttribute(COUNT).toInt();
-		if (count <= 0)
-		{
-			count = 1;
-		}
-		QString iedId = parent.getSepecificAttribute(IEDID);
-		for (int i = 0; i < count; ++i)
-		{
-			DataStruct dataStruct = temp;
-			dataStruct.modifyAttribute(IEDID, iedId);
+	DataStruct dataStruct;
+	dataStruct.name = DiscreteUnitPoint;
 
-			QString index = QString("%1").arg(i);
-			dataStruct.modifyAttribute(YXINDEX, index);
+	QString iedId = parent.getSepecificAttribute(FTUUNITID);
+	QString index = parent.getSepecificAttribute(FTUPOINTID);
+	QString desc = parent.getSepecificAttribute(NAME);
 
-			// 获取字段值
-			vector<string> fieldValues;
-			dataStruct.getFieldValues(fieldValues);
-			dataStruct.modifyAttribute(MRID, QString::fromStdString(fieldValues[0]));
-			insertRdbData(dataStruct.name, fieldValues);
-		}
-	}
+	dataStruct.modifyAttribute(IEDID, iedId);
+	dataStruct.modifyAttribute(YXINDEX, index);
+	dataStruct.modifyAttribute(YXNAME, desc);
+
+	insertSelf(dataStruct);
 
 	return true;
 }
@@ -696,30 +560,18 @@ bool StructInsertThread::insertDiscreteUnitPoint( const DataStruct& parent )
 bool StructInsertThread::insertControlUnitPoint( const DataStruct& parent )
 {
 	// 获取信息
-	DataStructList dataStructs = parent.getSpecificChildrens(ControlUnitPoint);
-	foreach(DataStruct temp, dataStructs)
-	{
-		int count = temp.getSepecificAttribute(COUNT).toInt();
-		if (count <= 0)
-		{
-			count = 1;
-		}
-		QString iedId = parent.getSepecificAttribute(IEDID);
-		for (int i = 0; i < count; ++i)
-		{
-			DataStruct dataStruct = temp;
-			dataStruct.modifyAttribute(IEDID, iedId);
+	DataStruct dataStruct;
+	dataStruct.name = ControlUnitPoint;
 
-			QString index = QString("%1").arg(i);
-			dataStruct.modifyAttribute(COMMANDID, index);
+	QString iedId = parent.getSepecificAttribute(FTUUNITID);
+	QString index = parent.getSepecificAttribute(FTUPOINTID);
+	QString desc = parent.getSepecificAttribute(NAME);
 
-			// 获取字段值
-			vector<string> fieldValues;
-			dataStruct.getFieldValues(fieldValues);
-			dataStruct.modifyAttribute(MRID, QString::fromStdString(fieldValues[0]));
-			insertRdbData(dataStruct.name, fieldValues);
-		}
-	}
+	dataStruct.modifyAttribute(IEDID, iedId);
+	dataStruct.modifyAttribute(COMMANDID, index);
+	dataStruct.modifyAttribute(COMMANDNAME, desc);
+
+	insertSelf(dataStruct);
 
 	return true;
 }
@@ -727,30 +579,18 @@ bool StructInsertThread::insertControlUnitPoint( const DataStruct& parent )
 bool StructInsertThread::insertAccumulatorUnitPoint( const DataStruct& parent )
 {
 	// 获取信息
-	DataStructList dataStructs = parent.getSpecificChildrens(AccumulatorUnitPoint);
-	foreach(DataStruct temp, dataStructs)
-	{
-		int count = temp.getSepecificAttribute(COUNT).toInt();
-		if (count <= 0)
-		{
-			count = 1;
-		}
-		QString iedId = parent.getSepecificAttribute(IEDID);
-		for (int i = 0; i < count; ++i)
-		{
-			DataStruct dataStruct = temp;
-			dataStruct.modifyAttribute(IEDID, iedId);
+	DataStruct dataStruct;
+	dataStruct.name = AccumulatorUnitPoint;
 
-			QString index = QString("%1").arg(i);
-			dataStruct.modifyAttribute(DDINDEX, index);
+	QString iedId = parent.getSepecificAttribute(FTUUNITID);
+	QString index = parent.getSepecificAttribute(FTUPOINTID);
+	QString desc = parent.getSepecificAttribute(NAME);
 
-			// 获取字段值
-			vector<string> fieldValues;
-			dataStruct.getFieldValues(fieldValues);
-			dataStruct.modifyAttribute(MRID, QString::fromStdString(fieldValues[0]));
-			insertRdbData(dataStruct.name, fieldValues);
-		}
-	}
+	dataStruct.modifyAttribute(IEDID, iedId);
+	dataStruct.modifyAttribute(DDINDEX, index);
+	dataStruct.modifyAttribute(DDNAME, desc);
+
+	insertSelf(dataStruct);
 
 	return true;
 }
@@ -764,15 +604,16 @@ bool StructInsertThread::insertAnalog( const DataStruct& parent )
 		QStringList values = getAnalogSuffix();
 
 		QString name = parent.getSepecificAttribute(NAME);
-		QString iedId = getUnitId();
-		QString point = getYcPointId();
 		QString psrType = parent.name;
 		QString psrRid = parent.getSepecificAttribute(MRID);
 		for (int i = 0; i < values.size(); ++i)
 		{
+			QString iedId = getUnitId();
+			QString point = getYcPointId();
+
 			DataStruct dataStruct = temp;
 			QString childName = QString("%1.%2").arg(name).arg(values.at(i));
-			dataStruct.modifyAttribute(NAME, "");
+			dataStruct.modifyAttribute(NAME, childName);
 
 			QString pathName = QString("%1/%2").arg(parent.getSepecificAttribute(PATHNAME)).arg(childName);
 			dataStruct.modifyAttribute(PATHNAME, pathName);
@@ -782,11 +623,9 @@ bool StructInsertThread::insertAnalog( const DataStruct& parent )
 			dataStruct.modifyAttribute(FTUUNITID, iedId);
 			dataStruct.modifyAttribute(FTUPOINTID, point);
 
-			// 获取字段值
-			vector<string> fieldValues;
-			dataStruct.getFieldValues(fieldValues);
-			dataStruct.modifyAttribute(MRID, QString::fromStdString(fieldValues[0]));
-			insertRdbData(dataStruct.name, fieldValues);
+			insertSelf(dataStruct);
+
+			insertAnalogUnitPoint(dataStruct);
 		}
 	}
 
@@ -802,15 +641,16 @@ bool StructInsertThread::insertDiscrete( const DataStruct& parent )
 		QStringList values = getDiscreteSuffix();
 
 		QString name = parent.getSepecificAttribute(NAME);
-		QString iedId = getUnitId();
-		QString point = getYxPointId();
 		QString psrType = parent.name;
 		QString psrRid = parent.getSepecificAttribute(MRID);
 		for (int i = 0; i < values.size(); ++i)
 		{
+			QString iedId = getUnitId();
+			QString point = getYxPointId();
+
 			DataStruct dataStruct = temp;
 			QString childName = QString("%1.%2").arg(name).arg(values.at(i));
-			dataStruct.modifyAttribute(NAME, "");
+			dataStruct.modifyAttribute(NAME, childName);
 
 			QString pathName = QString("%1/%2").arg(parent.getSepecificAttribute(PATHNAME)).arg(childName);
 			dataStruct.modifyAttribute(PATHNAME, pathName);
@@ -820,11 +660,8 @@ bool StructInsertThread::insertDiscrete( const DataStruct& parent )
 			dataStruct.modifyAttribute(FTUUNITID, iedId);
 			dataStruct.modifyAttribute(FTUPOINTID, point);
 
-			// 获取字段值
-			vector<string> fieldValues;
-			dataStruct.getFieldValues(fieldValues);
-			dataStruct.modifyAttribute(MRID, QString::fromStdString(fieldValues[0]));
-			insertRdbData(dataStruct.name, fieldValues);
+			insertSelf(dataStruct);
+			insertDiscreteUnitPoint(dataStruct);
 		}
 	}
 
@@ -840,15 +677,16 @@ bool StructInsertThread::insertCommand( const DataStruct& parent )
 		QStringList values = getCommandSuffix();
 
 		QString name = parent.getSepecificAttribute(NAME);
-		QString iedId = getUnitId();
-		QString point = getYkPointId();
 		QString psrType = parent.name;
 		QString psrRid = parent.getSepecificAttribute(MRID);
 		for (int i = 0; i < values.size(); ++i)
 		{
+			QString iedId = getUnitId();
+			QString point = getYkPointId();
+
 			DataStruct dataStruct = temp;
 			QString childName = QString("%1.%2").arg(name).arg(values.at(i));
-			dataStruct.modifyAttribute(NAME, "");
+			dataStruct.modifyAttribute(NAME, childName);
 
 			QString pathName = QString("%1/%2").arg(parent.getSepecificAttribute(PATHNAME)).arg(childName);
 			dataStruct.modifyAttribute(PATHNAME, pathName);
@@ -858,11 +696,8 @@ bool StructInsertThread::insertCommand( const DataStruct& parent )
 			dataStruct.modifyAttribute(FTUUNITID, iedId);
 			dataStruct.modifyAttribute(FTUPOINTID, point);
 
-			// 获取字段值
-			vector<string> fieldValues;
-			dataStruct.getFieldValues(fieldValues);
-			dataStruct.modifyAttribute(MRID, QString::fromStdString(fieldValues[0]));
-			insertRdbData(dataStruct.name, fieldValues);
+			insertSelf(dataStruct);
+			insertControlUnitPoint(dataStruct);
 		}
 	}
 
@@ -878,15 +713,16 @@ bool StructInsertThread::insertAccumulator( const DataStruct& parent )
 		QStringList values = getAccumulatorSuffix();
 
 		QString name = parent.getSepecificAttribute(NAME);
-		QString iedId = getUnitId();
-		QString point = getDdPointId();
 		QString psrType = parent.name;
 		QString psrRid = parent.getSepecificAttribute(MRID);
 		for (int i = 0; i < values.size(); ++i)
 		{
+			QString iedId = getUnitId();
+			QString point = getDdPointId();
+
 			DataStruct dataStruct = temp;
 			QString childName = QString("%1.%2").arg(name).arg(values.at(i));
-			dataStruct.modifyAttribute(NAME, "");
+			dataStruct.modifyAttribute(NAME, childName);
 
 			QString pathName = QString("%1/%2").arg(parent.getSepecificAttribute(PATHNAME)).arg(childName);
 			dataStruct.modifyAttribute(PATHNAME, pathName);
@@ -896,15 +732,106 @@ bool StructInsertThread::insertAccumulator( const DataStruct& parent )
 			dataStruct.modifyAttribute(FTUUNITID, iedId);
 			dataStruct.modifyAttribute(FTUPOINTID, point);
 
-			// 获取字段值
-			vector<string> fieldValues;
-			dataStruct.getFieldValues(fieldValues);
-			dataStruct.modifyAttribute(MRID, QString::fromStdString(fieldValues[0]));
-			insertRdbData(dataStruct.name, fieldValues);
+			insertSelf(dataStruct);
+			insertAccumulatorUnitPoint(dataStruct);
 		}
 	}
 
 	return true;
+}
+
+bool StructInsertThread::insertSelf( DataStruct& dataStruct )
+{
+	// 获取字段值
+	vector<string> fieldValues;
+	dataStruct.getFieldValues(fieldValues);
+	dataStruct.modifyAttribute(MRID, QString::fromStdString(fieldValues[0]));
+	bool result = insertRdbData(dataStruct.name, fieldValues);
+	if (result)
+	{
+		insertChildren(dataStruct);
+	}
+	return result;
+}
+
+void StructInsertThread::insertChildren( const DataStruct& parent )
+{
+	foreach(DataStruct children, parent.childrens)
+	{
+		QString childrenName = children.name;
+		if (childrenName == Area)
+		{
+			insertArea(parent);
+		}
+		else if (childrenName == Substation)
+		{
+			insertSubstation(parent);
+		}
+		else if (childrenName == RemoteUnit)
+		{
+			insertRemoteUnit(parent);
+		}
+		//else if (childrenName == AnalogUnitPoint)
+		//{
+		//	insertAnalogUnitPoint(parent);
+		//}
+		//else if (childrenName == DiscreteUnitPoint)
+		//{
+		//	insertDiscreteUnitPoint(parent);
+		//}
+		//else if (childrenName == ControlUnitPoint)
+		//{
+		//	insertControlUnitPoint(parent);
+		//}
+		//else if (childrenName == AccumulatorUnitPoint)
+		//{
+		//	insertAccumulatorUnitPoint(parent);
+		//}
+		else if (childrenName == BusbarSection)
+		{
+			insertBusbarSection(parent);
+		}
+		else if (childrenName == Line)
+		{
+			insertLine(parent);
+		}
+		else if (childrenName == Breaker)
+		{
+			insertBreaker(parent);
+		}
+		else if (childrenName == Disconnector)
+		{
+			insertDisconnector(parent);
+		}
+		else if (childrenName == PowerTransformer)
+		{
+			insertPowerTransformer(parent);
+		}
+		else if (childrenName == TransformerWinding)
+		{
+			insertTransformerWinding(parent);
+		}
+		else if (childrenName == Analog)
+		{
+			insertAnalog(parent);
+		}
+		else if (childrenName == Discrete)
+		{
+			insertDiscrete(parent);
+		}
+		else if (childrenName == Command)
+		{
+			insertCommand(parent);
+		}
+		else if (childrenName == Accumulator)
+		{
+			insertAccumulator(parent);
+		}
+		else if (childrenName == DevDeviceType)
+		{
+			insertDeviceType(parent);
+		}
+	}
 }
 
 bool StructInsertThread::insertRdbData( const QString& tableName, const vector<string>& fieldValues )
@@ -926,7 +853,7 @@ bool StructInsertThread::insertRdbData( const QString& tableName, const vector<s
 	{
 		RdbDataOptPrx rdbDataOptPrx_timeout = RdbDataOptPrx::uncheckedCast(
 			m_rdbDataOptPrx->ice_timeout(5000));
-		bool result = rdbDataOptPrx_timeout->InsertData(repSeq, repSequence);
+		bool result = m_rdbDataOptPrx->InsertData(repSeq, repSequence);
 		if (result)
 		{
 			RdbLog(CLogger::Log_INFO, "插入 %s 成功", tableName.toStdString().c_str());
@@ -1047,6 +974,36 @@ QStringList StructInsertThread::getAccumulatorSuffix()
 		}
 	}
 	return strs;
+}
+
+int StructInsertThread::getDataStructCount(const DataStruct& dataStruct)
+{
+	int count = dataStruct.getSepecificAttribute(COUNT).toInt();
+	return count <=0 ? 1 : count;
+}
+
+QString StructInsertThread::createName( const QString& parentName, const QString& childName, int index )
+{
+	QString name = QString("%1-%2-%3").arg(parentName).arg(childName).arg(index);
+	return name;
+}
+
+QString StructInsertThread::createName( const QString& childName, int index )
+{
+	QString name = QString("%1-%2").arg(childName).arg(index);
+	return name;
+}
+
+QString StructInsertThread::createName( const QString& parentName, const QString& childName )
+{
+	QString name = QString("%1-%2").arg(parentName).arg(childName);
+	return name;
+}
+
+QString StructInsertThread::createPathName( const QString& parentPath, const QString& childName )
+{
+	QString pathName = QString("%1/%2").arg(parentPath).arg(childName);
+	return pathName;
 }
 
 void StructInsertThread::createNewUnitId()

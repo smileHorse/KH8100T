@@ -21,8 +21,10 @@
 			<value>电池活化</value>
 		</CommandSuffix>
 		<AccumulatorSuffix>
-			<value>开关分合</value>
-			<value>电池活化</value>
+			<value>正向有功电度</value>
+			<value>正向无功电度</value>
+			<value>反向有功电度</value>
+			<value>反向无功电度</value>
 		</AccumulatorSuffix>
 	</GlobalParam>
 
@@ -35,10 +37,11 @@
 		</DevDeviceType>
 	</DevManufacturer>
 	
-	<GeographicalRegion name="区域" mRID="{4052eb18-055a-4f38-8e48-85797e25ed3b}">
+	<GeographicalRegion name="区域" mRID="e584441f-5c43-4378-90dd-60aa0de495ad">
 		<SubGeographicalRegion name="子区域" count="5">
 			<Substation name="变电站" count="10">
 				<RemoteUnit name="单元" count="1">
+					<!--
 					<AnalogUnitPoint name="遥测" count="100">
 					</AnalogUnitPoint>
 					<DiscreteUnitPoint name="遥信" count="100">
@@ -47,6 +50,7 @@
 					</ControlUnitPoint>
 					<AccumulatorUnitPoint name="电度" count="100">
 					</AccumulatorUnitPoint>
+					-->
 				</RemoteUnit>
 
 				<BusbarSection name="母线" count="4">
