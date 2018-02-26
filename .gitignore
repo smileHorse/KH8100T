@@ -5,6 +5,7 @@
 *.pdb
 *.opensdf
 *.suo
+*.user
 
 #忽略以下指定目录
 Simulated/IceStorm/db/
