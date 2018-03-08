@@ -41,6 +41,11 @@ typedef QList<DataStruct>	DataStructList;
 #define Discrete				"Discrete"
 #define Command					"Command"
 #define Accumulator				"Accumulator"
+#define FepPartition			"FepPartition"
+#define FepSection				"FepSection"
+#define FepProtocol				"FepProtocol"
+#define FepChannel				"FepChannel"
+#define FepProtocolUnit			"FepProtocolUnit"
 
 class DataStruct
 {
@@ -124,6 +129,16 @@ private:
 
 	bool insertAccumulator(const DataStruct& parent);
 
+	bool insertFepPartition();
+
+	bool insertFepSection(const DataStruct& parent);
+
+	bool insertFepProtocol(const DataStruct& parent);
+
+	bool insertFepChannel(const DataStruct& parent);
+
+	bool insertFepProtocolUnit(const DataStruct& parent);
+
 	bool insertSelf(DataStruct& dataStruct);
 
 	void insertChildren(const DataStruct& parent);
@@ -154,6 +169,13 @@ private:
 	QString getYxPointId();
 	QString getYkPointId();
 	QString getDdPointId();
+
+	void createNewProtocolNo();
+	QString getProtocolNo();
+
+	void createNewChannelId();
+	QString getChannelId();
+
 private:
 	DataStruct	rdbDataStruct;
 
@@ -166,5 +188,8 @@ private:
 	int yxPointId;
 	int ykPointId;
 	int ddPointId;
+
+	int protocolNo;
+	int channelId;
 };
 #endif

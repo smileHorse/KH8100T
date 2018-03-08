@@ -31,6 +31,14 @@
 #define PSR_RID				"psr_rid"
 #define FTUUNITID			"ftuUnitId"
 #define FTUPOINTID			"ftuPointId"
+#define REPLYTIMEOUTS		"replyTimeouts"
+#define PARTITION			"partition"
+#define SECTION				"section"
+#define PROTOCOL			"protocol"
+#define PROTOCOLNO			"protocolNo"
+#define CHANNELID			"channelId"
+#define PROTOCOLID			"protocolId"
+#define DEVICEID			"deviceId"
 
 
 DataStruct::DataStruct()
@@ -144,6 +152,9 @@ StructInsertThread::StructInsertThread(const RdbDataOptPrx& rdbDataOptPrx, QObje
 {
 	unitId = 0;
 	yxPointId = ycPointId = ykPointId = ddPointId = 0;
+
+	protocolNo = 0;
+	channelId = 0;
 }
 
 void StructInsertThread::run()
@@ -156,6 +167,9 @@ void StructInsertThread::run()
 
 	// 插入区域
 	insertGeographicalRegion();
+
+	// 插入分区
+	insertFepPartition();
 }
 
 bool StructInsertThread::loadRdbDataStruct()
@@ -207,11 +221,10 @@ bool StructInsertThread::insertDeviceType( const DataStruct& parent )
 bool StructInsertThread::insertGeographicalRegion()
 {
 	// 获取区域信息
-	DataStructList regions = rdbDataStruct.getSpecificChildrens(GeographicalRegion);
-	foreach(DataStruct region, regions)
+	DataStructList dataStructs = rdbDataStruct.getSpecificChildrens(GeographicalRegion);
+	foreach(DataStruct dataStruct, dataStructs)
 	{
-		// 插入子区域
-		insertSubGeographicalRegion(region);
+		insertSelf(dataStruct);
 	}
 	return true;
 }
@@ -301,6 +314,8 @@ bool StructInsertThread::insertSubstation( const DataStruct& parent )
 bool StructInsertThread::insertRemoteUnit( const DataStruct& parent )
 {
 	// 获取信息
+	QString parentMrid = parent.getSepecificAttribute(MRID);
+	QString parentName = parent.getSepecificAttribute(NAME);
 	DataStructList dataStructs = parent.getSpecificChildrens(RemoteUnit);
 	foreach(DataStruct temp, dataStructs)
 	{
@@ -314,13 +329,16 @@ bool StructInsertThread::insertRemoteUnit( const DataStruct& parent )
 			QString iedId = getUnitId();
 			dataStruct.modifyAttribute(IEDID, iedId);
 
-			QString childName = createName(name, iedId);
+			QString childName = createName(parentName, name);
 			dataStruct.modifyAttribute(IEDNAME, childName);
 
 			QString manufacturer, deviceType;
 			getRandomDeviceTypeInfo(manufacturer, deviceType);
 			dataStruct.modifyAttribute(MANUFACTURER, manufacturer);
 			dataStruct.modifyAttribute(DEVICETYPE, deviceType);
+			dataStruct.modifyAttribute(EC_TYPE, parent.name);
+			dataStruct.modifyAttribute(EC_RID, parentMrid);
+			dataStruct.modifyAttribute(REPLYTIMEOUTS, "3000");
 
 			insertSelf(dataStruct);
 		}
@@ -740,6 +758,117 @@ bool StructInsertThread::insertAccumulator( const DataStruct& parent )
 	return true;
 }
 
+bool StructInsertThread::insertFepPartition()
+{
+	// 获取设备厂家信息
+	DataStructList dataStructs = rdbDataStruct.getSpecificChildrens(FepPartition);
+	foreach(DataStruct dataStruct, dataStructs)
+	{
+		insertSelf(dataStruct);
+	}
+	return true;
+}
+
+bool StructInsertThread::insertFepSection( const DataStruct& parent )
+{
+	// 获取信息
+	QString parentMrid = parent.getSepecificAttribute(MRID);
+	DataStructList dataStructs = parent.getSpecificChildrens(FepSection);
+	foreach(DataStruct temp, dataStructs)
+	{
+		int count = getDataStructCount(temp);
+		QString name = temp.getSepecificAttribute(NAME);
+		for (int i = 0; i < count; ++i)
+		{
+			DataStruct dataStruct = temp;
+			QString childName = createName(name, i + 1);
+			dataStruct.modifyAttribute(NAME, childName);
+			dataStruct.modifyAttribute(PARTITION, parentMrid);
+
+			insertSelf(dataStruct);
+		}
+	}
+
+	return true;
+}
+
+bool StructInsertThread::insertFepProtocol( const DataStruct& parent )
+{
+	// 获取信息
+	QString partitionId = parent.getSepecificAttribute(PARTITION);
+	QString parentMrid = parent.getSepecificAttribute(MRID);
+	QString parentName = parent.getSepecificAttribute(NAME);
+	DataStructList dataStructs = parent.getSpecificChildrens(FepProtocol);
+	foreach(DataStruct temp, dataStructs)
+	{
+		int count = getDataStructCount(temp);
+		QString name = temp.getSepecificAttribute(NAME);
+		for (int i = 0; i < count; ++i)
+		{
+			DataStruct dataStruct = temp;
+			createNewProtocolNo();
+
+			QString proNo = getProtocolNo();
+			dataStruct.modifyAttribute(PROTOCOLNO, proNo);
+
+			QString childName = createName(parentName, name, i + 1);
+			dataStruct.modifyAttribute(NAME, childName);
+			dataStruct.modifyAttribute(PARTITION, partitionId);
+			dataStruct.modifyAttribute(SECTION, parentMrid);
+
+			insertSelf(dataStruct);
+			insertFepProtocolUnit(dataStruct);
+		}
+	}
+
+	return true;
+}
+
+bool StructInsertThread::insertFepChannel( const DataStruct& parent )
+{
+	// 获取信息
+	QString parentMrid = parent.getSepecificAttribute(MRID);
+	DataStructList dataStructs = parent.getSpecificChildrens(FepChannel);
+	foreach(DataStruct temp, dataStructs)
+	{
+		int count = getDataStructCount(temp);
+		QString name = temp.getSepecificAttribute(NAME);
+		for (int i = 0; i < count; ++i)
+		{
+			DataStruct dataStruct = temp;
+			createNewChannelId();
+
+			QString chanId = getChannelId();
+			dataStruct.modifyAttribute(CHANNELID, chanId);
+
+			QString childName = createName(name, i + 1);
+			dataStruct.modifyAttribute(NAME, childName);
+			dataStruct.modifyAttribute(PROTOCOL, parentMrid);
+
+			insertSelf(dataStruct);
+		}
+	}
+
+	return true;
+}
+
+bool StructInsertThread::insertFepProtocolUnit( const DataStruct& parent )
+{
+	// 获取信息
+	DataStruct dataStruct;
+	dataStruct.name = FepProtocolUnit;
+
+	QString protocolId = parent.getSepecificAttribute(MRID);
+	QString deviceId = parent.getSepecificAttribute(PROTOCOLNO);
+
+	dataStruct.modifyAttribute(PROTOCOLID, protocolId);
+	dataStruct.modifyAttribute(DEVICEID, deviceId);
+
+	insertSelf(dataStruct);
+
+	return true;
+}
+
 bool StructInsertThread::insertSelf( DataStruct& dataStruct )
 {
 	// 获取字段值
@@ -759,7 +888,11 @@ void StructInsertThread::insertChildren( const DataStruct& parent )
 	foreach(DataStruct children, parent.childrens)
 	{
 		QString childrenName = children.name;
-		if (childrenName == Area)
+		if (childrenName == SubGeographicalRegion)
+		{
+			insertSubGeographicalRegion(parent);
+		}
+		else if (childrenName == Area)
 		{
 			insertArea(parent);
 		}
@@ -771,22 +904,6 @@ void StructInsertThread::insertChildren( const DataStruct& parent )
 		{
 			insertRemoteUnit(parent);
 		}
-		//else if (childrenName == AnalogUnitPoint)
-		//{
-		//	insertAnalogUnitPoint(parent);
-		//}
-		//else if (childrenName == DiscreteUnitPoint)
-		//{
-		//	insertDiscreteUnitPoint(parent);
-		//}
-		//else if (childrenName == ControlUnitPoint)
-		//{
-		//	insertControlUnitPoint(parent);
-		//}
-		//else if (childrenName == AccumulatorUnitPoint)
-		//{
-		//	insertAccumulatorUnitPoint(parent);
-		//}
 		else if (childrenName == BusbarSection)
 		{
 			insertBusbarSection(parent);
@@ -830,6 +947,18 @@ void StructInsertThread::insertChildren( const DataStruct& parent )
 		else if (childrenName == DevDeviceType)
 		{
 			insertDeviceType(parent);
+		}
+		else if (childrenName == FepSection)
+		{
+			insertFepSection(parent);
+		}
+		else if (childrenName == FepProtocol)
+		{
+			insertFepProtocol(parent);
+		}
+		else if (childrenName == FepChannel)
+		{
+			insertFepChannel(parent);
 		}
 	}
 }
@@ -1035,4 +1164,24 @@ QString StructInsertThread::getYkPointId()
 QString StructInsertThread::getDdPointId()
 {
 	return QString("%1").arg(ddPointId++);
+}
+
+void StructInsertThread::createNewProtocolNo()
+{
+	protocolNo++;
+}
+
+QString StructInsertThread::getProtocolNo()
+{
+	return QString("%1").arg(protocolNo);
+}
+
+void StructInsertThread::createNewChannelId()
+{
+	channelId++;
+}
+
+QString StructInsertThread::getChannelId()
+{
+	return QString("%1").arg(channelId);
 }

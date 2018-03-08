@@ -23,8 +23,8 @@ Datasvr1_ip = 192.168.3.25
 Datasvr1_port = 10003
 Datasvr1_runRole = master
 
-Datasvr2_ip = 192.168.3.15
-Datasvr2_port = 10003
+Datasvr2_ip = 192.168.3.25
+Datasvr2_port = 10004
 Datasvr2_runRole = slave
 
 IceStrom1_ip = 192.168.3.25

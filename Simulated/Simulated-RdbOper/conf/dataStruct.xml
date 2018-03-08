@@ -37,20 +37,10 @@
 		</DevDeviceType>
 	</DevManufacturer>
 	
-	<GeographicalRegion name="区域" mRID="e584441f-5c43-4378-90dd-60aa0de495ad">
+	<GeographicalRegion name="区域">
 		<SubGeographicalRegion name="子区域" count="5">
 			<Substation name="变电站" count="10">
 				<RemoteUnit name="单元" count="1">
-					<!--
-					<AnalogUnitPoint name="遥测" count="100">
-					</AnalogUnitPoint>
-					<DiscreteUnitPoint name="遥信" count="100">
-					</DiscreteUnitPoint>
-					<ControlUnitPoint name="遥控" count="100">
-					</ControlUnitPoint>
-					<AccumulatorUnitPoint name="电度" count="100">
-					</AccumulatorUnitPoint>
-					-->
 				</RemoteUnit>
 
 				<BusbarSection name="母线" count="4">
@@ -80,10 +70,49 @@
 				</PowerTransformer>
 			</Substation>
 
-			<Area name="区间" count="10">
-				<Substation name="车站" count="10">
+			<Area name="区间" count="2">
+				<Substation name="车站" count="5">
+					<RemoteUnit name="单元" count="1">					
+					</RemoteUnit>
+
+					<BusbarSection name="母线" count="4">
+						<Analog maxValue="200" minValue="50" normalValue="100" hhLimitValue="220" hLimitValue="210" lLimitValue="40" llLimitValue="30"></Analog>
+					</BusbarSection>
+					<Line name="线路" count="4">
+					</Line>
+					<Breaker name="开关" count="20">
+						<Analog maxValue="200" minValue="50" normalValue="100" hhLimitValue="220" hLimitValue="210" lLimitValue="40" llLimitValue="30"></Analog>
+						<Discrete></Discrete>
+						<Command></Command>
+						<Accumulator></Accumulator>
+					</Breaker>
+					<Disconnector name="刀闸" count="20">
+						<Analog maxValue="200" minValue="50" normalValue="100" hhLimitValue="220" hLimitValue="210" lLimitValue="40" llLimitValue="30"></Analog>
+						<Discrete></Discrete>
+						<Command></Command>
+						<Accumulator></Accumulator>
+					</Disconnector>
+					<PowerTransformer name="变压器" count="2">
+						<TransformerWinding name="绕组" count="2">						
+							<Analog maxValue="200" minValue="50" normalValue="100" hhLimitValue="220" hLimitValue="210" lLimitValue="40" llLimitValue="30"></Analog>
+							<Discrete></Discrete>
+							<Command></Command>
+							<Accumulator></Accumulator>
+						</TransformerWinding>
+					</PowerTransformer>
+					
 				</Substation>
 			</Area>
 		</SubGeographicalRegion>
 	</GeographicalRegion>
+
+	<FepPartition name="分区一">
+		<FepSection name="分段" count="2">
+			<FepProtocol name="规约" count="50" type="76" isUse="1" commCount="1" unitCount="1">
+				<FepChannel name="通道" count="1" param="CommType=TCP;LocalPort=;LocalIP=;RemotePort=5314;RemoteIP=192.168.3.197;Server=0">
+					
+				</FepChannel>
+			</FepProtocol>
+		</FepSection>
+	</FepPartition>
 </rdb>
