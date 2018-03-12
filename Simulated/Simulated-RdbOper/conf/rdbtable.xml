@@ -232,6 +232,7 @@
 		<field type = "string">facTime</field>
 		<field type = "string">runTime</field>
 		<field type = "string">reserved</field>
+		<field type = "int">ykNum</field>
 	</table>
 	<table name="AnalogUnitPoint">
 		<field type = "string">mRID</field>
