@@ -164,6 +164,7 @@ void SelectCompleteDataDialog::queryData()
 		RespondCompleteDataSeq repSeq;
 		m_rdbDataOptPrx->SelectCompleteData(reqSeq, repSeq);
 
+
 		updateTableWidget(repSeq);
 	}
 	catch(const Ice::Exception& ex)

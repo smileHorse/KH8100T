@@ -1,8 +1,10 @@
 
 #include "rdbTableFactory.h"
-#include "selectDefaultDataDialog.h"
+#include "selectEquipTreeDialog.h"
 
-SelectDefaultDataDialog::SelectDefaultDataDialog(const RdbDataOptPrx& rdbDataOptPrx,  QWidget* parent /*= 0*/)
+#define TEXT_SEPERATOR	"%"
+
+SelectEquipTreeDialog::SelectEquipTreeDialog(const RdbDataOptPrx& rdbDataOptPrx,  QWidget* parent /*= 0*/)
 	: QDialog(parent), m_rdbDataOptPrx(rdbDataOptPrx)
 {
 	createWidgets();
@@ -10,9 +12,9 @@ SelectDefaultDataDialog::SelectDefaultDataDialog(const RdbDataOptPrx& rdbDataOpt
 	createConnectes();
 }
 
-void SelectDefaultDataDialog::createWidgets()
+void SelectEquipTreeDialog::createWidgets()
 {
-	setWindowTitle(QStringLiteral("查询默认数据"));
+	setWindowTitle(QStringLiteral("查询全部数据"));
 	setWindowIcon(QIcon(":/select.png"));
 	resize(900, 700);
 
@@ -34,7 +36,7 @@ void SelectDefaultDataDialog::createWidgets()
 	tableNameComboBox = new QComboBox;
 	QStringList tableNames = RdbTableFactory::getTableNames();
 	tableNameComboBox->addItems(tableNames);
-	
+
 	fieldNameComboBox = new QComboBox;
 	tableNameChanged(tableNameComboBox->currentText());
 
@@ -50,7 +52,7 @@ void SelectDefaultDataDialog::createWidgets()
 	dataTableWidget->setAlternatingRowColors(true);
 }
 
-void SelectDefaultDataDialog::createLayout()
+void SelectEquipTreeDialog::createLayout()
 {
 	QFormLayout* formLayout = new QFormLayout;
 	formLayout->addRow(QStringLiteral("&Id:"), idSpinBox);
@@ -74,14 +76,14 @@ void SelectDefaultDataDialog::createLayout()
 	setLayout(mainLayout);
 }
 
-void SelectDefaultDataDialog::createConnectes()
+void SelectEquipTreeDialog::createConnectes()
 {
 	connect(tableNameComboBox, SIGNAL(currentTextChanged(const QString&)), this, SLOT(tableNameChanged(const QString&)));
 	connect(queryButton, SIGNAL(clicked()), this, SLOT(queryData()));
 	connect(stopQueryButton, SIGNAL(clicked()), this, SLOT(stopQueryData()));
 }
 
-void SelectDefaultDataDialog::updateTableWidget(const RespondDefaultDataSeq& repSeq)
+void SelectEquipTreeDialog::updateTableWidget(const EquipTreeSequence& repSeq)
 {
 	dataTableWidget->clear();
 	int rowCount = 0;
@@ -96,64 +98,75 @@ void SelectDefaultDataDialog::updateTableWidget(const RespondDefaultDataSeq& rep
 	}
 
 	QStringList headerLabels;
-	headerLabels << "dataRid" << "dataValue";
-	dataTableWidget->setRowCount(headerLabels.size());
-	dataTableWidget->setVerticalHeaderLabels(headerLabels);
+	headerLabels << m_currFieldNames;
+	dataTableWidget->setColumnCount(headerLabels.size());
+	dataTableWidget->setHorizontalHeaderLabels(headerLabels);
 
-	for (size_t i = 0; i < repSeq.seq.size(); ++i)
+	for (size_t i = 0; i < repSeq.size(); ++i)
 	{
-		dataTableWidget->insertColumn(i);
-		dataTableWidget->setItem(0, i, new QTableWidgetItem(QString().fromStdString(repSeq.seq.at(i).dataRid)));
-		dataTableWidget->setItem(1, i, new QTableWidgetItem(QString().fromStdString(repSeq.seq.at(i).dataValue)));
+		dataTableWidget->insertRow(i);
+
+		QTableWidgetItem* item = new QTableWidgetItem(QString().fromStdString(repSeq.at(i).parentRid));
+		item->setTextAlignment(Qt::AlignHCenter | Qt::AlignVCenter);
+		dataTableWidget->setItem(i, 0, item);
+
+		item = new QTableWidgetItem(QString().fromStdString(repSeq.at(i).parentName));
+		item->setTextAlignment(Qt::AlignHCenter | Qt::AlignVCenter);
+		dataTableWidget->setItem(i, 1, item);
+
+		item = new QTableWidgetItem(QString().fromStdString(repSeq.at(i).parentType));
+		item->setTextAlignment(Qt::AlignHCenter | Qt::AlignVCenter);
+		dataTableWidget->setItem(i, 2, item);
+
+		item = new QTableWidgetItem(QString().fromStdString(repSeq.at(i).equipRid));
+		item->setTextAlignment(Qt::AlignHCenter | Qt::AlignVCenter);
+		dataTableWidget->setItem(i, 3, item);
+
+		item = new QTableWidgetItem(QString().fromStdString(repSeq.at(i).equipName));
+		item->setTextAlignment(Qt::AlignHCenter | Qt::AlignVCenter);
+		dataTableWidget->setItem(i, 4, item);
+
+		item = new QTableWidgetItem(QString().fromStdString(repSeq.at(i).equipType));
+		item->setTextAlignment(Qt::AlignHCenter | Qt::AlignVCenter);
+		dataTableWidget->setItem(i, 5, item);
 	}
 	dataTableWidget->resizeColumnsToContents();
-
-	rowCount = dataTableWidget->rowCount();
-	columnCount = dataTableWidget->columnCount();
-	for (int row = 0; row < rowCount; ++row)
-	{
-		for (int col = 0; col < columnCount; ++col)
-		{
-			QTableWidgetItem* item = dataTableWidget->item(row, col);
-			if (item)
-			{
-				item->setTextAlignment(Qt::AlignHCenter | Qt::AlignVCenter);
-			}
-		}
-	}
 }
 
-void SelectDefaultDataDialog::tableNameChanged( const QString& tableName )
+void SelectEquipTreeDialog::tableNameChanged( const QString& tableName )
 {
 	fieldNameComboBox->clear();
 	fieldNameComboBox->addItem("");
-	QStringList fieldNames = RdbTableFactory::getTableFields(tableName);
-	if (!fieldNames.isEmpty())
+
+	m_currFieldNames.clear();
+	m_currFieldNames << "parentRid" << "parentName" << "parentType" 
+		<< "equipRid" << "equipName" << "equipType";
+	if (!m_currFieldNames.isEmpty())
 	{
-		fieldNameComboBox->addItems(fieldNames);
+		fieldNameComboBox->addItems(m_currFieldNames);
 		fieldNameComboBox->setCurrentIndex(0);
 	}
 }
 
-void SelectDefaultDataDialog::queryData()
+void SelectEquipTreeDialog::queryData()
 {
 	if (!m_rdbDataOptPrx)
 	{
-		QMessageBox::warning(this, QStringLiteral("查询默认数据"), QStringLiteral("查询失败: Ice代理为空"));
+		QMessageBox::warning(this, QStringLiteral("查询全部数据"), QStringLiteral("查询失败: Ice代理为空"));
 		return;
 	}
 
 	try
 	{
 		// 准备请求条件
-		RequestDefaultDataSeq reqSeq;
+		RequestCompleteDataSeq reqSeq;
 		reqSeq.id = idSpinBox->value();
 		reqSeq.requestId = requestIdSpinBox->value();
 		reqSeq.requestNode = requestNodeLineEdit->text().toStdString();
 		reqSeq.isStop = isStopCheckBox->isChecked();
 		reqSeq.refreshFreq = refreshFreqSpinBox->value();
-		
-		RequestDefaultData reqData;
+
+		RequestCompleteData reqData;
 		reqData.tableName = tableNameComboBox->currentText().toStdString();
 		reqData.fieldName = fieldNameComboBox->currentText().toStdString();
 		reqData.fieldValue = fieldValueLineEdit->text().toStdString();
@@ -161,19 +174,19 @@ void SelectDefaultDataDialog::queryData()
 		reqSeq.seq.push_back(reqData);
 		reqSeq.dataCount = reqSeq.seq.size();
 
-		RespondDefaultDataSeq repSeq;
-		m_rdbDataOptPrx->SelectDefaultData(reqSeq, repSeq);
+		EquipTreeSequence repSeq;
+		m_rdbDataOptPrx->GetEquipTree(reqData.tableName, reqData.fieldValue, repSeq);
 
 		updateTableWidget(repSeq);
 	}
 	catch(const Ice::Exception& ex)
 	{
-		QMessageBox::warning(this, QStringLiteral("查询默认数据"), 
+		QMessageBox::warning(this, QStringLiteral("查询全部数据"), 
 			QStringLiteral("查询数据失败: %1").arg(ex.what()));
 	}
 }
 
-void SelectDefaultDataDialog::stopQueryData()
+void SelectEquipTreeDialog::stopQueryData()
 {
 
 }

@@ -34,6 +34,7 @@ private:
 
 	void initIcePtr();
 	bool getRdbDataOptPrx();
+	void updateActions();
 
 private slots:
 	void configServer();
@@ -42,6 +43,7 @@ private slots:
 	void selectDefaultData();
 	void selectSpecficData();
 	void selectCompleteData();
+	void selectEquipmentTree();
 	void addRecord();
 	void updateRecord();
 	void deleteRecord();
@@ -66,6 +68,7 @@ private:
 	QAction*	selectDefaultDataAction;
 	QAction*	selectSpecficDataAction;
 	QAction*	selectCompleteDataAction;
+	QAction*	selectEquipTreeAction;
 
 	QAction*	randomInsertAction;
 	QAction*	structInsertAction;

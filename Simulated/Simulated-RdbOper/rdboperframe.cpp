@@ -9,6 +9,7 @@
 #include "rdbTableFactory.h"
 #include "selectCompleteDataDialog.h"
 #include "selectDefaultDataDialog.h"
+#include "selectEquipTreeDialog.h"
 #include "selectSpecficDataDialog.h"
 #include "structInsertThread.h"
 #include "updateRecordDialog.h"
@@ -23,6 +24,7 @@ RdbOperFrame::RdbOperFrame(QWidget *parent)
 	createStatusBar();
 
 	initIcePtr();
+	updateActions();
 }
 
 RdbOperFrame::~RdbOperFrame()
@@ -88,6 +90,8 @@ void RdbOperFrame::createActions()
 		QStringLiteral("查询指定数据"), SLOT(selectSpecficData())); 
 	selectCompleteDataAction = createActionImpl(QIcon(":/select.png"), QStringLiteral("查询全部数据"), 
 		QStringLiteral("查询全部数据"), SLOT(selectCompleteData())); 
+	selectEquipTreeAction = createActionImpl(QIcon(":/select.png"), QStringLiteral("查询设备树"), 
+		QStringLiteral("查询设备树"), SLOT(selectEquipmentTree())); 
 	
 	addRecordAction = createActionImpl(QIcon(":/addRecord.png"), QStringLiteral("插入记录"), 
 		QStringLiteral("插入记录"), SLOT(addRecord()));
@@ -128,6 +132,7 @@ void RdbOperFrame::createMenus()
 	operMenu->addAction(selectDefaultDataAction);
 	operMenu->addAction(selectSpecficDataAction);
 	operMenu->addAction(selectCompleteDataAction);
+	operMenu->addAction(selectEquipTreeAction);
 	operMenu->addSeparator();
 	operMenu->addAction(addRecordAction);
 	operMenu->addAction(updateRecordAction);
@@ -153,6 +158,7 @@ void RdbOperFrame::createToolBars()
 	operToolBar->addAction(selectDefaultDataAction);
 	operToolBar->addAction(selectSpecficDataAction);
 	operToolBar->addAction(selectCompleteDataAction);
+	operToolBar->addAction(selectEquipTreeAction);
 	operToolBar->addSeparator();
 	operToolBar->addAction(addRecordAction);
 	operToolBar->addAction(updateRecordAction);
@@ -209,11 +215,29 @@ bool RdbOperFrame::getRdbDataOptPrx()
 	}
 }
 
+void RdbOperFrame::updateActions()
+{
+	bool enabled = m_communicatorPtr == NULL;
+
+	startServerAction->setEnabled(enabled);
+	stopServerAction->setEnabled(!enabled);
+	addRecordAction->setEnabled(!enabled);
+	deleteRecordAction->setEnabled(!enabled);
+	updateRecordAction->setEnabled(!enabled);
+	selectDefaultDataAction->setEnabled(!enabled);
+	selectSpecficDataAction->setEnabled(!enabled);
+	selectCompleteDataAction->setEnabled(!enabled);
+	selectEquipTreeAction->setEnabled(!enabled);
+	randomInsertAction->setEnabled(!enabled);
+	structInsertAction->setEnabled(!enabled);
+}
+
 void RdbOperFrame::configServer()
 {
 	ConfigIceDialog configDialog(QIcon(":/configServer.png"));
 	if (configDialog.exec() == QDialog::Accepted)
 	{
+		configDialog.saveConfigInfo();
 		m_configIceInfo = configDialog.getConfigIceInfo();
 	}
 }
@@ -245,6 +269,7 @@ void RdbOperFrame::startServer()
 		QMessageBox::warning(this, QStringLiteral("启动Ice服务"), 
 			QStringLiteral("启动服务失败: %1").arg(ex.what()));
 	}
+	updateActions();
 }
 
 void RdbOperFrame::stopServer()
@@ -265,6 +290,7 @@ void RdbOperFrame::stopServer()
 				QStringLiteral("停止服务失败: %1").arg(ex.what()));
 		}
 	}
+	updateActions();
 }
 
 void RdbOperFrame::selectDefaultData()
@@ -297,6 +323,17 @@ void RdbOperFrame::selectCompleteData()
 	}
 
 	SelectCompleteDataDialog	selectDialog(m_rdbDataOptPrx);
+	selectDialog.exec();
+}
+
+void RdbOperFrame::selectEquipmentTree()
+{
+	if (!getRdbDataOptPrx())
+	{
+		return;
+	}
+
+	SelectEquipTreeDialog	selectDialog(m_rdbDataOptPrx);
 	selectDialog.exec();
 }
 

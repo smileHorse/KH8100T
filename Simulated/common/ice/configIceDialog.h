@@ -25,6 +25,10 @@ private:
 	void createLayout();
 
 public:
+	void loadConfigInfo(ConfigIceInfo& info);
+	void saveConfigInfo();
+
+public:
 	ConfigIceInfo	getConfigIceInfo() const;
 
 private:

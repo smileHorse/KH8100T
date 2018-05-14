@@ -73,10 +73,11 @@ void WorkStationServer::startServer()
 bool WorkStationServer::GetEquipTree( RdbRealData::RdbDataOptPrx& proxy )
 {
 	string deviceType = "SubGeographicalRegion";
-	string deviceRid = "{a1d602d4-5ef7-4031-bf86-0c44682161bb}";
+	string deviceRid = "fb14623d-9d1c-4572-8e4f-803f5675ad30";
 	RdbRealData::EquipTreeSequence treeSeq;
-	proxy->GetEquipTree(deviceType, deviceRid, treeSeq);
+	proxy->GetEquipTree(deviceType, deviceRid, treeSeq);	
 	proxy->GetSpecificEquipTree(deviceType, deviceRid, "Breaker", treeSeq);
+	
 	return true;
 }
 

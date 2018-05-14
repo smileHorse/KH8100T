@@ -340,16 +340,16 @@ void FepServerThread::processJDFault()
 	packet.id = 15;
 	packet.fepNode = "fep36";
 	FepData::FaultEvent event;
-	event.unitNo = 2;
-	event.lineNo = 2;
+	event.unitNo = 21;
+	event.lineNo = 0;
 	event.timeStamp = IceUtil::Time::now().toMilliSeconds();
 	event.eventType = 2;
 	event.credibility = 30;
 	packet.events.push_back(event);
 	
 	// 发布接地故障事项--接地
-	event.unitNo = 2;
-	event.lineNo = 2;
+	event.unitNo = 21;
+	event.lineNo = 0;
 	event.timeStamp = IceUtil::Time::now().toMilliSeconds();
 	event.eventType = 1;
 	event.directionFlag = 1;
@@ -363,8 +363,8 @@ void FepServerThread::processJDFault()
 	packet.events.push_back(event);
 	
 	// 发布接地故障事项--选线结束
-	event.unitNo = 2;
-	event.lineNo = 2;
+	event.unitNo = 21;
+	event.lineNo = 0;
 	event.timeStamp = IceUtil::Time::now().toMilliSeconds();
 	event.eventType = 3;
 	packet.events.push_back(event);
@@ -507,10 +507,10 @@ void FepServerThread::processProTypeEvent()
 	packet.fepNode = "fep36";
 	packet.type = FepData::ProType;
 	FepData::ProtectEvent protectEvent;
-	protectEvent.unitNo = 1;
+	protectEvent.unitNo = 21;
 	protectEvent.Type = FepData::ProtectAlarm;
 	protectEvent.timeStamp = IceUtil::Time::now().toMilliSeconds();
-	protectEvent.moduleNo = 0;
+	protectEvent.moduleNo = 3;
 	protectEvent.moduleType = 0;
 	protectEvent.infoNo = 0;
 	protectEvent.state = 0;
