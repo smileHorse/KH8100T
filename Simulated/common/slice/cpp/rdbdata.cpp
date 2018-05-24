@@ -91,6 +91,8 @@ const ::std::string __RdbRealData__RdbDataOpt__GetTopoIslandInfo_name = "GetTopo
 
 const ::std::string __RdbRealData__RdbDataOpt__UpdateTopoData_name = "UpdateTopoData";
 
+const ::std::string __RdbRealData__RdbDataOpt__GetSectionData_name = "GetSectionData";
+
 }
 
 namespace
@@ -2367,6 +2369,131 @@ IceProxy::RdbRealData::RdbDataOpt::end_UpdateTopoData(const ::Ice::AsyncResultPt
     __end(__result, __RdbRealData__RdbDataOpt__UpdateTopoData_name);
 }
 
+bool
+IceProxy::RdbRealData::RdbDataOpt::GetSectionData(const ::std::string& __p_deviceRid, ::Ice::Double& __p_analogValue, ::Ice::Int& __p_discreteValue, const ::Ice::Context* __ctx)
+{
+    __checkTwowayOnly(__RdbRealData__RdbDataOpt__GetSectionData_name);
+    ::IceInternal::Outgoing __og(this, __RdbRealData__RdbDataOpt__GetSectionData_name, ::Ice::Normal, __ctx);
+    try
+    {
+        ::IceInternal::BasicStream* __os = __og.startWriteParams(::Ice::DefaultFormat);
+        __os->write(__p_deviceRid);
+        __og.endWriteParams();
+    }
+    catch(const ::Ice::LocalException& __ex)
+    {
+        __og.abort(__ex);
+    }
+    if(!__og.invoke())
+    {
+        try
+        {
+            __og.throwUserException();
+        }
+        catch(const ::Ice::UserException& __ex)
+        {
+            ::Ice::UnknownUserException __uue(__FILE__, __LINE__, __ex.ice_name());
+            throw __uue;
+        }
+    }
+    bool __ret;
+    ::IceInternal::BasicStream* __is = __og.startReadParams();
+    __is->read(__p_analogValue);
+    __is->read(__p_discreteValue);
+    __is->read(__ret);
+    __og.endReadParams();
+    return __ret;
+}
+
+::Ice::AsyncResultPtr
+IceProxy::RdbRealData::RdbDataOpt::begin_GetSectionData(const ::std::string& __p_deviceRid, const ::Ice::Context* __ctx, const ::IceInternal::CallbackBasePtr& __del, const ::Ice::LocalObjectPtr& __cookie)
+{
+    __checkAsyncTwowayOnly(__RdbRealData__RdbDataOpt__GetSectionData_name);
+    ::IceInternal::OutgoingAsyncPtr __result = new ::IceInternal::OutgoingAsync(this, __RdbRealData__RdbDataOpt__GetSectionData_name, __del, __cookie);
+    try
+    {
+        __result->prepare(__RdbRealData__RdbDataOpt__GetSectionData_name, ::Ice::Normal, __ctx);
+        ::IceInternal::BasicStream* __os = __result->startWriteParams(::Ice::DefaultFormat);
+        __os->write(__p_deviceRid);
+        __result->endWriteParams();
+        __result->invoke();
+    }
+    catch(const ::Ice::Exception& __ex)
+    {
+        __result->abort(__ex);
+    }
+    return __result;
+}
+
+#ifdef ICE_CPP11
+
+::Ice::AsyncResultPtr
+IceProxy::RdbRealData::RdbDataOpt::__begin_GetSectionData(const ::std::string& __p_deviceRid, const ::Ice::Context* __ctx, const ::IceInternal::Function<void (bool, ::Ice::Double, ::Ice::Int)>& __response, const ::IceInternal::Function<void (const ::Ice::Exception&)>& __exception, const ::IceInternal::Function<void (bool)>& __sent)
+{
+    class Cpp11CB : public ::IceInternal::Cpp11FnCallbackNC
+    {
+    public:
+
+        Cpp11CB(const ::std::function<void (bool, ::Ice::Double, ::Ice::Int)>& responseFunc, const ::std::function<void (const ::Ice::Exception&)>& exceptionFunc, const ::std::function<void (bool)>& sentFunc) :
+            ::IceInternal::Cpp11FnCallbackNC(exceptionFunc, sentFunc),
+            _response(responseFunc)
+        {
+            CallbackBase::checkCallback(true, responseFunc || exceptionFunc != nullptr);
+        }
+
+        virtual void completed(const ::Ice::AsyncResultPtr& __result) const
+        {
+            ::RdbRealData::RdbDataOptPrx __proxy = ::RdbRealData::RdbDataOptPrx::uncheckedCast(__result->getProxy());
+            ::Ice::Double __p_analogValue;
+            ::Ice::Int __p_discreteValue;
+            bool __ret;
+            try
+            {
+                __ret = __proxy->end_GetSectionData(__p_analogValue, __p_discreteValue, __result);
+            }
+            catch(const ::Ice::Exception& ex)
+            {
+                Cpp11FnCallbackNC::exception(__result, ex);
+                return;
+            }
+            if(_response != nullptr)
+            {
+                _response(__ret, __p_analogValue, __p_discreteValue);
+            }
+        }
+    
+    private:
+        
+        ::std::function<void (bool, ::Ice::Double, ::Ice::Int)> _response;
+    };
+    return begin_GetSectionData(__p_deviceRid, __ctx, new Cpp11CB(__response, __exception, __sent));
+}
+#endif
+
+bool
+IceProxy::RdbRealData::RdbDataOpt::end_GetSectionData(::Ice::Double& __p_analogValue, ::Ice::Int& __p_discreteValue, const ::Ice::AsyncResultPtr& __result)
+{
+    ::Ice::AsyncResult::__check(__result, this, __RdbRealData__RdbDataOpt__GetSectionData_name);
+    bool __ret;
+    if(!__result->__wait())
+    {
+        try
+        {
+            __result->__throwUserException();
+        }
+        catch(const ::Ice::UserException& __ex)
+        {
+            throw ::Ice::UnknownUserException(__FILE__, __LINE__, __ex.ice_name());
+        }
+    }
+    ::IceInternal::BasicStream* __is = __result->__startReadParams();
+    __is->read(__p_analogValue);
+    __is->read(__p_discreteValue);
+    __is->read(__ret);
+    __result->__endReadParams();
+    return __ret;
+}
+
 const ::std::string&
 IceProxy::RdbRealData::RdbDataOpt::ice_staticId()
 {
@@ -3124,6 +3251,25 @@ RdbRealData::RdbDataOpt::___UpdateTopoData(::IceInternal::Incoming& __inS, const
     return ::Ice::DispatchOK;
 }
 
+::Ice::DispatchStatus
+RdbRealData::RdbDataOpt::___GetSectionData(::IceInternal::Incoming& __inS, const ::Ice::Current& __current)
+{
+    __checkMode(::Ice::Normal, __current.mode);
+    ::IceInternal::BasicStream* __is = __inS.startReadParams();
+    ::std::string __p_deviceRid;
+    __is->read(__p_deviceRid);
+    __inS.endReadParams();
+    ::Ice::Double __p_analogValue;
+    ::Ice::Int __p_discreteValue;
+    bool __ret = GetSectionData(__p_deviceRid, __p_analogValue, __p_discreteValue, __current);
+    ::IceInternal::BasicStream* __os = __inS.__startWriteParams(::Ice::DefaultFormat);
+    __os->write(__p_analogValue);
+    __os->write(__p_discreteValue);
+    __os->write(__ret);
+    __inS.__endWriteParams(true);
+    return ::Ice::DispatchOK;
+}
+
 namespace
 {
 const ::std::string __RdbRealData__RdbDataOpt_all[] =
@@ -3131,6 +3277,7 @@ const ::std::string __RdbRealData__RdbDataOpt_all[] =
     "DeleteRdbData",
     "GetEquipLineAndStationInfo",
     "GetEquipTree",
+    "GetSectionData",
     "GetSpecificEquipTree",
     "GetTopoData",
     "GetTopoIslandInfo",
@@ -3155,7 +3302,7 @@ const ::std::string __RdbRealData__RdbDataOpt_all[] =
 ::Ice::DispatchStatus
 RdbRealData::RdbDataOpt::__dispatch(::IceInternal::Incoming& in, const ::Ice::Current& current)
 {
-    ::std::pair< const ::std::string*, const ::std::string*> r = ::std::equal_range(__RdbRealData__RdbDataOpt_all, __RdbRealData__RdbDataOpt_all + 20, current.operation);
+    ::std::pair< const ::std::string*, const ::std::string*> r = ::std::equal_range(__RdbRealData__RdbDataOpt_all, __RdbRealData__RdbDataOpt_all + 21, current.operation);
     if(r.first == r.second)
     {
         throw ::Ice::OperationNotExistException(__FILE__, __LINE__, current.id, current.facet, current.operation);
@@ -3177,69 +3324,73 @@ RdbRealData::RdbDataOpt::__dispatch(::IceInternal::Incoming& in, const ::Ice::Cu
         }
         case 3:
         {
-            return ___GetSpecificEquipTree(in, current);
+            return ___GetSectionData(in, current);
         }
         case 4:
         {
-            return ___GetTopoData(in, current);
+            return ___GetSpecificEquipTree(in, current);
         }
         case 5:
         {
-            return ___GetTopoIslandInfo(in, current);
+            return ___GetTopoData(in, current);
         }
         case 6:
         {
-            return ___InsertData(in, current);
+            return ___GetTopoIslandInfo(in, current);
         }
         case 7:
         {
-            return ___IsInvalidDbData(in, current);
+            return ___InsertData(in, current);
         }
         case 8:
         {
-            return ___SelectCompleteData(in, current);
+            return ___IsInvalidDbData(in, current);
         }
         case 9:
         {
-            return ___SelectDataCount(in, current);
+            return ___SelectCompleteData(in, current);
         }
         case 10:
         {
-            return ___SelectDefaultData(in, current);
+            return ___SelectDataCount(in, current);
         }
         case 11:
         {
-            return ___SelectSpecificData(in, current);
+            return ___SelectDefaultData(in, current);
         }
         case 12:
         {
-            return ___UpdateCompleteData(in, current);
+            return ___SelectSpecificData(in, current);
         }
         case 13:
         {
-            return ___UpdateTopoData(in, current);
+            return ___UpdateCompleteData(in, current);
         }
         case 14:
         {
-            return ___ice_id(in, current);
+            return ___UpdateTopoData(in, current);
         }
         case 15:
         {
-            return ___ice_ids(in, current);
+            return ___ice_id(in, current);
         }
         case 16:
         {
-            return ___ice_isA(in, current);
+            return ___ice_ids(in, current);
         }
         case 17:
         {
-            return ___ice_ping(in, current);
+            return ___ice_isA(in, current);
         }
         case 18:
         {
-            return ___isEmptyNode(in, current);
+            return ___ice_ping(in, current);
         }
         case 19:
+        {
+            return ___isEmptyNode(in, current);
+        }
+        case 20:
         {
             return ___isOrphanNode(in, current);
         }

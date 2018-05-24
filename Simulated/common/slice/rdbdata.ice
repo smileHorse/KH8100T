@@ -352,6 +352,9 @@ module RdbRealData
 		//刷新拓扑结构
 		void UpdateTopoData();
 
+		//获取断面数据
+		bool GetSectionData(string deviceRid, out double analogValue, out int discreteValue);
+
 	};
 };
 

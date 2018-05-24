@@ -77,6 +77,7 @@ bool WorkStationServer::GetEquipTree( RdbRealData::RdbDataOptPrx& proxy )
 	RdbRealData::EquipTreeSequence treeSeq;
 	proxy->GetEquipTree(deviceType, deviceRid, treeSeq);	
 	proxy->GetSpecificEquipTree(deviceType, deviceRid, "Breaker", treeSeq);
+
 	
 	return true;
 }

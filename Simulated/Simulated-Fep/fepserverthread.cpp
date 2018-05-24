@@ -312,7 +312,7 @@ void FepServerThread::processDLFault()
 	FepData::FaultEvent event;
 	event.unitNo = 1;
 	event.lineNo = 1;
-	event.timeStamp = IceUtil::Time::now().toMilliSeconds();
+	event.timeStamp = IceUtil::Time::now().toMicroSeconds();
 	event.eventType = 0;
 	packet.events.push_back(event);
 
