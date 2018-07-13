@@ -45,6 +45,8 @@ namespace
 
 const ::std::string __SubData__SubscribeDataInfo__procSub_name = "procSub";
 
+const ::std::string __SubData__SubscribeDataInfo__refreshParam_name = "refreshParam";
+
 }
 
 namespace Ice
@@ -108,6 +110,48 @@ void
 IceProxy::SubData::SubscribeDataInfo::end_procSub(const ::Ice::AsyncResultPtr& __result)
 {
     __end(__result, __SubData__SubscribeDataInfo__procSub_name);
+}
+
+void
+IceProxy::SubData::SubscribeDataInfo::refreshParam(const ::SubData::PartSec& __p_data, const ::Ice::Context* __ctx)
+{
+    ::IceInternal::Outgoing __og(this, __SubData__SubscribeDataInfo__refreshParam_name, ::Ice::Normal, __ctx);
+    try
+    {
+        ::IceInternal::BasicStream* __os = __og.startWriteParams(::Ice::DefaultFormat);
+        __os->write(__p_data);
+        __og.endWriteParams();
+    }
+    catch(const ::Ice::LocalException& __ex)
+    {
+        __og.abort(__ex);
+    }
+    __invoke(__og);
+}
+
+::Ice::AsyncResultPtr
+IceProxy::SubData::SubscribeDataInfo::begin_refreshParam(const ::SubData::PartSec& __p_data, const ::Ice::Context* __ctx, const ::IceInternal::CallbackBasePtr& __del, const ::Ice::LocalObjectPtr& __cookie)
+{
+    ::IceInternal::OutgoingAsyncPtr __result = new ::IceInternal::OutgoingAsync(this, __SubData__SubscribeDataInfo__refreshParam_name, __del, __cookie);
+    try
+    {
+        __result->prepare(__SubData__SubscribeDataInfo__refreshParam_name, ::Ice::Normal, __ctx);
+        ::IceInternal::BasicStream* __os = __result->startWriteParams(::Ice::DefaultFormat);
+        __os->write(__p_data);
+        __result->endWriteParams();
+        __result->invoke();
+    }
+    catch(const ::Ice::Exception& __ex)
+    {
+        __result->abort(__ex);
+    }
+    return __result;
+}
+
+void
+IceProxy::SubData::SubscribeDataInfo::end_refreshParam(const ::Ice::AsyncResultPtr& __result)
+{
+    __end(__result, __SubData__SubscribeDataInfo__refreshParam_name);
 }
 
 const ::std::string&
@@ -176,6 +220,19 @@ SubData::SubscribeDataInfo::___procSub(::IceInternal::Incoming& __inS, const ::I
     return ::Ice::DispatchOK;
 }
 
+::Ice::DispatchStatus
+SubData::SubscribeDataInfo::___refreshParam(::IceInternal::Incoming& __inS, const ::Ice::Current& __current)
+{
+    __checkMode(::Ice::Normal, __current.mode);
+    ::IceInternal::BasicStream* __is = __inS.startReadParams();
+    ::SubData::PartSec __p_data;
+    __is->read(__p_data);
+    __inS.endReadParams();
+    refreshParam(__p_data, __current);
+    __inS.__writeEmptyParams();
+    return ::Ice::DispatchOK;
+}
+
 namespace
 {
 const ::std::string __SubData__SubscribeDataInfo_all[] =
@@ -184,7 +241,8 @@ const ::std::string __SubData__SubscribeDataInfo_all[] =
     "ice_ids",
     "ice_isA",
     "ice_ping",
-    "procSub"
+    "procSub",
+    "refreshParam"
 };
 
 }
@@ -192,7 +250,7 @@ const ::std::string __SubData__SubscribeDataInfo_all[] =
 ::Ice::DispatchStatus
 SubData::SubscribeDataInfo::__dispatch(::IceInternal::Incoming& in, const ::Ice::Current& current)
 {
-    ::std::pair< const ::std::string*, const ::std::string*> r = ::std::equal_range(__SubData__SubscribeDataInfo_all, __SubData__SubscribeDataInfo_all + 5, current.operation);
+    ::std::pair< const ::std::string*, const ::std::string*> r = ::std::equal_range(__SubData__SubscribeDataInfo_all, __SubData__SubscribeDataInfo_all + 6, current.operation);
     if(r.first == r.second)
     {
         throw ::Ice::OperationNotExistException(__FILE__, __LINE__, current.id, current.facet, current.operation);
@@ -219,6 +277,10 @@ SubData::SubscribeDataInfo::__dispatch(::IceInternal::Incoming& in, const ::Ice:
         case 4:
         {
             return ___procSub(in, current);
+        }
+        case 5:
+        {
+            return ___refreshParam(in, current);
         }
     }
 

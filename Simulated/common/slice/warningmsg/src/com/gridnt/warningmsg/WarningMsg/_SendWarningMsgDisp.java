@@ -70,6 +70,30 @@ public abstract class _SendWarningMsgDisp extends Ice.ObjectImpl implements Send
         return __ids[1];
     }
 
+    /**
+     * 发送历史曲线文件
+     * @parameter date: 日期
+     * @parameter title: 文件标题
+     * @parameter datas: 文件内容
+     *
+     **/
+    public final void sendCurveFileBinary(String date, String title, byte[] datas)
+    {
+        sendCurveFileBinary(date, title, datas, null);
+    }
+
+    /**
+     * 发送录波文件
+     * @parameter unitNo: 单元号
+     * @parameter title: 文件标题
+     * @parameter datas: 文件内容
+     *
+     **/
+    public final void sendRfwFileBinary(String unitNo, String title, byte[] datas)
+    {
+        sendRfwFileBinary(unitNo, title, datas, null);
+    }
+
     public final void sendWarningMsgBinary(String title, byte[] datas)
     {
         sendWarningMsgBinary(title, datas, null);
@@ -89,12 +113,46 @@ public abstract class _SendWarningMsgDisp extends Ice.ObjectImpl implements Send
         return Ice.DispatchStatus.DispatchOK;
     }
 
+    public static Ice.DispatchStatus ___sendRfwFileBinary(SendWarningMsg __obj, IceInternal.Incoming __inS, Ice.Current __current)
+    {
+        __checkMode(Ice.OperationMode.Normal, __current.mode);
+        IceInternal.BasicStream __is = __inS.startReadParams();
+        String unitNo;
+        String title;
+        byte[] datas;
+        unitNo = __is.readString();
+        title = __is.readString();
+        datas = BytesHelper.read(__is);
+        __inS.endReadParams();
+        __obj.sendRfwFileBinary(unitNo, title, datas, __current);
+        __inS.__writeEmptyParams();
+        return Ice.DispatchStatus.DispatchOK;
+    }
+
+    public static Ice.DispatchStatus ___sendCurveFileBinary(SendWarningMsg __obj, IceInternal.Incoming __inS, Ice.Current __current)
+    {
+        __checkMode(Ice.OperationMode.Normal, __current.mode);
+        IceInternal.BasicStream __is = __inS.startReadParams();
+        String date;
+        String title;
+        byte[] datas;
+        date = __is.readString();
+        title = __is.readString();
+        datas = BytesHelper.read(__is);
+        __inS.endReadParams();
+        __obj.sendCurveFileBinary(date, title, datas, __current);
+        __inS.__writeEmptyParams();
+        return Ice.DispatchStatus.DispatchOK;
+    }
+
     private final static String[] __all =
     {
         "ice_id",
         "ice_ids",
         "ice_isA",
         "ice_ping",
+        "sendCurveFileBinary",
+        "sendRfwFileBinary",
         "sendWarningMsgBinary"
     };
 
@@ -125,6 +183,14 @@ public abstract class _SendWarningMsgDisp extends Ice.ObjectImpl implements Send
                 return ___ice_ping(this, in, __current);
             }
             case 4:
+            {
+                return ___sendCurveFileBinary(this, in, __current);
+            }
+            case 5:
+            {
+                return ___sendRfwFileBinary(this, in, __current);
+            }
+            case 6:
             {
                 return ___sendWarningMsgBinary(this, in, __current);
             }

@@ -233,4 +233,42 @@ public interface CAmsManagerPrx extends Ice.ObjectPrx
                                               IceInternal.Functional_BoolCallback __sentCb);
 
     public void end_AmsHeartBeat(Ice.AsyncResult __result);
+
+    public void syncServreNode(ServerNode node);
+
+    public void syncServreNode(ServerNode node, java.util.Map<String, String> __ctx);
+
+    public Ice.AsyncResult begin_syncServreNode(ServerNode node);
+
+    public Ice.AsyncResult begin_syncServreNode(ServerNode node, java.util.Map<String, String> __ctx);
+
+    public Ice.AsyncResult begin_syncServreNode(ServerNode node, Ice.Callback __cb);
+
+    public Ice.AsyncResult begin_syncServreNode(ServerNode node, java.util.Map<String, String> __ctx, Ice.Callback __cb);
+
+    public Ice.AsyncResult begin_syncServreNode(ServerNode node, Callback_CAmsManager_syncServreNode __cb);
+
+    public Ice.AsyncResult begin_syncServreNode(ServerNode node, java.util.Map<String, String> __ctx, Callback_CAmsManager_syncServreNode __cb);
+
+    public Ice.AsyncResult begin_syncServreNode(ServerNode node, 
+                                                IceInternal.Functional_VoidCallback __responseCb, 
+                                                IceInternal.Functional_GenericCallback1<Ice.Exception> __exceptionCb);
+
+    public Ice.AsyncResult begin_syncServreNode(ServerNode node, 
+                                                IceInternal.Functional_VoidCallback __responseCb, 
+                                                IceInternal.Functional_GenericCallback1<Ice.Exception> __exceptionCb, 
+                                                IceInternal.Functional_BoolCallback __sentCb);
+
+    public Ice.AsyncResult begin_syncServreNode(ServerNode node, 
+                                                java.util.Map<String, String> __ctx, 
+                                                IceInternal.Functional_VoidCallback __responseCb, 
+                                                IceInternal.Functional_GenericCallback1<Ice.Exception> __exceptionCb);
+
+    public Ice.AsyncResult begin_syncServreNode(ServerNode node, 
+                                                java.util.Map<String, String> __ctx, 
+                                                IceInternal.Functional_VoidCallback __responseCb, 
+                                                IceInternal.Functional_GenericCallback1<Ice.Exception> __exceptionCb, 
+                                                IceInternal.Functional_BoolCallback __sentCb);
+
+    public void end_syncServreNode(Ice.AsyncResult __result);
 }

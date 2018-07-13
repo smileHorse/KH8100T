@@ -73,42 +73,46 @@ public interface clientManagerPrx extends Ice.ObjectPrx
 
     public boolean end_getFileDirList(FileDirSeqHolder fileList, Ice.AsyncResult __result);
 
-    public boolean getFileCont(String strFileName, Ice.StringHolder strInf, Ice.StringHolder strCfg, ByteSeqHolder rfwDatas);
+    public boolean getFileCont(int unitNo, String strFileName, Ice.StringHolder strInf, Ice.StringHolder strCfg, ByteSeqHolder rfwDatas);
 
-    public boolean getFileCont(String strFileName, Ice.StringHolder strInf, Ice.StringHolder strCfg, ByteSeqHolder rfwDatas, java.util.Map<String, String> __ctx);
+    public boolean getFileCont(int unitNo, String strFileName, Ice.StringHolder strInf, Ice.StringHolder strCfg, ByteSeqHolder rfwDatas, java.util.Map<String, String> __ctx);
 
-    public Ice.AsyncResult begin_getFileCont(String strFileName);
+    public Ice.AsyncResult begin_getFileCont(int unitNo, String strFileName);
 
-    public Ice.AsyncResult begin_getFileCont(String strFileName, java.util.Map<String, String> __ctx);
+    public Ice.AsyncResult begin_getFileCont(int unitNo, String strFileName, java.util.Map<String, String> __ctx);
 
-    public Ice.AsyncResult begin_getFileCont(String strFileName, Ice.Callback __cb);
+    public Ice.AsyncResult begin_getFileCont(int unitNo, String strFileName, Ice.Callback __cb);
 
-    public Ice.AsyncResult begin_getFileCont(String strFileName, java.util.Map<String, String> __ctx, Ice.Callback __cb);
+    public Ice.AsyncResult begin_getFileCont(int unitNo, String strFileName, java.util.Map<String, String> __ctx, Ice.Callback __cb);
 
-    public Ice.AsyncResult begin_getFileCont(String strFileName, Callback_clientManager_getFileCont __cb);
+    public Ice.AsyncResult begin_getFileCont(int unitNo, String strFileName, Callback_clientManager_getFileCont __cb);
 
-    public Ice.AsyncResult begin_getFileCont(String strFileName, java.util.Map<String, String> __ctx, Callback_clientManager_getFileCont __cb);
+    public Ice.AsyncResult begin_getFileCont(int unitNo, String strFileName, java.util.Map<String, String> __ctx, Callback_clientManager_getFileCont __cb);
 
     public interface FunctionalCallback_clientManager_getFileCont_Response
     {
         void apply(boolean __ret, String strInf, String strCfg, byte[] rfwDatas);
     }
 
-    public Ice.AsyncResult begin_getFileCont(String strFileName, 
+    public Ice.AsyncResult begin_getFileCont(int unitNo, 
+                                             String strFileName, 
                                              FunctionalCallback_clientManager_getFileCont_Response __responseCb, 
                                              IceInternal.Functional_GenericCallback1<Ice.Exception> __exceptionCb);
 
-    public Ice.AsyncResult begin_getFileCont(String strFileName, 
+    public Ice.AsyncResult begin_getFileCont(int unitNo, 
+                                             String strFileName, 
                                              FunctionalCallback_clientManager_getFileCont_Response __responseCb, 
                                              IceInternal.Functional_GenericCallback1<Ice.Exception> __exceptionCb, 
                                              IceInternal.Functional_BoolCallback __sentCb);
 
-    public Ice.AsyncResult begin_getFileCont(String strFileName, 
+    public Ice.AsyncResult begin_getFileCont(int unitNo, 
+                                             String strFileName, 
                                              java.util.Map<String, String> __ctx, 
                                              FunctionalCallback_clientManager_getFileCont_Response __responseCb, 
                                              IceInternal.Functional_GenericCallback1<Ice.Exception> __exceptionCb);
 
-    public Ice.AsyncResult begin_getFileCont(String strFileName, 
+    public Ice.AsyncResult begin_getFileCont(int unitNo, 
+                                             String strFileName, 
                                              java.util.Map<String, String> __ctx, 
                                              FunctionalCallback_clientManager_getFileCont_Response __responseCb, 
                                              IceInternal.Functional_GenericCallback1<Ice.Exception> __exceptionCb, 

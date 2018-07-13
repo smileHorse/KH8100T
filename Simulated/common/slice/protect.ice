@@ -17,7 +17,8 @@ module Protect{
 		READSETTING = 0,			//读取定值
 		WRITESETTING,				//下发定值
 		READGROUPNO,				//读定值区
-		SWITCHGROUP					//切换定值区
+		SWITCHGROUP,				//切换定值区
+		PROTECTRESET
 	};
 	sequence<byte> Bytes;
 	

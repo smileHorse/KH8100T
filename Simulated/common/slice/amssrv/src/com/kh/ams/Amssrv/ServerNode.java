@@ -40,6 +40,12 @@ public class ServerNode implements java.lang.Cloneable, java.io.Serializable
 
     public String preRole;
 
+    public String runRole;
+
+    public String runPartName;
+
+    public String runSecName;
+
     public ServerNode()
     {
         name = "";
@@ -49,9 +55,12 @@ public class ServerNode implements java.lang.Cloneable, java.io.Serializable
         sectionId = "";
         sectionName = "";
         preRole = "";
+        runRole = "";
+        runPartName = "";
+        runSecName = "";
     }
 
-    public ServerNode(String name, int type, String ip, int port, String partitionId, String partitionName, String sectionId, String sectionName, String preRole)
+    public ServerNode(String name, int type, String ip, int port, String partitionId, String partitionName, String sectionId, String sectionName, String preRole, String runRole, String runPartName, String runSecName)
     {
         this.name = name;
         this.type = type;
@@ -62,6 +71,9 @@ public class ServerNode implements java.lang.Cloneable, java.io.Serializable
         this.sectionId = sectionId;
         this.sectionName = sectionName;
         this.preRole = preRole;
+        this.runRole = runRole;
+        this.runPartName = runPartName;
+        this.runSecName = runSecName;
     }
 
     public boolean
@@ -136,6 +148,27 @@ public class ServerNode implements java.lang.Cloneable, java.io.Serializable
                     return false;
                 }
             }
+            if(runRole != _r.runRole)
+            {
+                if(runRole == null || _r.runRole == null || !runRole.equals(_r.runRole))
+                {
+                    return false;
+                }
+            }
+            if(runPartName != _r.runPartName)
+            {
+                if(runPartName == null || _r.runPartName == null || !runPartName.equals(_r.runPartName))
+                {
+                    return false;
+                }
+            }
+            if(runSecName != _r.runSecName)
+            {
+                if(runSecName == null || _r.runSecName == null || !runSecName.equals(_r.runSecName))
+                {
+                    return false;
+                }
+            }
 
             return true;
         }
@@ -157,6 +190,9 @@ public class ServerNode implements java.lang.Cloneable, java.io.Serializable
         __h = IceInternal.HashUtil.hashAdd(__h, sectionId);
         __h = IceInternal.HashUtil.hashAdd(__h, sectionName);
         __h = IceInternal.HashUtil.hashAdd(__h, preRole);
+        __h = IceInternal.HashUtil.hashAdd(__h, runRole);
+        __h = IceInternal.HashUtil.hashAdd(__h, runPartName);
+        __h = IceInternal.HashUtil.hashAdd(__h, runSecName);
         return __h;
     }
 
@@ -187,6 +223,9 @@ public class ServerNode implements java.lang.Cloneable, java.io.Serializable
         __os.writeString(sectionId);
         __os.writeString(sectionName);
         __os.writeString(preRole);
+        __os.writeString(runRole);
+        __os.writeString(runPartName);
+        __os.writeString(runSecName);
     }
 
     public void
@@ -201,6 +240,9 @@ public class ServerNode implements java.lang.Cloneable, java.io.Serializable
         sectionId = __is.readString();
         sectionName = __is.readString();
         preRole = __is.readString();
+        runRole = __is.readString();
+        runPartName = __is.readString();
+        runSecName = __is.readString();
     }
 
     static public void
@@ -229,5 +271,5 @@ public class ServerNode implements java.lang.Cloneable, java.io.Serializable
     
     private static final ServerNode __nullMarshalValue = new ServerNode();
 
-    public static final long serialVersionUID = 286785549L;
+    public static final long serialVersionUID = -1130731947L;
 }

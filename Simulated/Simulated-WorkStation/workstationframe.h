@@ -48,6 +48,8 @@ signals:
 	void subscriberYkAppSignal(bool isStop);
 	void subscriberWarningMsgSignal(bool isStop);
 	void ykSelectSignal(bool isStop);
+	void transferCurveFileSignal(QString date, QString fileName);
+	void transferWarningFileSignal(QString fileName);
 
 public slots:
 	void updateTableWidget(const OperationInfo& info);
@@ -70,6 +72,8 @@ private slots:
 	void subscriberYkApp();
 	void subscribeWarningMsg();
 	void ykSelect();
+	void transferCurveFile();
+	void transferWarningFile();
 	void clearTextEdit();
 	void about();
 
@@ -100,6 +104,8 @@ private:
 	QAction*	subscriberYkAppAction;
 	QAction*	subscriberWarningMsgAction;
 	QAction*	ykSelectAction;
+	QAction*	transferCurveFileAction;
+	QAction*	transferWarningFileAction;
 	QAction*	clearAction;
 	QAction*	helpAction;
 

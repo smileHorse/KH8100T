@@ -37,4 +37,6 @@ public interface _CAmsManagerOperations
     void Quit(Ice.Current __current);
 
     void AmsHeartBeat(String strServerName, Ice.Current __current);
+
+    void syncServreNode(ServerNode node, Ice.Current __current);
 }

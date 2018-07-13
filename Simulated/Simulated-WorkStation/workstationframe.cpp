@@ -135,6 +135,16 @@ void WorkStationFrame::createActions()
 	ykSelectAction->setEnabled(false);
 	connect(ykSelectAction, SIGNAL(triggered()), this, SLOT(ykSelect()));
 	
+	transferCurveFileAction = new QAction(QIcon(":/images/icemenu.png"), QStringLiteral("请求历史曲线文件"), this);
+	transferCurveFileAction->setStatusTip(QStringLiteral("请求历史曲线文件"));
+	transferCurveFileAction->setEnabled(false);
+	connect(transferCurveFileAction, SIGNAL(triggered()), this, SLOT(transferCurveFile()));
+
+	transferWarningFileAction = new QAction(QIcon(":/images/icemenu.png"), QStringLiteral("请求告警文件"), this);
+	transferWarningFileAction->setStatusTip(QStringLiteral("请求告警文件"));
+	transferWarningFileAction->setEnabled(false);
+	connect(transferWarningFileAction, SIGNAL(triggered()), this, SLOT(transferWarningFile()));
+	
 	clearAction = new QAction(QIcon(":/images/clear.png"), QStringLiteral("清空文本"), this);
 	clearAction->setStatusTip(QStringLiteral("清空文本"));
 	connect(clearAction, SIGNAL(triggered()), this, SLOT(clearTextEdit()));
@@ -203,6 +213,9 @@ void WorkStationFrame::createToolBars()
 	operToolBar->addSeparator();
 	operToolBar->addAction(ykSelectAction);
 	operToolBar->addSeparator();
+	operToolBar->addAction(transferCurveFileAction);
+	operToolBar->addAction(transferWarningFileAction);
+	operToolBar->addSeparator();
 	operToolBar->addAction(clearAction);
 }
 
@@ -227,6 +240,8 @@ void WorkStationFrame::createConnects()
 	connect(this, SIGNAL(subscriberYkAppSignal(bool)), m_workStationServerThreadPtr, SLOT(subscriberYkApp(bool)));
 	connect(this, SIGNAL(subscriberWarningMsgSignal(bool)), m_workStationServerThreadPtr, SLOT(subscriberWarningMsg(bool)));
 	connect(this, SIGNAL(ykSelectSignal(bool)), m_workStationServerThreadPtr, SLOT(ykSelect(bool)));
+	connect(this, SIGNAL(transferCurveFileSignal(QString, QString)), m_workStationServerThreadPtr, SLOT(transferCurveFile(QString, QString)));
+	connect(this, SIGNAL(transferWarningFileSignal(QString)), m_workStationServerThreadPtr, SLOT(transferWarningFile(QString)));
 	connect(m_workStationServerThreadPtr, &WorkStationServerThread::executeOperation, 
 		this, &WorkStationFrame::updateTableWidget);
 	connect(m_workStationServerThreadPtr, &WorkStationServerThread::outputReceiveData, 
@@ -295,6 +310,8 @@ void WorkStationFrame::updateActions( bool serverStarted )
 	subscriberYkAppAction->setEnabled(serverStarted);
 	subscriberWarningMsgAction->setEnabled(serverStarted);
 	ykSelectAction->setEnabled(serverStarted);
+	transferCurveFileAction->setEnabled(serverStarted);
+	transferWarningFileAction->setEnabled(serverStarted);
 }
 
 void WorkStationFrame::startServer()
@@ -396,6 +413,27 @@ void WorkStationFrame::ykSelect()
 	bool isStop = false;
 	updateActionText(ykSelectAction, isStop);
 	emit ykSelectSignal(isStop);
+}
+
+void WorkStationFrame::transferCurveFile()
+{
+	QString text = QInputDialog::getText(this, QStringLiteral("请求历史曲线文件"), QStringLiteral("以,分隔路径和文件名): "));
+	if (text.isEmpty())
+	{
+		return;
+	}
+	QStringList strValues = text.split(",");
+	emit transferCurveFileSignal(strValues[0], strValues[1]);
+}
+
+void WorkStationFrame::transferWarningFile()
+{
+	QString text = QInputDialog::getText(this, QStringLiteral("请求告警文件"), QStringLiteral("文件名: "));
+	if (text.isEmpty())
+	{
+		return;
+	}
+	emit transferWarningFileSignal(text);
 }
 
 void WorkStationFrame::clearTextEdit()

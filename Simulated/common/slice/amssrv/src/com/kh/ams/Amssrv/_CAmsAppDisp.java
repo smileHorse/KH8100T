@@ -127,8 +127,8 @@ public abstract class _CAmsAppDisp extends Ice.ObjectImpl implements CAmsApp
     /**
      * 预先注册，得到预订角色
      *
-     * @parameter strType:节点类型
-     * @parameter ipVect:注册节点的ip列表
+     * @parameter strType:节点类型（数据服务器：1，前置机：2，应用管理：3，Icestorm:4，客户端:5）
+     * @parameter ipVect:注册节点的ip列表，客户端只提供一个ip
      * @parameter num:注册次数
      * @parameter ServerNode:返回节点的信息
      * @return 预订角色(unknow/master/slave)
@@ -139,6 +139,16 @@ public abstract class _CAmsAppDisp extends Ice.ObjectImpl implements CAmsApp
         throws CAmsException
     {
         return Register(strType, ipVect, num, serverInfo, null);
+    }
+
+    public final ServerNode[] getServerNodeList()
+    {
+        return getServerNodeList(null);
+    }
+
+    public final void setServerNodeList(ServerNode[] serNodeSeq)
+    {
+        setServerNodeList(serNodeSeq, null);
     }
 
     /**
@@ -288,6 +298,29 @@ public abstract class _CAmsAppDisp extends Ice.ObjectImpl implements CAmsApp
         }
     }
 
+    public static Ice.DispatchStatus ___getServerNodeList(CAmsApp __obj, IceInternal.Incoming __inS, Ice.Current __current)
+    {
+        __checkMode(Ice.OperationMode.Normal, __current.mode);
+        __inS.readEmptyParams();
+        ServerNode[] __ret = __obj.getServerNodeList(__current);
+        IceInternal.BasicStream __os = __inS.__startWriteParams(Ice.FormatType.DefaultFormat);
+        ServerNodeSeqHelper.write(__os, __ret);
+        __inS.__endWriteParams(true);
+        return Ice.DispatchStatus.DispatchOK;
+    }
+
+    public static Ice.DispatchStatus ___setServerNodeList(CAmsApp __obj, IceInternal.Incoming __inS, Ice.Current __current)
+    {
+        __checkMode(Ice.OperationMode.Normal, __current.mode);
+        IceInternal.BasicStream __is = __inS.startReadParams();
+        ServerNode[] serNodeSeq;
+        serNodeSeq = ServerNodeSeqHelper.read(__is);
+        __inS.endReadParams();
+        __obj.setServerNodeList(serNodeSeq, __current);
+        __inS.__writeEmptyParams();
+        return Ice.DispatchStatus.DispatchOK;
+    }
+
     private final static String[] __all =
     {
         "FinishRegister",
@@ -295,10 +328,12 @@ public abstract class _CAmsAppDisp extends Ice.ObjectImpl implements CAmsApp
         "HeartBeat",
         "Quit",
         "Register",
+        "getServerNodeList",
         "ice_id",
         "ice_ids",
         "ice_isA",
         "ice_ping",
+        "setServerNodeList",
         "shiftRole"
     };
 
@@ -334,21 +369,29 @@ public abstract class _CAmsAppDisp extends Ice.ObjectImpl implements CAmsApp
             }
             case 5:
             {
-                return ___ice_id(this, in, __current);
+                return ___getServerNodeList(this, in, __current);
             }
             case 6:
             {
-                return ___ice_ids(this, in, __current);
+                return ___ice_id(this, in, __current);
             }
             case 7:
             {
-                return ___ice_isA(this, in, __current);
+                return ___ice_ids(this, in, __current);
             }
             case 8:
             {
-                return ___ice_ping(this, in, __current);
+                return ___ice_isA(this, in, __current);
             }
             case 9:
+            {
+                return ___ice_ping(this, in, __current);
+            }
+            case 10:
+            {
+                return ___setServerNodeList(this, in, __current);
+            }
+            case 11:
             {
                 return ___shiftRole(this, in, __current);
             }

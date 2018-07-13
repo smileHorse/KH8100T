@@ -66,6 +66,9 @@ module Amssrv{
 	    
 	    //心跳函数
 	    void AmsHeartBeat(string strServerName);
+	    
+	    //同步角色，分区分段信息
+	    void syncServreNode(ServerNode node);
 	};
 	
 	
@@ -146,7 +149,7 @@ module Amssrv{
 	    //得到所有节点列表
 	    ServerNodeSeq getServerNodeList();
 	    
-	    //保存节点列表信息
+	    //保存节点列表信息，只能amgui调用
 	    void setServerNodeList(ServerNodeSeq serNodeSeq);
 	};
 };

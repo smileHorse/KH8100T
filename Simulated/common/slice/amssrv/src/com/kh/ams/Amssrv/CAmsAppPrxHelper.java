@@ -956,6 +956,292 @@ public final class CAmsAppPrxHelper extends Ice.ObjectPrxHelperBase implements C
         __cb.response(__ret, serverInfo.value);
     }
 
+    private static final String __getServerNodeList_name = "getServerNodeList";
+
+    public ServerNode[] getServerNodeList()
+    {
+        return getServerNodeList(null, false);
+    }
+
+    public ServerNode[] getServerNodeList(java.util.Map<String, String> __ctx)
+    {
+        return getServerNodeList(__ctx, true);
+    }
+
+    private ServerNode[] getServerNodeList(java.util.Map<String, String> __ctx, boolean __explicitCtx)
+    {
+        __checkTwowayOnly(__getServerNodeList_name);
+        return end_getServerNodeList(begin_getServerNodeList(__ctx, __explicitCtx, true, null));
+    }
+
+    public Ice.AsyncResult begin_getServerNodeList()
+    {
+        return begin_getServerNodeList(null, false, false, null);
+    }
+
+    public Ice.AsyncResult begin_getServerNodeList(java.util.Map<String, String> __ctx)
+    {
+        return begin_getServerNodeList(__ctx, true, false, null);
+    }
+
+    public Ice.AsyncResult begin_getServerNodeList(Ice.Callback __cb)
+    {
+        return begin_getServerNodeList(null, false, false, __cb);
+    }
+
+    public Ice.AsyncResult begin_getServerNodeList(java.util.Map<String, String> __ctx, Ice.Callback __cb)
+    {
+        return begin_getServerNodeList(__ctx, true, false, __cb);
+    }
+
+    public Ice.AsyncResult begin_getServerNodeList(Callback_CAmsApp_getServerNodeList __cb)
+    {
+        return begin_getServerNodeList(null, false, false, __cb);
+    }
+
+    public Ice.AsyncResult begin_getServerNodeList(java.util.Map<String, String> __ctx, Callback_CAmsApp_getServerNodeList __cb)
+    {
+        return begin_getServerNodeList(__ctx, true, false, __cb);
+    }
+
+    public Ice.AsyncResult begin_getServerNodeList(IceInternal.Functional_GenericCallback1<ServerNode[]> __responseCb, 
+                                                   IceInternal.Functional_GenericCallback1<Ice.Exception> __exceptionCb)
+    {
+        return begin_getServerNodeList(null, false, false, __responseCb, __exceptionCb, null);
+    }
+
+    public Ice.AsyncResult begin_getServerNodeList(IceInternal.Functional_GenericCallback1<ServerNode[]> __responseCb, 
+                                                   IceInternal.Functional_GenericCallback1<Ice.Exception> __exceptionCb, 
+                                                   IceInternal.Functional_BoolCallback __sentCb)
+    {
+        return begin_getServerNodeList(null, false, false, __responseCb, __exceptionCb, __sentCb);
+    }
+
+    public Ice.AsyncResult begin_getServerNodeList(java.util.Map<String, String> __ctx, 
+                                                   IceInternal.Functional_GenericCallback1<ServerNode[]> __responseCb, 
+                                                   IceInternal.Functional_GenericCallback1<Ice.Exception> __exceptionCb)
+    {
+        return begin_getServerNodeList(__ctx, true, false, __responseCb, __exceptionCb, null);
+    }
+
+    public Ice.AsyncResult begin_getServerNodeList(java.util.Map<String, String> __ctx, 
+                                                   IceInternal.Functional_GenericCallback1<ServerNode[]> __responseCb, 
+                                                   IceInternal.Functional_GenericCallback1<Ice.Exception> __exceptionCb, 
+                                                   IceInternal.Functional_BoolCallback __sentCb)
+    {
+        return begin_getServerNodeList(__ctx, true, false, __responseCb, __exceptionCb, __sentCb);
+    }
+
+    private Ice.AsyncResult begin_getServerNodeList(java.util.Map<String, String> __ctx, 
+                                                    boolean __explicitCtx, 
+                                                    boolean __synchronous, 
+                                                    IceInternal.Functional_GenericCallback1<ServerNode[]> __responseCb, 
+                                                    IceInternal.Functional_GenericCallback1<Ice.Exception> __exceptionCb, 
+                                                    IceInternal.Functional_BoolCallback __sentCb)
+    {
+        return begin_getServerNodeList(__ctx, __explicitCtx, __synchronous, 
+                                       new IceInternal.Functional_TwowayCallbackArg1<com.kh.ams.Amssrv.ServerNode[]>(__responseCb, __exceptionCb, __sentCb)
+                                           {
+                                               public final void __completed(Ice.AsyncResult __result)
+                                               {
+                                                   CAmsAppPrxHelper.__getServerNodeList_completed(this, __result);
+                                               }
+                                           });
+    }
+
+    private Ice.AsyncResult begin_getServerNodeList(java.util.Map<String, String> __ctx, 
+                                                    boolean __explicitCtx, 
+                                                    boolean __synchronous, 
+                                                    IceInternal.CallbackBase __cb)
+    {
+        __checkAsyncTwowayOnly(__getServerNodeList_name);
+        IceInternal.OutgoingAsync __result = getOutgoingAsync(__getServerNodeList_name, __cb);
+        try
+        {
+            __result.prepare(__getServerNodeList_name, Ice.OperationMode.Normal, __ctx, __explicitCtx, __synchronous);
+            __result.writeEmptyParams();
+            __result.invoke();
+        }
+        catch(Ice.Exception __ex)
+        {
+            __result.abort(__ex);
+        }
+        return __result;
+    }
+
+    public ServerNode[] end_getServerNodeList(Ice.AsyncResult __iresult)
+    {
+        IceInternal.OutgoingAsync __result = IceInternal.OutgoingAsync.check(__iresult, this, __getServerNodeList_name);
+        try
+        {
+            if(!__result.__wait())
+            {
+                try
+                {
+                    __result.throwUserException();
+                }
+                catch(Ice.UserException __ex)
+                {
+                    throw new Ice.UnknownUserException(__ex.ice_name(), __ex);
+                }
+            }
+            IceInternal.BasicStream __is = __result.startReadParams();
+            ServerNode[] __ret;
+            __ret = ServerNodeSeqHelper.read(__is);
+            __result.endReadParams();
+            return __ret;
+        }
+        finally
+        {
+            if(__result != null)
+            {
+                __result.cacheMessageBuffers();
+            }
+        }
+    }
+
+    static public void __getServerNodeList_completed(Ice.TwowayCallbackArg1<ServerNode[]> __cb, Ice.AsyncResult __result)
+    {
+        com.kh.ams.Amssrv.CAmsAppPrx __proxy = (com.kh.ams.Amssrv.CAmsAppPrx)__result.getProxy();
+        ServerNode[] __ret = null;
+        try
+        {
+            __ret = __proxy.end_getServerNodeList(__result);
+        }
+        catch(Ice.LocalException __ex)
+        {
+            __cb.exception(__ex);
+            return;
+        }
+        catch(Ice.SystemException __ex)
+        {
+            __cb.exception(__ex);
+            return;
+        }
+        __cb.response(__ret);
+    }
+
+    private static final String __setServerNodeList_name = "setServerNodeList";
+
+    public void setServerNodeList(ServerNode[] serNodeSeq)
+    {
+        setServerNodeList(serNodeSeq, null, false);
+    }
+
+    public void setServerNodeList(ServerNode[] serNodeSeq, java.util.Map<String, String> __ctx)
+    {
+        setServerNodeList(serNodeSeq, __ctx, true);
+    }
+
+    private void setServerNodeList(ServerNode[] serNodeSeq, java.util.Map<String, String> __ctx, boolean __explicitCtx)
+    {
+        end_setServerNodeList(begin_setServerNodeList(serNodeSeq, __ctx, __explicitCtx, true, null));
+    }
+
+    public Ice.AsyncResult begin_setServerNodeList(ServerNode[] serNodeSeq)
+    {
+        return begin_setServerNodeList(serNodeSeq, null, false, false, null);
+    }
+
+    public Ice.AsyncResult begin_setServerNodeList(ServerNode[] serNodeSeq, java.util.Map<String, String> __ctx)
+    {
+        return begin_setServerNodeList(serNodeSeq, __ctx, true, false, null);
+    }
+
+    public Ice.AsyncResult begin_setServerNodeList(ServerNode[] serNodeSeq, Ice.Callback __cb)
+    {
+        return begin_setServerNodeList(serNodeSeq, null, false, false, __cb);
+    }
+
+    public Ice.AsyncResult begin_setServerNodeList(ServerNode[] serNodeSeq, java.util.Map<String, String> __ctx, Ice.Callback __cb)
+    {
+        return begin_setServerNodeList(serNodeSeq, __ctx, true, false, __cb);
+    }
+
+    public Ice.AsyncResult begin_setServerNodeList(ServerNode[] serNodeSeq, Callback_CAmsApp_setServerNodeList __cb)
+    {
+        return begin_setServerNodeList(serNodeSeq, null, false, false, __cb);
+    }
+
+    public Ice.AsyncResult begin_setServerNodeList(ServerNode[] serNodeSeq, java.util.Map<String, String> __ctx, Callback_CAmsApp_setServerNodeList __cb)
+    {
+        return begin_setServerNodeList(serNodeSeq, __ctx, true, false, __cb);
+    }
+
+    public Ice.AsyncResult begin_setServerNodeList(ServerNode[] serNodeSeq, 
+                                                   IceInternal.Functional_VoidCallback __responseCb, 
+                                                   IceInternal.Functional_GenericCallback1<Ice.Exception> __exceptionCb)
+    {
+        return begin_setServerNodeList(serNodeSeq, null, false, false, __responseCb, __exceptionCb, null);
+    }
+
+    public Ice.AsyncResult begin_setServerNodeList(ServerNode[] serNodeSeq, 
+                                                   IceInternal.Functional_VoidCallback __responseCb, 
+                                                   IceInternal.Functional_GenericCallback1<Ice.Exception> __exceptionCb, 
+                                                   IceInternal.Functional_BoolCallback __sentCb)
+    {
+        return begin_setServerNodeList(serNodeSeq, null, false, false, __responseCb, __exceptionCb, __sentCb);
+    }
+
+    public Ice.AsyncResult begin_setServerNodeList(ServerNode[] serNodeSeq, 
+                                                   java.util.Map<String, String> __ctx, 
+                                                   IceInternal.Functional_VoidCallback __responseCb, 
+                                                   IceInternal.Functional_GenericCallback1<Ice.Exception> __exceptionCb)
+    {
+        return begin_setServerNodeList(serNodeSeq, __ctx, true, false, __responseCb, __exceptionCb, null);
+    }
+
+    public Ice.AsyncResult begin_setServerNodeList(ServerNode[] serNodeSeq, 
+                                                   java.util.Map<String, String> __ctx, 
+                                                   IceInternal.Functional_VoidCallback __responseCb, 
+                                                   IceInternal.Functional_GenericCallback1<Ice.Exception> __exceptionCb, 
+                                                   IceInternal.Functional_BoolCallback __sentCb)
+    {
+        return begin_setServerNodeList(serNodeSeq, __ctx, true, false, __responseCb, __exceptionCb, __sentCb);
+    }
+
+    private Ice.AsyncResult begin_setServerNodeList(ServerNode[] serNodeSeq, 
+                                                    java.util.Map<String, String> __ctx, 
+                                                    boolean __explicitCtx, 
+                                                    boolean __synchronous, 
+                                                    IceInternal.Functional_VoidCallback __responseCb, 
+                                                    IceInternal.Functional_GenericCallback1<Ice.Exception> __exceptionCb, 
+                                                    IceInternal.Functional_BoolCallback __sentCb)
+    {
+        return begin_setServerNodeList(serNodeSeq, 
+                                       __ctx, 
+                                       __explicitCtx, 
+                                       __synchronous, 
+                                       new IceInternal.Functional_OnewayCallback(__responseCb, __exceptionCb, __sentCb));
+    }
+
+    private Ice.AsyncResult begin_setServerNodeList(ServerNode[] serNodeSeq, 
+                                                    java.util.Map<String, String> __ctx, 
+                                                    boolean __explicitCtx, 
+                                                    boolean __synchronous, 
+                                                    IceInternal.CallbackBase __cb)
+    {
+        IceInternal.OutgoingAsync __result = getOutgoingAsync(__setServerNodeList_name, __cb);
+        try
+        {
+            __result.prepare(__setServerNodeList_name, Ice.OperationMode.Normal, __ctx, __explicitCtx, __synchronous);
+            IceInternal.BasicStream __os = __result.startWriteParams(Ice.FormatType.DefaultFormat);
+            ServerNodeSeqHelper.write(__os, serNodeSeq);
+            __result.endWriteParams();
+            __result.invoke();
+        }
+        catch(Ice.Exception __ex)
+        {
+            __result.abort(__ex);
+        }
+        return __result;
+    }
+
+    public void end_setServerNodeList(Ice.AsyncResult __iresult)
+    {
+        __end(__iresult, __setServerNodeList_name);
+    }
+
     private static final String __shiftRole_name = "shiftRole";
 
     public void shiftRole(String strType, String strServerName, String strIp, int port, String strRole, String strPart, String strSec)

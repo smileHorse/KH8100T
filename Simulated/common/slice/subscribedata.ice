@@ -21,11 +21,18 @@ module SubData
         string modulename;
         bool isSubscribe;
      };
+	 
+	 struct PartSec
+     {
+        string partition;
+        string section;
+     };
  
     const string SubscribeDataTopic = "subscribe_data";  // Ö÷Ìâ
     interface SubscribeDataInfo
     {
         void procSub(DataInfo data);
+		void refreshParam(PartSec data);
     };
 };
  

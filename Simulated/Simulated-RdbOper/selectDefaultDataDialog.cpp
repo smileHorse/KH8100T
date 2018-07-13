@@ -164,6 +164,11 @@ void SelectDefaultDataDialog::queryData()
 		RespondDefaultDataSeq repSeq;
 		m_rdbDataOptPrx->SelectDefaultData(reqSeq, repSeq);
 
+		string deviceId = fieldValueLineEdit->text().toStdString();
+		double analogValue = 0.0;
+		int discreteValue = 0;
+		bool result = m_rdbDataOptPrx->GetSectionData(deviceId, analogValue, discreteValue);
+
 		updateTableWidget(repSeq);
 	}
 	catch(const Ice::Exception& ex)

@@ -24,5 +24,5 @@ public interface _clientManagerOperations
 {
     boolean getFileDirList(int unitNo, String startDate, String endDate, FileDirSeqHolder fileList, Ice.Current __current);
 
-    boolean getFileCont(String strFileName, Ice.StringHolder strInf, Ice.StringHolder strCfg, ByteSeqHolder rfwDatas, Ice.Current __current);
+    boolean getFileCont(int unitNo, String strFileName, Ice.StringHolder strInf, Ice.StringHolder strCfg, ByteSeqHolder rfwDatas, Ice.Current __current);
 }

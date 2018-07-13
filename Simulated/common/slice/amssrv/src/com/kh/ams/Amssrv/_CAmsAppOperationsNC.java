@@ -29,8 +29,8 @@ public interface _CAmsAppOperationsNC
     /**
      * 预先注册，得到预订角色
      *
-     * @parameter strType:节点类型
-     * @parameter ipVect:注册节点的ip列表
+     * @parameter strType:节点类型（数据服务器：1，前置机：2，应用管理：3，Icestorm:4，客户端:5）
+     * @parameter ipVect:注册节点的ip列表，客户端只提供一个ip
      * @parameter num:注册次数
      * @parameter ServerNode:返回节点的信息
      * @return 预订角色(unknow/master/slave)
@@ -89,4 +89,8 @@ public interface _CAmsAppOperationsNC
 
     void HeartBeat(String strServerName)
         throws CAmsException;
+
+    ServerNode[] getServerNodeList();
+
+    void setServerNodeList(ServerNode[] serNodeSeq);
 }

@@ -36,4 +36,6 @@ public interface _CAmsManagerOperationsNC
     void Quit();
 
     void AmsHeartBeat(String strServerName);
+
+    void syncServreNode(ServerNode node);
 }

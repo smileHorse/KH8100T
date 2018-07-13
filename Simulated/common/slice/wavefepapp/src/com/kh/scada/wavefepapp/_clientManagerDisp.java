@@ -70,9 +70,9 @@ public abstract class _clientManagerDisp extends Ice.ObjectImpl implements clien
         return __ids[1];
     }
 
-    public final boolean getFileCont(String strFileName, Ice.StringHolder strInf, Ice.StringHolder strCfg, ByteSeqHolder rfwDatas)
+    public final boolean getFileCont(int unitNo, String strFileName, Ice.StringHolder strInf, Ice.StringHolder strCfg, ByteSeqHolder rfwDatas)
     {
-        return getFileCont(strFileName, strInf, strCfg, rfwDatas, null);
+        return getFileCont(unitNo, strFileName, strInf, strCfg, rfwDatas, null);
     }
 
     public final boolean getFileDirList(int unitNo, String startDate, String endDate, FileDirSeqHolder fileList)
@@ -104,13 +104,15 @@ public abstract class _clientManagerDisp extends Ice.ObjectImpl implements clien
     {
         __checkMode(Ice.OperationMode.Normal, __current.mode);
         IceInternal.BasicStream __is = __inS.startReadParams();
+        int unitNo;
         String strFileName;
+        unitNo = __is.readInt();
         strFileName = __is.readString();
         __inS.endReadParams();
         Ice.StringHolder strInf = new Ice.StringHolder();
         Ice.StringHolder strCfg = new Ice.StringHolder();
         ByteSeqHolder rfwDatas = new ByteSeqHolder();
-        boolean __ret = __obj.getFileCont(strFileName, strInf, strCfg, rfwDatas, __current);
+        boolean __ret = __obj.getFileCont(unitNo, strFileName, strInf, strCfg, rfwDatas, __current);
         IceInternal.BasicStream __os = __inS.__startWriteParams(Ice.FormatType.DefaultFormat);
         __os.writeString(strInf.value);
         __os.writeString(strCfg.value);

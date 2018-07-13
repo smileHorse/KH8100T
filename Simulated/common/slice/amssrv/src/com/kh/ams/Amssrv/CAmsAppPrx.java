@@ -29,8 +29,8 @@ public interface CAmsAppPrx extends Ice.ObjectPrx
     /**
      * 预先注册，得到预订角色
      *
-     * @parameter strType:节点类型
-     * @parameter ipVect:注册节点的ip列表
+     * @parameter strType:节点类型（数据服务器：1，前置机：2，应用管理：3，Icestorm:4，客户端:5）
+     * @parameter ipVect:注册节点的ip列表，客户端只提供一个ip
      * @parameter num:注册次数
      * @parameter ServerNode:返回节点的信息
      * @return 预订角色(unknow/master/slave)
@@ -43,8 +43,8 @@ public interface CAmsAppPrx extends Ice.ObjectPrx
     /**
      * 预先注册，得到预订角色
      *
-     * @parameter strType:节点类型
-     * @parameter ipVect:注册节点的ip列表
+     * @parameter strType:节点类型（数据服务器：1，前置机：2，应用管理：3，Icestorm:4，客户端:5）
+     * @parameter ipVect:注册节点的ip列表，客户端只提供一个ip
      * @parameter num:注册次数
      * @parameter ServerNode:返回节点的信息
      * @param __ctx The Context map to send with the invocation.
@@ -826,4 +826,76 @@ public interface CAmsAppPrx extends Ice.ObjectPrx
 
     public void end_HeartBeat(Ice.AsyncResult __result)
         throws CAmsException;
+
+    public ServerNode[] getServerNodeList();
+
+    public ServerNode[] getServerNodeList(java.util.Map<String, String> __ctx);
+
+    public Ice.AsyncResult begin_getServerNodeList();
+
+    public Ice.AsyncResult begin_getServerNodeList(java.util.Map<String, String> __ctx);
+
+    public Ice.AsyncResult begin_getServerNodeList(Ice.Callback __cb);
+
+    public Ice.AsyncResult begin_getServerNodeList(java.util.Map<String, String> __ctx, Ice.Callback __cb);
+
+    public Ice.AsyncResult begin_getServerNodeList(Callback_CAmsApp_getServerNodeList __cb);
+
+    public Ice.AsyncResult begin_getServerNodeList(java.util.Map<String, String> __ctx, Callback_CAmsApp_getServerNodeList __cb);
+
+    public Ice.AsyncResult begin_getServerNodeList(IceInternal.Functional_GenericCallback1<ServerNode[]> __responseCb, 
+                                                   IceInternal.Functional_GenericCallback1<Ice.Exception> __exceptionCb);
+
+    public Ice.AsyncResult begin_getServerNodeList(IceInternal.Functional_GenericCallback1<ServerNode[]> __responseCb, 
+                                                   IceInternal.Functional_GenericCallback1<Ice.Exception> __exceptionCb, 
+                                                   IceInternal.Functional_BoolCallback __sentCb);
+
+    public Ice.AsyncResult begin_getServerNodeList(java.util.Map<String, String> __ctx, 
+                                                   IceInternal.Functional_GenericCallback1<ServerNode[]> __responseCb, 
+                                                   IceInternal.Functional_GenericCallback1<Ice.Exception> __exceptionCb);
+
+    public Ice.AsyncResult begin_getServerNodeList(java.util.Map<String, String> __ctx, 
+                                                   IceInternal.Functional_GenericCallback1<ServerNode[]> __responseCb, 
+                                                   IceInternal.Functional_GenericCallback1<Ice.Exception> __exceptionCb, 
+                                                   IceInternal.Functional_BoolCallback __sentCb);
+
+    public ServerNode[] end_getServerNodeList(Ice.AsyncResult __result);
+
+    public void setServerNodeList(ServerNode[] serNodeSeq);
+
+    public void setServerNodeList(ServerNode[] serNodeSeq, java.util.Map<String, String> __ctx);
+
+    public Ice.AsyncResult begin_setServerNodeList(ServerNode[] serNodeSeq);
+
+    public Ice.AsyncResult begin_setServerNodeList(ServerNode[] serNodeSeq, java.util.Map<String, String> __ctx);
+
+    public Ice.AsyncResult begin_setServerNodeList(ServerNode[] serNodeSeq, Ice.Callback __cb);
+
+    public Ice.AsyncResult begin_setServerNodeList(ServerNode[] serNodeSeq, java.util.Map<String, String> __ctx, Ice.Callback __cb);
+
+    public Ice.AsyncResult begin_setServerNodeList(ServerNode[] serNodeSeq, Callback_CAmsApp_setServerNodeList __cb);
+
+    public Ice.AsyncResult begin_setServerNodeList(ServerNode[] serNodeSeq, java.util.Map<String, String> __ctx, Callback_CAmsApp_setServerNodeList __cb);
+
+    public Ice.AsyncResult begin_setServerNodeList(ServerNode[] serNodeSeq, 
+                                                   IceInternal.Functional_VoidCallback __responseCb, 
+                                                   IceInternal.Functional_GenericCallback1<Ice.Exception> __exceptionCb);
+
+    public Ice.AsyncResult begin_setServerNodeList(ServerNode[] serNodeSeq, 
+                                                   IceInternal.Functional_VoidCallback __responseCb, 
+                                                   IceInternal.Functional_GenericCallback1<Ice.Exception> __exceptionCb, 
+                                                   IceInternal.Functional_BoolCallback __sentCb);
+
+    public Ice.AsyncResult begin_setServerNodeList(ServerNode[] serNodeSeq, 
+                                                   java.util.Map<String, String> __ctx, 
+                                                   IceInternal.Functional_VoidCallback __responseCb, 
+                                                   IceInternal.Functional_GenericCallback1<Ice.Exception> __exceptionCb);
+
+    public Ice.AsyncResult begin_setServerNodeList(ServerNode[] serNodeSeq, 
+                                                   java.util.Map<String, String> __ctx, 
+                                                   IceInternal.Functional_VoidCallback __responseCb, 
+                                                   IceInternal.Functional_GenericCallback1<Ice.Exception> __exceptionCb, 
+                                                   IceInternal.Functional_BoolCallback __sentCb);
+
+    public void end_setServerNodeList(Ice.AsyncResult __result);
 }

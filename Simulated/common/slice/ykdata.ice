@@ -40,7 +40,8 @@ module Yk
     enum YkType  // 遥控类型
     {
         SelectBeforeOperate,  // 选控
-        DirectlyOperate       // 直控
+        DirectlyOperate,       // 直控
+        PowerTransformerOperate//遥调
     };
 
     /**

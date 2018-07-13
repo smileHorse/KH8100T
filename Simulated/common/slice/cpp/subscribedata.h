@@ -141,6 +141,71 @@ struct DataInfo
     }
 };
 
+struct PartSec
+{
+    ::std::string partition;
+    ::std::string section;
+
+    bool operator==(const PartSec& __rhs) const
+    {
+        if(this == &__rhs)
+        {
+            return true;
+        }
+        if(partition != __rhs.partition)
+        {
+            return false;
+        }
+        if(section != __rhs.section)
+        {
+            return false;
+        }
+        return true;
+    }
+
+    bool operator<(const PartSec& __rhs) const
+    {
+        if(this == &__rhs)
+        {
+            return false;
+        }
+        if(partition < __rhs.partition)
+        {
+            return true;
+        }
+        else if(__rhs.partition < partition)
+        {
+            return false;
+        }
+        if(section < __rhs.section)
+        {
+            return true;
+        }
+        else if(__rhs.section < section)
+        {
+            return false;
+        }
+        return false;
+    }
+
+    bool operator!=(const PartSec& __rhs) const
+    {
+        return !operator==(__rhs);
+    }
+    bool operator<=(const PartSec& __rhs) const
+    {
+        return operator<(__rhs) || operator==(__rhs);
+    }
+    bool operator>(const PartSec& __rhs) const
+    {
+        return !operator<(__rhs) && !operator==(__rhs);
+    }
+    bool operator>=(const PartSec& __rhs) const
+    {
+        return !operator<(__rhs);
+    }
+};
+
 const ::std::string SubscribeDataTopic = "subscribe_data";
 
 }
@@ -175,6 +240,34 @@ struct StreamReader< ::SubData::DataInfo, S>
     }
 };
 
+template<>
+struct StreamableTraits< ::SubData::PartSec>
+{
+    static const StreamHelperCategory helper = StreamHelperCategoryStruct;
+    static const int minWireSize = 2;
+    static const bool fixedLength = false;
+};
+
+template<class S>
+struct StreamWriter< ::SubData::PartSec, S>
+{
+    static void write(S* __os, const ::SubData::PartSec& v)
+    {
+        __os->write(v.partition);
+        __os->write(v.section);
+    }
+};
+
+template<class S>
+struct StreamReader< ::SubData::PartSec, S>
+{
+    static void read(S* __is, ::SubData::PartSec& v)
+    {
+        __is->read(v.partition);
+        __is->read(v.section);
+    }
+};
+
 }
 
 namespace SubData
@@ -182,6 +275,9 @@ namespace SubData
 
 class Callback_SubscribeDataInfo_procSub_Base : virtual public ::IceInternal::CallbackBase { };
 typedef ::IceUtil::Handle< Callback_SubscribeDataInfo_procSub_Base> Callback_SubscribeDataInfo_procSubPtr;
+
+class Callback_SubscribeDataInfo_refreshParam_Base : virtual public ::IceInternal::CallbackBase { };
+typedef ::IceUtil::Handle< Callback_SubscribeDataInfo_refreshParam_Base> Callback_SubscribeDataInfo_refreshParamPtr;
 
 }
 
@@ -262,6 +358,76 @@ private:
 
     void procSub(const ::SubData::DataInfo&, const ::Ice::Context*);
     ::Ice::AsyncResultPtr begin_procSub(const ::SubData::DataInfo&, const ::Ice::Context*, const ::IceInternal::CallbackBasePtr&, const ::Ice::LocalObjectPtr& __cookie = 0);
+    
+public:
+
+    void refreshParam(const ::SubData::PartSec& __p_data)
+    {
+        refreshParam(__p_data, 0);
+    }
+    void refreshParam(const ::SubData::PartSec& __p_data, const ::Ice::Context& __ctx)
+    {
+        refreshParam(__p_data, &__ctx);
+    }
+#ifdef ICE_CPP11
+    ::Ice::AsyncResultPtr
+    begin_refreshParam(const ::SubData::PartSec& __p_data, const ::IceInternal::Function<void ()>& __response, const ::IceInternal::Function<void (const ::Ice::Exception&)>& __exception = ::IceInternal::Function<void (const ::Ice::Exception&)>(), const ::IceInternal::Function<void (bool)>& __sent = ::IceInternal::Function<void (bool)>())
+    {
+        return begin_refreshParam(__p_data, 0, new ::IceInternal::Cpp11FnOnewayCallbackNC(__response, __exception, __sent));
+    }
+    ::Ice::AsyncResultPtr
+    begin_refreshParam(const ::SubData::PartSec& __p_data, const ::IceInternal::Function<void (const ::Ice::AsyncResultPtr&)>& __completed, const ::IceInternal::Function<void (const ::Ice::AsyncResultPtr&)>& __sent = ::IceInternal::Function<void (const ::Ice::AsyncResultPtr&)>())
+    {
+        return begin_refreshParam(__p_data, 0, ::Ice::newCallback(__completed, __sent), 0);
+    }
+    ::Ice::AsyncResultPtr
+    begin_refreshParam(const ::SubData::PartSec& __p_data, const ::Ice::Context& __ctx, const ::IceInternal::Function<void ()>& __response, const ::IceInternal::Function<void (const ::Ice::Exception&)>& __exception = ::IceInternal::Function<void (const ::Ice::Exception&)>(), const ::IceInternal::Function<void (bool)>& __sent = ::IceInternal::Function<void (bool)>())
+    {
+        return begin_refreshParam(__p_data, &__ctx, new ::IceInternal::Cpp11FnOnewayCallbackNC(__response, __exception, __sent), 0);
+    }
+    ::Ice::AsyncResultPtr
+    begin_refreshParam(const ::SubData::PartSec& __p_data, const ::Ice::Context& __ctx, const ::IceInternal::Function<void (const ::Ice::AsyncResultPtr&)>& __completed, const ::IceInternal::Function<void (const ::Ice::AsyncResultPtr&)>& __sent = ::IceInternal::Function<void (const ::Ice::AsyncResultPtr&)>())
+    {
+        return begin_refreshParam(__p_data, &__ctx, ::Ice::newCallback(__completed, __sent));
+    }
+#endif
+
+    ::Ice::AsyncResultPtr begin_refreshParam(const ::SubData::PartSec& __p_data)
+    {
+        return begin_refreshParam(__p_data, 0, ::IceInternal::__dummyCallback, 0);
+    }
+
+    ::Ice::AsyncResultPtr begin_refreshParam(const ::SubData::PartSec& __p_data, const ::Ice::Context& __ctx)
+    {
+        return begin_refreshParam(__p_data, &__ctx, ::IceInternal::__dummyCallback, 0);
+    }
+
+    ::Ice::AsyncResultPtr begin_refreshParam(const ::SubData::PartSec& __p_data, const ::Ice::CallbackPtr& __del, const ::Ice::LocalObjectPtr& __cookie = 0)
+    {
+        return begin_refreshParam(__p_data, 0, __del, __cookie);
+    }
+
+    ::Ice::AsyncResultPtr begin_refreshParam(const ::SubData::PartSec& __p_data, const ::Ice::Context& __ctx, const ::Ice::CallbackPtr& __del, const ::Ice::LocalObjectPtr& __cookie = 0)
+    {
+        return begin_refreshParam(__p_data, &__ctx, __del, __cookie);
+    }
+
+    ::Ice::AsyncResultPtr begin_refreshParam(const ::SubData::PartSec& __p_data, const ::SubData::Callback_SubscribeDataInfo_refreshParamPtr& __del, const ::Ice::LocalObjectPtr& __cookie = 0)
+    {
+        return begin_refreshParam(__p_data, 0, __del, __cookie);
+    }
+
+    ::Ice::AsyncResultPtr begin_refreshParam(const ::SubData::PartSec& __p_data, const ::Ice::Context& __ctx, const ::SubData::Callback_SubscribeDataInfo_refreshParamPtr& __del, const ::Ice::LocalObjectPtr& __cookie = 0)
+    {
+        return begin_refreshParam(__p_data, &__ctx, __del, __cookie);
+    }
+
+    void end_refreshParam(const ::Ice::AsyncResultPtr&);
+    
+private:
+
+    void refreshParam(const ::SubData::PartSec&, const ::Ice::Context*);
+    ::Ice::AsyncResultPtr begin_refreshParam(const ::SubData::PartSec&, const ::Ice::Context*, const ::IceInternal::CallbackBasePtr&, const ::Ice::LocalObjectPtr& __cookie = 0);
     
 public:
     
@@ -398,6 +564,9 @@ public:
     virtual void procSub(const ::SubData::DataInfo&, const ::Ice::Current& = ::Ice::Current()) = 0;
     ::Ice::DispatchStatus ___procSub(::IceInternal::Incoming&, const ::Ice::Current&);
 
+    virtual void refreshParam(const ::SubData::PartSec&, const ::Ice::Current& = ::Ice::Current()) = 0;
+    ::Ice::DispatchStatus ___refreshParam(::IceInternal::Incoming&, const ::Ice::Current&);
+
     virtual ::Ice::DispatchStatus __dispatch(::IceInternal::Incoming&, const ::Ice::Current&);
 
 protected:
@@ -502,6 +671,88 @@ template<class T, typename CT> Callback_SubscribeDataInfo_procSubPtr
 newCallback_SubscribeDataInfo_procSub(T* instance, void (T::*excb)(const ::Ice::Exception&, const CT&), void (T::*sentcb)(bool, const CT&) = 0)
 {
     return new Callback_SubscribeDataInfo_procSub<T, CT>(instance, 0, excb, sentcb);
+}
+
+template<class T>
+class CallbackNC_SubscribeDataInfo_refreshParam : public Callback_SubscribeDataInfo_refreshParam_Base, public ::IceInternal::OnewayCallbackNC<T>
+{
+public:
+
+    typedef IceUtil::Handle<T> TPtr;
+
+    typedef void (T::*Exception)(const ::Ice::Exception&);
+    typedef void (T::*Sent)(bool);
+    typedef void (T::*Response)();
+
+    CallbackNC_SubscribeDataInfo_refreshParam(const TPtr& obj, Response cb, Exception excb, Sent sentcb)
+        : ::IceInternal::OnewayCallbackNC<T>(obj, cb, excb, sentcb)
+    {
+    }
+};
+
+template<class T> Callback_SubscribeDataInfo_refreshParamPtr
+newCallback_SubscribeDataInfo_refreshParam(const IceUtil::Handle<T>& instance, void (T::*cb)(), void (T::*excb)(const ::Ice::Exception&), void (T::*sentcb)(bool) = 0)
+{
+    return new CallbackNC_SubscribeDataInfo_refreshParam<T>(instance, cb, excb, sentcb);
+}
+
+template<class T> Callback_SubscribeDataInfo_refreshParamPtr
+newCallback_SubscribeDataInfo_refreshParam(const IceUtil::Handle<T>& instance, void (T::*excb)(const ::Ice::Exception&), void (T::*sentcb)(bool) = 0)
+{
+    return new CallbackNC_SubscribeDataInfo_refreshParam<T>(instance, 0, excb, sentcb);
+}
+
+template<class T> Callback_SubscribeDataInfo_refreshParamPtr
+newCallback_SubscribeDataInfo_refreshParam(T* instance, void (T::*cb)(), void (T::*excb)(const ::Ice::Exception&), void (T::*sentcb)(bool) = 0)
+{
+    return new CallbackNC_SubscribeDataInfo_refreshParam<T>(instance, cb, excb, sentcb);
+}
+
+template<class T> Callback_SubscribeDataInfo_refreshParamPtr
+newCallback_SubscribeDataInfo_refreshParam(T* instance, void (T::*excb)(const ::Ice::Exception&), void (T::*sentcb)(bool) = 0)
+{
+    return new CallbackNC_SubscribeDataInfo_refreshParam<T>(instance, 0, excb, sentcb);
+}
+
+template<class T, typename CT>
+class Callback_SubscribeDataInfo_refreshParam : public Callback_SubscribeDataInfo_refreshParam_Base, public ::IceInternal::OnewayCallback<T, CT>
+{
+public:
+
+    typedef IceUtil::Handle<T> TPtr;
+
+    typedef void (T::*Exception)(const ::Ice::Exception& , const CT&);
+    typedef void (T::*Sent)(bool , const CT&);
+    typedef void (T::*Response)(const CT&);
+
+    Callback_SubscribeDataInfo_refreshParam(const TPtr& obj, Response cb, Exception excb, Sent sentcb)
+        : ::IceInternal::OnewayCallback<T, CT>(obj, cb, excb, sentcb)
+    {
+    }
+};
+
+template<class T, typename CT> Callback_SubscribeDataInfo_refreshParamPtr
+newCallback_SubscribeDataInfo_refreshParam(const IceUtil::Handle<T>& instance, void (T::*cb)(const CT&), void (T::*excb)(const ::Ice::Exception&, const CT&), void (T::*sentcb)(bool, const CT&) = 0)
+{
+    return new Callback_SubscribeDataInfo_refreshParam<T, CT>(instance, cb, excb, sentcb);
+}
+
+template<class T, typename CT> Callback_SubscribeDataInfo_refreshParamPtr
+newCallback_SubscribeDataInfo_refreshParam(const IceUtil::Handle<T>& instance, void (T::*excb)(const ::Ice::Exception&, const CT&), void (T::*sentcb)(bool, const CT&) = 0)
+{
+    return new Callback_SubscribeDataInfo_refreshParam<T, CT>(instance, 0, excb, sentcb);
+}
+
+template<class T, typename CT> Callback_SubscribeDataInfo_refreshParamPtr
+newCallback_SubscribeDataInfo_refreshParam(T* instance, void (T::*cb)(const CT&), void (T::*excb)(const ::Ice::Exception&, const CT&), void (T::*sentcb)(bool, const CT&) = 0)
+{
+    return new Callback_SubscribeDataInfo_refreshParam<T, CT>(instance, cb, excb, sentcb);
+}
+
+template<class T, typename CT> Callback_SubscribeDataInfo_refreshParamPtr
+newCallback_SubscribeDataInfo_refreshParam(T* instance, void (T::*excb)(const ::Ice::Exception&, const CT&), void (T::*sentcb)(bool, const CT&) = 0)
+{
+    return new Callback_SubscribeDataInfo_refreshParam<T, CT>(instance, 0, excb, sentcb);
 }
 
 }

@@ -112,7 +112,7 @@ module FepXbData
 	
 	//客户端到前置机
 	const string ClientFepTopic  = "client_fep_operation";
-	interface CSettingValueFep
+	interface CClientCmdApp
 	{
 		void readSettingValue(string deviceId);//读定值
 		void writeSettingValue(SettingValueInfo settingVal);//写定值
@@ -120,6 +120,39 @@ module FepXbData
 		void sendReset(string deviceId);//远程复位
 	};
 	
+	
+	//行波服务与客户端接口
+	struct FaultData
+	{
+		string id;
+		int deviceId;
+		int Type;
+		int deviceType;
+		string faultTime;
+		string deviceName;
+		string substaionName;
+		string substationA1;
+		string substationB1;
+		string lineName;
+		string lineId;
+		double locationA1;
+		double locationB1;
+		int method;
+	
+		string localfaultTime;
+		string remotefaultTime;
+	
+		double linelen;
+		double speed;
+	};
+	sequence<FaultData> FaultDataSeq;
+	
+	//与数据处理的交互
+	const string ClientXbTopic = "xbsvr_client_data";
+	interface CXbSvrApp
+	{
+		void sendFaultData(FaultDataSeq fdSeq);
+	}
 
 };
 

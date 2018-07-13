@@ -451,6 +451,127 @@ public final class CAmsManagerPrxHelper extends Ice.ObjectPrxHelperBase implemen
         __cb.response();
     }
 
+    private static final String __syncServreNode_name = "syncServreNode";
+
+    public void syncServreNode(ServerNode node)
+    {
+        syncServreNode(node, null, false);
+    }
+
+    public void syncServreNode(ServerNode node, java.util.Map<String, String> __ctx)
+    {
+        syncServreNode(node, __ctx, true);
+    }
+
+    private void syncServreNode(ServerNode node, java.util.Map<String, String> __ctx, boolean __explicitCtx)
+    {
+        end_syncServreNode(begin_syncServreNode(node, __ctx, __explicitCtx, true, null));
+    }
+
+    public Ice.AsyncResult begin_syncServreNode(ServerNode node)
+    {
+        return begin_syncServreNode(node, null, false, false, null);
+    }
+
+    public Ice.AsyncResult begin_syncServreNode(ServerNode node, java.util.Map<String, String> __ctx)
+    {
+        return begin_syncServreNode(node, __ctx, true, false, null);
+    }
+
+    public Ice.AsyncResult begin_syncServreNode(ServerNode node, Ice.Callback __cb)
+    {
+        return begin_syncServreNode(node, null, false, false, __cb);
+    }
+
+    public Ice.AsyncResult begin_syncServreNode(ServerNode node, java.util.Map<String, String> __ctx, Ice.Callback __cb)
+    {
+        return begin_syncServreNode(node, __ctx, true, false, __cb);
+    }
+
+    public Ice.AsyncResult begin_syncServreNode(ServerNode node, Callback_CAmsManager_syncServreNode __cb)
+    {
+        return begin_syncServreNode(node, null, false, false, __cb);
+    }
+
+    public Ice.AsyncResult begin_syncServreNode(ServerNode node, java.util.Map<String, String> __ctx, Callback_CAmsManager_syncServreNode __cb)
+    {
+        return begin_syncServreNode(node, __ctx, true, false, __cb);
+    }
+
+    public Ice.AsyncResult begin_syncServreNode(ServerNode node, 
+                                                IceInternal.Functional_VoidCallback __responseCb, 
+                                                IceInternal.Functional_GenericCallback1<Ice.Exception> __exceptionCb)
+    {
+        return begin_syncServreNode(node, null, false, false, __responseCb, __exceptionCb, null);
+    }
+
+    public Ice.AsyncResult begin_syncServreNode(ServerNode node, 
+                                                IceInternal.Functional_VoidCallback __responseCb, 
+                                                IceInternal.Functional_GenericCallback1<Ice.Exception> __exceptionCb, 
+                                                IceInternal.Functional_BoolCallback __sentCb)
+    {
+        return begin_syncServreNode(node, null, false, false, __responseCb, __exceptionCb, __sentCb);
+    }
+
+    public Ice.AsyncResult begin_syncServreNode(ServerNode node, 
+                                                java.util.Map<String, String> __ctx, 
+                                                IceInternal.Functional_VoidCallback __responseCb, 
+                                                IceInternal.Functional_GenericCallback1<Ice.Exception> __exceptionCb)
+    {
+        return begin_syncServreNode(node, __ctx, true, false, __responseCb, __exceptionCb, null);
+    }
+
+    public Ice.AsyncResult begin_syncServreNode(ServerNode node, 
+                                                java.util.Map<String, String> __ctx, 
+                                                IceInternal.Functional_VoidCallback __responseCb, 
+                                                IceInternal.Functional_GenericCallback1<Ice.Exception> __exceptionCb, 
+                                                IceInternal.Functional_BoolCallback __sentCb)
+    {
+        return begin_syncServreNode(node, __ctx, true, false, __responseCb, __exceptionCb, __sentCb);
+    }
+
+    private Ice.AsyncResult begin_syncServreNode(ServerNode node, 
+                                                 java.util.Map<String, String> __ctx, 
+                                                 boolean __explicitCtx, 
+                                                 boolean __synchronous, 
+                                                 IceInternal.Functional_VoidCallback __responseCb, 
+                                                 IceInternal.Functional_GenericCallback1<Ice.Exception> __exceptionCb, 
+                                                 IceInternal.Functional_BoolCallback __sentCb)
+    {
+        return begin_syncServreNode(node, 
+                                    __ctx, 
+                                    __explicitCtx, 
+                                    __synchronous, 
+                                    new IceInternal.Functional_OnewayCallback(__responseCb, __exceptionCb, __sentCb));
+    }
+
+    private Ice.AsyncResult begin_syncServreNode(ServerNode node, 
+                                                 java.util.Map<String, String> __ctx, 
+                                                 boolean __explicitCtx, 
+                                                 boolean __synchronous, 
+                                                 IceInternal.CallbackBase __cb)
+    {
+        IceInternal.OutgoingAsync __result = getOutgoingAsync(__syncServreNode_name, __cb);
+        try
+        {
+            __result.prepare(__syncServreNode_name, Ice.OperationMode.Normal, __ctx, __explicitCtx, __synchronous);
+            IceInternal.BasicStream __os = __result.startWriteParams(Ice.FormatType.DefaultFormat);
+            ServerNode.__write(__os, node);
+            __result.endWriteParams();
+            __result.invoke();
+        }
+        catch(Ice.Exception __ex)
+        {
+            __result.abort(__ex);
+        }
+        return __result;
+    }
+
+    public void end_syncServreNode(Ice.AsyncResult __iresult)
+    {
+        __end(__iresult, __syncServreNode_name);
+    }
+
     /**
      * Contacts the remote server to verify that the object implements this type.
      * Raises a local exception if a communication error occurs.

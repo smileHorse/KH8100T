@@ -49,6 +49,8 @@ const ::std::string __Amssrv__CAmsManager__Quit_name = "Quit";
 
 const ::std::string __Amssrv__CAmsManager__AmsHeartBeat_name = "AmsHeartBeat";
 
+const ::std::string __Amssrv__CAmsManager__syncServreNode_name = "syncServreNode";
+
 const ::std::string __Amssrv__CAmsApp__Register_name = "Register";
 
 const ::std::string __Amssrv__CAmsApp__FinishRegister_name = "FinishRegister";
@@ -329,6 +331,48 @@ void
 IceProxy::Amssrv::CAmsManager::end_AmsHeartBeat(const ::Ice::AsyncResultPtr& __result)
 {
     __end(__result, __Amssrv__CAmsManager__AmsHeartBeat_name);
+}
+
+void
+IceProxy::Amssrv::CAmsManager::syncServreNode(const ::Amssrv::ServerNode& __p_node, const ::Ice::Context* __ctx)
+{
+    ::IceInternal::Outgoing __og(this, __Amssrv__CAmsManager__syncServreNode_name, ::Ice::Normal, __ctx);
+    try
+    {
+        ::IceInternal::BasicStream* __os = __og.startWriteParams(::Ice::DefaultFormat);
+        __os->write(__p_node);
+        __og.endWriteParams();
+    }
+    catch(const ::Ice::LocalException& __ex)
+    {
+        __og.abort(__ex);
+    }
+    __invoke(__og);
+}
+
+::Ice::AsyncResultPtr
+IceProxy::Amssrv::CAmsManager::begin_syncServreNode(const ::Amssrv::ServerNode& __p_node, const ::Ice::Context* __ctx, const ::IceInternal::CallbackBasePtr& __del, const ::Ice::LocalObjectPtr& __cookie)
+{
+    ::IceInternal::OutgoingAsyncPtr __result = new ::IceInternal::OutgoingAsync(this, __Amssrv__CAmsManager__syncServreNode_name, __del, __cookie);
+    try
+    {
+        __result->prepare(__Amssrv__CAmsManager__syncServreNode_name, ::Ice::Normal, __ctx);
+        ::IceInternal::BasicStream* __os = __result->startWriteParams(::Ice::DefaultFormat);
+        __os->write(__p_node);
+        __result->endWriteParams();
+        __result->invoke();
+    }
+    catch(const ::Ice::Exception& __ex)
+    {
+        __result->abort(__ex);
+    }
+    return __result;
+}
+
+void
+IceProxy::Amssrv::CAmsManager::end_syncServreNode(const ::Ice::AsyncResultPtr& __result)
+{
+    __end(__result, __Amssrv__CAmsManager__syncServreNode_name);
 }
 
 const ::std::string&
@@ -1206,6 +1250,19 @@ Amssrv::CAmsManager::___AmsHeartBeat(::IceInternal::Incoming& __inS, const ::Ice
     return ::Ice::DispatchOK;
 }
 
+::Ice::DispatchStatus
+Amssrv::CAmsManager::___syncServreNode(::IceInternal::Incoming& __inS, const ::Ice::Current& __current)
+{
+    __checkMode(::Ice::Normal, __current.mode);
+    ::IceInternal::BasicStream* __is = __inS.startReadParams();
+    ::Amssrv::ServerNode __p_node;
+    __is->read(__p_node);
+    __inS.endReadParams();
+    syncServreNode(__p_node, __current);
+    __inS.__writeEmptyParams();
+    return ::Ice::DispatchOK;
+}
+
 namespace
 {
 const ::std::string __Amssrv__CAmsManager_all[] =
@@ -1216,7 +1273,8 @@ const ::std::string __Amssrv__CAmsManager_all[] =
     "ice_id",
     "ice_ids",
     "ice_isA",
-    "ice_ping"
+    "ice_ping",
+    "syncServreNode"
 };
 
 }
@@ -1224,7 +1282,7 @@ const ::std::string __Amssrv__CAmsManager_all[] =
 ::Ice::DispatchStatus
 Amssrv::CAmsManager::__dispatch(::IceInternal::Incoming& in, const ::Ice::Current& current)
 {
-    ::std::pair< const ::std::string*, const ::std::string*> r = ::std::equal_range(__Amssrv__CAmsManager_all, __Amssrv__CAmsManager_all + 7, current.operation);
+    ::std::pair< const ::std::string*, const ::std::string*> r = ::std::equal_range(__Amssrv__CAmsManager_all, __Amssrv__CAmsManager_all + 8, current.operation);
     if(r.first == r.second)
     {
         throw ::Ice::OperationNotExistException(__FILE__, __LINE__, current.id, current.facet, current.operation);
@@ -1259,6 +1317,10 @@ Amssrv::CAmsManager::__dispatch(::IceInternal::Incoming& in, const ::Ice::Curren
         case 6:
         {
             return ___ice_ping(in, current);
+        }
+        case 7:
+        {
+            return ___syncServreNode(in, current);
         }
     }
 

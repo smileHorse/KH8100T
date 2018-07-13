@@ -63,4 +63,252 @@ public interface SendWarningMsgPrx extends Ice.ObjectPrx
                                                       IceInternal.Functional_BoolCallback __sentCb);
 
     public void end_sendWarningMsgBinary(Ice.AsyncResult __result);
+
+    /**
+     * 发送录波文件
+     * @parameter unitNo: 单元号
+     * @parameter title: 文件标题
+     * @parameter datas: 文件内容
+     *
+     **/
+    public void sendRfwFileBinary(String unitNo, String title, byte[] datas);
+
+    /**
+     * 发送录波文件
+     * @parameter unitNo: 单元号
+     * @parameter title: 文件标题
+     * @parameter datas: 文件内容
+     *
+     * @param __ctx The Context map to send with the invocation.
+     **/
+    public void sendRfwFileBinary(String unitNo, String title, byte[] datas, java.util.Map<String, String> __ctx);
+
+    /**
+     * 发送录波文件
+     * @return The asynchronous result object.
+     **/
+    public Ice.AsyncResult begin_sendRfwFileBinary(String unitNo, String title, byte[] datas);
+
+    /**
+     * 发送录波文件
+     * @param __ctx The Context map to send with the invocation.
+     * @return The asynchronous result object.
+     **/
+    public Ice.AsyncResult begin_sendRfwFileBinary(String unitNo, String title, byte[] datas, java.util.Map<String, String> __ctx);
+
+    /**
+     * 发送录波文件
+     * @param __cb The asynchronous callback object.
+     * @return The asynchronous result object.
+     **/
+    public Ice.AsyncResult begin_sendRfwFileBinary(String unitNo, String title, byte[] datas, Ice.Callback __cb);
+
+    /**
+     * 发送录波文件
+     * @param __ctx The Context map to send with the invocation.
+     * @param __cb The asynchronous callback object.
+     * @return The asynchronous result object.
+     **/
+    public Ice.AsyncResult begin_sendRfwFileBinary(String unitNo, String title, byte[] datas, java.util.Map<String, String> __ctx, Ice.Callback __cb);
+
+    /**
+     * 发送录波文件
+     * @param __cb The asynchronous callback object.
+     * @return The asynchronous result object.
+     **/
+    public Ice.AsyncResult begin_sendRfwFileBinary(String unitNo, String title, byte[] datas, Callback_SendWarningMsg_sendRfwFileBinary __cb);
+
+    /**
+     * 发送录波文件
+     * @param __ctx The Context map to send with the invocation.
+     * @param __cb The asynchronous callback object.
+     * @return The asynchronous result object.
+     **/
+    public Ice.AsyncResult begin_sendRfwFileBinary(String unitNo, String title, byte[] datas, java.util.Map<String, String> __ctx, Callback_SendWarningMsg_sendRfwFileBinary __cb);
+
+    /**
+     * 发送录波文件
+     * @param __responseCb The lambda response callback.
+     * @param __exceptionCb The lambda exception callback.
+     * @return The asynchronous result object.
+     **/
+    public Ice.AsyncResult begin_sendRfwFileBinary(String unitNo, 
+                                                   String title, 
+                                                   byte[] datas, 
+                                                   IceInternal.Functional_VoidCallback __responseCb, 
+                                                   IceInternal.Functional_GenericCallback1<Ice.Exception> __exceptionCb);
+
+    /**
+     * 发送录波文件
+     * @param __responseCb The lambda response callback.
+     * @param __exceptionCb The lambda exception callback.
+     * @param __sentCb The lambda sent callback.
+     * @return The asynchronous result object.
+     **/
+    public Ice.AsyncResult begin_sendRfwFileBinary(String unitNo, 
+                                                   String title, 
+                                                   byte[] datas, 
+                                                   IceInternal.Functional_VoidCallback __responseCb, 
+                                                   IceInternal.Functional_GenericCallback1<Ice.Exception> __exceptionCb, 
+                                                   IceInternal.Functional_BoolCallback __sentCb);
+
+    /**
+     * 发送录波文件
+     * @param __ctx The Context map to send with the invocation.
+     * @param __responseCb The lambda response callback.
+     * @param __exceptionCb The lambda exception callback.
+     * @return The asynchronous result object.
+     **/
+    public Ice.AsyncResult begin_sendRfwFileBinary(String unitNo, 
+                                                   String title, 
+                                                   byte[] datas, 
+                                                   java.util.Map<String, String> __ctx, 
+                                                   IceInternal.Functional_VoidCallback __responseCb, 
+                                                   IceInternal.Functional_GenericCallback1<Ice.Exception> __exceptionCb);
+
+    /**
+     * 发送录波文件
+     * @param __ctx The Context map to send with the invocation.
+     * @param __responseCb The lambda response callback.
+     * @param __exceptionCb The lambda exception callback.
+     * @param __sentCb The lambda sent callback.
+     * @return The asynchronous result object.
+     **/
+    public Ice.AsyncResult begin_sendRfwFileBinary(String unitNo, 
+                                                   String title, 
+                                                   byte[] datas, 
+                                                   java.util.Map<String, String> __ctx, 
+                                                   IceInternal.Functional_VoidCallback __responseCb, 
+                                                   IceInternal.Functional_GenericCallback1<Ice.Exception> __exceptionCb, 
+                                                   IceInternal.Functional_BoolCallback __sentCb);
+
+    /**
+     * 发送录波文件
+     * @param __result The asynchronous result object.
+     **/
+    public void end_sendRfwFileBinary(Ice.AsyncResult __result);
+
+    /**
+     * 发送历史曲线文件
+     * @parameter date: 日期
+     * @parameter title: 文件标题
+     * @parameter datas: 文件内容
+     *
+     **/
+    public void sendCurveFileBinary(String date, String title, byte[] datas);
+
+    /**
+     * 发送历史曲线文件
+     * @parameter date: 日期
+     * @parameter title: 文件标题
+     * @parameter datas: 文件内容
+     *
+     * @param __ctx The Context map to send with the invocation.
+     **/
+    public void sendCurveFileBinary(String date, String title, byte[] datas, java.util.Map<String, String> __ctx);
+
+    /**
+     * 发送历史曲线文件
+     * @return The asynchronous result object.
+     **/
+    public Ice.AsyncResult begin_sendCurveFileBinary(String date, String title, byte[] datas);
+
+    /**
+     * 发送历史曲线文件
+     * @param __ctx The Context map to send with the invocation.
+     * @return The asynchronous result object.
+     **/
+    public Ice.AsyncResult begin_sendCurveFileBinary(String date, String title, byte[] datas, java.util.Map<String, String> __ctx);
+
+    /**
+     * 发送历史曲线文件
+     * @param __cb The asynchronous callback object.
+     * @return The asynchronous result object.
+     **/
+    public Ice.AsyncResult begin_sendCurveFileBinary(String date, String title, byte[] datas, Ice.Callback __cb);
+
+    /**
+     * 发送历史曲线文件
+     * @param __ctx The Context map to send with the invocation.
+     * @param __cb The asynchronous callback object.
+     * @return The asynchronous result object.
+     **/
+    public Ice.AsyncResult begin_sendCurveFileBinary(String date, String title, byte[] datas, java.util.Map<String, String> __ctx, Ice.Callback __cb);
+
+    /**
+     * 发送历史曲线文件
+     * @param __cb The asynchronous callback object.
+     * @return The asynchronous result object.
+     **/
+    public Ice.AsyncResult begin_sendCurveFileBinary(String date, String title, byte[] datas, Callback_SendWarningMsg_sendCurveFileBinary __cb);
+
+    /**
+     * 发送历史曲线文件
+     * @param __ctx The Context map to send with the invocation.
+     * @param __cb The asynchronous callback object.
+     * @return The asynchronous result object.
+     **/
+    public Ice.AsyncResult begin_sendCurveFileBinary(String date, String title, byte[] datas, java.util.Map<String, String> __ctx, Callback_SendWarningMsg_sendCurveFileBinary __cb);
+
+    /**
+     * 发送历史曲线文件
+     * @param __responseCb The lambda response callback.
+     * @param __exceptionCb The lambda exception callback.
+     * @return The asynchronous result object.
+     **/
+    public Ice.AsyncResult begin_sendCurveFileBinary(String date, 
+                                                     String title, 
+                                                     byte[] datas, 
+                                                     IceInternal.Functional_VoidCallback __responseCb, 
+                                                     IceInternal.Functional_GenericCallback1<Ice.Exception> __exceptionCb);
+
+    /**
+     * 发送历史曲线文件
+     * @param __responseCb The lambda response callback.
+     * @param __exceptionCb The lambda exception callback.
+     * @param __sentCb The lambda sent callback.
+     * @return The asynchronous result object.
+     **/
+    public Ice.AsyncResult begin_sendCurveFileBinary(String date, 
+                                                     String title, 
+                                                     byte[] datas, 
+                                                     IceInternal.Functional_VoidCallback __responseCb, 
+                                                     IceInternal.Functional_GenericCallback1<Ice.Exception> __exceptionCb, 
+                                                     IceInternal.Functional_BoolCallback __sentCb);
+
+    /**
+     * 发送历史曲线文件
+     * @param __ctx The Context map to send with the invocation.
+     * @param __responseCb The lambda response callback.
+     * @param __exceptionCb The lambda exception callback.
+     * @return The asynchronous result object.
+     **/
+    public Ice.AsyncResult begin_sendCurveFileBinary(String date, 
+                                                     String title, 
+                                                     byte[] datas, 
+                                                     java.util.Map<String, String> __ctx, 
+                                                     IceInternal.Functional_VoidCallback __responseCb, 
+                                                     IceInternal.Functional_GenericCallback1<Ice.Exception> __exceptionCb);
+
+    /**
+     * 发送历史曲线文件
+     * @param __ctx The Context map to send with the invocation.
+     * @param __responseCb The lambda response callback.
+     * @param __exceptionCb The lambda exception callback.
+     * @param __sentCb The lambda sent callback.
+     * @return The asynchronous result object.
+     **/
+    public Ice.AsyncResult begin_sendCurveFileBinary(String date, 
+                                                     String title, 
+                                                     byte[] datas, 
+                                                     java.util.Map<String, String> __ctx, 
+                                                     IceInternal.Functional_VoidCallback __responseCb, 
+                                                     IceInternal.Functional_GenericCallback1<Ice.Exception> __exceptionCb, 
+                                                     IceInternal.Functional_BoolCallback __sentCb);
+
+    /**
+     * 发送历史曲线文件
+     * @param __result The asynchronous result object.
+     **/
+    public void end_sendCurveFileBinary(Ice.AsyncResult __result);
 }

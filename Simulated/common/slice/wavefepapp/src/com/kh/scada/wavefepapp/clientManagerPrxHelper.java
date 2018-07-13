@@ -27,85 +27,90 @@ public final class clientManagerPrxHelper extends Ice.ObjectPrxHelperBase implem
 {
     private static final String __getFileCont_name = "getFileCont";
 
-    public boolean getFileCont(String strFileName, Ice.StringHolder strInf, Ice.StringHolder strCfg, ByteSeqHolder rfwDatas)
+    public boolean getFileCont(int unitNo, String strFileName, Ice.StringHolder strInf, Ice.StringHolder strCfg, ByteSeqHolder rfwDatas)
     {
-        return getFileCont(strFileName, strInf, strCfg, rfwDatas, null, false);
+        return getFileCont(unitNo, strFileName, strInf, strCfg, rfwDatas, null, false);
     }
 
-    public boolean getFileCont(String strFileName, Ice.StringHolder strInf, Ice.StringHolder strCfg, ByteSeqHolder rfwDatas, java.util.Map<String, String> __ctx)
+    public boolean getFileCont(int unitNo, String strFileName, Ice.StringHolder strInf, Ice.StringHolder strCfg, ByteSeqHolder rfwDatas, java.util.Map<String, String> __ctx)
     {
-        return getFileCont(strFileName, strInf, strCfg, rfwDatas, __ctx, true);
+        return getFileCont(unitNo, strFileName, strInf, strCfg, rfwDatas, __ctx, true);
     }
 
-    private boolean getFileCont(String strFileName, Ice.StringHolder strInf, Ice.StringHolder strCfg, ByteSeqHolder rfwDatas, java.util.Map<String, String> __ctx, boolean __explicitCtx)
+    private boolean getFileCont(int unitNo, String strFileName, Ice.StringHolder strInf, Ice.StringHolder strCfg, ByteSeqHolder rfwDatas, java.util.Map<String, String> __ctx, boolean __explicitCtx)
     {
         __checkTwowayOnly(__getFileCont_name);
-        return end_getFileCont(strInf, strCfg, rfwDatas, begin_getFileCont(strFileName, __ctx, __explicitCtx, true, null));
+        return end_getFileCont(strInf, strCfg, rfwDatas, begin_getFileCont(unitNo, strFileName, __ctx, __explicitCtx, true, null));
     }
 
-    public Ice.AsyncResult begin_getFileCont(String strFileName)
+    public Ice.AsyncResult begin_getFileCont(int unitNo, String strFileName)
     {
-        return begin_getFileCont(strFileName, null, false, false, null);
+        return begin_getFileCont(unitNo, strFileName, null, false, false, null);
     }
 
-    public Ice.AsyncResult begin_getFileCont(String strFileName, java.util.Map<String, String> __ctx)
+    public Ice.AsyncResult begin_getFileCont(int unitNo, String strFileName, java.util.Map<String, String> __ctx)
     {
-        return begin_getFileCont(strFileName, __ctx, true, false, null);
+        return begin_getFileCont(unitNo, strFileName, __ctx, true, false, null);
     }
 
-    public Ice.AsyncResult begin_getFileCont(String strFileName, Ice.Callback __cb)
+    public Ice.AsyncResult begin_getFileCont(int unitNo, String strFileName, Ice.Callback __cb)
     {
-        return begin_getFileCont(strFileName, null, false, false, __cb);
+        return begin_getFileCont(unitNo, strFileName, null, false, false, __cb);
     }
 
-    public Ice.AsyncResult begin_getFileCont(String strFileName, java.util.Map<String, String> __ctx, Ice.Callback __cb)
+    public Ice.AsyncResult begin_getFileCont(int unitNo, String strFileName, java.util.Map<String, String> __ctx, Ice.Callback __cb)
     {
-        return begin_getFileCont(strFileName, __ctx, true, false, __cb);
+        return begin_getFileCont(unitNo, strFileName, __ctx, true, false, __cb);
     }
 
-    public Ice.AsyncResult begin_getFileCont(String strFileName, Callback_clientManager_getFileCont __cb)
+    public Ice.AsyncResult begin_getFileCont(int unitNo, String strFileName, Callback_clientManager_getFileCont __cb)
     {
-        return begin_getFileCont(strFileName, null, false, false, __cb);
+        return begin_getFileCont(unitNo, strFileName, null, false, false, __cb);
     }
 
-    public Ice.AsyncResult begin_getFileCont(String strFileName, java.util.Map<String, String> __ctx, Callback_clientManager_getFileCont __cb)
+    public Ice.AsyncResult begin_getFileCont(int unitNo, String strFileName, java.util.Map<String, String> __ctx, Callback_clientManager_getFileCont __cb)
     {
-        return begin_getFileCont(strFileName, __ctx, true, false, __cb);
+        return begin_getFileCont(unitNo, strFileName, __ctx, true, false, __cb);
     }
 
-    public Ice.AsyncResult begin_getFileCont(String strFileName, 
+    public Ice.AsyncResult begin_getFileCont(int unitNo, 
+                                             String strFileName, 
                                              FunctionalCallback_clientManager_getFileCont_Response __responseCb, 
                                              IceInternal.Functional_GenericCallback1<Ice.Exception> __exceptionCb)
     {
-        return begin_getFileCont(strFileName, null, false, false, __responseCb, __exceptionCb, null);
+        return begin_getFileCont(unitNo, strFileName, null, false, false, __responseCb, __exceptionCb, null);
     }
 
-    public Ice.AsyncResult begin_getFileCont(String strFileName, 
+    public Ice.AsyncResult begin_getFileCont(int unitNo, 
+                                             String strFileName, 
                                              FunctionalCallback_clientManager_getFileCont_Response __responseCb, 
                                              IceInternal.Functional_GenericCallback1<Ice.Exception> __exceptionCb, 
                                              IceInternal.Functional_BoolCallback __sentCb)
     {
-        return begin_getFileCont(strFileName, null, false, false, __responseCb, __exceptionCb, __sentCb);
+        return begin_getFileCont(unitNo, strFileName, null, false, false, __responseCb, __exceptionCb, __sentCb);
     }
 
-    public Ice.AsyncResult begin_getFileCont(String strFileName, 
+    public Ice.AsyncResult begin_getFileCont(int unitNo, 
+                                             String strFileName, 
                                              java.util.Map<String, String> __ctx, 
                                              FunctionalCallback_clientManager_getFileCont_Response __responseCb, 
                                              IceInternal.Functional_GenericCallback1<Ice.Exception> __exceptionCb)
     {
-        return begin_getFileCont(strFileName, __ctx, true, false, __responseCb, __exceptionCb, null);
+        return begin_getFileCont(unitNo, strFileName, __ctx, true, false, __responseCb, __exceptionCb, null);
     }
 
-    public Ice.AsyncResult begin_getFileCont(String strFileName, 
+    public Ice.AsyncResult begin_getFileCont(int unitNo, 
+                                             String strFileName, 
                                              java.util.Map<String, String> __ctx, 
                                              FunctionalCallback_clientManager_getFileCont_Response __responseCb, 
                                              IceInternal.Functional_GenericCallback1<Ice.Exception> __exceptionCb, 
                                              IceInternal.Functional_BoolCallback __sentCb)
     {
-        return begin_getFileCont(strFileName, __ctx, true, false, __responseCb, __exceptionCb, __sentCb);
+        return begin_getFileCont(unitNo, strFileName, __ctx, true, false, __responseCb, __exceptionCb, __sentCb);
     }
 
-    private Ice.AsyncResult begin_getFileCont(String strFileName, 
+    private Ice.AsyncResult begin_getFileCont(int unitNo, 
+                                              String strFileName, 
                                               java.util.Map<String, String> __ctx, 
                                               boolean __explicitCtx, 
                                               boolean __synchronous, 
@@ -138,10 +143,11 @@ public final class clientManagerPrxHelper extends Ice.ObjectPrxHelperBase implem
 
             private final FunctionalCallback_clientManager_getFileCont_Response __responseCb;
         }
-        return begin_getFileCont(strFileName, __ctx, __explicitCtx, __synchronous, new CB(__responseCb, __exceptionCb, __sentCb));
+        return begin_getFileCont(unitNo, strFileName, __ctx, __explicitCtx, __synchronous, new CB(__responseCb, __exceptionCb, __sentCb));
     }
 
-    private Ice.AsyncResult begin_getFileCont(String strFileName, 
+    private Ice.AsyncResult begin_getFileCont(int unitNo, 
+                                              String strFileName, 
                                               java.util.Map<String, String> __ctx, 
                                               boolean __explicitCtx, 
                                               boolean __synchronous, 
@@ -153,6 +159,7 @@ public final class clientManagerPrxHelper extends Ice.ObjectPrxHelperBase implem
         {
             __result.prepare(__getFileCont_name, Ice.OperationMode.Normal, __ctx, __explicitCtx, __synchronous);
             IceInternal.BasicStream __os = __result.startWriteParams(Ice.FormatType.DefaultFormat);
+            __os.writeInt(unitNo);
             __os.writeString(strFileName);
             __result.endWriteParams();
             __result.invoke();

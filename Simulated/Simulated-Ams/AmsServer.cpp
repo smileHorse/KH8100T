@@ -80,6 +80,16 @@ int AmsServer::run( int argc, char* argv[] )
 			node.port = props->getPropertyAsIntWithDefault("IceStrom1_port", 10000);
 			node.runRole = props->getPropertyWithDefault("IceStrom1_runRole", "master");
 			serverNodes.push_back(node);
+
+			node.ip = props->getPropertyWithDefault("IceStrom2_ip", "192.168.3.25");
+			node.port = props->getPropertyAsIntWithDefault("IceStrom2_port", 10000);
+			node.runRole = props->getPropertyWithDefault("IceStrom2_runRole", "master");
+			serverNodes.push_back(node);
+
+			node.ip = props->getPropertyWithDefault("IceStrom3_ip", "192.168.3.25");
+			node.port = props->getPropertyAsIntWithDefault("IceStrom3_port", 10000);
+			node.runRole = props->getPropertyWithDefault("IceStrom3_runRole", "master");
+			serverNodes.push_back(node);
 			amsApp->setServerNodeList(serverNodes);
 		}
 

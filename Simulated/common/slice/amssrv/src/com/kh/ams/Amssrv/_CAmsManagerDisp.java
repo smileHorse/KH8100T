@@ -94,6 +94,11 @@ public abstract class _CAmsManagerDisp extends Ice.ObjectImpl implements CAmsMan
         Register(strServerName, strRole, null);
     }
 
+    public final void syncServreNode(ServerNode node)
+    {
+        syncServreNode(node, null);
+    }
+
     public static Ice.DispatchStatus ___Register(CAmsManager __obj, IceInternal.Incoming __inS, Ice.Current __current)
     {
         __checkMode(Ice.OperationMode.Normal, __current.mode);
@@ -137,6 +142,18 @@ public abstract class _CAmsManagerDisp extends Ice.ObjectImpl implements CAmsMan
         return Ice.DispatchStatus.DispatchOK;
     }
 
+    public static Ice.DispatchStatus ___syncServreNode(CAmsManager __obj, IceInternal.Incoming __inS, Ice.Current __current)
+    {
+        __checkMode(Ice.OperationMode.Normal, __current.mode);
+        IceInternal.BasicStream __is = __inS.startReadParams();
+        ServerNode node = null;
+        node = ServerNode.__read(__is, node);
+        __inS.endReadParams();
+        __obj.syncServreNode(node, __current);
+        __inS.__writeEmptyParams();
+        return Ice.DispatchStatus.DispatchOK;
+    }
+
     private final static String[] __all =
     {
         "AmsHeartBeat",
@@ -145,7 +162,8 @@ public abstract class _CAmsManagerDisp extends Ice.ObjectImpl implements CAmsMan
         "ice_id",
         "ice_ids",
         "ice_isA",
-        "ice_ping"
+        "ice_ping",
+        "syncServreNode"
     };
 
     public Ice.DispatchStatus __dispatch(IceInternal.Incoming in, Ice.Current __current)
@@ -185,6 +203,10 @@ public abstract class _CAmsManagerDisp extends Ice.ObjectImpl implements CAmsMan
             case 6:
             {
                 return ___ice_ping(this, in, __current);
+            }
+            case 7:
+            {
+                return ___syncServreNode(this, in, __current);
             }
         }
 

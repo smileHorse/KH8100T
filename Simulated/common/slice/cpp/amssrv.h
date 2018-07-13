@@ -382,6 +382,9 @@ typedef ::IceUtil::Handle< Callback_CAmsManager_Quit_Base> Callback_CAmsManager_
 class Callback_CAmsManager_AmsHeartBeat_Base : virtual public ::IceInternal::CallbackBase { };
 typedef ::IceUtil::Handle< Callback_CAmsManager_AmsHeartBeat_Base> Callback_CAmsManager_AmsHeartBeatPtr;
 
+class Callback_CAmsManager_syncServreNode_Base : virtual public ::IceInternal::CallbackBase { };
+typedef ::IceUtil::Handle< Callback_CAmsManager_syncServreNode_Base> Callback_CAmsManager_syncServreNodePtr;
+
 class Callback_CAmsApp_Register_Base : virtual public ::IceInternal::CallbackBase { };
 typedef ::IceUtil::Handle< Callback_CAmsApp_Register_Base> Callback_CAmsApp_RegisterPtr;
 
@@ -631,6 +634,76 @@ private:
 
     void AmsHeartBeat(const ::std::string&, const ::Ice::Context*);
     ::Ice::AsyncResultPtr begin_AmsHeartBeat(const ::std::string&, const ::Ice::Context*, const ::IceInternal::CallbackBasePtr&, const ::Ice::LocalObjectPtr& __cookie = 0);
+    
+public:
+
+    void syncServreNode(const ::Amssrv::ServerNode& __p_node)
+    {
+        syncServreNode(__p_node, 0);
+    }
+    void syncServreNode(const ::Amssrv::ServerNode& __p_node, const ::Ice::Context& __ctx)
+    {
+        syncServreNode(__p_node, &__ctx);
+    }
+#ifdef ICE_CPP11
+    ::Ice::AsyncResultPtr
+    begin_syncServreNode(const ::Amssrv::ServerNode& __p_node, const ::IceInternal::Function<void ()>& __response, const ::IceInternal::Function<void (const ::Ice::Exception&)>& __exception = ::IceInternal::Function<void (const ::Ice::Exception&)>(), const ::IceInternal::Function<void (bool)>& __sent = ::IceInternal::Function<void (bool)>())
+    {
+        return begin_syncServreNode(__p_node, 0, new ::IceInternal::Cpp11FnOnewayCallbackNC(__response, __exception, __sent));
+    }
+    ::Ice::AsyncResultPtr
+    begin_syncServreNode(const ::Amssrv::ServerNode& __p_node, const ::IceInternal::Function<void (const ::Ice::AsyncResultPtr&)>& __completed, const ::IceInternal::Function<void (const ::Ice::AsyncResultPtr&)>& __sent = ::IceInternal::Function<void (const ::Ice::AsyncResultPtr&)>())
+    {
+        return begin_syncServreNode(__p_node, 0, ::Ice::newCallback(__completed, __sent), 0);
+    }
+    ::Ice::AsyncResultPtr
+    begin_syncServreNode(const ::Amssrv::ServerNode& __p_node, const ::Ice::Context& __ctx, const ::IceInternal::Function<void ()>& __response, const ::IceInternal::Function<void (const ::Ice::Exception&)>& __exception = ::IceInternal::Function<void (const ::Ice::Exception&)>(), const ::IceInternal::Function<void (bool)>& __sent = ::IceInternal::Function<void (bool)>())
+    {
+        return begin_syncServreNode(__p_node, &__ctx, new ::IceInternal::Cpp11FnOnewayCallbackNC(__response, __exception, __sent), 0);
+    }
+    ::Ice::AsyncResultPtr
+    begin_syncServreNode(const ::Amssrv::ServerNode& __p_node, const ::Ice::Context& __ctx, const ::IceInternal::Function<void (const ::Ice::AsyncResultPtr&)>& __completed, const ::IceInternal::Function<void (const ::Ice::AsyncResultPtr&)>& __sent = ::IceInternal::Function<void (const ::Ice::AsyncResultPtr&)>())
+    {
+        return begin_syncServreNode(__p_node, &__ctx, ::Ice::newCallback(__completed, __sent));
+    }
+#endif
+
+    ::Ice::AsyncResultPtr begin_syncServreNode(const ::Amssrv::ServerNode& __p_node)
+    {
+        return begin_syncServreNode(__p_node, 0, ::IceInternal::__dummyCallback, 0);
+    }
+
+    ::Ice::AsyncResultPtr begin_syncServreNode(const ::Amssrv::ServerNode& __p_node, const ::Ice::Context& __ctx)
+    {
+        return begin_syncServreNode(__p_node, &__ctx, ::IceInternal::__dummyCallback, 0);
+    }
+
+    ::Ice::AsyncResultPtr begin_syncServreNode(const ::Amssrv::ServerNode& __p_node, const ::Ice::CallbackPtr& __del, const ::Ice::LocalObjectPtr& __cookie = 0)
+    {
+        return begin_syncServreNode(__p_node, 0, __del, __cookie);
+    }
+
+    ::Ice::AsyncResultPtr begin_syncServreNode(const ::Amssrv::ServerNode& __p_node, const ::Ice::Context& __ctx, const ::Ice::CallbackPtr& __del, const ::Ice::LocalObjectPtr& __cookie = 0)
+    {
+        return begin_syncServreNode(__p_node, &__ctx, __del, __cookie);
+    }
+
+    ::Ice::AsyncResultPtr begin_syncServreNode(const ::Amssrv::ServerNode& __p_node, const ::Amssrv::Callback_CAmsManager_syncServreNodePtr& __del, const ::Ice::LocalObjectPtr& __cookie = 0)
+    {
+        return begin_syncServreNode(__p_node, 0, __del, __cookie);
+    }
+
+    ::Ice::AsyncResultPtr begin_syncServreNode(const ::Amssrv::ServerNode& __p_node, const ::Ice::Context& __ctx, const ::Amssrv::Callback_CAmsManager_syncServreNodePtr& __del, const ::Ice::LocalObjectPtr& __cookie = 0)
+    {
+        return begin_syncServreNode(__p_node, &__ctx, __del, __cookie);
+    }
+
+    void end_syncServreNode(const ::Ice::AsyncResultPtr&);
+    
+private:
+
+    void syncServreNode(const ::Amssrv::ServerNode&, const ::Ice::Context*);
+    ::Ice::AsyncResultPtr begin_syncServreNode(const ::Amssrv::ServerNode&, const ::Ice::Context*, const ::IceInternal::CallbackBasePtr&, const ::Ice::LocalObjectPtr& __cookie = 0);
     
 public:
     
@@ -1478,6 +1551,9 @@ public:
     virtual void AmsHeartBeat(const ::std::string&, const ::Ice::Current& = ::Ice::Current()) = 0;
     ::Ice::DispatchStatus ___AmsHeartBeat(::IceInternal::Incoming&, const ::Ice::Current&);
 
+    virtual void syncServreNode(const ::Amssrv::ServerNode&, const ::Ice::Current& = ::Ice::Current()) = 0;
+    ::Ice::DispatchStatus ___syncServreNode(::IceInternal::Incoming&, const ::Ice::Current&);
+
     virtual ::Ice::DispatchStatus __dispatch(::IceInternal::Incoming&, const ::Ice::Current&);
 
 protected:
@@ -1845,6 +1921,88 @@ template<class T, typename CT> Callback_CAmsManager_AmsHeartBeatPtr
 newCallback_CAmsManager_AmsHeartBeat(T* instance, void (T::*excb)(const ::Ice::Exception&, const CT&), void (T::*sentcb)(bool, const CT&) = 0)
 {
     return new Callback_CAmsManager_AmsHeartBeat<T, CT>(instance, 0, excb, sentcb);
+}
+
+template<class T>
+class CallbackNC_CAmsManager_syncServreNode : public Callback_CAmsManager_syncServreNode_Base, public ::IceInternal::OnewayCallbackNC<T>
+{
+public:
+
+    typedef IceUtil::Handle<T> TPtr;
+
+    typedef void (T::*Exception)(const ::Ice::Exception&);
+    typedef void (T::*Sent)(bool);
+    typedef void (T::*Response)();
+
+    CallbackNC_CAmsManager_syncServreNode(const TPtr& obj, Response cb, Exception excb, Sent sentcb)
+        : ::IceInternal::OnewayCallbackNC<T>(obj, cb, excb, sentcb)
+    {
+    }
+};
+
+template<class T> Callback_CAmsManager_syncServreNodePtr
+newCallback_CAmsManager_syncServreNode(const IceUtil::Handle<T>& instance, void (T::*cb)(), void (T::*excb)(const ::Ice::Exception&), void (T::*sentcb)(bool) = 0)
+{
+    return new CallbackNC_CAmsManager_syncServreNode<T>(instance, cb, excb, sentcb);
+}
+
+template<class T> Callback_CAmsManager_syncServreNodePtr
+newCallback_CAmsManager_syncServreNode(const IceUtil::Handle<T>& instance, void (T::*excb)(const ::Ice::Exception&), void (T::*sentcb)(bool) = 0)
+{
+    return new CallbackNC_CAmsManager_syncServreNode<T>(instance, 0, excb, sentcb);
+}
+
+template<class T> Callback_CAmsManager_syncServreNodePtr
+newCallback_CAmsManager_syncServreNode(T* instance, void (T::*cb)(), void (T::*excb)(const ::Ice::Exception&), void (T::*sentcb)(bool) = 0)
+{
+    return new CallbackNC_CAmsManager_syncServreNode<T>(instance, cb, excb, sentcb);
+}
+
+template<class T> Callback_CAmsManager_syncServreNodePtr
+newCallback_CAmsManager_syncServreNode(T* instance, void (T::*excb)(const ::Ice::Exception&), void (T::*sentcb)(bool) = 0)
+{
+    return new CallbackNC_CAmsManager_syncServreNode<T>(instance, 0, excb, sentcb);
+}
+
+template<class T, typename CT>
+class Callback_CAmsManager_syncServreNode : public Callback_CAmsManager_syncServreNode_Base, public ::IceInternal::OnewayCallback<T, CT>
+{
+public:
+
+    typedef IceUtil::Handle<T> TPtr;
+
+    typedef void (T::*Exception)(const ::Ice::Exception& , const CT&);
+    typedef void (T::*Sent)(bool , const CT&);
+    typedef void (T::*Response)(const CT&);
+
+    Callback_CAmsManager_syncServreNode(const TPtr& obj, Response cb, Exception excb, Sent sentcb)
+        : ::IceInternal::OnewayCallback<T, CT>(obj, cb, excb, sentcb)
+    {
+    }
+};
+
+template<class T, typename CT> Callback_CAmsManager_syncServreNodePtr
+newCallback_CAmsManager_syncServreNode(const IceUtil::Handle<T>& instance, void (T::*cb)(const CT&), void (T::*excb)(const ::Ice::Exception&, const CT&), void (T::*sentcb)(bool, const CT&) = 0)
+{
+    return new Callback_CAmsManager_syncServreNode<T, CT>(instance, cb, excb, sentcb);
+}
+
+template<class T, typename CT> Callback_CAmsManager_syncServreNodePtr
+newCallback_CAmsManager_syncServreNode(const IceUtil::Handle<T>& instance, void (T::*excb)(const ::Ice::Exception&, const CT&), void (T::*sentcb)(bool, const CT&) = 0)
+{
+    return new Callback_CAmsManager_syncServreNode<T, CT>(instance, 0, excb, sentcb);
+}
+
+template<class T, typename CT> Callback_CAmsManager_syncServreNodePtr
+newCallback_CAmsManager_syncServreNode(T* instance, void (T::*cb)(const CT&), void (T::*excb)(const ::Ice::Exception&, const CT&), void (T::*sentcb)(bool, const CT&) = 0)
+{
+    return new Callback_CAmsManager_syncServreNode<T, CT>(instance, cb, excb, sentcb);
+}
+
+template<class T, typename CT> Callback_CAmsManager_syncServreNodePtr
+newCallback_CAmsManager_syncServreNode(T* instance, void (T::*excb)(const ::Ice::Exception&, const CT&), void (T::*sentcb)(bool, const CT&) = 0)
+{
+    return new Callback_CAmsManager_syncServreNode<T, CT>(instance, 0, excb, sentcb);
 }
 
 template<class T>

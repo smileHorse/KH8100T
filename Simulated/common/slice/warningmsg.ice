@@ -49,6 +49,24 @@ module WarningMsg
     interface SendWarningMsg
     {
         void sendWarningMsgBinary(string title, Bytes datas);
+
+        /**
+        * 发送录波文件
+        * @parameter unitNo: 单元号
+        * @parameter title: 文件标题
+        * @parameter datas: 文件内容
+        *
+        **/
+        void sendRfwFileBinary(string unitNo, string title, Bytes datas);
+
+        /**
+        * 发送历史曲线文件
+        * @parameter date: 日期
+        * @parameter title: 文件标题
+        * @parameter datas: 文件内容
+        *
+        **/
+        void sendCurveFileBinary(string date, string title, Bytes datas);
     };
 };
  

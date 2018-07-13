@@ -6,6 +6,7 @@
 #include "OperationInfo.h"
 #include "RdbAlarmDataI.h"
 #include "RdbRealDataI.h"
+#include "transferfile.h"
 #include "warningmsg.h"
 #include "WarningMsgI.h"
 #include "YkDataManagerI.h"
@@ -659,6 +660,149 @@ void WorkStationServerThread::ykSelect( bool isStop )
 	else
 	{
 		m_ykSelectTimer.start(10000);
+	}
+}
+
+void WorkStationServerThread::transferCurveFile(QString date, QString fileName)
+{
+	OperationInfo info(TYPE_CLIENT);
+
+	try
+	{
+		TransferFileSpace::TransferFilePrx proxy = TransferFileSpace::TransferFilePrx::checkedCast(
+			m_communicatorPtr->stringToProxy("transferFile-master:default -h 192.168.3.25 -p 10003 -t 5000"));
+		if (proxy)
+		{
+			string sDate = date.toStdString();
+			string sFileName = fileName.toStdString();
+
+			FILE* outf;
+			if ((outf = fopen(sFileName.c_str(), "w+b")) == NULL)
+			{
+				info.setOperationInfo(QStringLiteral("请求历史曲线文件"), QDateTime(), false, QStringLiteral("打开文件失败"));
+				emit executeOperation(info);
+				return;
+			}
+
+			bool result = true;
+			TransferFileSpace::FileContent fileContent;
+			fileContent.pos = 0;
+			do 
+			{
+				fileContent = proxy->requestHisCurveFile(sDate, sFileName, fileContent.pos);
+				if (fileContent.status == false)
+				{
+					result = false;
+					break;
+				}
+
+				try
+				{
+					size_t size = fileContent.content.size();
+					char* szBuf = new char[size];  
+					for (size_t i = 0; i < size; ++i)
+					{
+						szBuf[i] = fileContent.content[i];
+					}
+					fwrite(szBuf, sizeof(char), size, outf);
+					delete [] szBuf;
+				}
+				catch(const exception& ex)
+				{
+					result = false;
+					break;
+				}
+
+			} while (fileContent.pos != -1 && fileContent.status);
+
+			fclose(outf);
+
+			if (result)
+			{
+				info.setOperationInfo(QStringLiteral("请求历史曲线文件"), QDateTime(), true);
+			}
+			else
+			{
+				info.setOperationInfo(QStringLiteral("请求历史曲线文件"), QDateTime(), false, QStringLiteral("接收文件出错"));
+			}
+			emit executeOperation(info);
+		}
+	}
+	catch(const exception& ex)
+	{
+		info.setOperationInfo(QStringLiteral("请求历史曲线文件"), QDateTime(), false, ex.what());
+		emit executeOperation(info);
+	}
+}
+
+void WorkStationServerThread::transferWarningFile(QString fileName)
+{
+	OperationInfo info(TYPE_CLIENT);
+
+	try
+	{
+		TransferFileSpace::TransferFilePrx proxy = TransferFileSpace::TransferFilePrx::checkedCast(
+			m_communicatorPtr->stringToProxy("transferFile-master:default -h 192.168.3.25 -p 10003 -t 5000"));
+		if (proxy)
+		{
+			string sFileName = fileName.toStdString();
+
+			FILE* outf;
+			if ((outf = fopen(sFileName.c_str(), "w+b")) == NULL)
+			{
+				info.setOperationInfo(QStringLiteral("请求告警文件"), QDateTime(), false, QStringLiteral("打开文件失败"));
+				emit executeOperation(info);
+				return;
+			}
+
+			bool result = true;
+			TransferFileSpace::FileContent fileContent;
+			fileContent.pos = 0;
+			do 
+			{
+				fileContent = proxy->requestWarningFile(sFileName, fileContent.pos);
+				if (fileContent.status == false)
+				{
+					result = false;
+					break;
+				}
+
+				try
+				{
+					size_t size = fileContent.content.size();
+					char* szBuf = new char[size];  
+					for (size_t i = 0; i < size; ++i)
+					{
+						szBuf[i] = fileContent.content[i];
+					}
+					fwrite(szBuf, sizeof(char), size, outf);
+					delete [] szBuf;
+				}
+				catch(const exception& ex)
+				{
+					result = false;
+					break;
+				}
+
+			} while (fileContent.pos != -1 && fileContent.status);
+
+			fclose(outf);
+			
+			if (result)
+			{
+				info.setOperationInfo(QStringLiteral("请求告警文件"), QDateTime(), true);
+			}
+			else
+			{
+				info.setOperationInfo(QStringLiteral("请求告警文件"), QDateTime(), false, QStringLiteral("接收文件出错"));
+			}
+			emit executeOperation(info);
+		}
+	}
+	catch(const exception& ex)
+	{
+		info.setOperationInfo(QStringLiteral("请求告警文件"), QDateTime(), false, ex.what());
+		emit executeOperation(info);
 	}
 }
 

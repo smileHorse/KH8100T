@@ -25,7 +25,9 @@ public enum YkType implements java.io.Serializable
     
     SelectBeforeOperate(0),
     
-    DirectlyOperate(1);
+    DirectlyOperate(1),
+    
+    PowerTransformerOperate(2);
 
     public int
     value()
@@ -42,6 +44,8 @@ public enum YkType implements java.io.Serializable
             return SelectBeforeOperate;
         case 1:
             return DirectlyOperate;
+        case 2:
+            return PowerTransformerOperate;
         }
         return null;
     }
@@ -55,7 +59,7 @@ public enum YkType implements java.io.Serializable
     public void
     __write(IceInternal.BasicStream __os)
     {
-        __os.writeEnum(value(), 1);
+        __os.writeEnum(value(), 2);
     }
 
     public static void
@@ -63,18 +67,18 @@ public enum YkType implements java.io.Serializable
     {
         if(__v == null)
         {
-            __os.writeEnum(com.gridnt.icestorm.Yk.YkType.SelectBeforeOperate.value(), 1);
+            __os.writeEnum(com.gridnt.icestorm.Yk.YkType.SelectBeforeOperate.value(), 2);
         }
         else
         {
-            __os.writeEnum(__v.value(), 1);
+            __os.writeEnum(__v.value(), 2);
         }
     }
 
     public static YkType
     __read(IceInternal.BasicStream __is)
     {
-        int __v = __is.readEnum(1);
+        int __v = __is.readEnum(2);
         return __validate(__v);
     }
 

@@ -18,8 +18,8 @@
 // </auto-generated>
 //
 
-#ifndef __ykdata_h__
-#define __ykdata_h__
+#ifndef __cpp_ykdata_h__
+#define __cpp_ykdata_h__
 
 #include <IceUtil/PushDisableWarnings.h>
 #include <Ice/ProxyF.h>
@@ -118,7 +118,8 @@ enum YkStep
 enum YkType
 {
     SelectBeforeOperate,
-    DirectlyOperate
+    DirectlyOperate,
+    PowerTransformerOperate
 };
 
 struct YkCommand
@@ -455,7 +456,7 @@ struct StreamableTraits< ::Yk::YkType>
 {
     static const StreamHelperCategory helper = StreamHelperCategoryEnum;
     static const int minValue = 0;
-    static const int maxValue = 1;
+    static const int maxValue = 2;
     static const int minWireSize = 1;
     static const bool fixedLength = false;
 };

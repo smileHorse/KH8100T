@@ -29,7 +29,9 @@ public enum OPERTYPE implements java.io.Serializable
     
     READGROUPNO(2),
     
-    SWITCHGROUP(3);
+    SWITCHGROUP(3),
+    
+    PROTECTRESET(4);
 
     public int
     value()
@@ -50,6 +52,8 @@ public enum OPERTYPE implements java.io.Serializable
             return READGROUPNO;
         case 3:
             return SWITCHGROUP;
+        case 4:
+            return PROTECTRESET;
         }
         return null;
     }
@@ -63,7 +67,7 @@ public enum OPERTYPE implements java.io.Serializable
     public void
     __write(IceInternal.BasicStream __os)
     {
-        __os.writeEnum(value(), 3);
+        __os.writeEnum(value(), 4);
     }
 
     public static void
@@ -71,18 +75,18 @@ public enum OPERTYPE implements java.io.Serializable
     {
         if(__v == null)
         {
-            __os.writeEnum(com.kh.scada.protect.Protect.OPERTYPE.READSETTING.value(), 3);
+            __os.writeEnum(com.kh.scada.protect.Protect.OPERTYPE.READSETTING.value(), 4);
         }
         else
         {
-            __os.writeEnum(__v.value(), 3);
+            __os.writeEnum(__v.value(), 4);
         }
     }
 
     public static OPERTYPE
     __read(IceInternal.BasicStream __is)
     {
-        int __v = __is.readEnum(3);
+        int __v = __is.readEnum(4);
         return __validate(__v);
     }
 

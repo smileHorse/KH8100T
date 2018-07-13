@@ -113,6 +113,9 @@
     <ClCompile Include="WarningTableData.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="..\common\slice\cpp\transferfile.cpp">
+      <Filter>Slice</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <CustomBuild Include="workstationframe.h">
@@ -173,6 +176,9 @@
     </ClInclude>
     <ClInclude Include="WarningTableData.h">
       <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="..\common\slice\cpp\transferfile.h">
+      <Filter>Slice</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

@@ -23,4 +23,24 @@ package com.gridnt.warningmsg.WarningMsg;
 public interface _SendWarningMsgOperations
 {
     void sendWarningMsgBinary(String title, byte[] datas, Ice.Current __current);
+
+    /**
+     * 发送录波文件
+     * @parameter unitNo: 单元号
+     * @parameter title: 文件标题
+     * @parameter datas: 文件内容
+     *
+     * @param __current The Current object for the invocation.
+     **/
+    void sendRfwFileBinary(String unitNo, String title, byte[] datas, Ice.Current __current);
+
+    /**
+     * 发送历史曲线文件
+     * @parameter date: 日期
+     * @parameter title: 文件标题
+     * @parameter datas: 文件内容
+     *
+     * @param __current The Current object for the invocation.
+     **/
+    void sendCurveFileBinary(String date, String title, byte[] datas, Ice.Current __current);
 }

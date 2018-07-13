@@ -18,8 +18,8 @@
 // </auto-generated>
 //
 
-#ifndef __cpp_protect_h__
-#define __cpp_protect_h__
+#ifndef __protect_h__
+#define __protect_h__
 
 #include <IceUtil/PushDisableWarnings.h>
 #include <Ice/ProxyF.h>
@@ -91,7 +91,8 @@ enum OPERTYPE
     READSETTING = 0,
     WRITESETTING = 1,
     READGROUPNO = 2,
-    SWITCHGROUP = 3
+    SWITCHGROUP = 3,
+    PROTECTRESET = 4
 };
 
 typedef ::std::vector< ::Ice::Byte> Bytes;
@@ -121,7 +122,7 @@ struct StreamableTraits< ::Protect::OPERTYPE>
 {
     static const StreamHelperCategory helper = StreamHelperCategoryEnum;
     static const int minValue = 0;
-    static const int maxValue = 3;
+    static const int maxValue = 4;
     static const int minWireSize = 1;
     static const bool fixedLength = false;
 };

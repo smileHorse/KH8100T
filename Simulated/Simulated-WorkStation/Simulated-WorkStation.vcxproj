@@ -82,6 +82,7 @@
     <ClCompile Include="..\common\basic\textelement.cpp" />
     <ClCompile Include="..\common\slice\cpp\fepdata.cpp" />
     <ClCompile Include="..\common\slice\cpp\rdbdata.cpp" />
+    <ClCompile Include="..\common\slice\cpp\transferfile.cpp" />
     <ClCompile Include="..\common\slice\cpp\warningmsg.cpp" />
     <ClCompile Include="..\common\slice\cpp\ykdata.cpp" />
     <ClCompile Include="FepDataManagerI.cpp" />
@@ -153,6 +154,7 @@
     <ClInclude Include="..\common\basic\textelement.h" />
     <ClInclude Include="..\common\slice\cpp\fepdata.h" />
     <ClInclude Include="..\common\slice\cpp\rdbdata.h" />
+    <ClInclude Include="..\common\slice\cpp\transferfile.h" />
     <ClInclude Include="..\common\slice\cpp\warningmsg.h" />
     <ClInclude Include="..\common\slice\cpp\ykdata.h" />
     <ClInclude Include="FepDataManagerI.h" />

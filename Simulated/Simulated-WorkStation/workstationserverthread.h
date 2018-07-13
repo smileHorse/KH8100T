@@ -74,6 +74,8 @@ private slots:
 	void subscriberYkApp(bool isStop);
 	void subscriberWarningMsg(bool isStop);
 	void ykSelect(bool isStop);
+	void transferCurveFile(QString date, QString fileName);
+	void transferWarningFile(QString fileName);
 
 private:
 	Ice::CommunicatorPtr m_communicatorPtr;
