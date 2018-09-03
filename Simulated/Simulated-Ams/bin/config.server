@@ -27,15 +27,15 @@ Datasvr2_ip = 192.168.3.192
 Datasvr2_port = 10004
 Datasvr2_runRole = slave
 
-IceStrom1_ip = 192.168.3.25
+IceStrom1_ip = 192.168.3.33
 IceStrom1_port = 10000
 IceStrom1_runRole = master
 
-IceStrom2_ip = 192.168.3.25
+IceStrom2_ip = 192.168.3.33
 IceStrom2_port = 10010
 IceStrom2_runRole = slave
 
-IceStrom3_ip = 192.168.3.25
+IceStrom3_ip = 192.168.3.33
 IceStrom3_port = 10020
 IceStrom3_runRole = slave
 

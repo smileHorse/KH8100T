@@ -29,6 +29,16 @@ int FepServer::run( int argc, char* argv[] )
 		{
 			adapterName = props->getPropertyWithDefault("AdapterName", adapterName);
 		}
+		string iceStormIps = props->getPropertyWithDefault("IceStrom_Ip", "");
+		string iceStormPorts = props->getPropertyWithDefault("IceStrom_Port", "");
+		if (iceStormIps.empty() || iceStormPorts.empty())
+		{
+			info.setOperationInfo("加载IceStorm端口信息失败，退出!!!!");
+			emit executeOperation(info);
+			return EXIT_FAILURE;
+		}
+
+		BaseIceStorm::SetIceStormIpAndPort(iceStormIps, iceStormPorts);
 
 		Ice::ObjectAdapterPtr adapter = m_communicatorPtr->createObjectAdapter(adapterName);
 		info.setOperationInfo(QStringLiteral("获取适配器成功"));

@@ -17,13 +17,28 @@ int WorkStationServer::run( int argc, char* argv[] )
 {
 	try 
 	{
-		m_communicatorPtr = communicator();
 		OperationInfo info(TYPE_CLIENT);
+
+		// 获取配置信息
+		Ice::PropertiesPtr props = communicator()->getProperties();
+		Ice::Int maxSize = props->getPropertyAsIntWithDefault("Ice.MessageSizeMax", 1024);
+		string strEndPoints = props->getPropertyWithDefault("WorkStation.Endpoints", "");
+		string iceStormIps = props->getPropertyWithDefault("IceStrom_Ip", "");
+		string iceStormPorts = props->getPropertyWithDefault("IceStrom_Port", "");
+		if (strEndPoints.empty() || iceStormIps.empty() || iceStormPorts.empty())
+		{
+			info.setOperationInfo("加载本地和IceStorm端口信息失败，退出!!!!");
+			emit executeOperation(info);
+			return EXIT_FAILURE;
+		}
+
+		BaseIceStorm::SetIceStormIpAndPort(iceStormIps, iceStormPorts);
+
+		m_communicatorPtr = communicator();
 		info.setOperationInfo("创建连接器成功");
 		emit executeOperation(info);
 
-		QString endPoints("default -h 192.168.3.25 -p %1");
-		endPoints = endPoints.arg(WORKSTATION_ADAPTER_PORT);
+		QString endPoints = QString::fromStdString(strEndPoints);
 		Ice::ObjectAdapterPtr adapter = m_communicatorPtr->createObjectAdapterWithEndpoints("workStationAdatpter", 
 			endPoints.toStdString());
 		info.setOperationInfo("获取适配器成功");
@@ -66,7 +81,7 @@ void WorkStationServer::setThreadPtr( WorkStationServerThread* ptr )
 
 void WorkStationServer::startServer()
 {
-	main(m_argc, m_argv);
+	main(m_argc, m_argv, "config.info");
 }
 
 // 查询树形结构
@@ -77,8 +92,7 @@ bool WorkStationServer::GetEquipTree( RdbRealData::RdbDataOptPrx& proxy )
 	RdbRealData::EquipTreeSequence treeSeq;
 	proxy->GetEquipTree(deviceType, deviceRid, treeSeq);	
 	proxy->GetSpecificEquipTree(deviceType, deviceRid, "Breaker", treeSeq);
-
-	
+		
 	return true;
 }
 

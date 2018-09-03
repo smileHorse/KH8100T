@@ -9,9 +9,13 @@
 #ifndef BASEICESTORM_H
 #define BASEICESTORM_H
 
-#include <string>
 #include <Ice/Ice.h>
 #include <IceStorm/IceStorm.h>
+#include <string>
+#include <vector>
+
+using std::string;
+using std::vector;
 
 class BaseIceStorm
 {
@@ -59,11 +63,36 @@ public:
 	*
 	* @return 
 	*/
-	static void SetIceStormIpAndPort(const std::string& ip, int port);	
+	static void SetIceStormIpAndPort(const std::string& ip, const std::string& port);	
+
+	/** 
+	* 获取异常信息
+	*
+	* @return 
+	*/
+	static string getException()
+	{
+		return m_exception;
+	}
+
+	static void setException(const string& ex)
+	{
+		m_exception = ex;
+	}
+
+	static void initException()
+	{
+		setException("未知异常");
+	}
 
 private:
-	static std::string	m_iceStormIp;		// IceStorm服务器的ip
+	static string	m_iceStormIp;		// IceStorm服务器的ip
 	static int		m_iceStormPort;		// IceStorm服务器的port
+
+	static vector<string> m_iceStormIps;	// IceStorm服务器的ip
+	static vector<string> m_iceStormPorts;	// IceStorm服务器的port
+
+	static	string	m_exception;		// 异常信息
 };
 
 #endif

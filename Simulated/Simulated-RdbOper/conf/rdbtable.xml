@@ -602,6 +602,7 @@
 		<field type = "string">roleName</field>
 		<field type = "string">permission</field>
 		<field type = "string">roleDesc</field>
+		<field type = "string">operDesc</field>
 	</table>
 	<table name="SystemUser">
 		<field type = "string">mRID</field>

@@ -1,9 +1,13 @@
 ﻿#include "BaseIceStorm.h"
 
+#include <QtCore/QString>
+#include <QtCore/QStringList>
 #include <sstream>
 
-std::string BaseIceStorm::m_iceStormIp = "192.168.3.25";
-int BaseIceStorm::m_iceStormPort = 10000;
+vector<string> BaseIceStorm::m_iceStormIps = vector<string>();
+vector<string> BaseIceStorm::m_iceStormPorts = vector<string>();
+
+string BaseIceStorm::m_exception = "";
 
 /** 
 * icestorm订阅方法
@@ -18,6 +22,8 @@ int BaseIceStorm::m_iceStormPort = 10000;
 bool BaseIceStorm::Subscriber(Ice::CommunicatorPtr &communicatorPtr, Ice::ObjectPrx &objectPrx, std::string &strTopic, std::string &strDeliverModel, std::string &strReliability, std::string &strRetryCount)
 {
 	bool blnValue = true;
+	initException();
+
 	try
 	{
 		IceStorm::TopicPrx topic = GetTopicProxy(communicatorPtr, strTopic);
@@ -73,10 +79,12 @@ bool BaseIceStorm::Subscriber(Ice::CommunicatorPtr &communicatorPtr, Ice::Object
 					catch(const IceStorm::AlreadySubscribed &ex)
 					{
 						//blnValue = false;
+						setException(ex.what());
 					}
 					catch(const IceStorm::BadQoS &ex)
 					{
 						blnValue = false;
+						setException(ex.what());
 					}
 				}
 			}
@@ -93,6 +101,7 @@ bool BaseIceStorm::Subscriber(Ice::CommunicatorPtr &communicatorPtr, Ice::Object
 	catch(Ice::Exception &ex)
 	{
 		blnValue = false;
+		setException(ex.what());
 	}
 	catch(...)
 	{
@@ -107,6 +116,8 @@ bool BaseIceStorm::Subscriber(Ice::CommunicatorPtr &communicatorPtr, Ice::Object
 bool BaseIceStorm::Subscriber(Ice::CommunicatorPtr &communicatorPtr, Ice::ObjectPrx &objectPrx, std::string &strTopic, std::string &strDeliverModel, std::string &strReliability, std::string &strRetryCount,Ice::ObjectPrx &proxyPrx)
 {
 	bool blnValue = true;
+	initException();
+
 	try
 	{
 		IceStorm::TopicPrx topic = GetTopicProxy(communicatorPtr, strTopic);
@@ -162,10 +173,12 @@ bool BaseIceStorm::Subscriber(Ice::CommunicatorPtr &communicatorPtr, Ice::Object
 					catch(const IceStorm::AlreadySubscribed &ex)
 					{
 						//blnValue = false;
+						setException(ex.what());
 					}
 					catch(const IceStorm::BadQoS &ex)
 					{
 						blnValue = false;
+						setException(ex.what());
 					}
 				}
 			}
@@ -182,6 +195,7 @@ bool BaseIceStorm::Subscriber(Ice::CommunicatorPtr &communicatorPtr, Ice::Object
 	catch(Ice::Exception &ex)
 	{
 		blnValue = false;
+		setException(ex.what());
 	}
 	catch(...)
 	{
@@ -200,6 +214,8 @@ bool BaseIceStorm::Subscriber(Ice::CommunicatorPtr &communicatorPtr, Ice::Object
 bool BaseIceStorm::UnSubscriber(Ice::CommunicatorPtr &communicatorPtr, Ice::ObjectPrx &objectPrx, std::string &strTopic)
 {
 	bool blnValue = true;
+	initException();
+
 	try
 	{
 		IceStorm::TopicPrx topic = GetTopicProxy(communicatorPtr, strTopic);
@@ -214,10 +230,12 @@ bool BaseIceStorm::UnSubscriber(Ice::CommunicatorPtr &communicatorPtr, Ice::Obje
 	}catch(const Ice::LocalException &ex)
 	{
 		blnValue = false;
+		setException(ex.what());
 	}
 	catch(Ice::Exception &ex)
 	{
 		blnValue = false;
+		setException(ex.what());
 	}
 	catch(...)
 	{
@@ -235,17 +253,11 @@ bool BaseIceStorm::UnSubscriber(Ice::CommunicatorPtr &communicatorPtr, Ice::Obje
 */
 Ice::ObjectPrx BaseIceStorm::GetPublisher(Ice::CommunicatorPtr &communicatorPtr, std::string &strTopic, std::string &strDeliverModel)
 {
+	initException();
+
 	try
 	{
 		IceStorm::TopicPrx topic = GetTopicProxy(communicatorPtr, strTopic);
-
-		IceStorm::LinkInfoSeq linkInfos = topic->getLinkInfoSeq();
-		for (int i = 0; i < linkInfos.size(); ++i)
-		{
-			IceStorm::LinkInfo linkInfo = linkInfos[i];
-			std::string name = linkInfo.name;
-		}
-
 		if(topic != 0)
 		{
 			Ice::ObjectPrx objectPrx = topic->getPublisher();
@@ -263,6 +275,7 @@ Ice::ObjectPrx BaseIceStorm::GetPublisher(Ice::CommunicatorPtr &communicatorPtr,
 	}
 	catch(Ice::Exception &ex)
 	{
+		setException(ex.what());
 	}
 	catch(...)
 	{
@@ -279,8 +292,16 @@ Ice::ObjectPrx BaseIceStorm::GetPublisher(Ice::CommunicatorPtr &communicatorPtr,
 */
 IceStorm::TopicPrx BaseIceStorm::GetTopicProxy(Ice::CommunicatorPtr &communicatorPtr, std::string &strTopic)
 {
+	initException();
+
 	std::stringstream stream;
-	stream << "server-icestorm/TopicManager:default -h " << m_iceStormIp << " -p " << m_iceStormPort;
+	stream << "server-icestorm/TopicManager: ";
+	for (int i = 0; i < m_iceStormIps.size(); ++i)
+	{
+		stream << (i > 0 ? " : " : "");
+		stream << "tcp -h " << m_iceStormIps.at(i);
+		stream << " -p " << (m_iceStormPorts.size() > i ? m_iceStormPorts.at(i) : "");
+	}
 	std::string proxyStr = stream.str();
 	IceStorm::TopicManagerPrx manager = IceStorm::TopicManagerPrx::checkedCast(
 		communicatorPtr->stringToProxy(proxyStr));
@@ -303,6 +324,7 @@ IceStorm::TopicPrx BaseIceStorm::GetTopicProxy(Ice::CommunicatorPtr &communicato
 		}
 		catch(const IceStorm::TopicExists &ex)
 		{
+			setException(ex.what());
 			return NULL;
 		}
 	}
@@ -315,8 +337,21 @@ IceStorm::TopicPrx BaseIceStorm::GetTopicProxy(Ice::CommunicatorPtr &communicato
 *
 * @return 
 */
-void BaseIceStorm::SetIceStormIpAndPort( const std::string& ip, int port )
+void BaseIceStorm::SetIceStormIpAndPort( const std::string& ip, const std::string& port )
 {
-	m_iceStormIp = ip;
-	m_iceStormPort = port;
+	m_iceStormIps.clear();
+	m_iceStormPorts.clear();
+	QString qIp = QString().fromStdString(ip);
+	QStringList ipList = qIp.split(":");
+	Q_FOREACH(QString str, ipList)
+	{
+		m_iceStormIps.push_back(str.toStdString());
+	}
+
+	QString qPort = QString().fromStdString(port);
+	QStringList portList = qPort.split(":");
+	Q_FOREACH(QString str, portList)
+	{
+		m_iceStormPorts.push_back(str.toStdString());
+	}
 }

@@ -3,14 +3,9 @@
 # "Hello". The following line sets the endpoints for this
 # adapter.
 #
-FepAdatpter.Endpoints=tcp -h localhost -p 10004
 
-AdapterName = FepAdatpter
+Ice.MessageSizeMax = 1024 	# Largest message size is 1MB
 
-#
-# Warn about connection exceptions
-#
-Ice.Warn.Connections=1
 
 #
 # Network Tracing
@@ -30,6 +25,10 @@ Ice.Warn.Connections=1
 #
 #Ice.Trace.Protocol=1
 
+# 
+# Local ip & port
+#
+WorkStation.Endpoints=tcp -h 192.168.3.25 -p 10005 -t 1
 
 # 
 # IceStorm ip & port 
