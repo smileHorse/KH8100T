@@ -1,6 +1,7 @@
 #include "fepframe.h"
 #include "fepserver.h"
 #include "fepserverthread.h"
+#include "faultEventDlg.h"
 #include "OperationInfo.h"
 #include "TableHeader.h"
 
@@ -110,7 +111,8 @@ void FepFrame::createActions()
 
 	processProTypeEventAction = new QAction(QIcon(":/images/protype.png"), QStringLiteral("发布保护事项"), this);
 	processProTypeEventAction->setStatusTip(QStringLiteral("发布前置机保护事项"));
-	connect(processProTypeEventAction, SIGNAL(triggered()), m_fepServerThreadPtr, SLOT(processProTypeEvent()));
+	//connect(processProTypeEventAction, SIGNAL(triggered()), m_fepServerThreadPtr, SLOT(processProTypeEvent()));
+	connect(processProTypeEventAction, SIGNAL(triggered()), this, SLOT(configFaultEvent()));
 	
 	processWaveAction = new QAction(QIcon(":/images/wave.png"), QStringLiteral("发布录波事项"), this);
 	processWaveAction->setStatusTip(QStringLiteral("发布前置机录波事项"));
@@ -254,4 +256,10 @@ void FepFrame::processYxTypeEvent()
 
 		m_fepServerThreadPtr->processYxTypeEvent(true);
 	}
+}
+
+void FepFrame::configFaultEvent()
+{
+	CFaultEventDlg dlg(m_fepServerThreadPtr, this);
+	dlg.exec();
 }

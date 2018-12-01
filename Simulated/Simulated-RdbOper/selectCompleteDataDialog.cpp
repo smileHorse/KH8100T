@@ -2,6 +2,8 @@
 #include "rdbTableFactory.h"
 #include "selectCompleteDataDialog.h"
 
+#include <Ice/LocalException.h>
+
 #define TEXT_SEPERATOR	"%"
 
 SelectCompleteDataDialog::SelectCompleteDataDialog(const RdbDataOptPrx& rdbDataOptPrx,  QWidget* parent /*= 0*/)
@@ -166,6 +168,21 @@ void SelectCompleteDataDialog::queryData()
 
 
 		updateTableWidget(repSeq);
+	}
+	catch(const Ice::UnknownUserException& e1) 
+	{
+		QMessageBox::warning(this, QStringLiteral("查询全部数据"), 
+			QStringLiteral("查询数据失败 UnknownUserException: %1").arg(e1.what()));
+	}
+	catch(const Ice::UnknownLocalException& e2)
+	{
+		QMessageBox::warning(this, QStringLiteral("查询全部数据"), 
+			QStringLiteral("查询数据失败 UnknownLocalException: %1").arg(e2.what()));
+	}
+	catch(const Ice::UnknownException& e3)
+	{
+		QMessageBox::warning(this, QStringLiteral("查询全部数据"), 
+			QStringLiteral("查询数据失败 UnknownException: %1").arg(e3.what()));
 	}
 	catch(const Ice::Exception& ex)
 	{

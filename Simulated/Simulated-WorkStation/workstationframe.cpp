@@ -144,6 +144,16 @@ void WorkStationFrame::createActions()
 	transferWarningFileAction->setStatusTip(QStringLiteral("请求告警文件"));
 	transferWarningFileAction->setEnabled(false);
 	connect(transferWarningFileAction, SIGNAL(triggered()), this, SLOT(transferWarningFile()));
+
+	getSubscribersAction = new QAction(QIcon(":/images/icemenu.png"), QStringLiteral("获取订阅者"), this);
+	getSubscribersAction->setStatusTip(QStringLiteral("获取订阅者"));
+	getSubscribersAction->setEnabled(false);
+	connect(getSubscribersAction, SIGNAL(triggered()), this, SLOT(getSubscribers()));
+
+	getPublishersAction = new QAction(QIcon(":/images/icemenu.png"), QStringLiteral("获取发布者"), this);
+	getPublishersAction->setStatusTip(QStringLiteral("获取发布者"));
+	getPublishersAction->setEnabled(false);
+	connect(getPublishersAction, SIGNAL(triggered()), this, SLOT(getPublishers()));
 	
 	clearAction = new QAction(QIcon(":/images/clear.png"), QStringLiteral("清空文本"), this);
 	clearAction->setStatusTip(QStringLiteral("清空文本"));
@@ -181,6 +191,9 @@ void WorkStationFrame::createMenus()
 	subscriberMenu->addSeparator();
 	subscriberMenu->addAction(ykSelectAction);
 	operMenu->addSeparator();
+	operMenu->addAction(getSubscribersAction);
+	operMenu->addAction(getPublishersAction);
+	operMenu->addSeparator();
 	operMenu->addAction(clearAction);
 
 	helpMenu = menuBar()->addMenu(QStringLiteral("帮助"));
@@ -216,6 +229,9 @@ void WorkStationFrame::createToolBars()
 	operToolBar->addAction(transferCurveFileAction);
 	operToolBar->addAction(transferWarningFileAction);
 	operToolBar->addSeparator();
+	operToolBar->addAction(getSubscribersAction);
+	operToolBar->addAction(getPublishersAction);
+	operToolBar->addSeparator();
 	operToolBar->addAction(clearAction);
 }
 
@@ -242,6 +258,8 @@ void WorkStationFrame::createConnects()
 	connect(this, SIGNAL(ykSelectSignal(bool)), m_workStationServerThreadPtr, SLOT(ykSelect(bool)));
 	connect(this, SIGNAL(transferCurveFileSignal(QString, QString)), m_workStationServerThreadPtr, SLOT(transferCurveFile(QString, QString)));
 	connect(this, SIGNAL(transferWarningFileSignal(QString)), m_workStationServerThreadPtr, SLOT(transferWarningFile(QString)));
+	connect(this, SIGNAL(getSubscribersSignal(QString)), m_workStationServerThreadPtr, SLOT(getSubscribers(QString)));
+	connect(this, SIGNAL(getPublishersSignal(QString)), m_workStationServerThreadPtr, SLOT(getPublishers(QString)));
 	connect(m_workStationServerThreadPtr, &WorkStationServerThread::executeOperation, 
 		this, &WorkStationFrame::updateTableWidget);
 	connect(m_workStationServerThreadPtr, &WorkStationServerThread::outputReceiveData, 
@@ -312,6 +330,8 @@ void WorkStationFrame::updateActions( bool serverStarted )
 	ykSelectAction->setEnabled(serverStarted);
 	transferCurveFileAction->setEnabled(serverStarted);
 	transferWarningFileAction->setEnabled(serverStarted);
+	getSubscribersAction->setEnabled(serverStarted);
+	getPublishersAction->setEnabled(serverStarted);
 }
 
 void WorkStationFrame::startServer()
@@ -434,6 +454,26 @@ void WorkStationFrame::transferWarningFile()
 		return;
 	}
 	emit transferWarningFileSignal(text);
+}
+
+void WorkStationFrame::getSubscribers()
+{
+	QString text = QInputDialog::getText(this, QStringLiteral("获取订阅者"), QStringLiteral("主题名称: "));
+	if (text.isEmpty())
+	{
+		return;
+	}
+	emit getSubscribersSignal(text);
+}
+
+void WorkStationFrame::getPublishers()
+{
+	QString text = QInputDialog::getText(this, QStringLiteral("获取发布者"), QStringLiteral("主题名称: "));
+	if (text.isEmpty())
+	{
+		return;
+	}
+	emit getPublishersSignal(text);
 }
 
 void WorkStationFrame::clearTextEdit()

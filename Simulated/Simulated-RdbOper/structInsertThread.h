@@ -19,7 +19,9 @@ typedef QList<DataStruct>	DataStructList;
 #define DiscreteSuffix			"DiscreteSuffix"
 #define CommandSuffix			"CommandSuffix"
 #define AccumulatorSuffix		"AccumulatorSuffix"
+#define RemoteUnitParam			"RemoteUnitParam"
 #define VALUE					"value"
+#define StartIedId				"startIedId"
 #define DevManufacturer			"DevManufacturer"
 #define DevDeviceType			"DevDeviceType"
 #define GeographicalRegion		"GeographicalRegion"
@@ -155,6 +157,8 @@ private:
 
 	QStringList getAccumulatorSuffix();
 
+	int getStartIedId();
+
 	int getDataStructCount(const DataStruct& dataStruct);
 
 	QString createName(const QString& parentName, const QString& childName, int index);
@@ -191,5 +195,7 @@ private:
 
 	int protocolNo;
 	int channelId;
+
+	RespondCompleteDataSeq insertDataList;
 };
 #endif

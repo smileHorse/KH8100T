@@ -35,5 +35,5 @@ WorkStation.Endpoints=tcp -h 192.168.3.25 -p 10005 -t 1
 #
 #IceStrom_Ip = 192.168.3.25:192.168.3.25:192.168.3.25
 #IceStrom_Port = 10000:10010:10020
-IceStrom_Ip = 192.168.3.23
+IceStrom_Ip = 192.168.3.25
 IceStrom_Port = 10000

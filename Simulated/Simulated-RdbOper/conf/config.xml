@@ -5,8 +5,8 @@
         <port>10000</port>
     </ice-storm>
     <off-ice>
-        <ip>192.168.3.226</ip>
-        <port>11002</port>
+        <ip>192.168.3.25</ip>
+        <port>10002</port>
     </off-ice>
     <self-ice>
         <ip>192.168.3.25</ip>

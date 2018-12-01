@@ -314,8 +314,8 @@ void ProcessDataDialog::startProcessData()
 	}
 	else if (mode == Timed)
 	{
-		// 定时发送数据时，每隔30s发送一次
-		m_timer->start(30000);
+		// 定时发送数据时，每隔5s发送一次
+		m_timer->start(5000);
 	}
 }
 

@@ -48,6 +48,7 @@ public slots:
 	void processSoeTypeEvent();
 	void processUnitTypeEvent();
 	void processProTypeEvent();
+	void processProTypeEvent(int unitNo, int moduleNo, int moduleType, int infoNo, int state);
 	void processWave();
 
 private:

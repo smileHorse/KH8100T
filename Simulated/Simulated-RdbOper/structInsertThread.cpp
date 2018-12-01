@@ -155,6 +155,10 @@ StructInsertThread::StructInsertThread(const RdbDataOptPrx& rdbDataOptPrx, QObje
 
 	protocolNo = 0;
 	channelId = 0;
+
+	insertDataList.id = 1;
+	insertDataList.requestId = 1;
+	insertDataList.requestNode = "structInsert";
 }
 
 void StructInsertThread::run()
@@ -963,42 +967,82 @@ void StructInsertThread::insertChildren( const DataStruct& parent )
 	}
 }
 
+//bool StructInsertThread::insertRdbData( const QString& tableName, const vector<string>& fieldValues )
+//{
+//	RespondCompleteDataSeq repSeq;
+//	repSeq.id = 1;
+//	repSeq.requestId = 1;
+//	repSeq.requestNode = "randomInsert";
+//
+//	RespondCompleteData data;
+//	data.tableName = tableName.toStdString();
+//	data.dataValues.assign(fieldValues.begin(), fieldValues.end());
+//
+//	repSeq.seq.push_back(data);
+//	repSeq.dataCount = repSeq.seq.size();
+//	
+//	RespondCompleteDataSequence repSequence;
+//	try
+//	{
+//		RdbDataOptPrx rdbDataOptPrx_timeout = RdbDataOptPrx::uncheckedCast(
+//			m_rdbDataOptPrx->ice_timeout(5000));
+//		bool result = m_rdbDataOptPrx->InsertData(repSeq, repSequence);
+//		if (result)
+//		{
+//			RdbLog(CLogger::Log_INFO, "插入 %s 成功", tableName.toStdString().c_str());
+//			return true;
+//		}
+//		else
+//		{
+//			RdbLog(CLogger::Log_INFO, "!!!!!!!!!!!!!! 插入 %s 失败 !!!!!!!!!!!!!!!", tableName.toStdString().c_str());
+//			return false;
+//		}
+//	}
+//	catch(const Ice::Exception& ex)
+//	{
+//		RdbLog(CLogger::Log_ERROR, "插入 %s 数据时出现异常: %s", tableName.toStdString().c_str(), ex.what());
+//		return false;
+//	}		
+//}
 bool StructInsertThread::insertRdbData( const QString& tableName, const vector<string>& fieldValues )
 {
-	RespondCompleteDataSeq repSeq;
-	repSeq.id = 1;
-	repSeq.requestId = 1;
-	repSeq.requestNode = "randomInsert";
-
 	RespondCompleteData data;
 	data.tableName = tableName.toStdString();
 	data.dataValues.assign(fieldValues.begin(), fieldValues.end());
 
-	repSeq.seq.push_back(data);
-	repSeq.dataCount = repSeq.seq.size();
-	
-	RespondCompleteDataSequence repSequence;
-	try
+	insertDataList.seq.push_back(data);
+	insertDataList.dataCount = insertDataList.seq.size();
+
+	if (insertDataList.seq.size() > 300)
 	{
-		RdbDataOptPrx rdbDataOptPrx_timeout = RdbDataOptPrx::uncheckedCast(
-			m_rdbDataOptPrx->ice_timeout(5000));
-		bool result = m_rdbDataOptPrx->InsertData(repSeq, repSequence);
-		if (result)
+		RespondCompleteDataSequence repSequence;
+		try
 		{
-			RdbLog(CLogger::Log_INFO, "插入 %s 成功", tableName.toStdString().c_str());
-			return true;
+			RdbDataOptPrx rdbDataOptPrx_timeout = RdbDataOptPrx::uncheckedCast(
+				m_rdbDataOptPrx->ice_timeout(5000));
+			bool result = m_rdbDataOptPrx->InsertData(insertDataList, repSequence);
+			if (result)
+			{
+				insertDataList.seq.clear();
+				RdbLog(CLogger::Log_INFO, "插入 %s 成功", tableName.toStdString().c_str());
+				return true;
+			}
+			else
+			{
+				insertDataList.seq.clear();
+				RdbLog(CLogger::Log_INFO, "!!!!!!!!!!!!!! 插入 %s 失败 !!!!!!!!!!!!!!!", tableName.toStdString().c_str());
+				return false;
+			}
 		}
-		else
+		catch(const Ice::Exception& ex)
 		{
-			RdbLog(CLogger::Log_INFO, "!!!!!!!!!!!!!! 插入 %s 失败 !!!!!!!!!!!!!!!", tableName.toStdString().c_str());
+			insertDataList.seq.clear();
+			RdbLog(CLogger::Log_ERROR, "插入 %s 数据时出现异常: %s", tableName.toStdString().c_str(), ex.what());
 			return false;
-		}
+		}		
 	}
-	catch(const Ice::Exception& ex)
-	{
-		RdbLog(CLogger::Log_ERROR, "插入 %s 数据时出现异常: %s", tableName.toStdString().c_str(), ex.what());
-		return false;
-	}		
+
+	return true;
 }
 
 void StructInsertThread::getRandomDeviceTypeInfo( QString& manufacturer, QString& deviceType )
@@ -1105,6 +1149,28 @@ QStringList StructInsertThread::getAccumulatorSuffix()
 	return strs;
 }
 
+int StructInsertThread::getStartIedId()
+{
+	int iedId = 0;
+	DataStructList globalStructs = rdbDataStruct.getSpecificChildrens(GlobalParam);
+	if (globalStructs.isEmpty())
+	{
+		return iedId;
+	}
+
+	DataStruct globalStruct = globalStructs.at(0);
+	DataStructList dataStructs = globalStruct.getSpecificChildrens(RemoteUnitParam);
+	foreach(DataStruct dataStruct, dataStructs)
+	{
+		DataStructList values = dataStruct.getSpecificChildrens(StartIedId);
+		if (!values.isEmpty())
+		{
+			iedId = values.at(0).value.toInt();
+		}
+	}
+	return iedId;
+}
+
 int StructInsertThread::getDataStructCount(const DataStruct& dataStruct)
 {
 	int count = dataStruct.getSepecificAttribute(COUNT).toInt();
@@ -1137,6 +1203,10 @@ QString StructInsertThread::createPathName( const QString& parentPath, const QSt
 
 void StructInsertThread::createNewUnitId()
 {
+	if (unitId == 0)
+	{
+		unitId = getStartIedId();
+	}
 	unitId++;
 	yxPointId = ycPointId = ykPointId = ddPointId = 0;
 }

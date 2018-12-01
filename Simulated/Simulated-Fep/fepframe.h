@@ -44,6 +44,8 @@ private slots:
 	void processUnitStateData();
 	void processYxTypeEvent();
 
+	void configFaultEvent();
+
 private:
 	FepServer*	m_fepServerPtr;
 	FepServerThread*	m_fepServerThreadPtr;

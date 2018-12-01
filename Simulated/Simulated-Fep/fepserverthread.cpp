@@ -254,13 +254,13 @@ void FepServerThread::processUnitStateDataImpl()
 	selfPacket.type = UnitStateType;
 	selfPacket.unitNo = 1;
 	qsrand(QDateTime::currentDateTime().toTime_t());
-	for (int i = 0; i < 5; ++i)
+	for (int i = 0; i < 25; ++i)
 	{
 		::FepData::Unit unit;
 		unit.unitNo = i + 1;
-		unit.unitState = getUnitState(3);
-		unit.channelState1 = getUnitState(3);
-		unit.channelState2 = getUnitState(3);
+		unit.unitState = getUnitState(qrand() % 5);
+		unit.channelState1 = getUnitState(qrand() % 5);
+		unit.channelState2 = getUnitState(qrand() % 5);
 		unit.errorRate = (qrand() % 100);
 
 		selfPacket.units.push_back(unit);
@@ -313,7 +313,7 @@ void FepServerThread::processDLFault()
 	FepData::FaultEvent event;
 	event.unitNo = 1;
 	event.lineNo = 1;
-	event.timeStamp = IceUtil::Time::now().toMicroSeconds();
+	event.timeStamp = IceUtil::Time::now().toMilliSeconds();
 	event.eventType = 0;
 	packet.events.push_back(event);
 
@@ -413,8 +413,8 @@ void FepServerThread::processYxTypeEventImpl()
 	packet.fepNode = "fep36";
 	packet.type = FepData::YxType;
 	FepData::ChangedDigital changedDigital;
-	changedDigital.unitNo = 1;
-	changedDigital.index = 1;
+	changedDigital.unitNo = 11;
+	changedDigital.index = 17;
 	changedDigital.value = FepData::Close;
 	changedDigital.timeStamp = IceUtil::Time::now().toMilliSeconds();
 	packet.digitals.push_back(changedDigital);
@@ -508,13 +508,47 @@ void FepServerThread::processProTypeEvent()
 	packet.fepNode = "fep36";
 	packet.type = FepData::ProType;
 	FepData::ProtectEvent protectEvent;
-	protectEvent.unitNo = 21;
+	protectEvent.unitNo = 28;
 	protectEvent.Type = FepData::ProtectAlarm;
 	protectEvent.timeStamp = IceUtil::Time::now().toMilliSeconds();
-	protectEvent.moduleNo = 3;
+	protectEvent.moduleNo = 0;
 	protectEvent.moduleType = 0;
 	protectEvent.infoNo = 0;
 	protectEvent.state = 0;
+	packet.protects.push_back(protectEvent);
+
+	m_fepDataManagerPrx->processEvent(packet);
+
+	// 输出发送的数据
+	QString text = outputFepEvent(packet);
+	emit publishFepData(text);
+
+	OperationInfo info(TYPE_FEP);
+	info.setOperationInfo(QStringLiteral("发布保护事项"));
+	emit executeOperation(info);
+}
+
+void FepServerThread::processProTypeEvent(int unitNo, int moduleNo, int moduleType, int infoNo, int state)
+{
+	// 获取发布者对象
+	if (!getFepDataPublisher())
+	{
+		return;
+	}
+
+	// 发布保护事项
+	FepData::EventPacket packet;
+	packet.id = 15;
+	packet.fepNode = "fep36";
+	packet.type = FepData::ProType;
+	FepData::ProtectEvent protectEvent;
+	protectEvent.unitNo = unitNo;
+	protectEvent.Type = FepData::ProtectAlarm;
+	protectEvent.timeStamp = IceUtil::Time::now().toMilliSeconds();
+	protectEvent.moduleNo = moduleNo;
+	protectEvent.moduleType = moduleType;
+	protectEvent.infoNo = infoNo;
+	protectEvent.state = state;
 	packet.protects.push_back(protectEvent);
 
 	m_fepDataManagerPrx->processEvent(packet);

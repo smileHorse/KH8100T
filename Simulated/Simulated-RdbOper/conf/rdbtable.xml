@@ -68,6 +68,7 @@
 		<field type = "int">ptRatio</field>
 		<field type = "int">lineType</field>
 		<field type = "int">lineNo</field>
+		<field type = "double">capacity</field>
 	</table>
 	<table name="ACLineSegment">
 		<field type = "string">mRID</field>
@@ -233,6 +234,9 @@
 		<field type = "string">runTime</field>
 		<field type = "string">reserved</field>
 		<field type = "int">ykNum</field>
+		<field type = "bool">lockFlag</field>
+		<field type = "bool">holdFlag</field>
+		<field type = "bool">holdFaFlag</field>
 	</table>
 	<table name="AnalogUnitPoint">
 		<field type = "string">mRID</field>
@@ -349,6 +353,13 @@
 		<field type = "string">ftuVlDesc</field>
 		<field type = "int">dw</field>
 		<field type = "int">dw_order</field>
+		<field type = "bool">isControl</field>
+		<field type = "int">ykFtuPointId</field>
+		<field type = "string">timeStamp</field>
+		<field type = "bool">operationInProgress</field>
+		<field type = "int">bilaFlag</field>
+		<field type = "bool">directControl</field>
+		<field type = "string">relatedAnalog</field>
 	</table>
 	<table name="Accumulator">
 		<field type = "string">mRID</field>
@@ -501,6 +512,13 @@
 		<field type = "string">measure_type</field>
 		<field type = "string">measure_rid</field>
 	</table>
+	<table name="ControlLockingFormula">
+		<field type = "string">mRID</field>
+		<field type = "string">name</field>
+		<field type = "string">formula</field>
+		<field type = "bool">value</field>
+		<field type = "string">discrete</field>
+	</table>
 
 	<table name="ConfigFaultDesc">
 		<field type = "string">mRID</field>
@@ -629,12 +647,14 @@
 		<field type = "int">configNo</field>
 		<field type = "string">dataName</field>
 		<field type = "int">maxVal</field>
+		<field type = "int">minVal</field>
 		<field type = "string">unit</field>
 		<field type = "double">modulus</field>
 		<field type = "string">color</field>
 		<field type = "int">belongBmp</field>
 		<field type = "int">protectLineNo</field>
 		<field type = "int">channelNo</field>
+		<field type = "int">zhouBoNum</field>
 	</table>
 	<table name="WavTrendCurve">
 		<field type = "string">mRID</field>
@@ -647,5 +667,22 @@
 		<field type = "string">curveColor</field>
 		<field type = "int">coordinateNo</field>
 		<field type = "string">reserved</field>
+	</table>
+	<table name="SecurityGroups">
+		<field type = "string">mRID</field>
+		<field type = "int">no</field>
+		<field type = "string">name</field>
+		<field type = "int">state1</field>
+		<field type = "int">state2</field>
+	</table>
+	<table name="SecurityGroupsUsers">
+		<field type = "string">mRID</field>
+		<field type = "string">groupMrid</field>
+		<field type = "string">userMrid</field>
+	</table>
+	<table name="SecurityGroupsStations">
+		<field type = "string">mRID</field>
+		<field type = "string">groupMrid</field>
+		<field type = "string">stationMrid</field>
 	</table>
 </rdb>

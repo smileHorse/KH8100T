@@ -806,3 +806,75 @@ void WorkStationServerThread::transferWarningFile(QString fileName)
 	}
 }
 
+void WorkStationServerThread::getSubscribers(QString topicName)
+{
+	try 
+	{
+		// 获取订阅者
+		string strTopic = topicName.toStdString();
+		IceStorm::TopicPrx topic = BaseIceStorm::GetTopicProxy(m_communicatorPtr, strTopic);
+		if (topic)
+		{
+			::Ice::IdentitySeq identitySeq = topic->getSubscribers();
+
+			QTime currTime = QDateTime::currentDateTime().time();
+			QString text = QString("%1-%2-%3").arg(currTime.hour()).arg(currTime.minute()).arg(currTime.second());
+			emit outputReceiveData(text);
+
+			if (identitySeq.empty())
+			{
+				emit outputReceiveData("\t不存在订阅者");
+			}
+			for (size_t i = 0; i < identitySeq.size(); ++i)
+			{
+				Ice::Identity identity = identitySeq.at(i);
+				emit outputReceiveData(QString("\t%1\t%2").arg(QString().fromStdString(identity.category)).
+					arg(QString().fromStdString(identity.name)));
+			}
+		}
+
+	}
+	catch(const Ice::Exception& ex)
+	{
+		OperationInfo info(TYPE_CLIENT);
+		info.setOperationInfo(QStringLiteral("获取订阅者请求失败"), QDateTime(), false, ex.what());
+		emit executeOperation(info);
+		return;
+	}
+}
+
+void WorkStationServerThread::getPublishers(QString topicName)
+{
+	try 
+	{
+		// 获取发布者
+		string strTopic = topicName.toStdString();
+		IceStorm::TopicPrx topic = BaseIceStorm::GetTopicProxy(m_communicatorPtr, strTopic);
+		if (topic)
+		{
+			::Ice::ObjectPrx objectPrx = topic->getPublisher();
+
+			QTime currTime = QDateTime::currentDateTime().time();
+			QString text = QString("%1-%2-%3").arg(currTime.hour()).arg(currTime.minute()).arg(currTime.second());
+			emit outputReceiveData(text);
+
+			if (!objectPrx)
+			{
+				emit outputReceiveData("\t不存在发布者");
+			}
+			else
+			{
+				emit outputReceiveData(QString("\t%1").arg(QString().fromStdString(objectPrx->ice_toString())));
+			}
+		}
+
+	}
+	catch(const Ice::Exception& ex)
+	{
+		OperationInfo info(TYPE_CLIENT);
+		info.setOperationInfo(QStringLiteral("获取发布者请求失败"), QDateTime(), false, ex.what());
+		emit executeOperation(info);
+		return;
+	}
+}
+
