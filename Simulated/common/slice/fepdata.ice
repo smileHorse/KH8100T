@@ -15,7 +15,9 @@ module FepData {
     enum DiscreteValue {
         Open,     // 0-分闸
         Close,    // 1-合闸
-        Unknown   // 2-未知状态
+		DblOpen,  // 2-双分
+		DblClose, // 3-双合
+        Unknown   // 4-未知状态
     };
     
     // 变化遥测

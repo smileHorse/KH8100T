@@ -121,13 +121,13 @@ IceProxy::FepXbData::CFepXb::end_sendSettingValue(const ::Ice::AsyncResultPtr& _
 }
 
 void
-IceProxy::FepXbData::CFepXb::sendBrief(const ::FepXbData::TduBrief& __p_briefVal, const ::Ice::Context* __ctx)
+IceProxy::FepXbData::CFepXb::sendBrief(const ::FepXbData::TduBriefSeq& __p_briefSeq, const ::Ice::Context* __ctx)
 {
     ::IceInternal::Outgoing __og(this, __FepXbData__CFepXb__sendBrief_name, ::Ice::Normal, __ctx);
     try
     {
         ::IceInternal::BasicStream* __os = __og.startWriteParams(::Ice::DefaultFormat);
-        __os->write(__p_briefVal);
+        __os->write(__p_briefSeq);
         __og.endWriteParams();
     }
     catch(const ::Ice::LocalException& __ex)
@@ -138,14 +138,14 @@ IceProxy::FepXbData::CFepXb::sendBrief(const ::FepXbData::TduBrief& __p_briefVal
 }
 
 ::Ice::AsyncResultPtr
-IceProxy::FepXbData::CFepXb::begin_sendBrief(const ::FepXbData::TduBrief& __p_briefVal, const ::Ice::Context* __ctx, const ::IceInternal::CallbackBasePtr& __del, const ::Ice::LocalObjectPtr& __cookie)
+IceProxy::FepXbData::CFepXb::begin_sendBrief(const ::FepXbData::TduBriefSeq& __p_briefSeq, const ::Ice::Context* __ctx, const ::IceInternal::CallbackBasePtr& __del, const ::Ice::LocalObjectPtr& __cookie)
 {
     ::IceInternal::OutgoingAsyncPtr __result = new ::IceInternal::OutgoingAsync(this, __FepXbData__CFepXb__sendBrief_name, __del, __cookie);
     try
     {
         __result->prepare(__FepXbData__CFepXb__sendBrief_name, ::Ice::Normal, __ctx);
         ::IceInternal::BasicStream* __os = __result->startWriteParams(::Ice::DefaultFormat);
-        __os->write(__p_briefVal);
+        __os->write(__p_briefSeq);
         __result->endWriteParams();
         __result->invoke();
     }
@@ -401,10 +401,10 @@ FepXbData::CFepXb::___sendBrief(::IceInternal::Incoming& __inS, const ::Ice::Cur
 {
     __checkMode(::Ice::Normal, __current.mode);
     ::IceInternal::BasicStream* __is = __inS.startReadParams();
-    ::FepXbData::TduBrief __p_briefVal;
-    __is->read(__p_briefVal);
+    ::FepXbData::TduBriefSeq __p_briefSeq;
+    __is->read(__p_briefSeq);
     __inS.endReadParams();
-    sendBrief(__p_briefVal, __current);
+    sendBrief(__p_briefSeq, __current);
     __inS.__writeEmptyParams();
     return ::Ice::DispatchOK;
 }

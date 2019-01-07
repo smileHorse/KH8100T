@@ -508,13 +508,21 @@ void FepServerThread::processProTypeEvent()
 	packet.fepNode = "fep36";
 	packet.type = FepData::ProType;
 	FepData::ProtectEvent protectEvent;
-	protectEvent.unitNo = 28;
+	protectEvent.unitNo = 12;
 	protectEvent.Type = FepData::ProtectAlarm;
 	protectEvent.timeStamp = IceUtil::Time::now().toMilliSeconds();
-	protectEvent.moduleNo = 0;
+	protectEvent.moduleNo = 1;
 	protectEvent.moduleType = 0;
 	protectEvent.infoNo = 0;
 	protectEvent.state = 0;
+	for (int i = 0; i < 10; ++i)
+	{
+		FepData::ProValue proVal;
+		proVal.index = i;
+		proVal.value = (i + 1) * 1.0;
+		protectEvent.values.push_back(proVal);
+
+	}
 	packet.protects.push_back(protectEvent);
 
 	m_fepDataManagerPrx->processEvent(packet);
@@ -549,6 +557,14 @@ void FepServerThread::processProTypeEvent(int unitNo, int moduleNo, int moduleTy
 	protectEvent.moduleType = moduleType;
 	protectEvent.infoNo = infoNo;
 	protectEvent.state = state;
+	for (int i = 0; i < 10; ++i)
+	{
+		FepData::ProValue proVal;
+		proVal.index = i;
+		proVal.value = (i + 1) * 1.0;
+		protectEvent.values.push_back(proVal);
+
+	}
 	packet.protects.push_back(protectEvent);
 
 	m_fepDataManagerPrx->processEvent(packet);

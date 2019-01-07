@@ -80,6 +80,8 @@ enum DiscreteValue
 {
     Open,
     Close,
+	DblOpen,
+	DblClose,
     Unknown
 };
 

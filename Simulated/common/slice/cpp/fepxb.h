@@ -82,92 +82,10 @@ typedef ::std::vector< ::std::string> stringSeq;
 
 typedef ::std::vector< ::Ice::Short> shortSeq;
 
-struct SDevicePara1
-{
-    ::std::string SettingFlag;
-    ::Ice::Byte Version;
-    ::Ice::Byte ChannelCheckCode;
-    ::Ice::Byte FilterWidth;
-    ::Ice::Byte FilterCtrlCode;
-    ::Ice::Byte ChannelNum;
-    ::Ice::Byte SamplingRate;
-    ::Ice::Byte Rs;
-    ::Ice::Byte RecordLength;
-    ::Ice::Short TriggerInterval;
-    ::Ice::Byte WorkFrequence;
-    ::Ice::Byte YearL;
-    ::Ice::Byte YearH;
-    ::Ice::Byte IrigB;
-    ::Ice::Byte Flash;
-    ::Ice::Byte TDUStaAddr;
-    ::std::string DevID;
-    ::std::string StatName;
-    ::FepXbData::stringSeq LineName;
-    ::FepXbData::byteSeq ChnlsLineNum;
-    ::Ice::Byte TimeZoneHour;
-    ::Ice::Byte TimeZoneMinute;
-    ::Ice::Byte Rsved;
-};
-
-struct SDevicePara2
-{
-    ::FepXbData::byteSeq EnChAndIsInvertPhase;
-    ::FepXbData::byteSeq AIBoardTypeAndMesures;
-    ::FepXbData::byteSeq DI;
-    ::FepXbData::byteSeq DI2;
-    ::FepXbData::shortSeq VarRatio;
-    ::FepXbData::byteSeq VarRatioVice;
-    ::FepXbData::shortSeq VolLevel;
-    ::FepXbData::byteSeq ChannelGain;
-    ::FepXbData::byteSeq TriggerThreshold;
-    ::FepXbData::byteSeq LineCurrent;
-    ::FepXbData::byteSeq LineVICorrection;
-    ::FepXbData::byteSeq StartPara;
-    ::FepXbData::byteSeq GainPara;
-};
-
-struct SCommPara
-{
-    ::FepXbData::byteSeq MACAddr1;
-    ::FepXbData::byteSeq IPAddr1;
-    ::FepXbData::byteSeq NetMask1;
-    ::FepXbData::byteSeq Gateway1;
-    ::Ice::Short Port1;
-    ::FepXbData::byteSeq MACAddr2;
-    ::FepXbData::byteSeq IPAddr2;
-    ::FepXbData::byteSeq NetMask2;
-    ::FepXbData::byteSeq Gateway2;
-    ::Ice::Short Port2;
-    ::Ice::Short NetReserve;
-    ::FepXbData::byteSeq remoteIP1;
-    ::Ice::Short remotePort1;
-    ::FepXbData::byteSeq remoteIP2;
-    ::Ice::Short remotePort2;
-    ::Ice::Byte Com1ProtocolType;
-    ::FepXbData::byteSeq Com1ProtocolPara;
-    ::Ice::Byte LinkAddr103;
-    ::Ice::Byte FunType103;
-    ::Ice::Byte Com2ProtocolType;
-    ::FepXbData::byteSeq Com2ProtocolPara;
-    ::Ice::Byte LinkAddr2103;
-    ::Ice::Byte FunType2103;
-    ::std::string ModemPhone;
-    ::std::string ModemInitCmd;
-    ::Ice::Byte ModemState;
-    ::Ice::Byte Rsved3;
-};
-
-struct TduCfg
-{
-    ::FepXbData::SDevicePara1 DevicePara1;
-    ::FepXbData::SDevicePara2 DevicePara2;
-    ::FepXbData::SCommPara CommPara;
-};
-
 struct SettingValueInfo
 {
     ::Ice::Short unitNo;
-    ::FepXbData::TduCfg tdu100Cfg;
+    ::FepXbData::byteSeq tdu100Cfg;
 };
 
 struct SAC
@@ -335,6 +253,8 @@ struct TduBrief
     ::Ice::Int nFaultPhase;
     ::FepXbData::SChannelDataSeq sChannelInfo;
 };
+
+typedef ::std::vector< ::FepXbData::TduBrief> TduBriefSeq;
 
 struct AlarmTime
 {
@@ -852,238 +772,10 @@ const ::std::string FepXbTopic = "fep_xb_data";
 namespace Ice
 {
 template<>
-struct StreamableTraits< ::FepXbData::SDevicePara1>
-{
-    static const StreamHelperCategory helper = StreamHelperCategoryStruct;
-    static const int minWireSize = 24;
-    static const bool fixedLength = false;
-};
-
-template<class S>
-struct StreamWriter< ::FepXbData::SDevicePara1, S>
-{
-    static void write(S* __os, const ::FepXbData::SDevicePara1& v)
-    {
-        __os->write(v.SettingFlag);
-        __os->write(v.Version);
-        __os->write(v.ChannelCheckCode);
-        __os->write(v.FilterWidth);
-        __os->write(v.FilterCtrlCode);
-        __os->write(v.ChannelNum);
-        __os->write(v.SamplingRate);
-        __os->write(v.Rs);
-        __os->write(v.RecordLength);
-        __os->write(v.TriggerInterval);
-        __os->write(v.WorkFrequence);
-        __os->write(v.YearL);
-        __os->write(v.YearH);
-        __os->write(v.IrigB);
-        __os->write(v.Flash);
-        __os->write(v.TDUStaAddr);
-        __os->write(v.DevID);
-        __os->write(v.StatName);
-        __os->write(v.LineName);
-        __os->write(v.ChnlsLineNum);
-        __os->write(v.TimeZoneHour);
-        __os->write(v.TimeZoneMinute);
-        __os->write(v.Rsved);
-    }
-};
-
-template<class S>
-struct StreamReader< ::FepXbData::SDevicePara1, S>
-{
-    static void read(S* __is, ::FepXbData::SDevicePara1& v)
-    {
-        __is->read(v.SettingFlag);
-        __is->read(v.Version);
-        __is->read(v.ChannelCheckCode);
-        __is->read(v.FilterWidth);
-        __is->read(v.FilterCtrlCode);
-        __is->read(v.ChannelNum);
-        __is->read(v.SamplingRate);
-        __is->read(v.Rs);
-        __is->read(v.RecordLength);
-        __is->read(v.TriggerInterval);
-        __is->read(v.WorkFrequence);
-        __is->read(v.YearL);
-        __is->read(v.YearH);
-        __is->read(v.IrigB);
-        __is->read(v.Flash);
-        __is->read(v.TDUStaAddr);
-        __is->read(v.DevID);
-        __is->read(v.StatName);
-        __is->read(v.LineName);
-        __is->read(v.ChnlsLineNum);
-        __is->read(v.TimeZoneHour);
-        __is->read(v.TimeZoneMinute);
-        __is->read(v.Rsved);
-    }
-};
-
-template<>
-struct StreamableTraits< ::FepXbData::SDevicePara2>
-{
-    static const StreamHelperCategory helper = StreamHelperCategoryStruct;
-    static const int minWireSize = 13;
-    static const bool fixedLength = false;
-};
-
-template<class S>
-struct StreamWriter< ::FepXbData::SDevicePara2, S>
-{
-    static void write(S* __os, const ::FepXbData::SDevicePara2& v)
-    {
-        __os->write(v.EnChAndIsInvertPhase);
-        __os->write(v.AIBoardTypeAndMesures);
-        __os->write(v.DI);
-        __os->write(v.DI2);
-        __os->write(v.VarRatio);
-        __os->write(v.VarRatioVice);
-        __os->write(v.VolLevel);
-        __os->write(v.ChannelGain);
-        __os->write(v.TriggerThreshold);
-        __os->write(v.LineCurrent);
-        __os->write(v.LineVICorrection);
-        __os->write(v.StartPara);
-        __os->write(v.GainPara);
-    }
-};
-
-template<class S>
-struct StreamReader< ::FepXbData::SDevicePara2, S>
-{
-    static void read(S* __is, ::FepXbData::SDevicePara2& v)
-    {
-        __is->read(v.EnChAndIsInvertPhase);
-        __is->read(v.AIBoardTypeAndMesures);
-        __is->read(v.DI);
-        __is->read(v.DI2);
-        __is->read(v.VarRatio);
-        __is->read(v.VarRatioVice);
-        __is->read(v.VolLevel);
-        __is->read(v.ChannelGain);
-        __is->read(v.TriggerThreshold);
-        __is->read(v.LineCurrent);
-        __is->read(v.LineVICorrection);
-        __is->read(v.StartPara);
-        __is->read(v.GainPara);
-    }
-};
-
-template<>
-struct StreamableTraits< ::FepXbData::SCommPara>
-{
-    static const StreamHelperCategory helper = StreamHelperCategoryStruct;
-    static const int minWireSize = 32;
-    static const bool fixedLength = false;
-};
-
-template<class S>
-struct StreamWriter< ::FepXbData::SCommPara, S>
-{
-    static void write(S* __os, const ::FepXbData::SCommPara& v)
-    {
-        __os->write(v.MACAddr1);
-        __os->write(v.IPAddr1);
-        __os->write(v.NetMask1);
-        __os->write(v.Gateway1);
-        __os->write(v.Port1);
-        __os->write(v.MACAddr2);
-        __os->write(v.IPAddr2);
-        __os->write(v.NetMask2);
-        __os->write(v.Gateway2);
-        __os->write(v.Port2);
-        __os->write(v.NetReserve);
-        __os->write(v.remoteIP1);
-        __os->write(v.remotePort1);
-        __os->write(v.remoteIP2);
-        __os->write(v.remotePort2);
-        __os->write(v.Com1ProtocolType);
-        __os->write(v.Com1ProtocolPara);
-        __os->write(v.LinkAddr103);
-        __os->write(v.FunType103);
-        __os->write(v.Com2ProtocolType);
-        __os->write(v.Com2ProtocolPara);
-        __os->write(v.LinkAddr2103);
-        __os->write(v.FunType2103);
-        __os->write(v.ModemPhone);
-        __os->write(v.ModemInitCmd);
-        __os->write(v.ModemState);
-        __os->write(v.Rsved3);
-    }
-};
-
-template<class S>
-struct StreamReader< ::FepXbData::SCommPara, S>
-{
-    static void read(S* __is, ::FepXbData::SCommPara& v)
-    {
-        __is->read(v.MACAddr1);
-        __is->read(v.IPAddr1);
-        __is->read(v.NetMask1);
-        __is->read(v.Gateway1);
-        __is->read(v.Port1);
-        __is->read(v.MACAddr2);
-        __is->read(v.IPAddr2);
-        __is->read(v.NetMask2);
-        __is->read(v.Gateway2);
-        __is->read(v.Port2);
-        __is->read(v.NetReserve);
-        __is->read(v.remoteIP1);
-        __is->read(v.remotePort1);
-        __is->read(v.remoteIP2);
-        __is->read(v.remotePort2);
-        __is->read(v.Com1ProtocolType);
-        __is->read(v.Com1ProtocolPara);
-        __is->read(v.LinkAddr103);
-        __is->read(v.FunType103);
-        __is->read(v.Com2ProtocolType);
-        __is->read(v.Com2ProtocolPara);
-        __is->read(v.LinkAddr2103);
-        __is->read(v.FunType2103);
-        __is->read(v.ModemPhone);
-        __is->read(v.ModemInitCmd);
-        __is->read(v.ModemState);
-        __is->read(v.Rsved3);
-    }
-};
-
-template<>
-struct StreamableTraits< ::FepXbData::TduCfg>
-{
-    static const StreamHelperCategory helper = StreamHelperCategoryStruct;
-    static const int minWireSize = 69;
-    static const bool fixedLength = false;
-};
-
-template<class S>
-struct StreamWriter< ::FepXbData::TduCfg, S>
-{
-    static void write(S* __os, const ::FepXbData::TduCfg& v)
-    {
-        __os->write(v.DevicePara1);
-        __os->write(v.DevicePara2);
-        __os->write(v.CommPara);
-    }
-};
-
-template<class S>
-struct StreamReader< ::FepXbData::TduCfg, S>
-{
-    static void read(S* __is, ::FepXbData::TduCfg& v)
-    {
-        __is->read(v.DevicePara1);
-        __is->read(v.DevicePara2);
-        __is->read(v.CommPara);
-    }
-};
-
-template<>
 struct StreamableTraits< ::FepXbData::SettingValueInfo>
 {
     static const StreamHelperCategory helper = StreamHelperCategoryStruct;
-    static const int minWireSize = 71;
+    static const int minWireSize = 3;
     static const bool fixedLength = false;
 };
 
@@ -1526,73 +1218,73 @@ private:
     
 public:
 
-    void sendBrief(const ::FepXbData::TduBrief& __p_briefVal)
+    void sendBrief(const ::FepXbData::TduBriefSeq& __p_briefSeq)
     {
-        sendBrief(__p_briefVal, 0);
+        sendBrief(__p_briefSeq, 0);
     }
-    void sendBrief(const ::FepXbData::TduBrief& __p_briefVal, const ::Ice::Context& __ctx)
+    void sendBrief(const ::FepXbData::TduBriefSeq& __p_briefSeq, const ::Ice::Context& __ctx)
     {
-        sendBrief(__p_briefVal, &__ctx);
+        sendBrief(__p_briefSeq, &__ctx);
     }
 #ifdef ICE_CPP11
     ::Ice::AsyncResultPtr
-    begin_sendBrief(const ::FepXbData::TduBrief& __p_briefVal, const ::IceInternal::Function<void ()>& __response, const ::IceInternal::Function<void (const ::Ice::Exception&)>& __exception = ::IceInternal::Function<void (const ::Ice::Exception&)>(), const ::IceInternal::Function<void (bool)>& __sent = ::IceInternal::Function<void (bool)>())
+    begin_sendBrief(const ::FepXbData::TduBriefSeq& __p_briefSeq, const ::IceInternal::Function<void ()>& __response, const ::IceInternal::Function<void (const ::Ice::Exception&)>& __exception = ::IceInternal::Function<void (const ::Ice::Exception&)>(), const ::IceInternal::Function<void (bool)>& __sent = ::IceInternal::Function<void (bool)>())
     {
-        return begin_sendBrief(__p_briefVal, 0, new ::IceInternal::Cpp11FnOnewayCallbackNC(__response, __exception, __sent));
+        return begin_sendBrief(__p_briefSeq, 0, new ::IceInternal::Cpp11FnOnewayCallbackNC(__response, __exception, __sent));
     }
     ::Ice::AsyncResultPtr
-    begin_sendBrief(const ::FepXbData::TduBrief& __p_briefVal, const ::IceInternal::Function<void (const ::Ice::AsyncResultPtr&)>& __completed, const ::IceInternal::Function<void (const ::Ice::AsyncResultPtr&)>& __sent = ::IceInternal::Function<void (const ::Ice::AsyncResultPtr&)>())
+    begin_sendBrief(const ::FepXbData::TduBriefSeq& __p_briefSeq, const ::IceInternal::Function<void (const ::Ice::AsyncResultPtr&)>& __completed, const ::IceInternal::Function<void (const ::Ice::AsyncResultPtr&)>& __sent = ::IceInternal::Function<void (const ::Ice::AsyncResultPtr&)>())
     {
-        return begin_sendBrief(__p_briefVal, 0, ::Ice::newCallback(__completed, __sent), 0);
+        return begin_sendBrief(__p_briefSeq, 0, ::Ice::newCallback(__completed, __sent), 0);
     }
     ::Ice::AsyncResultPtr
-    begin_sendBrief(const ::FepXbData::TduBrief& __p_briefVal, const ::Ice::Context& __ctx, const ::IceInternal::Function<void ()>& __response, const ::IceInternal::Function<void (const ::Ice::Exception&)>& __exception = ::IceInternal::Function<void (const ::Ice::Exception&)>(), const ::IceInternal::Function<void (bool)>& __sent = ::IceInternal::Function<void (bool)>())
+    begin_sendBrief(const ::FepXbData::TduBriefSeq& __p_briefSeq, const ::Ice::Context& __ctx, const ::IceInternal::Function<void ()>& __response, const ::IceInternal::Function<void (const ::Ice::Exception&)>& __exception = ::IceInternal::Function<void (const ::Ice::Exception&)>(), const ::IceInternal::Function<void (bool)>& __sent = ::IceInternal::Function<void (bool)>())
     {
-        return begin_sendBrief(__p_briefVal, &__ctx, new ::IceInternal::Cpp11FnOnewayCallbackNC(__response, __exception, __sent), 0);
+        return begin_sendBrief(__p_briefSeq, &__ctx, new ::IceInternal::Cpp11FnOnewayCallbackNC(__response, __exception, __sent), 0);
     }
     ::Ice::AsyncResultPtr
-    begin_sendBrief(const ::FepXbData::TduBrief& __p_briefVal, const ::Ice::Context& __ctx, const ::IceInternal::Function<void (const ::Ice::AsyncResultPtr&)>& __completed, const ::IceInternal::Function<void (const ::Ice::AsyncResultPtr&)>& __sent = ::IceInternal::Function<void (const ::Ice::AsyncResultPtr&)>())
+    begin_sendBrief(const ::FepXbData::TduBriefSeq& __p_briefSeq, const ::Ice::Context& __ctx, const ::IceInternal::Function<void (const ::Ice::AsyncResultPtr&)>& __completed, const ::IceInternal::Function<void (const ::Ice::AsyncResultPtr&)>& __sent = ::IceInternal::Function<void (const ::Ice::AsyncResultPtr&)>())
     {
-        return begin_sendBrief(__p_briefVal, &__ctx, ::Ice::newCallback(__completed, __sent));
+        return begin_sendBrief(__p_briefSeq, &__ctx, ::Ice::newCallback(__completed, __sent));
     }
 #endif
 
-    ::Ice::AsyncResultPtr begin_sendBrief(const ::FepXbData::TduBrief& __p_briefVal)
+    ::Ice::AsyncResultPtr begin_sendBrief(const ::FepXbData::TduBriefSeq& __p_briefSeq)
     {
-        return begin_sendBrief(__p_briefVal, 0, ::IceInternal::__dummyCallback, 0);
+        return begin_sendBrief(__p_briefSeq, 0, ::IceInternal::__dummyCallback, 0);
     }
 
-    ::Ice::AsyncResultPtr begin_sendBrief(const ::FepXbData::TduBrief& __p_briefVal, const ::Ice::Context& __ctx)
+    ::Ice::AsyncResultPtr begin_sendBrief(const ::FepXbData::TduBriefSeq& __p_briefSeq, const ::Ice::Context& __ctx)
     {
-        return begin_sendBrief(__p_briefVal, &__ctx, ::IceInternal::__dummyCallback, 0);
+        return begin_sendBrief(__p_briefSeq, &__ctx, ::IceInternal::__dummyCallback, 0);
     }
 
-    ::Ice::AsyncResultPtr begin_sendBrief(const ::FepXbData::TduBrief& __p_briefVal, const ::Ice::CallbackPtr& __del, const ::Ice::LocalObjectPtr& __cookie = 0)
+    ::Ice::AsyncResultPtr begin_sendBrief(const ::FepXbData::TduBriefSeq& __p_briefSeq, const ::Ice::CallbackPtr& __del, const ::Ice::LocalObjectPtr& __cookie = 0)
     {
-        return begin_sendBrief(__p_briefVal, 0, __del, __cookie);
+        return begin_sendBrief(__p_briefSeq, 0, __del, __cookie);
     }
 
-    ::Ice::AsyncResultPtr begin_sendBrief(const ::FepXbData::TduBrief& __p_briefVal, const ::Ice::Context& __ctx, const ::Ice::CallbackPtr& __del, const ::Ice::LocalObjectPtr& __cookie = 0)
+    ::Ice::AsyncResultPtr begin_sendBrief(const ::FepXbData::TduBriefSeq& __p_briefSeq, const ::Ice::Context& __ctx, const ::Ice::CallbackPtr& __del, const ::Ice::LocalObjectPtr& __cookie = 0)
     {
-        return begin_sendBrief(__p_briefVal, &__ctx, __del, __cookie);
+        return begin_sendBrief(__p_briefSeq, &__ctx, __del, __cookie);
     }
 
-    ::Ice::AsyncResultPtr begin_sendBrief(const ::FepXbData::TduBrief& __p_briefVal, const ::FepXbData::Callback_CFepXb_sendBriefPtr& __del, const ::Ice::LocalObjectPtr& __cookie = 0)
+    ::Ice::AsyncResultPtr begin_sendBrief(const ::FepXbData::TduBriefSeq& __p_briefSeq, const ::FepXbData::Callback_CFepXb_sendBriefPtr& __del, const ::Ice::LocalObjectPtr& __cookie = 0)
     {
-        return begin_sendBrief(__p_briefVal, 0, __del, __cookie);
+        return begin_sendBrief(__p_briefSeq, 0, __del, __cookie);
     }
 
-    ::Ice::AsyncResultPtr begin_sendBrief(const ::FepXbData::TduBrief& __p_briefVal, const ::Ice::Context& __ctx, const ::FepXbData::Callback_CFepXb_sendBriefPtr& __del, const ::Ice::LocalObjectPtr& __cookie = 0)
+    ::Ice::AsyncResultPtr begin_sendBrief(const ::FepXbData::TduBriefSeq& __p_briefSeq, const ::Ice::Context& __ctx, const ::FepXbData::Callback_CFepXb_sendBriefPtr& __del, const ::Ice::LocalObjectPtr& __cookie = 0)
     {
-        return begin_sendBrief(__p_briefVal, &__ctx, __del, __cookie);
+        return begin_sendBrief(__p_briefSeq, &__ctx, __del, __cookie);
     }
 
     void end_sendBrief(const ::Ice::AsyncResultPtr&);
     
 private:
 
-    void sendBrief(const ::FepXbData::TduBrief&, const ::Ice::Context*);
-    ::Ice::AsyncResultPtr begin_sendBrief(const ::FepXbData::TduBrief&, const ::Ice::Context*, const ::IceInternal::CallbackBasePtr&, const ::Ice::LocalObjectPtr& __cookie = 0);
+    void sendBrief(const ::FepXbData::TduBriefSeq&, const ::Ice::Context*);
+    ::Ice::AsyncResultPtr begin_sendBrief(const ::FepXbData::TduBriefSeq&, const ::Ice::Context*, const ::IceInternal::CallbackBasePtr&, const ::Ice::LocalObjectPtr& __cookie = 0);
     
 public:
 
@@ -2009,7 +1701,7 @@ public:
     virtual void sendSettingValue(const ::FepXbData::SettingValueInfo&, const ::Ice::Current& = ::Ice::Current()) = 0;
     ::Ice::DispatchStatus ___sendSettingValue(::IceInternal::Incoming&, const ::Ice::Current&);
 
-    virtual void sendBrief(const ::FepXbData::TduBrief&, const ::Ice::Current& = ::Ice::Current()) = 0;
+    virtual void sendBrief(const ::FepXbData::TduBriefSeq&, const ::Ice::Current& = ::Ice::Current()) = 0;
     ::Ice::DispatchStatus ___sendBrief(::IceInternal::Incoming&, const ::Ice::Current&);
 
     virtual void sendSoe(const ::FepXbData::XbSOESeq&, const ::Ice::Current& = ::Ice::Current()) = 0;

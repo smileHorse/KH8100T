@@ -42,9 +42,11 @@ module wavefepapp
 	};
 
 	sequence<int>   SRFWDataSeq;
+	sequence<float> SRFWFactorSeq;
  struct SUnitRFW
 	{
 		SRFWHead    Head;
+		SRFWFactorSeq	Factors;//通道数，每通道四个值
 		SRFWDataSeq	Data; //8000T初步定义20000个int
 	} ;
 
@@ -76,7 +78,7 @@ module wavefepapp
 	{
 		short					lineno;
 		short					filename;
-		short 					filelength;
+		int 					filelength;
 		short					filestate;
 		long					filetime;
 	};

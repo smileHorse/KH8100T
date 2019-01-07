@@ -44,6 +44,7 @@ module Amssrv{
 		string runRole;//运行角色
 		string runPartName;//运行分区
 		string runSecName;//运行分段
+		string isXbfep;//是否为行波前置机
 	};
 	sequence<ServerNode>  ServerNodeSeq;
 	

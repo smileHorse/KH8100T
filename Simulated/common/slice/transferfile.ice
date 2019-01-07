@@ -35,6 +35,7 @@ module TransferFileSpace
     };
 
 
+    sequence<string>   FileDirSeq;
     interface TransferFile
     {
        // 请求实时库
@@ -49,6 +50,16 @@ module TransferFileSpace
        **/
        FileContent requestRealdbContent(string fileName, long pos);
 
+      /**
+       *
+       * 请求历史曲线文件列表
+       * @parameter sDate: 开始日期
+       * @parameter eDate: 结束日期
+       * @parameter fileList:文件列表
+       * @return true：成功,false：失败
+       **/
+       bool requestHisCurveFileList(string sDate, string eDate, out FileDirSeq fileList);
+
        /**
        *
        * 请求历史曲线文件
@@ -59,6 +70,16 @@ module TransferFileSpace
        **/
        FileContent requestHisCurveFile(string date, string fileName, long pos);
 
+      /**
+       *
+       * 请求告警文件列表
+       * @parameter sDate: 开始日期
+       * @parameter eDate: 结束日期
+       * @parameter fileList:文件列表
+       * @return true：成功,false：失败
+       **/
+       bool requestWarningFileList(string sDate, string eDate, out FileDirSeq fileList);
+
        /**
        *
        * 请求告警文件
@@ -67,6 +88,27 @@ module TransferFileSpace
        * @return FileContent
        **/
        FileContent requestWarningFile(string fileName, long pos);
+
+      /**
+       *
+       * 请求报表文件列表
+       * @parameter folder: 文件的父文件夹名称，日报为rb,月波为yb,年报为nb
+       * @parameter sDate: 开始日期
+       * @parameter eDate: 结束日期
+       * @parameter fileList:文件列表
+       * @return true：成功,false：失败
+       **/
+       bool requestReportFileList(string folder, string sDate, string eDate, out FileDirSeq fileList);
+
+       /**
+       *
+       * 请求报表文件
+       * @parameter folder: 文件的父文件夹名称，日报类似rb/rb-01,月波为yb,年报为nb
+       * @parameter fileName: 文件名称
+       * @parameter pos:上次读取文件位置
+       * @return FileContent
+       **/
+       FileContent requestReportFile(string folder, string fileName, long pos);
 
 
        /*************************  以下接口由数据服务器备机实现  *********************/
@@ -84,8 +126,9 @@ module TransferFileSpace
        * 以二进制的形式发送实时库操作日志
        * @parameter title: 文件标题
        * @parameter datas: 文件内容
+       * @parameter isFirst: 是否第一次发送 true: 是  false: 否
        **/
-       void sendRdbLoggerBinary(string title, Bytes datas);
+       void sendRdbLoggerBinary(string title, Bytes datas, bool isFirst);
 
        /**
        *

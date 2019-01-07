@@ -18,8 +18,8 @@
 // </auto-generated>
 //
 
-#ifndef __cpp_subscribedata_h__
-#define __cpp_subscribedata_h__
+#ifndef __subscribedata_h__
+#define __subscribedata_h__
 
 #include <IceUtil/PushDisableWarnings.h>
 #include <Ice/ProxyF.h>
@@ -206,6 +206,496 @@ struct PartSec
     }
 };
 
+struct CommInfo
+{
+    ::Ice::Int flag;
+    ::Ice::Int no;
+    ::Ice::Int used;
+    ::Ice::Int type;
+    ::std::string paramLine;
+
+    bool operator==(const CommInfo& __rhs) const
+    {
+        if(this == &__rhs)
+        {
+            return true;
+        }
+        if(flag != __rhs.flag)
+        {
+            return false;
+        }
+        if(no != __rhs.no)
+        {
+            return false;
+        }
+        if(used != __rhs.used)
+        {
+            return false;
+        }
+        if(type != __rhs.type)
+        {
+            return false;
+        }
+        if(paramLine != __rhs.paramLine)
+        {
+            return false;
+        }
+        return true;
+    }
+
+    bool operator<(const CommInfo& __rhs) const
+    {
+        if(this == &__rhs)
+        {
+            return false;
+        }
+        if(flag < __rhs.flag)
+        {
+            return true;
+        }
+        else if(__rhs.flag < flag)
+        {
+            return false;
+        }
+        if(no < __rhs.no)
+        {
+            return true;
+        }
+        else if(__rhs.no < no)
+        {
+            return false;
+        }
+        if(used < __rhs.used)
+        {
+            return true;
+        }
+        else if(__rhs.used < used)
+        {
+            return false;
+        }
+        if(type < __rhs.type)
+        {
+            return true;
+        }
+        else if(__rhs.type < type)
+        {
+            return false;
+        }
+        if(paramLine < __rhs.paramLine)
+        {
+            return true;
+        }
+        else if(__rhs.paramLine < paramLine)
+        {
+            return false;
+        }
+        return false;
+    }
+
+    bool operator!=(const CommInfo& __rhs) const
+    {
+        return !operator==(__rhs);
+    }
+    bool operator<=(const CommInfo& __rhs) const
+    {
+        return operator<(__rhs) || operator==(__rhs);
+    }
+    bool operator>(const CommInfo& __rhs) const
+    {
+        return !operator<(__rhs) && !operator==(__rhs);
+    }
+    bool operator>=(const CommInfo& __rhs) const
+    {
+        return !operator<(__rhs);
+    }
+};
+
+typedef ::std::vector< ::SubData::CommInfo> CommInfoSeq;
+
+struct PiUnitInfo
+{
+    ::std::string unitId;
+    ::std::string unitNode;
+
+    bool operator==(const PiUnitInfo& __rhs) const
+    {
+        if(this == &__rhs)
+        {
+            return true;
+        }
+        if(unitId != __rhs.unitId)
+        {
+            return false;
+        }
+        if(unitNode != __rhs.unitNode)
+        {
+            return false;
+        }
+        return true;
+    }
+
+    bool operator<(const PiUnitInfo& __rhs) const
+    {
+        if(this == &__rhs)
+        {
+            return false;
+        }
+        if(unitId < __rhs.unitId)
+        {
+            return true;
+        }
+        else if(__rhs.unitId < unitId)
+        {
+            return false;
+        }
+        if(unitNode < __rhs.unitNode)
+        {
+            return true;
+        }
+        else if(__rhs.unitNode < unitNode)
+        {
+            return false;
+        }
+        return false;
+    }
+
+    bool operator!=(const PiUnitInfo& __rhs) const
+    {
+        return !operator==(__rhs);
+    }
+    bool operator<=(const PiUnitInfo& __rhs) const
+    {
+        return operator<(__rhs) || operator==(__rhs);
+    }
+    bool operator>(const PiUnitInfo& __rhs) const
+    {
+        return !operator<(__rhs) && !operator==(__rhs);
+    }
+    bool operator>=(const PiUnitInfo& __rhs) const
+    {
+        return !operator<(__rhs);
+    }
+};
+
+typedef ::std::vector< ::SubData::PiUnitInfo> PiUnitInfoSeq;
+
+struct FepProtocolInfo
+{
+    ::Ice::Int flag;
+    ::Ice::Int no;
+    ::Ice::Int used;
+    ::Ice::Int type;
+    ::Ice::Int active;
+    ::Ice::Int runCount;
+    ::Ice::Int needWatch;
+    ::std::string name;
+    ::Ice::Int unitCount;
+    ::SubData::PiUnitInfoSeq piunitSeq;
+    ::Ice::Int commCount;
+    ::SubData::CommInfoSeq commSeq;
+    ::std::string paramLine;
+};
+
+typedef ::std::vector< ::SubData::FepProtocolInfo> FepProtocolInfoSeq;
+
+struct UnitInfo
+{
+    ::Ice::Int refCount;
+    ::std::string name;
+    ::Ice::Int no;
+    ::Ice::Int used;
+    ::Ice::Int type;
+    ::Ice::Int stationNo;
+    ::Ice::Int nodeCount;
+    ::Ice::Int mainNodeNo;
+    ::Ice::Int replyTimeouts;
+    ::Ice::Int faultJudgeCount;
+    ::Ice::Int isTrans;
+    ::std::string res;
+    ::Ice::Int manuGetRFW;
+    ::std::string paramLine;
+    ::Ice::Int facNo;
+    ::Ice::Int facType;
+    ::Ice::Int yxNum;
+    ::Ice::Int ycNum;
+    ::Ice::Int ddNum;
+
+    bool operator==(const UnitInfo& __rhs) const
+    {
+        if(this == &__rhs)
+        {
+            return true;
+        }
+        if(refCount != __rhs.refCount)
+        {
+            return false;
+        }
+        if(name != __rhs.name)
+        {
+            return false;
+        }
+        if(no != __rhs.no)
+        {
+            return false;
+        }
+        if(used != __rhs.used)
+        {
+            return false;
+        }
+        if(type != __rhs.type)
+        {
+            return false;
+        }
+        if(stationNo != __rhs.stationNo)
+        {
+            return false;
+        }
+        if(nodeCount != __rhs.nodeCount)
+        {
+            return false;
+        }
+        if(mainNodeNo != __rhs.mainNodeNo)
+        {
+            return false;
+        }
+        if(replyTimeouts != __rhs.replyTimeouts)
+        {
+            return false;
+        }
+        if(faultJudgeCount != __rhs.faultJudgeCount)
+        {
+            return false;
+        }
+        if(isTrans != __rhs.isTrans)
+        {
+            return false;
+        }
+        if(res != __rhs.res)
+        {
+            return false;
+        }
+        if(manuGetRFW != __rhs.manuGetRFW)
+        {
+            return false;
+        }
+        if(paramLine != __rhs.paramLine)
+        {
+            return false;
+        }
+        if(facNo != __rhs.facNo)
+        {
+            return false;
+        }
+        if(facType != __rhs.facType)
+        {
+            return false;
+        }
+        if(yxNum != __rhs.yxNum)
+        {
+            return false;
+        }
+        if(ycNum != __rhs.ycNum)
+        {
+            return false;
+        }
+        if(ddNum != __rhs.ddNum)
+        {
+            return false;
+        }
+        return true;
+    }
+
+    bool operator<(const UnitInfo& __rhs) const
+    {
+        if(this == &__rhs)
+        {
+            return false;
+        }
+        if(refCount < __rhs.refCount)
+        {
+            return true;
+        }
+        else if(__rhs.refCount < refCount)
+        {
+            return false;
+        }
+        if(name < __rhs.name)
+        {
+            return true;
+        }
+        else if(__rhs.name < name)
+        {
+            return false;
+        }
+        if(no < __rhs.no)
+        {
+            return true;
+        }
+        else if(__rhs.no < no)
+        {
+            return false;
+        }
+        if(used < __rhs.used)
+        {
+            return true;
+        }
+        else if(__rhs.used < used)
+        {
+            return false;
+        }
+        if(type < __rhs.type)
+        {
+            return true;
+        }
+        else if(__rhs.type < type)
+        {
+            return false;
+        }
+        if(stationNo < __rhs.stationNo)
+        {
+            return true;
+        }
+        else if(__rhs.stationNo < stationNo)
+        {
+            return false;
+        }
+        if(nodeCount < __rhs.nodeCount)
+        {
+            return true;
+        }
+        else if(__rhs.nodeCount < nodeCount)
+        {
+            return false;
+        }
+        if(mainNodeNo < __rhs.mainNodeNo)
+        {
+            return true;
+        }
+        else if(__rhs.mainNodeNo < mainNodeNo)
+        {
+            return false;
+        }
+        if(replyTimeouts < __rhs.replyTimeouts)
+        {
+            return true;
+        }
+        else if(__rhs.replyTimeouts < replyTimeouts)
+        {
+            return false;
+        }
+        if(faultJudgeCount < __rhs.faultJudgeCount)
+        {
+            return true;
+        }
+        else if(__rhs.faultJudgeCount < faultJudgeCount)
+        {
+            return false;
+        }
+        if(isTrans < __rhs.isTrans)
+        {
+            return true;
+        }
+        else if(__rhs.isTrans < isTrans)
+        {
+            return false;
+        }
+        if(res < __rhs.res)
+        {
+            return true;
+        }
+        else if(__rhs.res < res)
+        {
+            return false;
+        }
+        if(manuGetRFW < __rhs.manuGetRFW)
+        {
+            return true;
+        }
+        else if(__rhs.manuGetRFW < manuGetRFW)
+        {
+            return false;
+        }
+        if(paramLine < __rhs.paramLine)
+        {
+            return true;
+        }
+        else if(__rhs.paramLine < paramLine)
+        {
+            return false;
+        }
+        if(facNo < __rhs.facNo)
+        {
+            return true;
+        }
+        else if(__rhs.facNo < facNo)
+        {
+            return false;
+        }
+        if(facType < __rhs.facType)
+        {
+            return true;
+        }
+        else if(__rhs.facType < facType)
+        {
+            return false;
+        }
+        if(yxNum < __rhs.yxNum)
+        {
+            return true;
+        }
+        else if(__rhs.yxNum < yxNum)
+        {
+            return false;
+        }
+        if(ycNum < __rhs.ycNum)
+        {
+            return true;
+        }
+        else if(__rhs.ycNum < ycNum)
+        {
+            return false;
+        }
+        if(ddNum < __rhs.ddNum)
+        {
+            return true;
+        }
+        else if(__rhs.ddNum < ddNum)
+        {
+            return false;
+        }
+        return false;
+    }
+
+    bool operator!=(const UnitInfo& __rhs) const
+    {
+        return !operator==(__rhs);
+    }
+    bool operator<=(const UnitInfo& __rhs) const
+    {
+        return operator<(__rhs) || operator==(__rhs);
+    }
+    bool operator>(const UnitInfo& __rhs) const
+    {
+        return !operator<(__rhs) && !operator==(__rhs);
+    }
+    bool operator>=(const UnitInfo& __rhs) const
+    {
+        return !operator<(__rhs);
+    }
+};
+
+typedef ::std::vector< ::SubData::UnitInfo> UnitInfoSeq;
+
+typedef ::std::vector< ::Ice::Short> UnitQsSeq;
+
+struct UnitQsInfo
+{
+    ::Ice::Int no;
+    ::SubData::UnitQsSeq qsSeq;
+};
+
+typedef ::std::vector< ::SubData::UnitQsInfo> UnitQsInfoSeq;
+
 const ::std::string SubscribeDataTopic = "subscribe_data";
 
 }
@@ -265,6 +755,208 @@ struct StreamReader< ::SubData::PartSec, S>
     {
         __is->read(v.partition);
         __is->read(v.section);
+    }
+};
+
+template<>
+struct StreamableTraits< ::SubData::CommInfo>
+{
+    static const StreamHelperCategory helper = StreamHelperCategoryStruct;
+    static const int minWireSize = 17;
+    static const bool fixedLength = false;
+};
+
+template<class S>
+struct StreamWriter< ::SubData::CommInfo, S>
+{
+    static void write(S* __os, const ::SubData::CommInfo& v)
+    {
+        __os->write(v.flag);
+        __os->write(v.no);
+        __os->write(v.used);
+        __os->write(v.type);
+        __os->write(v.paramLine);
+    }
+};
+
+template<class S>
+struct StreamReader< ::SubData::CommInfo, S>
+{
+    static void read(S* __is, ::SubData::CommInfo& v)
+    {
+        __is->read(v.flag);
+        __is->read(v.no);
+        __is->read(v.used);
+        __is->read(v.type);
+        __is->read(v.paramLine);
+    }
+};
+
+template<>
+struct StreamableTraits< ::SubData::PiUnitInfo>
+{
+    static const StreamHelperCategory helper = StreamHelperCategoryStruct;
+    static const int minWireSize = 2;
+    static const bool fixedLength = false;
+};
+
+template<class S>
+struct StreamWriter< ::SubData::PiUnitInfo, S>
+{
+    static void write(S* __os, const ::SubData::PiUnitInfo& v)
+    {
+        __os->write(v.unitId);
+        __os->write(v.unitNode);
+    }
+};
+
+template<class S>
+struct StreamReader< ::SubData::PiUnitInfo, S>
+{
+    static void read(S* __is, ::SubData::PiUnitInfo& v)
+    {
+        __is->read(v.unitId);
+        __is->read(v.unitNode);
+    }
+};
+
+template<>
+struct StreamableTraits< ::SubData::FepProtocolInfo>
+{
+    static const StreamHelperCategory helper = StreamHelperCategoryStruct;
+    static const int minWireSize = 40;
+    static const bool fixedLength = false;
+};
+
+template<class S>
+struct StreamWriter< ::SubData::FepProtocolInfo, S>
+{
+    static void write(S* __os, const ::SubData::FepProtocolInfo& v)
+    {
+        __os->write(v.flag);
+        __os->write(v.no);
+        __os->write(v.used);
+        __os->write(v.type);
+        __os->write(v.active);
+        __os->write(v.runCount);
+        __os->write(v.needWatch);
+        __os->write(v.name);
+        __os->write(v.unitCount);
+        __os->write(v.piunitSeq);
+        __os->write(v.commCount);
+        __os->write(v.commSeq);
+        __os->write(v.paramLine);
+    }
+};
+
+template<class S>
+struct StreamReader< ::SubData::FepProtocolInfo, S>
+{
+    static void read(S* __is, ::SubData::FepProtocolInfo& v)
+    {
+        __is->read(v.flag);
+        __is->read(v.no);
+        __is->read(v.used);
+        __is->read(v.type);
+        __is->read(v.active);
+        __is->read(v.runCount);
+        __is->read(v.needWatch);
+        __is->read(v.name);
+        __is->read(v.unitCount);
+        __is->read(v.piunitSeq);
+        __is->read(v.commCount);
+        __is->read(v.commSeq);
+        __is->read(v.paramLine);
+    }
+};
+
+template<>
+struct StreamableTraits< ::SubData::UnitInfo>
+{
+    static const StreamHelperCategory helper = StreamHelperCategoryStruct;
+    static const int minWireSize = 67;
+    static const bool fixedLength = false;
+};
+
+template<class S>
+struct StreamWriter< ::SubData::UnitInfo, S>
+{
+    static void write(S* __os, const ::SubData::UnitInfo& v)
+    {
+        __os->write(v.refCount);
+        __os->write(v.name);
+        __os->write(v.no);
+        __os->write(v.used);
+        __os->write(v.type);
+        __os->write(v.stationNo);
+        __os->write(v.nodeCount);
+        __os->write(v.mainNodeNo);
+        __os->write(v.replyTimeouts);
+        __os->write(v.faultJudgeCount);
+        __os->write(v.isTrans);
+        __os->write(v.res);
+        __os->write(v.manuGetRFW);
+        __os->write(v.paramLine);
+        __os->write(v.facNo);
+        __os->write(v.facType);
+        __os->write(v.yxNum);
+        __os->write(v.ycNum);
+        __os->write(v.ddNum);
+    }
+};
+
+template<class S>
+struct StreamReader< ::SubData::UnitInfo, S>
+{
+    static void read(S* __is, ::SubData::UnitInfo& v)
+    {
+        __is->read(v.refCount);
+        __is->read(v.name);
+        __is->read(v.no);
+        __is->read(v.used);
+        __is->read(v.type);
+        __is->read(v.stationNo);
+        __is->read(v.nodeCount);
+        __is->read(v.mainNodeNo);
+        __is->read(v.replyTimeouts);
+        __is->read(v.faultJudgeCount);
+        __is->read(v.isTrans);
+        __is->read(v.res);
+        __is->read(v.manuGetRFW);
+        __is->read(v.paramLine);
+        __is->read(v.facNo);
+        __is->read(v.facType);
+        __is->read(v.yxNum);
+        __is->read(v.ycNum);
+        __is->read(v.ddNum);
+    }
+};
+
+template<>
+struct StreamableTraits< ::SubData::UnitQsInfo>
+{
+    static const StreamHelperCategory helper = StreamHelperCategoryStruct;
+    static const int minWireSize = 5;
+    static const bool fixedLength = false;
+};
+
+template<class S>
+struct StreamWriter< ::SubData::UnitQsInfo, S>
+{
+    static void write(S* __os, const ::SubData::UnitQsInfo& v)
+    {
+        __os->write(v.no);
+        __os->write(v.qsSeq);
+    }
+};
+
+template<class S>
+struct StreamReader< ::SubData::UnitQsInfo, S>
+{
+    static void read(S* __is, ::SubData::UnitQsInfo& v)
+    {
+        __is->read(v.no);
+        __is->read(v.qsSeq);
     }
 };
 
@@ -361,73 +1053,73 @@ private:
     
 public:
 
-    void refreshParam(const ::SubData::PartSec& __p_data)
+    void refreshParam(const ::SubData::PartSec& __p_data, const ::SubData::FepProtocolInfoSeq& __p_piSeq, const ::SubData::UnitInfoSeq& __p_unitSeq, const ::SubData::UnitQsInfoSeq& __p_qsSeq)
     {
-        refreshParam(__p_data, 0);
+        refreshParam(__p_data, __p_piSeq, __p_unitSeq, __p_qsSeq, 0);
     }
-    void refreshParam(const ::SubData::PartSec& __p_data, const ::Ice::Context& __ctx)
+    void refreshParam(const ::SubData::PartSec& __p_data, const ::SubData::FepProtocolInfoSeq& __p_piSeq, const ::SubData::UnitInfoSeq& __p_unitSeq, const ::SubData::UnitQsInfoSeq& __p_qsSeq, const ::Ice::Context& __ctx)
     {
-        refreshParam(__p_data, &__ctx);
+        refreshParam(__p_data, __p_piSeq, __p_unitSeq, __p_qsSeq, &__ctx);
     }
 #ifdef ICE_CPP11
     ::Ice::AsyncResultPtr
-    begin_refreshParam(const ::SubData::PartSec& __p_data, const ::IceInternal::Function<void ()>& __response, const ::IceInternal::Function<void (const ::Ice::Exception&)>& __exception = ::IceInternal::Function<void (const ::Ice::Exception&)>(), const ::IceInternal::Function<void (bool)>& __sent = ::IceInternal::Function<void (bool)>())
+    begin_refreshParam(const ::SubData::PartSec& __p_data, const ::SubData::FepProtocolInfoSeq& __p_piSeq, const ::SubData::UnitInfoSeq& __p_unitSeq, const ::SubData::UnitQsInfoSeq& __p_qsSeq, const ::IceInternal::Function<void ()>& __response, const ::IceInternal::Function<void (const ::Ice::Exception&)>& __exception = ::IceInternal::Function<void (const ::Ice::Exception&)>(), const ::IceInternal::Function<void (bool)>& __sent = ::IceInternal::Function<void (bool)>())
     {
-        return begin_refreshParam(__p_data, 0, new ::IceInternal::Cpp11FnOnewayCallbackNC(__response, __exception, __sent));
+        return begin_refreshParam(__p_data, __p_piSeq, __p_unitSeq, __p_qsSeq, 0, new ::IceInternal::Cpp11FnOnewayCallbackNC(__response, __exception, __sent));
     }
     ::Ice::AsyncResultPtr
-    begin_refreshParam(const ::SubData::PartSec& __p_data, const ::IceInternal::Function<void (const ::Ice::AsyncResultPtr&)>& __completed, const ::IceInternal::Function<void (const ::Ice::AsyncResultPtr&)>& __sent = ::IceInternal::Function<void (const ::Ice::AsyncResultPtr&)>())
+    begin_refreshParam(const ::SubData::PartSec& __p_data, const ::SubData::FepProtocolInfoSeq& __p_piSeq, const ::SubData::UnitInfoSeq& __p_unitSeq, const ::SubData::UnitQsInfoSeq& __p_qsSeq, const ::IceInternal::Function<void (const ::Ice::AsyncResultPtr&)>& __completed, const ::IceInternal::Function<void (const ::Ice::AsyncResultPtr&)>& __sent = ::IceInternal::Function<void (const ::Ice::AsyncResultPtr&)>())
     {
-        return begin_refreshParam(__p_data, 0, ::Ice::newCallback(__completed, __sent), 0);
+        return begin_refreshParam(__p_data, __p_piSeq, __p_unitSeq, __p_qsSeq, 0, ::Ice::newCallback(__completed, __sent), 0);
     }
     ::Ice::AsyncResultPtr
-    begin_refreshParam(const ::SubData::PartSec& __p_data, const ::Ice::Context& __ctx, const ::IceInternal::Function<void ()>& __response, const ::IceInternal::Function<void (const ::Ice::Exception&)>& __exception = ::IceInternal::Function<void (const ::Ice::Exception&)>(), const ::IceInternal::Function<void (bool)>& __sent = ::IceInternal::Function<void (bool)>())
+    begin_refreshParam(const ::SubData::PartSec& __p_data, const ::SubData::FepProtocolInfoSeq& __p_piSeq, const ::SubData::UnitInfoSeq& __p_unitSeq, const ::SubData::UnitQsInfoSeq& __p_qsSeq, const ::Ice::Context& __ctx, const ::IceInternal::Function<void ()>& __response, const ::IceInternal::Function<void (const ::Ice::Exception&)>& __exception = ::IceInternal::Function<void (const ::Ice::Exception&)>(), const ::IceInternal::Function<void (bool)>& __sent = ::IceInternal::Function<void (bool)>())
     {
-        return begin_refreshParam(__p_data, &__ctx, new ::IceInternal::Cpp11FnOnewayCallbackNC(__response, __exception, __sent), 0);
+        return begin_refreshParam(__p_data, __p_piSeq, __p_unitSeq, __p_qsSeq, &__ctx, new ::IceInternal::Cpp11FnOnewayCallbackNC(__response, __exception, __sent), 0);
     }
     ::Ice::AsyncResultPtr
-    begin_refreshParam(const ::SubData::PartSec& __p_data, const ::Ice::Context& __ctx, const ::IceInternal::Function<void (const ::Ice::AsyncResultPtr&)>& __completed, const ::IceInternal::Function<void (const ::Ice::AsyncResultPtr&)>& __sent = ::IceInternal::Function<void (const ::Ice::AsyncResultPtr&)>())
+    begin_refreshParam(const ::SubData::PartSec& __p_data, const ::SubData::FepProtocolInfoSeq& __p_piSeq, const ::SubData::UnitInfoSeq& __p_unitSeq, const ::SubData::UnitQsInfoSeq& __p_qsSeq, const ::Ice::Context& __ctx, const ::IceInternal::Function<void (const ::Ice::AsyncResultPtr&)>& __completed, const ::IceInternal::Function<void (const ::Ice::AsyncResultPtr&)>& __sent = ::IceInternal::Function<void (const ::Ice::AsyncResultPtr&)>())
     {
-        return begin_refreshParam(__p_data, &__ctx, ::Ice::newCallback(__completed, __sent));
+        return begin_refreshParam(__p_data, __p_piSeq, __p_unitSeq, __p_qsSeq, &__ctx, ::Ice::newCallback(__completed, __sent));
     }
 #endif
 
-    ::Ice::AsyncResultPtr begin_refreshParam(const ::SubData::PartSec& __p_data)
+    ::Ice::AsyncResultPtr begin_refreshParam(const ::SubData::PartSec& __p_data, const ::SubData::FepProtocolInfoSeq& __p_piSeq, const ::SubData::UnitInfoSeq& __p_unitSeq, const ::SubData::UnitQsInfoSeq& __p_qsSeq)
     {
-        return begin_refreshParam(__p_data, 0, ::IceInternal::__dummyCallback, 0);
+        return begin_refreshParam(__p_data, __p_piSeq, __p_unitSeq, __p_qsSeq, 0, ::IceInternal::__dummyCallback, 0);
     }
 
-    ::Ice::AsyncResultPtr begin_refreshParam(const ::SubData::PartSec& __p_data, const ::Ice::Context& __ctx)
+    ::Ice::AsyncResultPtr begin_refreshParam(const ::SubData::PartSec& __p_data, const ::SubData::FepProtocolInfoSeq& __p_piSeq, const ::SubData::UnitInfoSeq& __p_unitSeq, const ::SubData::UnitQsInfoSeq& __p_qsSeq, const ::Ice::Context& __ctx)
     {
-        return begin_refreshParam(__p_data, &__ctx, ::IceInternal::__dummyCallback, 0);
+        return begin_refreshParam(__p_data, __p_piSeq, __p_unitSeq, __p_qsSeq, &__ctx, ::IceInternal::__dummyCallback, 0);
     }
 
-    ::Ice::AsyncResultPtr begin_refreshParam(const ::SubData::PartSec& __p_data, const ::Ice::CallbackPtr& __del, const ::Ice::LocalObjectPtr& __cookie = 0)
+    ::Ice::AsyncResultPtr begin_refreshParam(const ::SubData::PartSec& __p_data, const ::SubData::FepProtocolInfoSeq& __p_piSeq, const ::SubData::UnitInfoSeq& __p_unitSeq, const ::SubData::UnitQsInfoSeq& __p_qsSeq, const ::Ice::CallbackPtr& __del, const ::Ice::LocalObjectPtr& __cookie = 0)
     {
-        return begin_refreshParam(__p_data, 0, __del, __cookie);
+        return begin_refreshParam(__p_data, __p_piSeq, __p_unitSeq, __p_qsSeq, 0, __del, __cookie);
     }
 
-    ::Ice::AsyncResultPtr begin_refreshParam(const ::SubData::PartSec& __p_data, const ::Ice::Context& __ctx, const ::Ice::CallbackPtr& __del, const ::Ice::LocalObjectPtr& __cookie = 0)
+    ::Ice::AsyncResultPtr begin_refreshParam(const ::SubData::PartSec& __p_data, const ::SubData::FepProtocolInfoSeq& __p_piSeq, const ::SubData::UnitInfoSeq& __p_unitSeq, const ::SubData::UnitQsInfoSeq& __p_qsSeq, const ::Ice::Context& __ctx, const ::Ice::CallbackPtr& __del, const ::Ice::LocalObjectPtr& __cookie = 0)
     {
-        return begin_refreshParam(__p_data, &__ctx, __del, __cookie);
+        return begin_refreshParam(__p_data, __p_piSeq, __p_unitSeq, __p_qsSeq, &__ctx, __del, __cookie);
     }
 
-    ::Ice::AsyncResultPtr begin_refreshParam(const ::SubData::PartSec& __p_data, const ::SubData::Callback_SubscribeDataInfo_refreshParamPtr& __del, const ::Ice::LocalObjectPtr& __cookie = 0)
+    ::Ice::AsyncResultPtr begin_refreshParam(const ::SubData::PartSec& __p_data, const ::SubData::FepProtocolInfoSeq& __p_piSeq, const ::SubData::UnitInfoSeq& __p_unitSeq, const ::SubData::UnitQsInfoSeq& __p_qsSeq, const ::SubData::Callback_SubscribeDataInfo_refreshParamPtr& __del, const ::Ice::LocalObjectPtr& __cookie = 0)
     {
-        return begin_refreshParam(__p_data, 0, __del, __cookie);
+        return begin_refreshParam(__p_data, __p_piSeq, __p_unitSeq, __p_qsSeq, 0, __del, __cookie);
     }
 
-    ::Ice::AsyncResultPtr begin_refreshParam(const ::SubData::PartSec& __p_data, const ::Ice::Context& __ctx, const ::SubData::Callback_SubscribeDataInfo_refreshParamPtr& __del, const ::Ice::LocalObjectPtr& __cookie = 0)
+    ::Ice::AsyncResultPtr begin_refreshParam(const ::SubData::PartSec& __p_data, const ::SubData::FepProtocolInfoSeq& __p_piSeq, const ::SubData::UnitInfoSeq& __p_unitSeq, const ::SubData::UnitQsInfoSeq& __p_qsSeq, const ::Ice::Context& __ctx, const ::SubData::Callback_SubscribeDataInfo_refreshParamPtr& __del, const ::Ice::LocalObjectPtr& __cookie = 0)
     {
-        return begin_refreshParam(__p_data, &__ctx, __del, __cookie);
+        return begin_refreshParam(__p_data, __p_piSeq, __p_unitSeq, __p_qsSeq, &__ctx, __del, __cookie);
     }
 
     void end_refreshParam(const ::Ice::AsyncResultPtr&);
     
 private:
 
-    void refreshParam(const ::SubData::PartSec&, const ::Ice::Context*);
-    ::Ice::AsyncResultPtr begin_refreshParam(const ::SubData::PartSec&, const ::Ice::Context*, const ::IceInternal::CallbackBasePtr&, const ::Ice::LocalObjectPtr& __cookie = 0);
+    void refreshParam(const ::SubData::PartSec&, const ::SubData::FepProtocolInfoSeq&, const ::SubData::UnitInfoSeq&, const ::SubData::UnitQsInfoSeq&, const ::Ice::Context*);
+    ::Ice::AsyncResultPtr begin_refreshParam(const ::SubData::PartSec&, const ::SubData::FepProtocolInfoSeq&, const ::SubData::UnitInfoSeq&, const ::SubData::UnitQsInfoSeq&, const ::Ice::Context*, const ::IceInternal::CallbackBasePtr&, const ::Ice::LocalObjectPtr& __cookie = 0);
     
 public:
     
@@ -564,7 +1256,7 @@ public:
     virtual void procSub(const ::SubData::DataInfo&, const ::Ice::Current& = ::Ice::Current()) = 0;
     ::Ice::DispatchStatus ___procSub(::IceInternal::Incoming&, const ::Ice::Current&);
 
-    virtual void refreshParam(const ::SubData::PartSec&, const ::Ice::Current& = ::Ice::Current()) = 0;
+    virtual void refreshParam(const ::SubData::PartSec&, const ::SubData::FepProtocolInfoSeq&, const ::SubData::UnitInfoSeq&, const ::SubData::UnitQsInfoSeq&, const ::Ice::Current& = ::Ice::Current()) = 0;
     ::Ice::DispatchStatus ___refreshParam(::IceInternal::Incoming&, const ::Ice::Current&);
 
     virtual ::Ice::DispatchStatus __dispatch(::IceInternal::Incoming&, const ::Ice::Current&);

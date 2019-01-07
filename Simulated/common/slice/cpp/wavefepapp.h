@@ -18,8 +18,8 @@
 // </auto-generated>
 //
 
-#ifndef __cpp_wavefepapp_h__
-#define __cpp_wavefepapp_h__
+#ifndef __wavefepapp_h__
+#define __wavefepapp_h__
 
 #include <IceUtil/PushDisableWarnings.h>
 #include <Ice/ProxyF.h>
@@ -208,9 +208,12 @@ struct SRFWHead
 
 typedef ::std::vector< ::Ice::Int> SRFWDataSeq;
 
+typedef ::std::vector< ::Ice::Float> SRFWFactorSeq;
+
 struct SUnitRFW
 {
     ::wavefepapp::SRFWHead Head;
+    ::wavefepapp::SRFWFactorSeq Factors;
     ::wavefepapp::SRFWDataSeq Data;
 };
 
@@ -336,7 +339,7 @@ struct RfwDir
 {
     ::Ice::Short lineno;
     ::Ice::Short filename;
-    ::Ice::Short filelength;
+    ::Ice::Int filelength;
     ::Ice::Short filestate;
     ::Ice::Long filetime;
 
@@ -560,7 +563,7 @@ template<>
 struct StreamableTraits< ::wavefepapp::SUnitRFW>
 {
     static const StreamHelperCategory helper = StreamHelperCategoryStruct;
-    static const int minWireSize = 67;
+    static const int minWireSize = 68;
     static const bool fixedLength = false;
 };
 
@@ -570,6 +573,7 @@ struct StreamWriter< ::wavefepapp::SUnitRFW, S>
     static void write(S* __os, const ::wavefepapp::SUnitRFW& v)
     {
         __os->write(v.Head);
+        __os->write(v.Factors);
         __os->write(v.Data);
     }
 };
@@ -580,6 +584,7 @@ struct StreamReader< ::wavefepapp::SUnitRFW, S>
     static void read(S* __is, ::wavefepapp::SUnitRFW& v)
     {
         __is->read(v.Head);
+        __is->read(v.Factors);
         __is->read(v.Data);
     }
 };
@@ -588,7 +593,7 @@ template<>
 struct StreamableTraits< ::wavefepapp::RFWPacket>
 {
     static const StreamHelperCategory helper = StreamHelperCategoryStruct;
-    static const int minWireSize = 69;
+    static const int minWireSize = 70;
     static const bool fixedLength = false;
 };
 
@@ -662,7 +667,7 @@ template<>
 struct StreamableTraits< ::wavefepapp::RfwDir>
 {
     static const StreamHelperCategory helper = StreamHelperCategoryStruct;
-    static const int minWireSize = 16;
+    static const int minWireSize = 18;
     static const bool fixedLength = true;
 };
 

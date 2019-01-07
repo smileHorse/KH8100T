@@ -995,6 +995,20 @@ const ::std::string strRealRequestTopic = "rdb_real_request";
 
 const ::std::string strRealRespondTopic = "rdb_real_respond";
 
+typedef ::std::vector< ::Ice::Double> DoubleSeq;
+
+typedef ::std::vector< ::Ice::Int> IntegerSeq;
+
+typedef ::std::map< ::std::string, ::std::string> FieldMap;
+
+struct CurvePointData
+{
+    ::std::string analog;
+    ::RdbRealData::Strings values;
+};
+
+typedef ::std::vector< ::RdbRealData::CurvePointData> CurvePointDataSeq;
+
 }
 
 namespace RdbWarningData
@@ -1800,6 +1814,34 @@ struct StreamReader< ::RdbRealData::TopoIslandInfo, S>
     }
 };
 
+template<>
+struct StreamableTraits< ::RdbRealData::CurvePointData>
+{
+    static const StreamHelperCategory helper = StreamHelperCategoryStruct;
+    static const int minWireSize = 2;
+    static const bool fixedLength = false;
+};
+
+template<class S>
+struct StreamWriter< ::RdbRealData::CurvePointData, S>
+{
+    static void write(S* __os, const ::RdbRealData::CurvePointData& v)
+    {
+        __os->write(v.analog);
+        __os->write(v.values);
+    }
+};
+
+template<class S>
+struct StreamReader< ::RdbRealData::CurvePointData, S>
+{
+    static void read(S* __is, ::RdbRealData::CurvePointData& v)
+    {
+        __is->read(v.analog);
+        __is->read(v.values);
+    }
+};
+
 }
 
 namespace Ice
@@ -1941,6 +1983,30 @@ typedef ::IceUtil::Handle< Callback_RdbDataOpt_UpdateTopoData_Base> Callback_Rdb
 
 class Callback_RdbDataOpt_GetSectionData_Base : virtual public ::IceInternal::CallbackBase { };
 typedef ::IceUtil::Handle< Callback_RdbDataOpt_GetSectionData_Base> Callback_RdbDataOpt_GetSectionDataPtr;
+
+class Callback_RdbDataOpt_updateBreaker_Base : virtual public ::IceInternal::CallbackBase { };
+typedef ::IceUtil::Handle< Callback_RdbDataOpt_updateBreaker_Base> Callback_RdbDataOpt_updateBreakerPtr;
+
+class Callback_RdbDataOpt_updateDisconnector_Base : virtual public ::IceInternal::CallbackBase { };
+typedef ::IceUtil::Handle< Callback_RdbDataOpt_updateDisconnector_Base> Callback_RdbDataOpt_updateDisconnectorPtr;
+
+class Callback_RdbDataOpt_updatePowerTransformer_Base : virtual public ::IceInternal::CallbackBase { };
+typedef ::IceUtil::Handle< Callback_RdbDataOpt_updatePowerTransformer_Base> Callback_RdbDataOpt_updatePowerTransformerPtr;
+
+class Callback_RdbDataOpt_updateAnalog_Base : virtual public ::IceInternal::CallbackBase { };
+typedef ::IceUtil::Handle< Callback_RdbDataOpt_updateAnalog_Base> Callback_RdbDataOpt_updateAnalogPtr;
+
+class Callback_RdbDataOpt_updateDiscrete_Base : virtual public ::IceInternal::CallbackBase { };
+typedef ::IceUtil::Handle< Callback_RdbDataOpt_updateDiscrete_Base> Callback_RdbDataOpt_updateDiscretePtr;
+
+class Callback_RdbDataOpt_updateAccumulator_Base : virtual public ::IceInternal::CallbackBase { };
+typedef ::IceUtil::Handle< Callback_RdbDataOpt_updateAccumulator_Base> Callback_RdbDataOpt_updateAccumulatorPtr;
+
+class Callback_RdbDataOpt_updateRemoteUnit_Base : virtual public ::IceInternal::CallbackBase { };
+typedef ::IceUtil::Handle< Callback_RdbDataOpt_updateRemoteUnit_Base> Callback_RdbDataOpt_updateRemoteUnitPtr;
+
+class Callback_RdbDataOpt_getCurvePointDataSeq_Base : virtual public ::IceInternal::CallbackBase { };
+typedef ::IceUtil::Handle< Callback_RdbDataOpt_getCurvePointDataSeq_Base> Callback_RdbDataOpt_getCurvePointDataSeqPtr;
 
 }
 
@@ -3962,17 +4028,17 @@ private:
     
 public:
 
-    bool GetSectionData(const ::std::string& __p_deviceRid, ::Ice::Double& __p_analogValue, ::Ice::Int& __p_discreteValue)
+    bool GetSectionData(const ::std::string& __p_deviceRid, ::RdbRealData::DoubleSeq& __p_analogValues, ::RdbRealData::IntegerSeq& __p_discreteValues)
     {
-        return GetSectionData(__p_deviceRid, __p_analogValue, __p_discreteValue, 0);
+        return GetSectionData(__p_deviceRid, __p_analogValues, __p_discreteValues, 0);
     }
-    bool GetSectionData(const ::std::string& __p_deviceRid, ::Ice::Double& __p_analogValue, ::Ice::Int& __p_discreteValue, const ::Ice::Context& __ctx)
+    bool GetSectionData(const ::std::string& __p_deviceRid, ::RdbRealData::DoubleSeq& __p_analogValues, ::RdbRealData::IntegerSeq& __p_discreteValues, const ::Ice::Context& __ctx)
     {
-        return GetSectionData(__p_deviceRid, __p_analogValue, __p_discreteValue, &__ctx);
+        return GetSectionData(__p_deviceRid, __p_analogValues, __p_discreteValues, &__ctx);
     }
 #ifdef ICE_CPP11
     ::Ice::AsyncResultPtr
-    begin_GetSectionData(const ::std::string& __p_deviceRid, const ::IceInternal::Function<void (bool, ::Ice::Double, ::Ice::Int)>& __response, const ::IceInternal::Function<void (const ::Ice::Exception&)>& __exception = ::IceInternal::Function<void (const ::Ice::Exception&)>(), const ::IceInternal::Function<void (bool)>& __sent = ::IceInternal::Function<void (bool)>())
+    begin_GetSectionData(const ::std::string& __p_deviceRid, const ::IceInternal::Function<void (bool, const ::RdbRealData::DoubleSeq&, const ::RdbRealData::IntegerSeq&)>& __response, const ::IceInternal::Function<void (const ::Ice::Exception&)>& __exception = ::IceInternal::Function<void (const ::Ice::Exception&)>(), const ::IceInternal::Function<void (bool)>& __sent = ::IceInternal::Function<void (bool)>())
     {
         return __begin_GetSectionData(__p_deviceRid, 0, __response, __exception, __sent);
     }
@@ -3982,7 +4048,7 @@ public:
         return begin_GetSectionData(__p_deviceRid, 0, ::Ice::newCallback(__completed, __sent), 0);
     }
     ::Ice::AsyncResultPtr
-    begin_GetSectionData(const ::std::string& __p_deviceRid, const ::Ice::Context& __ctx, const ::IceInternal::Function<void (bool, ::Ice::Double, ::Ice::Int)>& __response, const ::IceInternal::Function<void (const ::Ice::Exception&)>& __exception = ::IceInternal::Function<void (const ::Ice::Exception&)>(), const ::IceInternal::Function<void (bool)>& __sent = ::IceInternal::Function<void (bool)>())
+    begin_GetSectionData(const ::std::string& __p_deviceRid, const ::Ice::Context& __ctx, const ::IceInternal::Function<void (bool, const ::RdbRealData::DoubleSeq&, const ::RdbRealData::IntegerSeq&)>& __response, const ::IceInternal::Function<void (const ::Ice::Exception&)>& __exception = ::IceInternal::Function<void (const ::Ice::Exception&)>(), const ::IceInternal::Function<void (bool)>& __sent = ::IceInternal::Function<void (bool)>())
     {
         return __begin_GetSectionData(__p_deviceRid, &__ctx, __response, __exception, __sent);
     }
@@ -3994,7 +4060,7 @@ public:
     
 private:
 
-    ::Ice::AsyncResultPtr __begin_GetSectionData(const ::std::string& __p_deviceRid, const ::Ice::Context* __ctx, const ::IceInternal::Function<void (bool, ::Ice::Double, ::Ice::Int)>& __response, const ::IceInternal::Function<void (const ::Ice::Exception&)>& __exception, const ::IceInternal::Function<void (bool)>& __sent);
+    ::Ice::AsyncResultPtr __begin_GetSectionData(const ::std::string& __p_deviceRid, const ::Ice::Context* __ctx, const ::IceInternal::Function<void (bool, const ::RdbRealData::DoubleSeq&, const ::RdbRealData::IntegerSeq&)>& __response, const ::IceInternal::Function<void (const ::Ice::Exception&)>& __exception, const ::IceInternal::Function<void (bool)>& __sent);
     
 public:
 #endif
@@ -4029,12 +4095,620 @@ public:
         return begin_GetSectionData(__p_deviceRid, &__ctx, __del, __cookie);
     }
 
-    bool end_GetSectionData(::Ice::Double& __p_analogValue, ::Ice::Int& __p_discreteValue, const ::Ice::AsyncResultPtr&);
+    bool end_GetSectionData(::RdbRealData::DoubleSeq& __p_analogValues, ::RdbRealData::IntegerSeq& __p_discreteValues, const ::Ice::AsyncResultPtr&);
     
 private:
 
-    bool GetSectionData(const ::std::string&, ::Ice::Double&, ::Ice::Int&, const ::Ice::Context*);
+    bool GetSectionData(const ::std::string&, ::RdbRealData::DoubleSeq&, ::RdbRealData::IntegerSeq&, const ::Ice::Context*);
     ::Ice::AsyncResultPtr begin_GetSectionData(const ::std::string&, const ::Ice::Context*, const ::IceInternal::CallbackBasePtr&, const ::Ice::LocalObjectPtr& __cookie = 0);
+    
+public:
+
+    bool updateBreaker(const ::std::string& __p_mrid, const ::RdbRealData::FieldMap& __p_fieldData)
+    {
+        return updateBreaker(__p_mrid, __p_fieldData, 0);
+    }
+    bool updateBreaker(const ::std::string& __p_mrid, const ::RdbRealData::FieldMap& __p_fieldData, const ::Ice::Context& __ctx)
+    {
+        return updateBreaker(__p_mrid, __p_fieldData, &__ctx);
+    }
+#ifdef ICE_CPP11
+    ::Ice::AsyncResultPtr
+    begin_updateBreaker(const ::std::string& __p_mrid, const ::RdbRealData::FieldMap& __p_fieldData, const ::IceInternal::Function<void (bool)>& __response, const ::IceInternal::Function<void (const ::Ice::Exception&)>& __exception = ::IceInternal::Function<void (const ::Ice::Exception&)>(), const ::IceInternal::Function<void (bool)>& __sent = ::IceInternal::Function<void (bool)>())
+    {
+        return __begin_updateBreaker(__p_mrid, __p_fieldData, 0, __response, __exception, __sent);
+    }
+    ::Ice::AsyncResultPtr
+    begin_updateBreaker(const ::std::string& __p_mrid, const ::RdbRealData::FieldMap& __p_fieldData, const ::IceInternal::Function<void (const ::Ice::AsyncResultPtr&)>& __completed, const ::IceInternal::Function<void (const ::Ice::AsyncResultPtr&)>& __sent = ::IceInternal::Function<void (const ::Ice::AsyncResultPtr&)>())
+    {
+        return begin_updateBreaker(__p_mrid, __p_fieldData, 0, ::Ice::newCallback(__completed, __sent), 0);
+    }
+    ::Ice::AsyncResultPtr
+    begin_updateBreaker(const ::std::string& __p_mrid, const ::RdbRealData::FieldMap& __p_fieldData, const ::Ice::Context& __ctx, const ::IceInternal::Function<void (bool)>& __response, const ::IceInternal::Function<void (const ::Ice::Exception&)>& __exception = ::IceInternal::Function<void (const ::Ice::Exception&)>(), const ::IceInternal::Function<void (bool)>& __sent = ::IceInternal::Function<void (bool)>())
+    {
+        return __begin_updateBreaker(__p_mrid, __p_fieldData, &__ctx, __response, __exception, __sent);
+    }
+    ::Ice::AsyncResultPtr
+    begin_updateBreaker(const ::std::string& __p_mrid, const ::RdbRealData::FieldMap& __p_fieldData, const ::Ice::Context& __ctx, const ::IceInternal::Function<void (const ::Ice::AsyncResultPtr&)>& __completed, const ::IceInternal::Function<void (const ::Ice::AsyncResultPtr&)>& __sent = ::IceInternal::Function<void (const ::Ice::AsyncResultPtr&)>())
+    {
+        return begin_updateBreaker(__p_mrid, __p_fieldData, &__ctx, ::Ice::newCallback(__completed, __sent));
+    }
+    
+private:
+
+    ::Ice::AsyncResultPtr __begin_updateBreaker(const ::std::string& __p_mrid, const ::RdbRealData::FieldMap& __p_fieldData, const ::Ice::Context* __ctx, const ::IceInternal::Function<void (bool)>& __response, const ::IceInternal::Function<void (const ::Ice::Exception&)>& __exception, const ::IceInternal::Function<void (bool)>& __sent);
+    
+public:
+#endif
+
+    ::Ice::AsyncResultPtr begin_updateBreaker(const ::std::string& __p_mrid, const ::RdbRealData::FieldMap& __p_fieldData)
+    {
+        return begin_updateBreaker(__p_mrid, __p_fieldData, 0, ::IceInternal::__dummyCallback, 0);
+    }
+
+    ::Ice::AsyncResultPtr begin_updateBreaker(const ::std::string& __p_mrid, const ::RdbRealData::FieldMap& __p_fieldData, const ::Ice::Context& __ctx)
+    {
+        return begin_updateBreaker(__p_mrid, __p_fieldData, &__ctx, ::IceInternal::__dummyCallback, 0);
+    }
+
+    ::Ice::AsyncResultPtr begin_updateBreaker(const ::std::string& __p_mrid, const ::RdbRealData::FieldMap& __p_fieldData, const ::Ice::CallbackPtr& __del, const ::Ice::LocalObjectPtr& __cookie = 0)
+    {
+        return begin_updateBreaker(__p_mrid, __p_fieldData, 0, __del, __cookie);
+    }
+
+    ::Ice::AsyncResultPtr begin_updateBreaker(const ::std::string& __p_mrid, const ::RdbRealData::FieldMap& __p_fieldData, const ::Ice::Context& __ctx, const ::Ice::CallbackPtr& __del, const ::Ice::LocalObjectPtr& __cookie = 0)
+    {
+        return begin_updateBreaker(__p_mrid, __p_fieldData, &__ctx, __del, __cookie);
+    }
+
+    ::Ice::AsyncResultPtr begin_updateBreaker(const ::std::string& __p_mrid, const ::RdbRealData::FieldMap& __p_fieldData, const ::RdbRealData::Callback_RdbDataOpt_updateBreakerPtr& __del, const ::Ice::LocalObjectPtr& __cookie = 0)
+    {
+        return begin_updateBreaker(__p_mrid, __p_fieldData, 0, __del, __cookie);
+    }
+
+    ::Ice::AsyncResultPtr begin_updateBreaker(const ::std::string& __p_mrid, const ::RdbRealData::FieldMap& __p_fieldData, const ::Ice::Context& __ctx, const ::RdbRealData::Callback_RdbDataOpt_updateBreakerPtr& __del, const ::Ice::LocalObjectPtr& __cookie = 0)
+    {
+        return begin_updateBreaker(__p_mrid, __p_fieldData, &__ctx, __del, __cookie);
+    }
+
+    bool end_updateBreaker(const ::Ice::AsyncResultPtr&);
+    
+private:
+
+    bool updateBreaker(const ::std::string&, const ::RdbRealData::FieldMap&, const ::Ice::Context*);
+    ::Ice::AsyncResultPtr begin_updateBreaker(const ::std::string&, const ::RdbRealData::FieldMap&, const ::Ice::Context*, const ::IceInternal::CallbackBasePtr&, const ::Ice::LocalObjectPtr& __cookie = 0);
+    
+public:
+
+    bool updateDisconnector(const ::std::string& __p_mrid, const ::RdbRealData::FieldMap& __p_fieldData)
+    {
+        return updateDisconnector(__p_mrid, __p_fieldData, 0);
+    }
+    bool updateDisconnector(const ::std::string& __p_mrid, const ::RdbRealData::FieldMap& __p_fieldData, const ::Ice::Context& __ctx)
+    {
+        return updateDisconnector(__p_mrid, __p_fieldData, &__ctx);
+    }
+#ifdef ICE_CPP11
+    ::Ice::AsyncResultPtr
+    begin_updateDisconnector(const ::std::string& __p_mrid, const ::RdbRealData::FieldMap& __p_fieldData, const ::IceInternal::Function<void (bool)>& __response, const ::IceInternal::Function<void (const ::Ice::Exception&)>& __exception = ::IceInternal::Function<void (const ::Ice::Exception&)>(), const ::IceInternal::Function<void (bool)>& __sent = ::IceInternal::Function<void (bool)>())
+    {
+        return __begin_updateDisconnector(__p_mrid, __p_fieldData, 0, __response, __exception, __sent);
+    }
+    ::Ice::AsyncResultPtr
+    begin_updateDisconnector(const ::std::string& __p_mrid, const ::RdbRealData::FieldMap& __p_fieldData, const ::IceInternal::Function<void (const ::Ice::AsyncResultPtr&)>& __completed, const ::IceInternal::Function<void (const ::Ice::AsyncResultPtr&)>& __sent = ::IceInternal::Function<void (const ::Ice::AsyncResultPtr&)>())
+    {
+        return begin_updateDisconnector(__p_mrid, __p_fieldData, 0, ::Ice::newCallback(__completed, __sent), 0);
+    }
+    ::Ice::AsyncResultPtr
+    begin_updateDisconnector(const ::std::string& __p_mrid, const ::RdbRealData::FieldMap& __p_fieldData, const ::Ice::Context& __ctx, const ::IceInternal::Function<void (bool)>& __response, const ::IceInternal::Function<void (const ::Ice::Exception&)>& __exception = ::IceInternal::Function<void (const ::Ice::Exception&)>(), const ::IceInternal::Function<void (bool)>& __sent = ::IceInternal::Function<void (bool)>())
+    {
+        return __begin_updateDisconnector(__p_mrid, __p_fieldData, &__ctx, __response, __exception, __sent);
+    }
+    ::Ice::AsyncResultPtr
+    begin_updateDisconnector(const ::std::string& __p_mrid, const ::RdbRealData::FieldMap& __p_fieldData, const ::Ice::Context& __ctx, const ::IceInternal::Function<void (const ::Ice::AsyncResultPtr&)>& __completed, const ::IceInternal::Function<void (const ::Ice::AsyncResultPtr&)>& __sent = ::IceInternal::Function<void (const ::Ice::AsyncResultPtr&)>())
+    {
+        return begin_updateDisconnector(__p_mrid, __p_fieldData, &__ctx, ::Ice::newCallback(__completed, __sent));
+    }
+    
+private:
+
+    ::Ice::AsyncResultPtr __begin_updateDisconnector(const ::std::string& __p_mrid, const ::RdbRealData::FieldMap& __p_fieldData, const ::Ice::Context* __ctx, const ::IceInternal::Function<void (bool)>& __response, const ::IceInternal::Function<void (const ::Ice::Exception&)>& __exception, const ::IceInternal::Function<void (bool)>& __sent);
+    
+public:
+#endif
+
+    ::Ice::AsyncResultPtr begin_updateDisconnector(const ::std::string& __p_mrid, const ::RdbRealData::FieldMap& __p_fieldData)
+    {
+        return begin_updateDisconnector(__p_mrid, __p_fieldData, 0, ::IceInternal::__dummyCallback, 0);
+    }
+
+    ::Ice::AsyncResultPtr begin_updateDisconnector(const ::std::string& __p_mrid, const ::RdbRealData::FieldMap& __p_fieldData, const ::Ice::Context& __ctx)
+    {
+        return begin_updateDisconnector(__p_mrid, __p_fieldData, &__ctx, ::IceInternal::__dummyCallback, 0);
+    }
+
+    ::Ice::AsyncResultPtr begin_updateDisconnector(const ::std::string& __p_mrid, const ::RdbRealData::FieldMap& __p_fieldData, const ::Ice::CallbackPtr& __del, const ::Ice::LocalObjectPtr& __cookie = 0)
+    {
+        return begin_updateDisconnector(__p_mrid, __p_fieldData, 0, __del, __cookie);
+    }
+
+    ::Ice::AsyncResultPtr begin_updateDisconnector(const ::std::string& __p_mrid, const ::RdbRealData::FieldMap& __p_fieldData, const ::Ice::Context& __ctx, const ::Ice::CallbackPtr& __del, const ::Ice::LocalObjectPtr& __cookie = 0)
+    {
+        return begin_updateDisconnector(__p_mrid, __p_fieldData, &__ctx, __del, __cookie);
+    }
+
+    ::Ice::AsyncResultPtr begin_updateDisconnector(const ::std::string& __p_mrid, const ::RdbRealData::FieldMap& __p_fieldData, const ::RdbRealData::Callback_RdbDataOpt_updateDisconnectorPtr& __del, const ::Ice::LocalObjectPtr& __cookie = 0)
+    {
+        return begin_updateDisconnector(__p_mrid, __p_fieldData, 0, __del, __cookie);
+    }
+
+    ::Ice::AsyncResultPtr begin_updateDisconnector(const ::std::string& __p_mrid, const ::RdbRealData::FieldMap& __p_fieldData, const ::Ice::Context& __ctx, const ::RdbRealData::Callback_RdbDataOpt_updateDisconnectorPtr& __del, const ::Ice::LocalObjectPtr& __cookie = 0)
+    {
+        return begin_updateDisconnector(__p_mrid, __p_fieldData, &__ctx, __del, __cookie);
+    }
+
+    bool end_updateDisconnector(const ::Ice::AsyncResultPtr&);
+    
+private:
+
+    bool updateDisconnector(const ::std::string&, const ::RdbRealData::FieldMap&, const ::Ice::Context*);
+    ::Ice::AsyncResultPtr begin_updateDisconnector(const ::std::string&, const ::RdbRealData::FieldMap&, const ::Ice::Context*, const ::IceInternal::CallbackBasePtr&, const ::Ice::LocalObjectPtr& __cookie = 0);
+    
+public:
+
+    bool updatePowerTransformer(const ::std::string& __p_mrid, const ::RdbRealData::FieldMap& __p_fieldData)
+    {
+        return updatePowerTransformer(__p_mrid, __p_fieldData, 0);
+    }
+    bool updatePowerTransformer(const ::std::string& __p_mrid, const ::RdbRealData::FieldMap& __p_fieldData, const ::Ice::Context& __ctx)
+    {
+        return updatePowerTransformer(__p_mrid, __p_fieldData, &__ctx);
+    }
+#ifdef ICE_CPP11
+    ::Ice::AsyncResultPtr
+    begin_updatePowerTransformer(const ::std::string& __p_mrid, const ::RdbRealData::FieldMap& __p_fieldData, const ::IceInternal::Function<void (bool)>& __response, const ::IceInternal::Function<void (const ::Ice::Exception&)>& __exception = ::IceInternal::Function<void (const ::Ice::Exception&)>(), const ::IceInternal::Function<void (bool)>& __sent = ::IceInternal::Function<void (bool)>())
+    {
+        return __begin_updatePowerTransformer(__p_mrid, __p_fieldData, 0, __response, __exception, __sent);
+    }
+    ::Ice::AsyncResultPtr
+    begin_updatePowerTransformer(const ::std::string& __p_mrid, const ::RdbRealData::FieldMap& __p_fieldData, const ::IceInternal::Function<void (const ::Ice::AsyncResultPtr&)>& __completed, const ::IceInternal::Function<void (const ::Ice::AsyncResultPtr&)>& __sent = ::IceInternal::Function<void (const ::Ice::AsyncResultPtr&)>())
+    {
+        return begin_updatePowerTransformer(__p_mrid, __p_fieldData, 0, ::Ice::newCallback(__completed, __sent), 0);
+    }
+    ::Ice::AsyncResultPtr
+    begin_updatePowerTransformer(const ::std::string& __p_mrid, const ::RdbRealData::FieldMap& __p_fieldData, const ::Ice::Context& __ctx, const ::IceInternal::Function<void (bool)>& __response, const ::IceInternal::Function<void (const ::Ice::Exception&)>& __exception = ::IceInternal::Function<void (const ::Ice::Exception&)>(), const ::IceInternal::Function<void (bool)>& __sent = ::IceInternal::Function<void (bool)>())
+    {
+        return __begin_updatePowerTransformer(__p_mrid, __p_fieldData, &__ctx, __response, __exception, __sent);
+    }
+    ::Ice::AsyncResultPtr
+    begin_updatePowerTransformer(const ::std::string& __p_mrid, const ::RdbRealData::FieldMap& __p_fieldData, const ::Ice::Context& __ctx, const ::IceInternal::Function<void (const ::Ice::AsyncResultPtr&)>& __completed, const ::IceInternal::Function<void (const ::Ice::AsyncResultPtr&)>& __sent = ::IceInternal::Function<void (const ::Ice::AsyncResultPtr&)>())
+    {
+        return begin_updatePowerTransformer(__p_mrid, __p_fieldData, &__ctx, ::Ice::newCallback(__completed, __sent));
+    }
+    
+private:
+
+    ::Ice::AsyncResultPtr __begin_updatePowerTransformer(const ::std::string& __p_mrid, const ::RdbRealData::FieldMap& __p_fieldData, const ::Ice::Context* __ctx, const ::IceInternal::Function<void (bool)>& __response, const ::IceInternal::Function<void (const ::Ice::Exception&)>& __exception, const ::IceInternal::Function<void (bool)>& __sent);
+    
+public:
+#endif
+
+    ::Ice::AsyncResultPtr begin_updatePowerTransformer(const ::std::string& __p_mrid, const ::RdbRealData::FieldMap& __p_fieldData)
+    {
+        return begin_updatePowerTransformer(__p_mrid, __p_fieldData, 0, ::IceInternal::__dummyCallback, 0);
+    }
+
+    ::Ice::AsyncResultPtr begin_updatePowerTransformer(const ::std::string& __p_mrid, const ::RdbRealData::FieldMap& __p_fieldData, const ::Ice::Context& __ctx)
+    {
+        return begin_updatePowerTransformer(__p_mrid, __p_fieldData, &__ctx, ::IceInternal::__dummyCallback, 0);
+    }
+
+    ::Ice::AsyncResultPtr begin_updatePowerTransformer(const ::std::string& __p_mrid, const ::RdbRealData::FieldMap& __p_fieldData, const ::Ice::CallbackPtr& __del, const ::Ice::LocalObjectPtr& __cookie = 0)
+    {
+        return begin_updatePowerTransformer(__p_mrid, __p_fieldData, 0, __del, __cookie);
+    }
+
+    ::Ice::AsyncResultPtr begin_updatePowerTransformer(const ::std::string& __p_mrid, const ::RdbRealData::FieldMap& __p_fieldData, const ::Ice::Context& __ctx, const ::Ice::CallbackPtr& __del, const ::Ice::LocalObjectPtr& __cookie = 0)
+    {
+        return begin_updatePowerTransformer(__p_mrid, __p_fieldData, &__ctx, __del, __cookie);
+    }
+
+    ::Ice::AsyncResultPtr begin_updatePowerTransformer(const ::std::string& __p_mrid, const ::RdbRealData::FieldMap& __p_fieldData, const ::RdbRealData::Callback_RdbDataOpt_updatePowerTransformerPtr& __del, const ::Ice::LocalObjectPtr& __cookie = 0)
+    {
+        return begin_updatePowerTransformer(__p_mrid, __p_fieldData, 0, __del, __cookie);
+    }
+
+    ::Ice::AsyncResultPtr begin_updatePowerTransformer(const ::std::string& __p_mrid, const ::RdbRealData::FieldMap& __p_fieldData, const ::Ice::Context& __ctx, const ::RdbRealData::Callback_RdbDataOpt_updatePowerTransformerPtr& __del, const ::Ice::LocalObjectPtr& __cookie = 0)
+    {
+        return begin_updatePowerTransformer(__p_mrid, __p_fieldData, &__ctx, __del, __cookie);
+    }
+
+    bool end_updatePowerTransformer(const ::Ice::AsyncResultPtr&);
+    
+private:
+
+    bool updatePowerTransformer(const ::std::string&, const ::RdbRealData::FieldMap&, const ::Ice::Context*);
+    ::Ice::AsyncResultPtr begin_updatePowerTransformer(const ::std::string&, const ::RdbRealData::FieldMap&, const ::Ice::Context*, const ::IceInternal::CallbackBasePtr&, const ::Ice::LocalObjectPtr& __cookie = 0);
+    
+public:
+
+    bool updateAnalog(const ::std::string& __p_mrid, const ::RdbRealData::FieldMap& __p_fieldData)
+    {
+        return updateAnalog(__p_mrid, __p_fieldData, 0);
+    }
+    bool updateAnalog(const ::std::string& __p_mrid, const ::RdbRealData::FieldMap& __p_fieldData, const ::Ice::Context& __ctx)
+    {
+        return updateAnalog(__p_mrid, __p_fieldData, &__ctx);
+    }
+#ifdef ICE_CPP11
+    ::Ice::AsyncResultPtr
+    begin_updateAnalog(const ::std::string& __p_mrid, const ::RdbRealData::FieldMap& __p_fieldData, const ::IceInternal::Function<void (bool)>& __response, const ::IceInternal::Function<void (const ::Ice::Exception&)>& __exception = ::IceInternal::Function<void (const ::Ice::Exception&)>(), const ::IceInternal::Function<void (bool)>& __sent = ::IceInternal::Function<void (bool)>())
+    {
+        return __begin_updateAnalog(__p_mrid, __p_fieldData, 0, __response, __exception, __sent);
+    }
+    ::Ice::AsyncResultPtr
+    begin_updateAnalog(const ::std::string& __p_mrid, const ::RdbRealData::FieldMap& __p_fieldData, const ::IceInternal::Function<void (const ::Ice::AsyncResultPtr&)>& __completed, const ::IceInternal::Function<void (const ::Ice::AsyncResultPtr&)>& __sent = ::IceInternal::Function<void (const ::Ice::AsyncResultPtr&)>())
+    {
+        return begin_updateAnalog(__p_mrid, __p_fieldData, 0, ::Ice::newCallback(__completed, __sent), 0);
+    }
+    ::Ice::AsyncResultPtr
+    begin_updateAnalog(const ::std::string& __p_mrid, const ::RdbRealData::FieldMap& __p_fieldData, const ::Ice::Context& __ctx, const ::IceInternal::Function<void (bool)>& __response, const ::IceInternal::Function<void (const ::Ice::Exception&)>& __exception = ::IceInternal::Function<void (const ::Ice::Exception&)>(), const ::IceInternal::Function<void (bool)>& __sent = ::IceInternal::Function<void (bool)>())
+    {
+        return __begin_updateAnalog(__p_mrid, __p_fieldData, &__ctx, __response, __exception, __sent);
+    }
+    ::Ice::AsyncResultPtr
+    begin_updateAnalog(const ::std::string& __p_mrid, const ::RdbRealData::FieldMap& __p_fieldData, const ::Ice::Context& __ctx, const ::IceInternal::Function<void (const ::Ice::AsyncResultPtr&)>& __completed, const ::IceInternal::Function<void (const ::Ice::AsyncResultPtr&)>& __sent = ::IceInternal::Function<void (const ::Ice::AsyncResultPtr&)>())
+    {
+        return begin_updateAnalog(__p_mrid, __p_fieldData, &__ctx, ::Ice::newCallback(__completed, __sent));
+    }
+    
+private:
+
+    ::Ice::AsyncResultPtr __begin_updateAnalog(const ::std::string& __p_mrid, const ::RdbRealData::FieldMap& __p_fieldData, const ::Ice::Context* __ctx, const ::IceInternal::Function<void (bool)>& __response, const ::IceInternal::Function<void (const ::Ice::Exception&)>& __exception, const ::IceInternal::Function<void (bool)>& __sent);
+    
+public:
+#endif
+
+    ::Ice::AsyncResultPtr begin_updateAnalog(const ::std::string& __p_mrid, const ::RdbRealData::FieldMap& __p_fieldData)
+    {
+        return begin_updateAnalog(__p_mrid, __p_fieldData, 0, ::IceInternal::__dummyCallback, 0);
+    }
+
+    ::Ice::AsyncResultPtr begin_updateAnalog(const ::std::string& __p_mrid, const ::RdbRealData::FieldMap& __p_fieldData, const ::Ice::Context& __ctx)
+    {
+        return begin_updateAnalog(__p_mrid, __p_fieldData, &__ctx, ::IceInternal::__dummyCallback, 0);
+    }
+
+    ::Ice::AsyncResultPtr begin_updateAnalog(const ::std::string& __p_mrid, const ::RdbRealData::FieldMap& __p_fieldData, const ::Ice::CallbackPtr& __del, const ::Ice::LocalObjectPtr& __cookie = 0)
+    {
+        return begin_updateAnalog(__p_mrid, __p_fieldData, 0, __del, __cookie);
+    }
+
+    ::Ice::AsyncResultPtr begin_updateAnalog(const ::std::string& __p_mrid, const ::RdbRealData::FieldMap& __p_fieldData, const ::Ice::Context& __ctx, const ::Ice::CallbackPtr& __del, const ::Ice::LocalObjectPtr& __cookie = 0)
+    {
+        return begin_updateAnalog(__p_mrid, __p_fieldData, &__ctx, __del, __cookie);
+    }
+
+    ::Ice::AsyncResultPtr begin_updateAnalog(const ::std::string& __p_mrid, const ::RdbRealData::FieldMap& __p_fieldData, const ::RdbRealData::Callback_RdbDataOpt_updateAnalogPtr& __del, const ::Ice::LocalObjectPtr& __cookie = 0)
+    {
+        return begin_updateAnalog(__p_mrid, __p_fieldData, 0, __del, __cookie);
+    }
+
+    ::Ice::AsyncResultPtr begin_updateAnalog(const ::std::string& __p_mrid, const ::RdbRealData::FieldMap& __p_fieldData, const ::Ice::Context& __ctx, const ::RdbRealData::Callback_RdbDataOpt_updateAnalogPtr& __del, const ::Ice::LocalObjectPtr& __cookie = 0)
+    {
+        return begin_updateAnalog(__p_mrid, __p_fieldData, &__ctx, __del, __cookie);
+    }
+
+    bool end_updateAnalog(const ::Ice::AsyncResultPtr&);
+    
+private:
+
+    bool updateAnalog(const ::std::string&, const ::RdbRealData::FieldMap&, const ::Ice::Context*);
+    ::Ice::AsyncResultPtr begin_updateAnalog(const ::std::string&, const ::RdbRealData::FieldMap&, const ::Ice::Context*, const ::IceInternal::CallbackBasePtr&, const ::Ice::LocalObjectPtr& __cookie = 0);
+    
+public:
+
+    bool updateDiscrete(const ::std::string& __p_mrid, const ::RdbRealData::FieldMap& __p_fieldData)
+    {
+        return updateDiscrete(__p_mrid, __p_fieldData, 0);
+    }
+    bool updateDiscrete(const ::std::string& __p_mrid, const ::RdbRealData::FieldMap& __p_fieldData, const ::Ice::Context& __ctx)
+    {
+        return updateDiscrete(__p_mrid, __p_fieldData, &__ctx);
+    }
+#ifdef ICE_CPP11
+    ::Ice::AsyncResultPtr
+    begin_updateDiscrete(const ::std::string& __p_mrid, const ::RdbRealData::FieldMap& __p_fieldData, const ::IceInternal::Function<void (bool)>& __response, const ::IceInternal::Function<void (const ::Ice::Exception&)>& __exception = ::IceInternal::Function<void (const ::Ice::Exception&)>(), const ::IceInternal::Function<void (bool)>& __sent = ::IceInternal::Function<void (bool)>())
+    {
+        return __begin_updateDiscrete(__p_mrid, __p_fieldData, 0, __response, __exception, __sent);
+    }
+    ::Ice::AsyncResultPtr
+    begin_updateDiscrete(const ::std::string& __p_mrid, const ::RdbRealData::FieldMap& __p_fieldData, const ::IceInternal::Function<void (const ::Ice::AsyncResultPtr&)>& __completed, const ::IceInternal::Function<void (const ::Ice::AsyncResultPtr&)>& __sent = ::IceInternal::Function<void (const ::Ice::AsyncResultPtr&)>())
+    {
+        return begin_updateDiscrete(__p_mrid, __p_fieldData, 0, ::Ice::newCallback(__completed, __sent), 0);
+    }
+    ::Ice::AsyncResultPtr
+    begin_updateDiscrete(const ::std::string& __p_mrid, const ::RdbRealData::FieldMap& __p_fieldData, const ::Ice::Context& __ctx, const ::IceInternal::Function<void (bool)>& __response, const ::IceInternal::Function<void (const ::Ice::Exception&)>& __exception = ::IceInternal::Function<void (const ::Ice::Exception&)>(), const ::IceInternal::Function<void (bool)>& __sent = ::IceInternal::Function<void (bool)>())
+    {
+        return __begin_updateDiscrete(__p_mrid, __p_fieldData, &__ctx, __response, __exception, __sent);
+    }
+    ::Ice::AsyncResultPtr
+    begin_updateDiscrete(const ::std::string& __p_mrid, const ::RdbRealData::FieldMap& __p_fieldData, const ::Ice::Context& __ctx, const ::IceInternal::Function<void (const ::Ice::AsyncResultPtr&)>& __completed, const ::IceInternal::Function<void (const ::Ice::AsyncResultPtr&)>& __sent = ::IceInternal::Function<void (const ::Ice::AsyncResultPtr&)>())
+    {
+        return begin_updateDiscrete(__p_mrid, __p_fieldData, &__ctx, ::Ice::newCallback(__completed, __sent));
+    }
+    
+private:
+
+    ::Ice::AsyncResultPtr __begin_updateDiscrete(const ::std::string& __p_mrid, const ::RdbRealData::FieldMap& __p_fieldData, const ::Ice::Context* __ctx, const ::IceInternal::Function<void (bool)>& __response, const ::IceInternal::Function<void (const ::Ice::Exception&)>& __exception, const ::IceInternal::Function<void (bool)>& __sent);
+    
+public:
+#endif
+
+    ::Ice::AsyncResultPtr begin_updateDiscrete(const ::std::string& __p_mrid, const ::RdbRealData::FieldMap& __p_fieldData)
+    {
+        return begin_updateDiscrete(__p_mrid, __p_fieldData, 0, ::IceInternal::__dummyCallback, 0);
+    }
+
+    ::Ice::AsyncResultPtr begin_updateDiscrete(const ::std::string& __p_mrid, const ::RdbRealData::FieldMap& __p_fieldData, const ::Ice::Context& __ctx)
+    {
+        return begin_updateDiscrete(__p_mrid, __p_fieldData, &__ctx, ::IceInternal::__dummyCallback, 0);
+    }
+
+    ::Ice::AsyncResultPtr begin_updateDiscrete(const ::std::string& __p_mrid, const ::RdbRealData::FieldMap& __p_fieldData, const ::Ice::CallbackPtr& __del, const ::Ice::LocalObjectPtr& __cookie = 0)
+    {
+        return begin_updateDiscrete(__p_mrid, __p_fieldData, 0, __del, __cookie);
+    }
+
+    ::Ice::AsyncResultPtr begin_updateDiscrete(const ::std::string& __p_mrid, const ::RdbRealData::FieldMap& __p_fieldData, const ::Ice::Context& __ctx, const ::Ice::CallbackPtr& __del, const ::Ice::LocalObjectPtr& __cookie = 0)
+    {
+        return begin_updateDiscrete(__p_mrid, __p_fieldData, &__ctx, __del, __cookie);
+    }
+
+    ::Ice::AsyncResultPtr begin_updateDiscrete(const ::std::string& __p_mrid, const ::RdbRealData::FieldMap& __p_fieldData, const ::RdbRealData::Callback_RdbDataOpt_updateDiscretePtr& __del, const ::Ice::LocalObjectPtr& __cookie = 0)
+    {
+        return begin_updateDiscrete(__p_mrid, __p_fieldData, 0, __del, __cookie);
+    }
+
+    ::Ice::AsyncResultPtr begin_updateDiscrete(const ::std::string& __p_mrid, const ::RdbRealData::FieldMap& __p_fieldData, const ::Ice::Context& __ctx, const ::RdbRealData::Callback_RdbDataOpt_updateDiscretePtr& __del, const ::Ice::LocalObjectPtr& __cookie = 0)
+    {
+        return begin_updateDiscrete(__p_mrid, __p_fieldData, &__ctx, __del, __cookie);
+    }
+
+    bool end_updateDiscrete(const ::Ice::AsyncResultPtr&);
+    
+private:
+
+    bool updateDiscrete(const ::std::string&, const ::RdbRealData::FieldMap&, const ::Ice::Context*);
+    ::Ice::AsyncResultPtr begin_updateDiscrete(const ::std::string&, const ::RdbRealData::FieldMap&, const ::Ice::Context*, const ::IceInternal::CallbackBasePtr&, const ::Ice::LocalObjectPtr& __cookie = 0);
+    
+public:
+
+    bool updateAccumulator(const ::std::string& __p_mrid, const ::RdbRealData::FieldMap& __p_fieldData)
+    {
+        return updateAccumulator(__p_mrid, __p_fieldData, 0);
+    }
+    bool updateAccumulator(const ::std::string& __p_mrid, const ::RdbRealData::FieldMap& __p_fieldData, const ::Ice::Context& __ctx)
+    {
+        return updateAccumulator(__p_mrid, __p_fieldData, &__ctx);
+    }
+#ifdef ICE_CPP11
+    ::Ice::AsyncResultPtr
+    begin_updateAccumulator(const ::std::string& __p_mrid, const ::RdbRealData::FieldMap& __p_fieldData, const ::IceInternal::Function<void (bool)>& __response, const ::IceInternal::Function<void (const ::Ice::Exception&)>& __exception = ::IceInternal::Function<void (const ::Ice::Exception&)>(), const ::IceInternal::Function<void (bool)>& __sent = ::IceInternal::Function<void (bool)>())
+    {
+        return __begin_updateAccumulator(__p_mrid, __p_fieldData, 0, __response, __exception, __sent);
+    }
+    ::Ice::AsyncResultPtr
+    begin_updateAccumulator(const ::std::string& __p_mrid, const ::RdbRealData::FieldMap& __p_fieldData, const ::IceInternal::Function<void (const ::Ice::AsyncResultPtr&)>& __completed, const ::IceInternal::Function<void (const ::Ice::AsyncResultPtr&)>& __sent = ::IceInternal::Function<void (const ::Ice::AsyncResultPtr&)>())
+    {
+        return begin_updateAccumulator(__p_mrid, __p_fieldData, 0, ::Ice::newCallback(__completed, __sent), 0);
+    }
+    ::Ice::AsyncResultPtr
+    begin_updateAccumulator(const ::std::string& __p_mrid, const ::RdbRealData::FieldMap& __p_fieldData, const ::Ice::Context& __ctx, const ::IceInternal::Function<void (bool)>& __response, const ::IceInternal::Function<void (const ::Ice::Exception&)>& __exception = ::IceInternal::Function<void (const ::Ice::Exception&)>(), const ::IceInternal::Function<void (bool)>& __sent = ::IceInternal::Function<void (bool)>())
+    {
+        return __begin_updateAccumulator(__p_mrid, __p_fieldData, &__ctx, __response, __exception, __sent);
+    }
+    ::Ice::AsyncResultPtr
+    begin_updateAccumulator(const ::std::string& __p_mrid, const ::RdbRealData::FieldMap& __p_fieldData, const ::Ice::Context& __ctx, const ::IceInternal::Function<void (const ::Ice::AsyncResultPtr&)>& __completed, const ::IceInternal::Function<void (const ::Ice::AsyncResultPtr&)>& __sent = ::IceInternal::Function<void (const ::Ice::AsyncResultPtr&)>())
+    {
+        return begin_updateAccumulator(__p_mrid, __p_fieldData, &__ctx, ::Ice::newCallback(__completed, __sent));
+    }
+    
+private:
+
+    ::Ice::AsyncResultPtr __begin_updateAccumulator(const ::std::string& __p_mrid, const ::RdbRealData::FieldMap& __p_fieldData, const ::Ice::Context* __ctx, const ::IceInternal::Function<void (bool)>& __response, const ::IceInternal::Function<void (const ::Ice::Exception&)>& __exception, const ::IceInternal::Function<void (bool)>& __sent);
+    
+public:
+#endif
+
+    ::Ice::AsyncResultPtr begin_updateAccumulator(const ::std::string& __p_mrid, const ::RdbRealData::FieldMap& __p_fieldData)
+    {
+        return begin_updateAccumulator(__p_mrid, __p_fieldData, 0, ::IceInternal::__dummyCallback, 0);
+    }
+
+    ::Ice::AsyncResultPtr begin_updateAccumulator(const ::std::string& __p_mrid, const ::RdbRealData::FieldMap& __p_fieldData, const ::Ice::Context& __ctx)
+    {
+        return begin_updateAccumulator(__p_mrid, __p_fieldData, &__ctx, ::IceInternal::__dummyCallback, 0);
+    }
+
+    ::Ice::AsyncResultPtr begin_updateAccumulator(const ::std::string& __p_mrid, const ::RdbRealData::FieldMap& __p_fieldData, const ::Ice::CallbackPtr& __del, const ::Ice::LocalObjectPtr& __cookie = 0)
+    {
+        return begin_updateAccumulator(__p_mrid, __p_fieldData, 0, __del, __cookie);
+    }
+
+    ::Ice::AsyncResultPtr begin_updateAccumulator(const ::std::string& __p_mrid, const ::RdbRealData::FieldMap& __p_fieldData, const ::Ice::Context& __ctx, const ::Ice::CallbackPtr& __del, const ::Ice::LocalObjectPtr& __cookie = 0)
+    {
+        return begin_updateAccumulator(__p_mrid, __p_fieldData, &__ctx, __del, __cookie);
+    }
+
+    ::Ice::AsyncResultPtr begin_updateAccumulator(const ::std::string& __p_mrid, const ::RdbRealData::FieldMap& __p_fieldData, const ::RdbRealData::Callback_RdbDataOpt_updateAccumulatorPtr& __del, const ::Ice::LocalObjectPtr& __cookie = 0)
+    {
+        return begin_updateAccumulator(__p_mrid, __p_fieldData, 0, __del, __cookie);
+    }
+
+    ::Ice::AsyncResultPtr begin_updateAccumulator(const ::std::string& __p_mrid, const ::RdbRealData::FieldMap& __p_fieldData, const ::Ice::Context& __ctx, const ::RdbRealData::Callback_RdbDataOpt_updateAccumulatorPtr& __del, const ::Ice::LocalObjectPtr& __cookie = 0)
+    {
+        return begin_updateAccumulator(__p_mrid, __p_fieldData, &__ctx, __del, __cookie);
+    }
+
+    bool end_updateAccumulator(const ::Ice::AsyncResultPtr&);
+    
+private:
+
+    bool updateAccumulator(const ::std::string&, const ::RdbRealData::FieldMap&, const ::Ice::Context*);
+    ::Ice::AsyncResultPtr begin_updateAccumulator(const ::std::string&, const ::RdbRealData::FieldMap&, const ::Ice::Context*, const ::IceInternal::CallbackBasePtr&, const ::Ice::LocalObjectPtr& __cookie = 0);
+    
+public:
+
+    bool updateRemoteUnit(const ::std::string& __p_mrid, const ::RdbRealData::FieldMap& __p_fieldData)
+    {
+        return updateRemoteUnit(__p_mrid, __p_fieldData, 0);
+    }
+    bool updateRemoteUnit(const ::std::string& __p_mrid, const ::RdbRealData::FieldMap& __p_fieldData, const ::Ice::Context& __ctx)
+    {
+        return updateRemoteUnit(__p_mrid, __p_fieldData, &__ctx);
+    }
+#ifdef ICE_CPP11
+    ::Ice::AsyncResultPtr
+    begin_updateRemoteUnit(const ::std::string& __p_mrid, const ::RdbRealData::FieldMap& __p_fieldData, const ::IceInternal::Function<void (bool)>& __response, const ::IceInternal::Function<void (const ::Ice::Exception&)>& __exception = ::IceInternal::Function<void (const ::Ice::Exception&)>(), const ::IceInternal::Function<void (bool)>& __sent = ::IceInternal::Function<void (bool)>())
+    {
+        return __begin_updateRemoteUnit(__p_mrid, __p_fieldData, 0, __response, __exception, __sent);
+    }
+    ::Ice::AsyncResultPtr
+    begin_updateRemoteUnit(const ::std::string& __p_mrid, const ::RdbRealData::FieldMap& __p_fieldData, const ::IceInternal::Function<void (const ::Ice::AsyncResultPtr&)>& __completed, const ::IceInternal::Function<void (const ::Ice::AsyncResultPtr&)>& __sent = ::IceInternal::Function<void (const ::Ice::AsyncResultPtr&)>())
+    {
+        return begin_updateRemoteUnit(__p_mrid, __p_fieldData, 0, ::Ice::newCallback(__completed, __sent), 0);
+    }
+    ::Ice::AsyncResultPtr
+    begin_updateRemoteUnit(const ::std::string& __p_mrid, const ::RdbRealData::FieldMap& __p_fieldData, const ::Ice::Context& __ctx, const ::IceInternal::Function<void (bool)>& __response, const ::IceInternal::Function<void (const ::Ice::Exception&)>& __exception = ::IceInternal::Function<void (const ::Ice::Exception&)>(), const ::IceInternal::Function<void (bool)>& __sent = ::IceInternal::Function<void (bool)>())
+    {
+        return __begin_updateRemoteUnit(__p_mrid, __p_fieldData, &__ctx, __response, __exception, __sent);
+    }
+    ::Ice::AsyncResultPtr
+    begin_updateRemoteUnit(const ::std::string& __p_mrid, const ::RdbRealData::FieldMap& __p_fieldData, const ::Ice::Context& __ctx, const ::IceInternal::Function<void (const ::Ice::AsyncResultPtr&)>& __completed, const ::IceInternal::Function<void (const ::Ice::AsyncResultPtr&)>& __sent = ::IceInternal::Function<void (const ::Ice::AsyncResultPtr&)>())
+    {
+        return begin_updateRemoteUnit(__p_mrid, __p_fieldData, &__ctx, ::Ice::newCallback(__completed, __sent));
+    }
+    
+private:
+
+    ::Ice::AsyncResultPtr __begin_updateRemoteUnit(const ::std::string& __p_mrid, const ::RdbRealData::FieldMap& __p_fieldData, const ::Ice::Context* __ctx, const ::IceInternal::Function<void (bool)>& __response, const ::IceInternal::Function<void (const ::Ice::Exception&)>& __exception, const ::IceInternal::Function<void (bool)>& __sent);
+    
+public:
+#endif
+
+    ::Ice::AsyncResultPtr begin_updateRemoteUnit(const ::std::string& __p_mrid, const ::RdbRealData::FieldMap& __p_fieldData)
+    {
+        return begin_updateRemoteUnit(__p_mrid, __p_fieldData, 0, ::IceInternal::__dummyCallback, 0);
+    }
+
+    ::Ice::AsyncResultPtr begin_updateRemoteUnit(const ::std::string& __p_mrid, const ::RdbRealData::FieldMap& __p_fieldData, const ::Ice::Context& __ctx)
+    {
+        return begin_updateRemoteUnit(__p_mrid, __p_fieldData, &__ctx, ::IceInternal::__dummyCallback, 0);
+    }
+
+    ::Ice::AsyncResultPtr begin_updateRemoteUnit(const ::std::string& __p_mrid, const ::RdbRealData::FieldMap& __p_fieldData, const ::Ice::CallbackPtr& __del, const ::Ice::LocalObjectPtr& __cookie = 0)
+    {
+        return begin_updateRemoteUnit(__p_mrid, __p_fieldData, 0, __del, __cookie);
+    }
+
+    ::Ice::AsyncResultPtr begin_updateRemoteUnit(const ::std::string& __p_mrid, const ::RdbRealData::FieldMap& __p_fieldData, const ::Ice::Context& __ctx, const ::Ice::CallbackPtr& __del, const ::Ice::LocalObjectPtr& __cookie = 0)
+    {
+        return begin_updateRemoteUnit(__p_mrid, __p_fieldData, &__ctx, __del, __cookie);
+    }
+
+    ::Ice::AsyncResultPtr begin_updateRemoteUnit(const ::std::string& __p_mrid, const ::RdbRealData::FieldMap& __p_fieldData, const ::RdbRealData::Callback_RdbDataOpt_updateRemoteUnitPtr& __del, const ::Ice::LocalObjectPtr& __cookie = 0)
+    {
+        return begin_updateRemoteUnit(__p_mrid, __p_fieldData, 0, __del, __cookie);
+    }
+
+    ::Ice::AsyncResultPtr begin_updateRemoteUnit(const ::std::string& __p_mrid, const ::RdbRealData::FieldMap& __p_fieldData, const ::Ice::Context& __ctx, const ::RdbRealData::Callback_RdbDataOpt_updateRemoteUnitPtr& __del, const ::Ice::LocalObjectPtr& __cookie = 0)
+    {
+        return begin_updateRemoteUnit(__p_mrid, __p_fieldData, &__ctx, __del, __cookie);
+    }
+
+    bool end_updateRemoteUnit(const ::Ice::AsyncResultPtr&);
+    
+private:
+
+    bool updateRemoteUnit(const ::std::string&, const ::RdbRealData::FieldMap&, const ::Ice::Context*);
+    ::Ice::AsyncResultPtr begin_updateRemoteUnit(const ::std::string&, const ::RdbRealData::FieldMap&, const ::Ice::Context*, const ::IceInternal::CallbackBasePtr&, const ::Ice::LocalObjectPtr& __cookie = 0);
+    
+public:
+
+    bool getCurvePointDataSeq(const ::RdbRealData::Strings& __p_analogs, ::RdbRealData::CurvePointDataSeq& __p_dataSeq)
+    {
+        return getCurvePointDataSeq(__p_analogs, __p_dataSeq, 0);
+    }
+    bool getCurvePointDataSeq(const ::RdbRealData::Strings& __p_analogs, ::RdbRealData::CurvePointDataSeq& __p_dataSeq, const ::Ice::Context& __ctx)
+    {
+        return getCurvePointDataSeq(__p_analogs, __p_dataSeq, &__ctx);
+    }
+#ifdef ICE_CPP11
+    ::Ice::AsyncResultPtr
+    begin_getCurvePointDataSeq(const ::RdbRealData::Strings& __p_analogs, const ::IceInternal::Function<void (bool, const ::RdbRealData::CurvePointDataSeq&)>& __response, const ::IceInternal::Function<void (const ::Ice::Exception&)>& __exception = ::IceInternal::Function<void (const ::Ice::Exception&)>(), const ::IceInternal::Function<void (bool)>& __sent = ::IceInternal::Function<void (bool)>())
+    {
+        return __begin_getCurvePointDataSeq(__p_analogs, 0, __response, __exception, __sent);
+    }
+    ::Ice::AsyncResultPtr
+    begin_getCurvePointDataSeq(const ::RdbRealData::Strings& __p_analogs, const ::IceInternal::Function<void (const ::Ice::AsyncResultPtr&)>& __completed, const ::IceInternal::Function<void (const ::Ice::AsyncResultPtr&)>& __sent = ::IceInternal::Function<void (const ::Ice::AsyncResultPtr&)>())
+    {
+        return begin_getCurvePointDataSeq(__p_analogs, 0, ::Ice::newCallback(__completed, __sent), 0);
+    }
+    ::Ice::AsyncResultPtr
+    begin_getCurvePointDataSeq(const ::RdbRealData::Strings& __p_analogs, const ::Ice::Context& __ctx, const ::IceInternal::Function<void (bool, const ::RdbRealData::CurvePointDataSeq&)>& __response, const ::IceInternal::Function<void (const ::Ice::Exception&)>& __exception = ::IceInternal::Function<void (const ::Ice::Exception&)>(), const ::IceInternal::Function<void (bool)>& __sent = ::IceInternal::Function<void (bool)>())
+    {
+        return __begin_getCurvePointDataSeq(__p_analogs, &__ctx, __response, __exception, __sent);
+    }
+    ::Ice::AsyncResultPtr
+    begin_getCurvePointDataSeq(const ::RdbRealData::Strings& __p_analogs, const ::Ice::Context& __ctx, const ::IceInternal::Function<void (const ::Ice::AsyncResultPtr&)>& __completed, const ::IceInternal::Function<void (const ::Ice::AsyncResultPtr&)>& __sent = ::IceInternal::Function<void (const ::Ice::AsyncResultPtr&)>())
+    {
+        return begin_getCurvePointDataSeq(__p_analogs, &__ctx, ::Ice::newCallback(__completed, __sent));
+    }
+    
+private:
+
+    ::Ice::AsyncResultPtr __begin_getCurvePointDataSeq(const ::RdbRealData::Strings& __p_analogs, const ::Ice::Context* __ctx, const ::IceInternal::Function<void (bool, const ::RdbRealData::CurvePointDataSeq&)>& __response, const ::IceInternal::Function<void (const ::Ice::Exception&)>& __exception, const ::IceInternal::Function<void (bool)>& __sent);
+    
+public:
+#endif
+
+    ::Ice::AsyncResultPtr begin_getCurvePointDataSeq(const ::RdbRealData::Strings& __p_analogs)
+    {
+        return begin_getCurvePointDataSeq(__p_analogs, 0, ::IceInternal::__dummyCallback, 0);
+    }
+
+    ::Ice::AsyncResultPtr begin_getCurvePointDataSeq(const ::RdbRealData::Strings& __p_analogs, const ::Ice::Context& __ctx)
+    {
+        return begin_getCurvePointDataSeq(__p_analogs, &__ctx, ::IceInternal::__dummyCallback, 0);
+    }
+
+    ::Ice::AsyncResultPtr begin_getCurvePointDataSeq(const ::RdbRealData::Strings& __p_analogs, const ::Ice::CallbackPtr& __del, const ::Ice::LocalObjectPtr& __cookie = 0)
+    {
+        return begin_getCurvePointDataSeq(__p_analogs, 0, __del, __cookie);
+    }
+
+    ::Ice::AsyncResultPtr begin_getCurvePointDataSeq(const ::RdbRealData::Strings& __p_analogs, const ::Ice::Context& __ctx, const ::Ice::CallbackPtr& __del, const ::Ice::LocalObjectPtr& __cookie = 0)
+    {
+        return begin_getCurvePointDataSeq(__p_analogs, &__ctx, __del, __cookie);
+    }
+
+    ::Ice::AsyncResultPtr begin_getCurvePointDataSeq(const ::RdbRealData::Strings& __p_analogs, const ::RdbRealData::Callback_RdbDataOpt_getCurvePointDataSeqPtr& __del, const ::Ice::LocalObjectPtr& __cookie = 0)
+    {
+        return begin_getCurvePointDataSeq(__p_analogs, 0, __del, __cookie);
+    }
+
+    ::Ice::AsyncResultPtr begin_getCurvePointDataSeq(const ::RdbRealData::Strings& __p_analogs, const ::Ice::Context& __ctx, const ::RdbRealData::Callback_RdbDataOpt_getCurvePointDataSeqPtr& __del, const ::Ice::LocalObjectPtr& __cookie = 0)
+    {
+        return begin_getCurvePointDataSeq(__p_analogs, &__ctx, __del, __cookie);
+    }
+
+    bool end_getCurvePointDataSeq(::RdbRealData::CurvePointDataSeq& __p_dataSeq, const ::Ice::AsyncResultPtr&);
+    
+private:
+
+    bool getCurvePointDataSeq(const ::RdbRealData::Strings&, ::RdbRealData::CurvePointDataSeq&, const ::Ice::Context*);
+    ::Ice::AsyncResultPtr begin_getCurvePointDataSeq(const ::RdbRealData::Strings&, const ::Ice::Context*, const ::IceInternal::CallbackBasePtr&, const ::Ice::LocalObjectPtr& __cookie = 0);
     
 public:
     
@@ -4492,8 +5166,32 @@ public:
     virtual void UpdateTopoData(const ::Ice::Current& = ::Ice::Current()) = 0;
     ::Ice::DispatchStatus ___UpdateTopoData(::IceInternal::Incoming&, const ::Ice::Current&);
 
-    virtual bool GetSectionData(const ::std::string&, ::Ice::Double&, ::Ice::Int&, const ::Ice::Current& = ::Ice::Current()) = 0;
+    virtual bool GetSectionData(const ::std::string&, ::RdbRealData::DoubleSeq&, ::RdbRealData::IntegerSeq&, const ::Ice::Current& = ::Ice::Current()) = 0;
     ::Ice::DispatchStatus ___GetSectionData(::IceInternal::Incoming&, const ::Ice::Current&);
+
+    virtual bool updateBreaker(const ::std::string&, const ::RdbRealData::FieldMap&, const ::Ice::Current& = ::Ice::Current()) = 0;
+    ::Ice::DispatchStatus ___updateBreaker(::IceInternal::Incoming&, const ::Ice::Current&);
+
+    virtual bool updateDisconnector(const ::std::string&, const ::RdbRealData::FieldMap&, const ::Ice::Current& = ::Ice::Current()) = 0;
+    ::Ice::DispatchStatus ___updateDisconnector(::IceInternal::Incoming&, const ::Ice::Current&);
+
+    virtual bool updatePowerTransformer(const ::std::string&, const ::RdbRealData::FieldMap&, const ::Ice::Current& = ::Ice::Current()) = 0;
+    ::Ice::DispatchStatus ___updatePowerTransformer(::IceInternal::Incoming&, const ::Ice::Current&);
+
+    virtual bool updateAnalog(const ::std::string&, const ::RdbRealData::FieldMap&, const ::Ice::Current& = ::Ice::Current()) = 0;
+    ::Ice::DispatchStatus ___updateAnalog(::IceInternal::Incoming&, const ::Ice::Current&);
+
+    virtual bool updateDiscrete(const ::std::string&, const ::RdbRealData::FieldMap&, const ::Ice::Current& = ::Ice::Current()) = 0;
+    ::Ice::DispatchStatus ___updateDiscrete(::IceInternal::Incoming&, const ::Ice::Current&);
+
+    virtual bool updateAccumulator(const ::std::string&, const ::RdbRealData::FieldMap&, const ::Ice::Current& = ::Ice::Current()) = 0;
+    ::Ice::DispatchStatus ___updateAccumulator(::IceInternal::Incoming&, const ::Ice::Current&);
+
+    virtual bool updateRemoteUnit(const ::std::string&, const ::RdbRealData::FieldMap&, const ::Ice::Current& = ::Ice::Current()) = 0;
+    ::Ice::DispatchStatus ___updateRemoteUnit(::IceInternal::Incoming&, const ::Ice::Current&);
+
+    virtual bool getCurvePointDataSeq(const ::RdbRealData::Strings&, ::RdbRealData::CurvePointDataSeq&, const ::Ice::Current& = ::Ice::Current()) = 0;
+    ::Ice::DispatchStatus ___getCurvePointDataSeq(::IceInternal::Incoming&, const ::Ice::Current&);
 
     virtual ::Ice::DispatchStatus __dispatch(::IceInternal::Incoming&, const ::Ice::Current&);
 
@@ -6887,7 +7585,7 @@ public:
 
     typedef void (T::*Exception)(const ::Ice::Exception&);
     typedef void (T::*Sent)(bool);
-    typedef void (T::*Response)(bool, ::Ice::Double, ::Ice::Int);
+    typedef void (T::*Response)(bool, const ::RdbRealData::DoubleSeq&, const ::RdbRealData::IntegerSeq&);
 
     CallbackNC_RdbDataOpt_GetSectionData(const TPtr& obj, Response cb, Exception excb, Sent sentcb)
         : ::IceInternal::TwowayCallbackNC<T>(obj, cb != 0, excb, sentcb), _response(cb)
@@ -6897,12 +7595,12 @@ public:
     virtual void completed(const ::Ice::AsyncResultPtr& __result) const
     {
         ::RdbRealData::RdbDataOptPrx __proxy = ::RdbRealData::RdbDataOptPrx::uncheckedCast(__result->getProxy());
-        ::Ice::Double analogValue;
-        ::Ice::Int discreteValue;
+        ::RdbRealData::DoubleSeq analogValues;
+        ::RdbRealData::IntegerSeq discreteValues;
         bool __ret;
         try
         {
-            __ret = __proxy->end_GetSectionData(analogValue, discreteValue, __result);
+            __ret = __proxy->end_GetSectionData(analogValues, discreteValues, __result);
         }
         catch(const ::Ice::Exception& ex)
         {
@@ -6911,7 +7609,7 @@ public:
         }
         if(_response)
         {
-            (::IceInternal::CallbackNC<T>::_callback.get()->*_response)(__ret, analogValue, discreteValue);
+            (::IceInternal::CallbackNC<T>::_callback.get()->*_response)(__ret, analogValues, discreteValues);
         }
     }
 
@@ -6921,13 +7619,13 @@ public:
 };
 
 template<class T> Callback_RdbDataOpt_GetSectionDataPtr
-newCallback_RdbDataOpt_GetSectionData(const IceUtil::Handle<T>& instance, void (T::*cb)(bool, ::Ice::Double, ::Ice::Int), void (T::*excb)(const ::Ice::Exception&), void (T::*sentcb)(bool) = 0)
+newCallback_RdbDataOpt_GetSectionData(const IceUtil::Handle<T>& instance, void (T::*cb)(bool, const ::RdbRealData::DoubleSeq&, const ::RdbRealData::IntegerSeq&), void (T::*excb)(const ::Ice::Exception&), void (T::*sentcb)(bool) = 0)
 {
     return new CallbackNC_RdbDataOpt_GetSectionData<T>(instance, cb, excb, sentcb);
 }
 
 template<class T> Callback_RdbDataOpt_GetSectionDataPtr
-newCallback_RdbDataOpt_GetSectionData(T* instance, void (T::*cb)(bool, ::Ice::Double, ::Ice::Int), void (T::*excb)(const ::Ice::Exception&), void (T::*sentcb)(bool) = 0)
+newCallback_RdbDataOpt_GetSectionData(T* instance, void (T::*cb)(bool, const ::RdbRealData::DoubleSeq&, const ::RdbRealData::IntegerSeq&), void (T::*excb)(const ::Ice::Exception&), void (T::*sentcb)(bool) = 0)
 {
     return new CallbackNC_RdbDataOpt_GetSectionData<T>(instance, cb, excb, sentcb);
 }
@@ -6941,7 +7639,7 @@ public:
 
     typedef void (T::*Exception)(const ::Ice::Exception& , const CT&);
     typedef void (T::*Sent)(bool , const CT&);
-    typedef void (T::*Response)(bool, ::Ice::Double, ::Ice::Int, const CT&);
+    typedef void (T::*Response)(bool, const ::RdbRealData::DoubleSeq&, const ::RdbRealData::IntegerSeq&, const CT&);
 
     Callback_RdbDataOpt_GetSectionData(const TPtr& obj, Response cb, Exception excb, Sent sentcb)
         : ::IceInternal::TwowayCallback<T, CT>(obj, cb != 0, excb, sentcb), _response(cb)
@@ -6951,12 +7649,12 @@ public:
     virtual void completed(const ::Ice::AsyncResultPtr& __result) const
     {
         ::RdbRealData::RdbDataOptPrx __proxy = ::RdbRealData::RdbDataOptPrx::uncheckedCast(__result->getProxy());
-        ::Ice::Double analogValue;
-        ::Ice::Int discreteValue;
+        ::RdbRealData::DoubleSeq analogValues;
+        ::RdbRealData::IntegerSeq discreteValues;
         bool __ret;
         try
         {
-            __ret = __proxy->end_GetSectionData(analogValue, discreteValue, __result);
+            __ret = __proxy->end_GetSectionData(analogValues, discreteValues, __result);
         }
         catch(const ::Ice::Exception& ex)
         {
@@ -6965,7 +7663,7 @@ public:
         }
         if(_response)
         {
-            (::IceInternal::Callback<T, CT>::_callback.get()->*_response)(__ret, analogValue, discreteValue, CT::dynamicCast(__result->getCookie()));
+            (::IceInternal::Callback<T, CT>::_callback.get()->*_response)(__ret, analogValues, discreteValues, CT::dynamicCast(__result->getCookie()));
         }
     }
 
@@ -6975,15 +7673,849 @@ public:
 };
 
 template<class T, typename CT> Callback_RdbDataOpt_GetSectionDataPtr
-newCallback_RdbDataOpt_GetSectionData(const IceUtil::Handle<T>& instance, void (T::*cb)(bool, ::Ice::Double, ::Ice::Int, const CT&), void (T::*excb)(const ::Ice::Exception&, const CT&), void (T::*sentcb)(bool, const CT&) = 0)
+newCallback_RdbDataOpt_GetSectionData(const IceUtil::Handle<T>& instance, void (T::*cb)(bool, const ::RdbRealData::DoubleSeq&, const ::RdbRealData::IntegerSeq&, const CT&), void (T::*excb)(const ::Ice::Exception&, const CT&), void (T::*sentcb)(bool, const CT&) = 0)
 {
     return new Callback_RdbDataOpt_GetSectionData<T, CT>(instance, cb, excb, sentcb);
 }
 
 template<class T, typename CT> Callback_RdbDataOpt_GetSectionDataPtr
-newCallback_RdbDataOpt_GetSectionData(T* instance, void (T::*cb)(bool, ::Ice::Double, ::Ice::Int, const CT&), void (T::*excb)(const ::Ice::Exception&, const CT&), void (T::*sentcb)(bool, const CT&) = 0)
+newCallback_RdbDataOpt_GetSectionData(T* instance, void (T::*cb)(bool, const ::RdbRealData::DoubleSeq&, const ::RdbRealData::IntegerSeq&, const CT&), void (T::*excb)(const ::Ice::Exception&, const CT&), void (T::*sentcb)(bool, const CT&) = 0)
 {
     return new Callback_RdbDataOpt_GetSectionData<T, CT>(instance, cb, excb, sentcb);
+}
+
+template<class T>
+class CallbackNC_RdbDataOpt_updateBreaker : public Callback_RdbDataOpt_updateBreaker_Base, public ::IceInternal::TwowayCallbackNC<T>
+{
+public:
+
+    typedef IceUtil::Handle<T> TPtr;
+
+    typedef void (T::*Exception)(const ::Ice::Exception&);
+    typedef void (T::*Sent)(bool);
+    typedef void (T::*Response)(bool);
+
+    CallbackNC_RdbDataOpt_updateBreaker(const TPtr& obj, Response cb, Exception excb, Sent sentcb)
+        : ::IceInternal::TwowayCallbackNC<T>(obj, cb != 0, excb, sentcb), _response(cb)
+    {
+    }
+
+    virtual void completed(const ::Ice::AsyncResultPtr& __result) const
+    {
+        ::RdbRealData::RdbDataOptPrx __proxy = ::RdbRealData::RdbDataOptPrx::uncheckedCast(__result->getProxy());
+        bool __ret;
+        try
+        {
+            __ret = __proxy->end_updateBreaker(__result);
+        }
+        catch(const ::Ice::Exception& ex)
+        {
+            ::IceInternal::CallbackNC<T>::exception(__result, ex);
+            return;
+        }
+        if(_response)
+        {
+            (::IceInternal::CallbackNC<T>::_callback.get()->*_response)(__ret);
+        }
+    }
+
+    private:
+
+    Response _response;
+};
+
+template<class T> Callback_RdbDataOpt_updateBreakerPtr
+newCallback_RdbDataOpt_updateBreaker(const IceUtil::Handle<T>& instance, void (T::*cb)(bool), void (T::*excb)(const ::Ice::Exception&), void (T::*sentcb)(bool) = 0)
+{
+    return new CallbackNC_RdbDataOpt_updateBreaker<T>(instance, cb, excb, sentcb);
+}
+
+template<class T> Callback_RdbDataOpt_updateBreakerPtr
+newCallback_RdbDataOpt_updateBreaker(T* instance, void (T::*cb)(bool), void (T::*excb)(const ::Ice::Exception&), void (T::*sentcb)(bool) = 0)
+{
+    return new CallbackNC_RdbDataOpt_updateBreaker<T>(instance, cb, excb, sentcb);
+}
+
+template<class T, typename CT>
+class Callback_RdbDataOpt_updateBreaker : public Callback_RdbDataOpt_updateBreaker_Base, public ::IceInternal::TwowayCallback<T, CT>
+{
+public:
+
+    typedef IceUtil::Handle<T> TPtr;
+
+    typedef void (T::*Exception)(const ::Ice::Exception& , const CT&);
+    typedef void (T::*Sent)(bool , const CT&);
+    typedef void (T::*Response)(bool, const CT&);
+
+    Callback_RdbDataOpt_updateBreaker(const TPtr& obj, Response cb, Exception excb, Sent sentcb)
+        : ::IceInternal::TwowayCallback<T, CT>(obj, cb != 0, excb, sentcb), _response(cb)
+    {
+    }
+
+    virtual void completed(const ::Ice::AsyncResultPtr& __result) const
+    {
+        ::RdbRealData::RdbDataOptPrx __proxy = ::RdbRealData::RdbDataOptPrx::uncheckedCast(__result->getProxy());
+        bool __ret;
+        try
+        {
+            __ret = __proxy->end_updateBreaker(__result);
+        }
+        catch(const ::Ice::Exception& ex)
+        {
+            ::IceInternal::Callback<T, CT>::exception(__result, ex);
+            return;
+        }
+        if(_response)
+        {
+            (::IceInternal::Callback<T, CT>::_callback.get()->*_response)(__ret, CT::dynamicCast(__result->getCookie()));
+        }
+    }
+
+    private:
+
+    Response _response;
+};
+
+template<class T, typename CT> Callback_RdbDataOpt_updateBreakerPtr
+newCallback_RdbDataOpt_updateBreaker(const IceUtil::Handle<T>& instance, void (T::*cb)(bool, const CT&), void (T::*excb)(const ::Ice::Exception&, const CT&), void (T::*sentcb)(bool, const CT&) = 0)
+{
+    return new Callback_RdbDataOpt_updateBreaker<T, CT>(instance, cb, excb, sentcb);
+}
+
+template<class T, typename CT> Callback_RdbDataOpt_updateBreakerPtr
+newCallback_RdbDataOpt_updateBreaker(T* instance, void (T::*cb)(bool, const CT&), void (T::*excb)(const ::Ice::Exception&, const CT&), void (T::*sentcb)(bool, const CT&) = 0)
+{
+    return new Callback_RdbDataOpt_updateBreaker<T, CT>(instance, cb, excb, sentcb);
+}
+
+template<class T>
+class CallbackNC_RdbDataOpt_updateDisconnector : public Callback_RdbDataOpt_updateDisconnector_Base, public ::IceInternal::TwowayCallbackNC<T>
+{
+public:
+
+    typedef IceUtil::Handle<T> TPtr;
+
+    typedef void (T::*Exception)(const ::Ice::Exception&);
+    typedef void (T::*Sent)(bool);
+    typedef void (T::*Response)(bool);
+
+    CallbackNC_RdbDataOpt_updateDisconnector(const TPtr& obj, Response cb, Exception excb, Sent sentcb)
+        : ::IceInternal::TwowayCallbackNC<T>(obj, cb != 0, excb, sentcb), _response(cb)
+    {
+    }
+
+    virtual void completed(const ::Ice::AsyncResultPtr& __result) const
+    {
+        ::RdbRealData::RdbDataOptPrx __proxy = ::RdbRealData::RdbDataOptPrx::uncheckedCast(__result->getProxy());
+        bool __ret;
+        try
+        {
+            __ret = __proxy->end_updateDisconnector(__result);
+        }
+        catch(const ::Ice::Exception& ex)
+        {
+            ::IceInternal::CallbackNC<T>::exception(__result, ex);
+            return;
+        }
+        if(_response)
+        {
+            (::IceInternal::CallbackNC<T>::_callback.get()->*_response)(__ret);
+        }
+    }
+
+    private:
+
+    Response _response;
+};
+
+template<class T> Callback_RdbDataOpt_updateDisconnectorPtr
+newCallback_RdbDataOpt_updateDisconnector(const IceUtil::Handle<T>& instance, void (T::*cb)(bool), void (T::*excb)(const ::Ice::Exception&), void (T::*sentcb)(bool) = 0)
+{
+    return new CallbackNC_RdbDataOpt_updateDisconnector<T>(instance, cb, excb, sentcb);
+}
+
+template<class T> Callback_RdbDataOpt_updateDisconnectorPtr
+newCallback_RdbDataOpt_updateDisconnector(T* instance, void (T::*cb)(bool), void (T::*excb)(const ::Ice::Exception&), void (T::*sentcb)(bool) = 0)
+{
+    return new CallbackNC_RdbDataOpt_updateDisconnector<T>(instance, cb, excb, sentcb);
+}
+
+template<class T, typename CT>
+class Callback_RdbDataOpt_updateDisconnector : public Callback_RdbDataOpt_updateDisconnector_Base, public ::IceInternal::TwowayCallback<T, CT>
+{
+public:
+
+    typedef IceUtil::Handle<T> TPtr;
+
+    typedef void (T::*Exception)(const ::Ice::Exception& , const CT&);
+    typedef void (T::*Sent)(bool , const CT&);
+    typedef void (T::*Response)(bool, const CT&);
+
+    Callback_RdbDataOpt_updateDisconnector(const TPtr& obj, Response cb, Exception excb, Sent sentcb)
+        : ::IceInternal::TwowayCallback<T, CT>(obj, cb != 0, excb, sentcb), _response(cb)
+    {
+    }
+
+    virtual void completed(const ::Ice::AsyncResultPtr& __result) const
+    {
+        ::RdbRealData::RdbDataOptPrx __proxy = ::RdbRealData::RdbDataOptPrx::uncheckedCast(__result->getProxy());
+        bool __ret;
+        try
+        {
+            __ret = __proxy->end_updateDisconnector(__result);
+        }
+        catch(const ::Ice::Exception& ex)
+        {
+            ::IceInternal::Callback<T, CT>::exception(__result, ex);
+            return;
+        }
+        if(_response)
+        {
+            (::IceInternal::Callback<T, CT>::_callback.get()->*_response)(__ret, CT::dynamicCast(__result->getCookie()));
+        }
+    }
+
+    private:
+
+    Response _response;
+};
+
+template<class T, typename CT> Callback_RdbDataOpt_updateDisconnectorPtr
+newCallback_RdbDataOpt_updateDisconnector(const IceUtil::Handle<T>& instance, void (T::*cb)(bool, const CT&), void (T::*excb)(const ::Ice::Exception&, const CT&), void (T::*sentcb)(bool, const CT&) = 0)
+{
+    return new Callback_RdbDataOpt_updateDisconnector<T, CT>(instance, cb, excb, sentcb);
+}
+
+template<class T, typename CT> Callback_RdbDataOpt_updateDisconnectorPtr
+newCallback_RdbDataOpt_updateDisconnector(T* instance, void (T::*cb)(bool, const CT&), void (T::*excb)(const ::Ice::Exception&, const CT&), void (T::*sentcb)(bool, const CT&) = 0)
+{
+    return new Callback_RdbDataOpt_updateDisconnector<T, CT>(instance, cb, excb, sentcb);
+}
+
+template<class T>
+class CallbackNC_RdbDataOpt_updatePowerTransformer : public Callback_RdbDataOpt_updatePowerTransformer_Base, public ::IceInternal::TwowayCallbackNC<T>
+{
+public:
+
+    typedef IceUtil::Handle<T> TPtr;
+
+    typedef void (T::*Exception)(const ::Ice::Exception&);
+    typedef void (T::*Sent)(bool);
+    typedef void (T::*Response)(bool);
+
+    CallbackNC_RdbDataOpt_updatePowerTransformer(const TPtr& obj, Response cb, Exception excb, Sent sentcb)
+        : ::IceInternal::TwowayCallbackNC<T>(obj, cb != 0, excb, sentcb), _response(cb)
+    {
+    }
+
+    virtual void completed(const ::Ice::AsyncResultPtr& __result) const
+    {
+        ::RdbRealData::RdbDataOptPrx __proxy = ::RdbRealData::RdbDataOptPrx::uncheckedCast(__result->getProxy());
+        bool __ret;
+        try
+        {
+            __ret = __proxy->end_updatePowerTransformer(__result);
+        }
+        catch(const ::Ice::Exception& ex)
+        {
+            ::IceInternal::CallbackNC<T>::exception(__result, ex);
+            return;
+        }
+        if(_response)
+        {
+            (::IceInternal::CallbackNC<T>::_callback.get()->*_response)(__ret);
+        }
+    }
+
+    private:
+
+    Response _response;
+};
+
+template<class T> Callback_RdbDataOpt_updatePowerTransformerPtr
+newCallback_RdbDataOpt_updatePowerTransformer(const IceUtil::Handle<T>& instance, void (T::*cb)(bool), void (T::*excb)(const ::Ice::Exception&), void (T::*sentcb)(bool) = 0)
+{
+    return new CallbackNC_RdbDataOpt_updatePowerTransformer<T>(instance, cb, excb, sentcb);
+}
+
+template<class T> Callback_RdbDataOpt_updatePowerTransformerPtr
+newCallback_RdbDataOpt_updatePowerTransformer(T* instance, void (T::*cb)(bool), void (T::*excb)(const ::Ice::Exception&), void (T::*sentcb)(bool) = 0)
+{
+    return new CallbackNC_RdbDataOpt_updatePowerTransformer<T>(instance, cb, excb, sentcb);
+}
+
+template<class T, typename CT>
+class Callback_RdbDataOpt_updatePowerTransformer : public Callback_RdbDataOpt_updatePowerTransformer_Base, public ::IceInternal::TwowayCallback<T, CT>
+{
+public:
+
+    typedef IceUtil::Handle<T> TPtr;
+
+    typedef void (T::*Exception)(const ::Ice::Exception& , const CT&);
+    typedef void (T::*Sent)(bool , const CT&);
+    typedef void (T::*Response)(bool, const CT&);
+
+    Callback_RdbDataOpt_updatePowerTransformer(const TPtr& obj, Response cb, Exception excb, Sent sentcb)
+        : ::IceInternal::TwowayCallback<T, CT>(obj, cb != 0, excb, sentcb), _response(cb)
+    {
+    }
+
+    virtual void completed(const ::Ice::AsyncResultPtr& __result) const
+    {
+        ::RdbRealData::RdbDataOptPrx __proxy = ::RdbRealData::RdbDataOptPrx::uncheckedCast(__result->getProxy());
+        bool __ret;
+        try
+        {
+            __ret = __proxy->end_updatePowerTransformer(__result);
+        }
+        catch(const ::Ice::Exception& ex)
+        {
+            ::IceInternal::Callback<T, CT>::exception(__result, ex);
+            return;
+        }
+        if(_response)
+        {
+            (::IceInternal::Callback<T, CT>::_callback.get()->*_response)(__ret, CT::dynamicCast(__result->getCookie()));
+        }
+    }
+
+    private:
+
+    Response _response;
+};
+
+template<class T, typename CT> Callback_RdbDataOpt_updatePowerTransformerPtr
+newCallback_RdbDataOpt_updatePowerTransformer(const IceUtil::Handle<T>& instance, void (T::*cb)(bool, const CT&), void (T::*excb)(const ::Ice::Exception&, const CT&), void (T::*sentcb)(bool, const CT&) = 0)
+{
+    return new Callback_RdbDataOpt_updatePowerTransformer<T, CT>(instance, cb, excb, sentcb);
+}
+
+template<class T, typename CT> Callback_RdbDataOpt_updatePowerTransformerPtr
+newCallback_RdbDataOpt_updatePowerTransformer(T* instance, void (T::*cb)(bool, const CT&), void (T::*excb)(const ::Ice::Exception&, const CT&), void (T::*sentcb)(bool, const CT&) = 0)
+{
+    return new Callback_RdbDataOpt_updatePowerTransformer<T, CT>(instance, cb, excb, sentcb);
+}
+
+template<class T>
+class CallbackNC_RdbDataOpt_updateAnalog : public Callback_RdbDataOpt_updateAnalog_Base, public ::IceInternal::TwowayCallbackNC<T>
+{
+public:
+
+    typedef IceUtil::Handle<T> TPtr;
+
+    typedef void (T::*Exception)(const ::Ice::Exception&);
+    typedef void (T::*Sent)(bool);
+    typedef void (T::*Response)(bool);
+
+    CallbackNC_RdbDataOpt_updateAnalog(const TPtr& obj, Response cb, Exception excb, Sent sentcb)
+        : ::IceInternal::TwowayCallbackNC<T>(obj, cb != 0, excb, sentcb), _response(cb)
+    {
+    }
+
+    virtual void completed(const ::Ice::AsyncResultPtr& __result) const
+    {
+        ::RdbRealData::RdbDataOptPrx __proxy = ::RdbRealData::RdbDataOptPrx::uncheckedCast(__result->getProxy());
+        bool __ret;
+        try
+        {
+            __ret = __proxy->end_updateAnalog(__result);
+        }
+        catch(const ::Ice::Exception& ex)
+        {
+            ::IceInternal::CallbackNC<T>::exception(__result, ex);
+            return;
+        }
+        if(_response)
+        {
+            (::IceInternal::CallbackNC<T>::_callback.get()->*_response)(__ret);
+        }
+    }
+
+    private:
+
+    Response _response;
+};
+
+template<class T> Callback_RdbDataOpt_updateAnalogPtr
+newCallback_RdbDataOpt_updateAnalog(const IceUtil::Handle<T>& instance, void (T::*cb)(bool), void (T::*excb)(const ::Ice::Exception&), void (T::*sentcb)(bool) = 0)
+{
+    return new CallbackNC_RdbDataOpt_updateAnalog<T>(instance, cb, excb, sentcb);
+}
+
+template<class T> Callback_RdbDataOpt_updateAnalogPtr
+newCallback_RdbDataOpt_updateAnalog(T* instance, void (T::*cb)(bool), void (T::*excb)(const ::Ice::Exception&), void (T::*sentcb)(bool) = 0)
+{
+    return new CallbackNC_RdbDataOpt_updateAnalog<T>(instance, cb, excb, sentcb);
+}
+
+template<class T, typename CT>
+class Callback_RdbDataOpt_updateAnalog : public Callback_RdbDataOpt_updateAnalog_Base, public ::IceInternal::TwowayCallback<T, CT>
+{
+public:
+
+    typedef IceUtil::Handle<T> TPtr;
+
+    typedef void (T::*Exception)(const ::Ice::Exception& , const CT&);
+    typedef void (T::*Sent)(bool , const CT&);
+    typedef void (T::*Response)(bool, const CT&);
+
+    Callback_RdbDataOpt_updateAnalog(const TPtr& obj, Response cb, Exception excb, Sent sentcb)
+        : ::IceInternal::TwowayCallback<T, CT>(obj, cb != 0, excb, sentcb), _response(cb)
+    {
+    }
+
+    virtual void completed(const ::Ice::AsyncResultPtr& __result) const
+    {
+        ::RdbRealData::RdbDataOptPrx __proxy = ::RdbRealData::RdbDataOptPrx::uncheckedCast(__result->getProxy());
+        bool __ret;
+        try
+        {
+            __ret = __proxy->end_updateAnalog(__result);
+        }
+        catch(const ::Ice::Exception& ex)
+        {
+            ::IceInternal::Callback<T, CT>::exception(__result, ex);
+            return;
+        }
+        if(_response)
+        {
+            (::IceInternal::Callback<T, CT>::_callback.get()->*_response)(__ret, CT::dynamicCast(__result->getCookie()));
+        }
+    }
+
+    private:
+
+    Response _response;
+};
+
+template<class T, typename CT> Callback_RdbDataOpt_updateAnalogPtr
+newCallback_RdbDataOpt_updateAnalog(const IceUtil::Handle<T>& instance, void (T::*cb)(bool, const CT&), void (T::*excb)(const ::Ice::Exception&, const CT&), void (T::*sentcb)(bool, const CT&) = 0)
+{
+    return new Callback_RdbDataOpt_updateAnalog<T, CT>(instance, cb, excb, sentcb);
+}
+
+template<class T, typename CT> Callback_RdbDataOpt_updateAnalogPtr
+newCallback_RdbDataOpt_updateAnalog(T* instance, void (T::*cb)(bool, const CT&), void (T::*excb)(const ::Ice::Exception&, const CT&), void (T::*sentcb)(bool, const CT&) = 0)
+{
+    return new Callback_RdbDataOpt_updateAnalog<T, CT>(instance, cb, excb, sentcb);
+}
+
+template<class T>
+class CallbackNC_RdbDataOpt_updateDiscrete : public Callback_RdbDataOpt_updateDiscrete_Base, public ::IceInternal::TwowayCallbackNC<T>
+{
+public:
+
+    typedef IceUtil::Handle<T> TPtr;
+
+    typedef void (T::*Exception)(const ::Ice::Exception&);
+    typedef void (T::*Sent)(bool);
+    typedef void (T::*Response)(bool);
+
+    CallbackNC_RdbDataOpt_updateDiscrete(const TPtr& obj, Response cb, Exception excb, Sent sentcb)
+        : ::IceInternal::TwowayCallbackNC<T>(obj, cb != 0, excb, sentcb), _response(cb)
+    {
+    }
+
+    virtual void completed(const ::Ice::AsyncResultPtr& __result) const
+    {
+        ::RdbRealData::RdbDataOptPrx __proxy = ::RdbRealData::RdbDataOptPrx::uncheckedCast(__result->getProxy());
+        bool __ret;
+        try
+        {
+            __ret = __proxy->end_updateDiscrete(__result);
+        }
+        catch(const ::Ice::Exception& ex)
+        {
+            ::IceInternal::CallbackNC<T>::exception(__result, ex);
+            return;
+        }
+        if(_response)
+        {
+            (::IceInternal::CallbackNC<T>::_callback.get()->*_response)(__ret);
+        }
+    }
+
+    private:
+
+    Response _response;
+};
+
+template<class T> Callback_RdbDataOpt_updateDiscretePtr
+newCallback_RdbDataOpt_updateDiscrete(const IceUtil::Handle<T>& instance, void (T::*cb)(bool), void (T::*excb)(const ::Ice::Exception&), void (T::*sentcb)(bool) = 0)
+{
+    return new CallbackNC_RdbDataOpt_updateDiscrete<T>(instance, cb, excb, sentcb);
+}
+
+template<class T> Callback_RdbDataOpt_updateDiscretePtr
+newCallback_RdbDataOpt_updateDiscrete(T* instance, void (T::*cb)(bool), void (T::*excb)(const ::Ice::Exception&), void (T::*sentcb)(bool) = 0)
+{
+    return new CallbackNC_RdbDataOpt_updateDiscrete<T>(instance, cb, excb, sentcb);
+}
+
+template<class T, typename CT>
+class Callback_RdbDataOpt_updateDiscrete : public Callback_RdbDataOpt_updateDiscrete_Base, public ::IceInternal::TwowayCallback<T, CT>
+{
+public:
+
+    typedef IceUtil::Handle<T> TPtr;
+
+    typedef void (T::*Exception)(const ::Ice::Exception& , const CT&);
+    typedef void (T::*Sent)(bool , const CT&);
+    typedef void (T::*Response)(bool, const CT&);
+
+    Callback_RdbDataOpt_updateDiscrete(const TPtr& obj, Response cb, Exception excb, Sent sentcb)
+        : ::IceInternal::TwowayCallback<T, CT>(obj, cb != 0, excb, sentcb), _response(cb)
+    {
+    }
+
+    virtual void completed(const ::Ice::AsyncResultPtr& __result) const
+    {
+        ::RdbRealData::RdbDataOptPrx __proxy = ::RdbRealData::RdbDataOptPrx::uncheckedCast(__result->getProxy());
+        bool __ret;
+        try
+        {
+            __ret = __proxy->end_updateDiscrete(__result);
+        }
+        catch(const ::Ice::Exception& ex)
+        {
+            ::IceInternal::Callback<T, CT>::exception(__result, ex);
+            return;
+        }
+        if(_response)
+        {
+            (::IceInternal::Callback<T, CT>::_callback.get()->*_response)(__ret, CT::dynamicCast(__result->getCookie()));
+        }
+    }
+
+    private:
+
+    Response _response;
+};
+
+template<class T, typename CT> Callback_RdbDataOpt_updateDiscretePtr
+newCallback_RdbDataOpt_updateDiscrete(const IceUtil::Handle<T>& instance, void (T::*cb)(bool, const CT&), void (T::*excb)(const ::Ice::Exception&, const CT&), void (T::*sentcb)(bool, const CT&) = 0)
+{
+    return new Callback_RdbDataOpt_updateDiscrete<T, CT>(instance, cb, excb, sentcb);
+}
+
+template<class T, typename CT> Callback_RdbDataOpt_updateDiscretePtr
+newCallback_RdbDataOpt_updateDiscrete(T* instance, void (T::*cb)(bool, const CT&), void (T::*excb)(const ::Ice::Exception&, const CT&), void (T::*sentcb)(bool, const CT&) = 0)
+{
+    return new Callback_RdbDataOpt_updateDiscrete<T, CT>(instance, cb, excb, sentcb);
+}
+
+template<class T>
+class CallbackNC_RdbDataOpt_updateAccumulator : public Callback_RdbDataOpt_updateAccumulator_Base, public ::IceInternal::TwowayCallbackNC<T>
+{
+public:
+
+    typedef IceUtil::Handle<T> TPtr;
+
+    typedef void (T::*Exception)(const ::Ice::Exception&);
+    typedef void (T::*Sent)(bool);
+    typedef void (T::*Response)(bool);
+
+    CallbackNC_RdbDataOpt_updateAccumulator(const TPtr& obj, Response cb, Exception excb, Sent sentcb)
+        : ::IceInternal::TwowayCallbackNC<T>(obj, cb != 0, excb, sentcb), _response(cb)
+    {
+    }
+
+    virtual void completed(const ::Ice::AsyncResultPtr& __result) const
+    {
+        ::RdbRealData::RdbDataOptPrx __proxy = ::RdbRealData::RdbDataOptPrx::uncheckedCast(__result->getProxy());
+        bool __ret;
+        try
+        {
+            __ret = __proxy->end_updateAccumulator(__result);
+        }
+        catch(const ::Ice::Exception& ex)
+        {
+            ::IceInternal::CallbackNC<T>::exception(__result, ex);
+            return;
+        }
+        if(_response)
+        {
+            (::IceInternal::CallbackNC<T>::_callback.get()->*_response)(__ret);
+        }
+    }
+
+    private:
+
+    Response _response;
+};
+
+template<class T> Callback_RdbDataOpt_updateAccumulatorPtr
+newCallback_RdbDataOpt_updateAccumulator(const IceUtil::Handle<T>& instance, void (T::*cb)(bool), void (T::*excb)(const ::Ice::Exception&), void (T::*sentcb)(bool) = 0)
+{
+    return new CallbackNC_RdbDataOpt_updateAccumulator<T>(instance, cb, excb, sentcb);
+}
+
+template<class T> Callback_RdbDataOpt_updateAccumulatorPtr
+newCallback_RdbDataOpt_updateAccumulator(T* instance, void (T::*cb)(bool), void (T::*excb)(const ::Ice::Exception&), void (T::*sentcb)(bool) = 0)
+{
+    return new CallbackNC_RdbDataOpt_updateAccumulator<T>(instance, cb, excb, sentcb);
+}
+
+template<class T, typename CT>
+class Callback_RdbDataOpt_updateAccumulator : public Callback_RdbDataOpt_updateAccumulator_Base, public ::IceInternal::TwowayCallback<T, CT>
+{
+public:
+
+    typedef IceUtil::Handle<T> TPtr;
+
+    typedef void (T::*Exception)(const ::Ice::Exception& , const CT&);
+    typedef void (T::*Sent)(bool , const CT&);
+    typedef void (T::*Response)(bool, const CT&);
+
+    Callback_RdbDataOpt_updateAccumulator(const TPtr& obj, Response cb, Exception excb, Sent sentcb)
+        : ::IceInternal::TwowayCallback<T, CT>(obj, cb != 0, excb, sentcb), _response(cb)
+    {
+    }
+
+    virtual void completed(const ::Ice::AsyncResultPtr& __result) const
+    {
+        ::RdbRealData::RdbDataOptPrx __proxy = ::RdbRealData::RdbDataOptPrx::uncheckedCast(__result->getProxy());
+        bool __ret;
+        try
+        {
+            __ret = __proxy->end_updateAccumulator(__result);
+        }
+        catch(const ::Ice::Exception& ex)
+        {
+            ::IceInternal::Callback<T, CT>::exception(__result, ex);
+            return;
+        }
+        if(_response)
+        {
+            (::IceInternal::Callback<T, CT>::_callback.get()->*_response)(__ret, CT::dynamicCast(__result->getCookie()));
+        }
+    }
+
+    private:
+
+    Response _response;
+};
+
+template<class T, typename CT> Callback_RdbDataOpt_updateAccumulatorPtr
+newCallback_RdbDataOpt_updateAccumulator(const IceUtil::Handle<T>& instance, void (T::*cb)(bool, const CT&), void (T::*excb)(const ::Ice::Exception&, const CT&), void (T::*sentcb)(bool, const CT&) = 0)
+{
+    return new Callback_RdbDataOpt_updateAccumulator<T, CT>(instance, cb, excb, sentcb);
+}
+
+template<class T, typename CT> Callback_RdbDataOpt_updateAccumulatorPtr
+newCallback_RdbDataOpt_updateAccumulator(T* instance, void (T::*cb)(bool, const CT&), void (T::*excb)(const ::Ice::Exception&, const CT&), void (T::*sentcb)(bool, const CT&) = 0)
+{
+    return new Callback_RdbDataOpt_updateAccumulator<T, CT>(instance, cb, excb, sentcb);
+}
+
+template<class T>
+class CallbackNC_RdbDataOpt_updateRemoteUnit : public Callback_RdbDataOpt_updateRemoteUnit_Base, public ::IceInternal::TwowayCallbackNC<T>
+{
+public:
+
+    typedef IceUtil::Handle<T> TPtr;
+
+    typedef void (T::*Exception)(const ::Ice::Exception&);
+    typedef void (T::*Sent)(bool);
+    typedef void (T::*Response)(bool);
+
+    CallbackNC_RdbDataOpt_updateRemoteUnit(const TPtr& obj, Response cb, Exception excb, Sent sentcb)
+        : ::IceInternal::TwowayCallbackNC<T>(obj, cb != 0, excb, sentcb), _response(cb)
+    {
+    }
+
+    virtual void completed(const ::Ice::AsyncResultPtr& __result) const
+    {
+        ::RdbRealData::RdbDataOptPrx __proxy = ::RdbRealData::RdbDataOptPrx::uncheckedCast(__result->getProxy());
+        bool __ret;
+        try
+        {
+            __ret = __proxy->end_updateRemoteUnit(__result);
+        }
+        catch(const ::Ice::Exception& ex)
+        {
+            ::IceInternal::CallbackNC<T>::exception(__result, ex);
+            return;
+        }
+        if(_response)
+        {
+            (::IceInternal::CallbackNC<T>::_callback.get()->*_response)(__ret);
+        }
+    }
+
+    private:
+
+    Response _response;
+};
+
+template<class T> Callback_RdbDataOpt_updateRemoteUnitPtr
+newCallback_RdbDataOpt_updateRemoteUnit(const IceUtil::Handle<T>& instance, void (T::*cb)(bool), void (T::*excb)(const ::Ice::Exception&), void (T::*sentcb)(bool) = 0)
+{
+    return new CallbackNC_RdbDataOpt_updateRemoteUnit<T>(instance, cb, excb, sentcb);
+}
+
+template<class T> Callback_RdbDataOpt_updateRemoteUnitPtr
+newCallback_RdbDataOpt_updateRemoteUnit(T* instance, void (T::*cb)(bool), void (T::*excb)(const ::Ice::Exception&), void (T::*sentcb)(bool) = 0)
+{
+    return new CallbackNC_RdbDataOpt_updateRemoteUnit<T>(instance, cb, excb, sentcb);
+}
+
+template<class T, typename CT>
+class Callback_RdbDataOpt_updateRemoteUnit : public Callback_RdbDataOpt_updateRemoteUnit_Base, public ::IceInternal::TwowayCallback<T, CT>
+{
+public:
+
+    typedef IceUtil::Handle<T> TPtr;
+
+    typedef void (T::*Exception)(const ::Ice::Exception& , const CT&);
+    typedef void (T::*Sent)(bool , const CT&);
+    typedef void (T::*Response)(bool, const CT&);
+
+    Callback_RdbDataOpt_updateRemoteUnit(const TPtr& obj, Response cb, Exception excb, Sent sentcb)
+        : ::IceInternal::TwowayCallback<T, CT>(obj, cb != 0, excb, sentcb), _response(cb)
+    {
+    }
+
+    virtual void completed(const ::Ice::AsyncResultPtr& __result) const
+    {
+        ::RdbRealData::RdbDataOptPrx __proxy = ::RdbRealData::RdbDataOptPrx::uncheckedCast(__result->getProxy());
+        bool __ret;
+        try
+        {
+            __ret = __proxy->end_updateRemoteUnit(__result);
+        }
+        catch(const ::Ice::Exception& ex)
+        {
+            ::IceInternal::Callback<T, CT>::exception(__result, ex);
+            return;
+        }
+        if(_response)
+        {
+            (::IceInternal::Callback<T, CT>::_callback.get()->*_response)(__ret, CT::dynamicCast(__result->getCookie()));
+        }
+    }
+
+    private:
+
+    Response _response;
+};
+
+template<class T, typename CT> Callback_RdbDataOpt_updateRemoteUnitPtr
+newCallback_RdbDataOpt_updateRemoteUnit(const IceUtil::Handle<T>& instance, void (T::*cb)(bool, const CT&), void (T::*excb)(const ::Ice::Exception&, const CT&), void (T::*sentcb)(bool, const CT&) = 0)
+{
+    return new Callback_RdbDataOpt_updateRemoteUnit<T, CT>(instance, cb, excb, sentcb);
+}
+
+template<class T, typename CT> Callback_RdbDataOpt_updateRemoteUnitPtr
+newCallback_RdbDataOpt_updateRemoteUnit(T* instance, void (T::*cb)(bool, const CT&), void (T::*excb)(const ::Ice::Exception&, const CT&), void (T::*sentcb)(bool, const CT&) = 0)
+{
+    return new Callback_RdbDataOpt_updateRemoteUnit<T, CT>(instance, cb, excb, sentcb);
+}
+
+template<class T>
+class CallbackNC_RdbDataOpt_getCurvePointDataSeq : public Callback_RdbDataOpt_getCurvePointDataSeq_Base, public ::IceInternal::TwowayCallbackNC<T>
+{
+public:
+
+    typedef IceUtil::Handle<T> TPtr;
+
+    typedef void (T::*Exception)(const ::Ice::Exception&);
+    typedef void (T::*Sent)(bool);
+    typedef void (T::*Response)(bool, const ::RdbRealData::CurvePointDataSeq&);
+
+    CallbackNC_RdbDataOpt_getCurvePointDataSeq(const TPtr& obj, Response cb, Exception excb, Sent sentcb)
+        : ::IceInternal::TwowayCallbackNC<T>(obj, cb != 0, excb, sentcb), _response(cb)
+    {
+    }
+
+    virtual void completed(const ::Ice::AsyncResultPtr& __result) const
+    {
+        ::RdbRealData::RdbDataOptPrx __proxy = ::RdbRealData::RdbDataOptPrx::uncheckedCast(__result->getProxy());
+        ::RdbRealData::CurvePointDataSeq dataSeq;
+        bool __ret;
+        try
+        {
+            __ret = __proxy->end_getCurvePointDataSeq(dataSeq, __result);
+        }
+        catch(const ::Ice::Exception& ex)
+        {
+            ::IceInternal::CallbackNC<T>::exception(__result, ex);
+            return;
+        }
+        if(_response)
+        {
+            (::IceInternal::CallbackNC<T>::_callback.get()->*_response)(__ret, dataSeq);
+        }
+    }
+
+    private:
+
+    Response _response;
+};
+
+template<class T> Callback_RdbDataOpt_getCurvePointDataSeqPtr
+newCallback_RdbDataOpt_getCurvePointDataSeq(const IceUtil::Handle<T>& instance, void (T::*cb)(bool, const ::RdbRealData::CurvePointDataSeq&), void (T::*excb)(const ::Ice::Exception&), void (T::*sentcb)(bool) = 0)
+{
+    return new CallbackNC_RdbDataOpt_getCurvePointDataSeq<T>(instance, cb, excb, sentcb);
+}
+
+template<class T> Callback_RdbDataOpt_getCurvePointDataSeqPtr
+newCallback_RdbDataOpt_getCurvePointDataSeq(T* instance, void (T::*cb)(bool, const ::RdbRealData::CurvePointDataSeq&), void (T::*excb)(const ::Ice::Exception&), void (T::*sentcb)(bool) = 0)
+{
+    return new CallbackNC_RdbDataOpt_getCurvePointDataSeq<T>(instance, cb, excb, sentcb);
+}
+
+template<class T, typename CT>
+class Callback_RdbDataOpt_getCurvePointDataSeq : public Callback_RdbDataOpt_getCurvePointDataSeq_Base, public ::IceInternal::TwowayCallback<T, CT>
+{
+public:
+
+    typedef IceUtil::Handle<T> TPtr;
+
+    typedef void (T::*Exception)(const ::Ice::Exception& , const CT&);
+    typedef void (T::*Sent)(bool , const CT&);
+    typedef void (T::*Response)(bool, const ::RdbRealData::CurvePointDataSeq&, const CT&);
+
+    Callback_RdbDataOpt_getCurvePointDataSeq(const TPtr& obj, Response cb, Exception excb, Sent sentcb)
+        : ::IceInternal::TwowayCallback<T, CT>(obj, cb != 0, excb, sentcb), _response(cb)
+    {
+    }
+
+    virtual void completed(const ::Ice::AsyncResultPtr& __result) const
+    {
+        ::RdbRealData::RdbDataOptPrx __proxy = ::RdbRealData::RdbDataOptPrx::uncheckedCast(__result->getProxy());
+        ::RdbRealData::CurvePointDataSeq dataSeq;
+        bool __ret;
+        try
+        {
+            __ret = __proxy->end_getCurvePointDataSeq(dataSeq, __result);
+        }
+        catch(const ::Ice::Exception& ex)
+        {
+            ::IceInternal::Callback<T, CT>::exception(__result, ex);
+            return;
+        }
+        if(_response)
+        {
+            (::IceInternal::Callback<T, CT>::_callback.get()->*_response)(__ret, dataSeq, CT::dynamicCast(__result->getCookie()));
+        }
+    }
+
+    private:
+
+    Response _response;
+};
+
+template<class T, typename CT> Callback_RdbDataOpt_getCurvePointDataSeqPtr
+newCallback_RdbDataOpt_getCurvePointDataSeq(const IceUtil::Handle<T>& instance, void (T::*cb)(bool, const ::RdbRealData::CurvePointDataSeq&, const CT&), void (T::*excb)(const ::Ice::Exception&, const CT&), void (T::*sentcb)(bool, const CT&) = 0)
+{
+    return new Callback_RdbDataOpt_getCurvePointDataSeq<T, CT>(instance, cb, excb, sentcb);
+}
+
+template<class T, typename CT> Callback_RdbDataOpt_getCurvePointDataSeqPtr
+newCallback_RdbDataOpt_getCurvePointDataSeq(T* instance, void (T::*cb)(bool, const ::RdbRealData::CurvePointDataSeq&, const CT&), void (T::*excb)(const ::Ice::Exception&, const CT&), void (T::*sentcb)(bool, const CT&) = 0)
+{
+    return new Callback_RdbDataOpt_getCurvePointDataSeq<T, CT>(instance, cb, excb, sentcb);
 }
 
 }

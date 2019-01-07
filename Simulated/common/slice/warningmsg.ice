@@ -67,6 +67,15 @@ module WarningMsg
         *
         **/
         void sendCurveFileBinary(string date, string title, Bytes datas);
+
+        /**
+        * 发送报表文件
+        * @parameter folder: 文件目录
+        * @parameter title: 文件标题
+        * @parameter datas: 文件内容
+        *
+        **/
+        void sendReportFileBinary(string folder, string title, Bytes datas);
     };
 };
  

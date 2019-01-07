@@ -30,6 +30,7 @@ module Protect{
 		short		FuncCode;		//定值功能码,0x91,0xCD,0xCE...
 		short		GroupNo;		//定值组号
 		short		ProNum;			//保护定值个数
+		short		ProMax;			//每条线路最大保护定值个数
 		int			requestId;
 		Bytes 		Vals;	    	//定值数据
 	};

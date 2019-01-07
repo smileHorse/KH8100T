@@ -113,13 +113,16 @@ IceProxy::SubData::SubscribeDataInfo::end_procSub(const ::Ice::AsyncResultPtr& _
 }
 
 void
-IceProxy::SubData::SubscribeDataInfo::refreshParam(const ::SubData::PartSec& __p_data, const ::Ice::Context* __ctx)
+IceProxy::SubData::SubscribeDataInfo::refreshParam(const ::SubData::PartSec& __p_data, const ::SubData::FepProtocolInfoSeq& __p_piSeq, const ::SubData::UnitInfoSeq& __p_unitSeq, const ::SubData::UnitQsInfoSeq& __p_qsSeq, const ::Ice::Context* __ctx)
 {
     ::IceInternal::Outgoing __og(this, __SubData__SubscribeDataInfo__refreshParam_name, ::Ice::Normal, __ctx);
     try
     {
         ::IceInternal::BasicStream* __os = __og.startWriteParams(::Ice::DefaultFormat);
         __os->write(__p_data);
+        __os->write(__p_piSeq);
+        __os->write(__p_unitSeq);
+        __os->write(__p_qsSeq);
         __og.endWriteParams();
     }
     catch(const ::Ice::LocalException& __ex)
@@ -130,7 +133,7 @@ IceProxy::SubData::SubscribeDataInfo::refreshParam(const ::SubData::PartSec& __p
 }
 
 ::Ice::AsyncResultPtr
-IceProxy::SubData::SubscribeDataInfo::begin_refreshParam(const ::SubData::PartSec& __p_data, const ::Ice::Context* __ctx, const ::IceInternal::CallbackBasePtr& __del, const ::Ice::LocalObjectPtr& __cookie)
+IceProxy::SubData::SubscribeDataInfo::begin_refreshParam(const ::SubData::PartSec& __p_data, const ::SubData::FepProtocolInfoSeq& __p_piSeq, const ::SubData::UnitInfoSeq& __p_unitSeq, const ::SubData::UnitQsInfoSeq& __p_qsSeq, const ::Ice::Context* __ctx, const ::IceInternal::CallbackBasePtr& __del, const ::Ice::LocalObjectPtr& __cookie)
 {
     ::IceInternal::OutgoingAsyncPtr __result = new ::IceInternal::OutgoingAsync(this, __SubData__SubscribeDataInfo__refreshParam_name, __del, __cookie);
     try
@@ -138,6 +141,9 @@ IceProxy::SubData::SubscribeDataInfo::begin_refreshParam(const ::SubData::PartSe
         __result->prepare(__SubData__SubscribeDataInfo__refreshParam_name, ::Ice::Normal, __ctx);
         ::IceInternal::BasicStream* __os = __result->startWriteParams(::Ice::DefaultFormat);
         __os->write(__p_data);
+        __os->write(__p_piSeq);
+        __os->write(__p_unitSeq);
+        __os->write(__p_qsSeq);
         __result->endWriteParams();
         __result->invoke();
     }
@@ -226,9 +232,15 @@ SubData::SubscribeDataInfo::___refreshParam(::IceInternal::Incoming& __inS, cons
     __checkMode(::Ice::Normal, __current.mode);
     ::IceInternal::BasicStream* __is = __inS.startReadParams();
     ::SubData::PartSec __p_data;
+    ::SubData::FepProtocolInfoSeq __p_piSeq;
+    ::SubData::UnitInfoSeq __p_unitSeq;
+    ::SubData::UnitQsInfoSeq __p_qsSeq;
     __is->read(__p_data);
+    __is->read(__p_piSeq);
+    __is->read(__p_unitSeq);
+    __is->read(__p_qsSeq);
     __inS.endReadParams();
-    refreshParam(__p_data, __current);
+    refreshParam(__p_data, __p_piSeq, __p_unitSeq, __p_qsSeq, __current);
     __inS.__writeEmptyParams();
     return ::Ice::DispatchOK;
 }

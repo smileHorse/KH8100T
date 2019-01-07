@@ -367,79 +367,79 @@ private:
     
 public:
 
-    void SetConfig(const ::std::string& __p_role, const ::std::string& __p_strDistrict, const ::std::string& __p_strSection, const ::std::string& __p_strDistrictName, const ::std::string& __p_strSectionName)
+    void SetConfig(const ::std::string& __p_role, const ::std::string& __p_strDistrict, const ::std::string& __p_strSection, const ::std::string& __p_strDistrictName, const ::std::string& __p_strSectionName, const ::std::string& __p_isXbfep)
     {
-        SetConfig(__p_role, __p_strDistrict, __p_strSection, __p_strDistrictName, __p_strSectionName, 0);
+        SetConfig(__p_role, __p_strDistrict, __p_strSection, __p_strDistrictName, __p_strSectionName, __p_isXbfep, 0);
     }
-    void SetConfig(const ::std::string& __p_role, const ::std::string& __p_strDistrict, const ::std::string& __p_strSection, const ::std::string& __p_strDistrictName, const ::std::string& __p_strSectionName, const ::Ice::Context& __ctx)
+    void SetConfig(const ::std::string& __p_role, const ::std::string& __p_strDistrict, const ::std::string& __p_strSection, const ::std::string& __p_strDistrictName, const ::std::string& __p_strSectionName, const ::std::string& __p_isXbfep, const ::Ice::Context& __ctx)
     {
-        SetConfig(__p_role, __p_strDistrict, __p_strSection, __p_strDistrictName, __p_strSectionName, &__ctx);
+        SetConfig(__p_role, __p_strDistrict, __p_strSection, __p_strDistrictName, __p_strSectionName, __p_isXbfep, &__ctx);
     }
 #ifdef ICE_CPP11
     ::Ice::AsyncResultPtr
-    begin_SetConfig(const ::std::string& __p_role, const ::std::string& __p_strDistrict, const ::std::string& __p_strSection, const ::std::string& __p_strDistrictName, const ::std::string& __p_strSectionName, const ::IceInternal::Function<void ()>& __response, const ::IceInternal::Function<void (const ::Ice::Exception&)>& __exception = ::IceInternal::Function<void (const ::Ice::Exception&)>(), const ::IceInternal::Function<void (bool)>& __sent = ::IceInternal::Function<void (bool)>())
+    begin_SetConfig(const ::std::string& __p_role, const ::std::string& __p_strDistrict, const ::std::string& __p_strSection, const ::std::string& __p_strDistrictName, const ::std::string& __p_strSectionName, const ::std::string& __p_isXbfep, const ::IceInternal::Function<void ()>& __response, const ::IceInternal::Function<void (const ::Ice::Exception&)>& __exception = ::IceInternal::Function<void (const ::Ice::Exception&)>(), const ::IceInternal::Function<void (bool)>& __sent = ::IceInternal::Function<void (bool)>())
     {
-        return __begin_SetConfig(__p_role, __p_strDistrict, __p_strSection, __p_strDistrictName, __p_strSectionName, 0, __response, __exception, __sent);
+        return __begin_SetConfig(__p_role, __p_strDistrict, __p_strSection, __p_strDistrictName, __p_strSectionName, __p_isXbfep, 0, __response, __exception, __sent);
     }
     ::Ice::AsyncResultPtr
-    begin_SetConfig(const ::std::string& __p_role, const ::std::string& __p_strDistrict, const ::std::string& __p_strSection, const ::std::string& __p_strDistrictName, const ::std::string& __p_strSectionName, const ::IceInternal::Function<void (const ::Ice::AsyncResultPtr&)>& __completed, const ::IceInternal::Function<void (const ::Ice::AsyncResultPtr&)>& __sent = ::IceInternal::Function<void (const ::Ice::AsyncResultPtr&)>())
+    begin_SetConfig(const ::std::string& __p_role, const ::std::string& __p_strDistrict, const ::std::string& __p_strSection, const ::std::string& __p_strDistrictName, const ::std::string& __p_strSectionName, const ::std::string& __p_isXbfep, const ::IceInternal::Function<void (const ::Ice::AsyncResultPtr&)>& __completed, const ::IceInternal::Function<void (const ::Ice::AsyncResultPtr&)>& __sent = ::IceInternal::Function<void (const ::Ice::AsyncResultPtr&)>())
     {
-        return begin_SetConfig(__p_role, __p_strDistrict, __p_strSection, __p_strDistrictName, __p_strSectionName, 0, ::Ice::newCallback(__completed, __sent), 0);
+        return begin_SetConfig(__p_role, __p_strDistrict, __p_strSection, __p_strDistrictName, __p_strSectionName, __p_isXbfep, 0, ::Ice::newCallback(__completed, __sent), 0);
     }
     ::Ice::AsyncResultPtr
-    begin_SetConfig(const ::std::string& __p_role, const ::std::string& __p_strDistrict, const ::std::string& __p_strSection, const ::std::string& __p_strDistrictName, const ::std::string& __p_strSectionName, const ::Ice::Context& __ctx, const ::IceInternal::Function<void ()>& __response, const ::IceInternal::Function<void (const ::Ice::Exception&)>& __exception = ::IceInternal::Function<void (const ::Ice::Exception&)>(), const ::IceInternal::Function<void (bool)>& __sent = ::IceInternal::Function<void (bool)>())
+    begin_SetConfig(const ::std::string& __p_role, const ::std::string& __p_strDistrict, const ::std::string& __p_strSection, const ::std::string& __p_strDistrictName, const ::std::string& __p_strSectionName, const ::std::string& __p_isXbfep, const ::Ice::Context& __ctx, const ::IceInternal::Function<void ()>& __response, const ::IceInternal::Function<void (const ::Ice::Exception&)>& __exception = ::IceInternal::Function<void (const ::Ice::Exception&)>(), const ::IceInternal::Function<void (bool)>& __sent = ::IceInternal::Function<void (bool)>())
     {
-        return __begin_SetConfig(__p_role, __p_strDistrict, __p_strSection, __p_strDistrictName, __p_strSectionName, &__ctx, __response, __exception, __sent);
+        return __begin_SetConfig(__p_role, __p_strDistrict, __p_strSection, __p_strDistrictName, __p_strSectionName, __p_isXbfep, &__ctx, __response, __exception, __sent);
     }
     ::Ice::AsyncResultPtr
-    begin_SetConfig(const ::std::string& __p_role, const ::std::string& __p_strDistrict, const ::std::string& __p_strSection, const ::std::string& __p_strDistrictName, const ::std::string& __p_strSectionName, const ::Ice::Context& __ctx, const ::IceInternal::Function<void (const ::Ice::AsyncResultPtr&)>& __completed, const ::IceInternal::Function<void (const ::Ice::AsyncResultPtr&)>& __sent = ::IceInternal::Function<void (const ::Ice::AsyncResultPtr&)>())
+    begin_SetConfig(const ::std::string& __p_role, const ::std::string& __p_strDistrict, const ::std::string& __p_strSection, const ::std::string& __p_strDistrictName, const ::std::string& __p_strSectionName, const ::std::string& __p_isXbfep, const ::Ice::Context& __ctx, const ::IceInternal::Function<void (const ::Ice::AsyncResultPtr&)>& __completed, const ::IceInternal::Function<void (const ::Ice::AsyncResultPtr&)>& __sent = ::IceInternal::Function<void (const ::Ice::AsyncResultPtr&)>())
     {
-        return begin_SetConfig(__p_role, __p_strDistrict, __p_strSection, __p_strDistrictName, __p_strSectionName, &__ctx, ::Ice::newCallback(__completed, __sent));
+        return begin_SetConfig(__p_role, __p_strDistrict, __p_strSection, __p_strDistrictName, __p_strSectionName, __p_isXbfep, &__ctx, ::Ice::newCallback(__completed, __sent));
     }
     
 private:
 
-    ::Ice::AsyncResultPtr __begin_SetConfig(const ::std::string& __p_role, const ::std::string& __p_strDistrict, const ::std::string& __p_strSection, const ::std::string& __p_strDistrictName, const ::std::string& __p_strSectionName, const ::Ice::Context* __ctx, const ::IceInternal::Function<void ()>& __response, const ::IceInternal::Function<void (const ::Ice::Exception&)>& __exception, const ::IceInternal::Function<void (bool)>& __sent);
+    ::Ice::AsyncResultPtr __begin_SetConfig(const ::std::string& __p_role, const ::std::string& __p_strDistrict, const ::std::string& __p_strSection, const ::std::string& __p_strDistrictName, const ::std::string& __p_strSectionName, const ::std::string& __p_isXbfep, const ::Ice::Context* __ctx, const ::IceInternal::Function<void ()>& __response, const ::IceInternal::Function<void (const ::Ice::Exception&)>& __exception, const ::IceInternal::Function<void (bool)>& __sent);
     
 public:
 #endif
 
-    ::Ice::AsyncResultPtr begin_SetConfig(const ::std::string& __p_role, const ::std::string& __p_strDistrict, const ::std::string& __p_strSection, const ::std::string& __p_strDistrictName, const ::std::string& __p_strSectionName)
+    ::Ice::AsyncResultPtr begin_SetConfig(const ::std::string& __p_role, const ::std::string& __p_strDistrict, const ::std::string& __p_strSection, const ::std::string& __p_strDistrictName, const ::std::string& __p_strSectionName, const ::std::string& __p_isXbfep)
     {
-        return begin_SetConfig(__p_role, __p_strDistrict, __p_strSection, __p_strDistrictName, __p_strSectionName, 0, ::IceInternal::__dummyCallback, 0);
+        return begin_SetConfig(__p_role, __p_strDistrict, __p_strSection, __p_strDistrictName, __p_strSectionName, __p_isXbfep, 0, ::IceInternal::__dummyCallback, 0);
     }
 
-    ::Ice::AsyncResultPtr begin_SetConfig(const ::std::string& __p_role, const ::std::string& __p_strDistrict, const ::std::string& __p_strSection, const ::std::string& __p_strDistrictName, const ::std::string& __p_strSectionName, const ::Ice::Context& __ctx)
+    ::Ice::AsyncResultPtr begin_SetConfig(const ::std::string& __p_role, const ::std::string& __p_strDistrict, const ::std::string& __p_strSection, const ::std::string& __p_strDistrictName, const ::std::string& __p_strSectionName, const ::std::string& __p_isXbfep, const ::Ice::Context& __ctx)
     {
-        return begin_SetConfig(__p_role, __p_strDistrict, __p_strSection, __p_strDistrictName, __p_strSectionName, &__ctx, ::IceInternal::__dummyCallback, 0);
+        return begin_SetConfig(__p_role, __p_strDistrict, __p_strSection, __p_strDistrictName, __p_strSectionName, __p_isXbfep, &__ctx, ::IceInternal::__dummyCallback, 0);
     }
 
-    ::Ice::AsyncResultPtr begin_SetConfig(const ::std::string& __p_role, const ::std::string& __p_strDistrict, const ::std::string& __p_strSection, const ::std::string& __p_strDistrictName, const ::std::string& __p_strSectionName, const ::Ice::CallbackPtr& __del, const ::Ice::LocalObjectPtr& __cookie = 0)
+    ::Ice::AsyncResultPtr begin_SetConfig(const ::std::string& __p_role, const ::std::string& __p_strDistrict, const ::std::string& __p_strSection, const ::std::string& __p_strDistrictName, const ::std::string& __p_strSectionName, const ::std::string& __p_isXbfep, const ::Ice::CallbackPtr& __del, const ::Ice::LocalObjectPtr& __cookie = 0)
     {
-        return begin_SetConfig(__p_role, __p_strDistrict, __p_strSection, __p_strDistrictName, __p_strSectionName, 0, __del, __cookie);
+        return begin_SetConfig(__p_role, __p_strDistrict, __p_strSection, __p_strDistrictName, __p_strSectionName, __p_isXbfep, 0, __del, __cookie);
     }
 
-    ::Ice::AsyncResultPtr begin_SetConfig(const ::std::string& __p_role, const ::std::string& __p_strDistrict, const ::std::string& __p_strSection, const ::std::string& __p_strDistrictName, const ::std::string& __p_strSectionName, const ::Ice::Context& __ctx, const ::Ice::CallbackPtr& __del, const ::Ice::LocalObjectPtr& __cookie = 0)
+    ::Ice::AsyncResultPtr begin_SetConfig(const ::std::string& __p_role, const ::std::string& __p_strDistrict, const ::std::string& __p_strSection, const ::std::string& __p_strDistrictName, const ::std::string& __p_strSectionName, const ::std::string& __p_isXbfep, const ::Ice::Context& __ctx, const ::Ice::CallbackPtr& __del, const ::Ice::LocalObjectPtr& __cookie = 0)
     {
-        return begin_SetConfig(__p_role, __p_strDistrict, __p_strSection, __p_strDistrictName, __p_strSectionName, &__ctx, __del, __cookie);
+        return begin_SetConfig(__p_role, __p_strDistrict, __p_strSection, __p_strDistrictName, __p_strSectionName, __p_isXbfep, &__ctx, __del, __cookie);
     }
 
-    ::Ice::AsyncResultPtr begin_SetConfig(const ::std::string& __p_role, const ::std::string& __p_strDistrict, const ::std::string& __p_strSection, const ::std::string& __p_strDistrictName, const ::std::string& __p_strSectionName, const ::Aml::Callback_CAmlRole_SetConfigPtr& __del, const ::Ice::LocalObjectPtr& __cookie = 0)
+    ::Ice::AsyncResultPtr begin_SetConfig(const ::std::string& __p_role, const ::std::string& __p_strDistrict, const ::std::string& __p_strSection, const ::std::string& __p_strDistrictName, const ::std::string& __p_strSectionName, const ::std::string& __p_isXbfep, const ::Aml::Callback_CAmlRole_SetConfigPtr& __del, const ::Ice::LocalObjectPtr& __cookie = 0)
     {
-        return begin_SetConfig(__p_role, __p_strDistrict, __p_strSection, __p_strDistrictName, __p_strSectionName, 0, __del, __cookie);
+        return begin_SetConfig(__p_role, __p_strDistrict, __p_strSection, __p_strDistrictName, __p_strSectionName, __p_isXbfep, 0, __del, __cookie);
     }
 
-    ::Ice::AsyncResultPtr begin_SetConfig(const ::std::string& __p_role, const ::std::string& __p_strDistrict, const ::std::string& __p_strSection, const ::std::string& __p_strDistrictName, const ::std::string& __p_strSectionName, const ::Ice::Context& __ctx, const ::Aml::Callback_CAmlRole_SetConfigPtr& __del, const ::Ice::LocalObjectPtr& __cookie = 0)
+    ::Ice::AsyncResultPtr begin_SetConfig(const ::std::string& __p_role, const ::std::string& __p_strDistrict, const ::std::string& __p_strSection, const ::std::string& __p_strDistrictName, const ::std::string& __p_strSectionName, const ::std::string& __p_isXbfep, const ::Ice::Context& __ctx, const ::Aml::Callback_CAmlRole_SetConfigPtr& __del, const ::Ice::LocalObjectPtr& __cookie = 0)
     {
-        return begin_SetConfig(__p_role, __p_strDistrict, __p_strSection, __p_strDistrictName, __p_strSectionName, &__ctx, __del, __cookie);
+        return begin_SetConfig(__p_role, __p_strDistrict, __p_strSection, __p_strDistrictName, __p_strSectionName, __p_isXbfep, &__ctx, __del, __cookie);
     }
 
     void end_SetConfig(const ::Ice::AsyncResultPtr&);
     
 private:
 
-    void SetConfig(const ::std::string&, const ::std::string&, const ::std::string&, const ::std::string&, const ::std::string&, const ::Ice::Context*);
-    ::Ice::AsyncResultPtr begin_SetConfig(const ::std::string&, const ::std::string&, const ::std::string&, const ::std::string&, const ::std::string&, const ::Ice::Context*, const ::IceInternal::CallbackBasePtr&, const ::Ice::LocalObjectPtr& __cookie = 0);
+    void SetConfig(const ::std::string&, const ::std::string&, const ::std::string&, const ::std::string&, const ::std::string&, const ::std::string&, const ::Ice::Context*);
+    ::Ice::AsyncResultPtr begin_SetConfig(const ::std::string&, const ::std::string&, const ::std::string&, const ::std::string&, const ::std::string&, const ::std::string&, const ::Ice::Context*, const ::IceInternal::CallbackBasePtr&, const ::Ice::LocalObjectPtr& __cookie = 0);
     
 public:
     
@@ -582,7 +582,7 @@ public:
     virtual void SetRole(const ::std::string&, const ::Ice::Current& = ::Ice::Current()) = 0;
     ::Ice::DispatchStatus ___SetRole(::IceInternal::Incoming&, const ::Ice::Current&);
 
-    virtual void SetConfig(const ::std::string&, const ::std::string&, const ::std::string&, const ::std::string&, const ::std::string&, const ::Ice::Current& = ::Ice::Current()) = 0;
+    virtual void SetConfig(const ::std::string&, const ::std::string&, const ::std::string&, const ::std::string&, const ::std::string&, const ::std::string&, const ::Ice::Current& = ::Ice::Current()) = 0;
     ::Ice::DispatchStatus ___SetConfig(::IceInternal::Incoming&, const ::Ice::Current&);
 
     virtual ::Ice::DispatchStatus __dispatch(::IceInternal::Incoming&, const ::Ice::Current&);

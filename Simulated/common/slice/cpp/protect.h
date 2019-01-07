@@ -105,6 +105,7 @@ struct ProtectValueInfo
     ::Ice::Short FuncCode;
     ::Ice::Short GroupNo;
     ::Ice::Short ProNum;
+    ::Ice::Short ProMax;
     ::Ice::Int requestId;
     ::Protect::Bytes Vals;
 };
@@ -131,7 +132,7 @@ template<>
 struct StreamableTraits< ::Protect::ProtectValueInfo>
 {
     static const StreamHelperCategory helper = StreamHelperCategoryStruct;
-    static const int minWireSize = 16;
+    static const int minWireSize = 18;
     static const bool fixedLength = false;
 };
 
@@ -146,6 +147,7 @@ struct StreamWriter< ::Protect::ProtectValueInfo, S>
         __os->write(v.FuncCode);
         __os->write(v.GroupNo);
         __os->write(v.ProNum);
+        __os->write(v.ProMax);
         __os->write(v.requestId);
         __os->write(v.Vals);
     }
@@ -162,6 +164,7 @@ struct StreamReader< ::Protect::ProtectValueInfo, S>
         __is->read(v.FuncCode);
         __is->read(v.GroupNo);
         __is->read(v.ProNum);
+        __is->read(v.ProMax);
         __is->read(v.requestId);
         __is->read(v.Vals);
     }

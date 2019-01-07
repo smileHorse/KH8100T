@@ -93,6 +93,22 @@ const ::std::string __RdbRealData__RdbDataOpt__UpdateTopoData_name = "UpdateTopo
 
 const ::std::string __RdbRealData__RdbDataOpt__GetSectionData_name = "GetSectionData";
 
+const ::std::string __RdbRealData__RdbDataOpt__updateBreaker_name = "updateBreaker";
+
+const ::std::string __RdbRealData__RdbDataOpt__updateDisconnector_name = "updateDisconnector";
+
+const ::std::string __RdbRealData__RdbDataOpt__updatePowerTransformer_name = "updatePowerTransformer";
+
+const ::std::string __RdbRealData__RdbDataOpt__updateAnalog_name = "updateAnalog";
+
+const ::std::string __RdbRealData__RdbDataOpt__updateDiscrete_name = "updateDiscrete";
+
+const ::std::string __RdbRealData__RdbDataOpt__updateAccumulator_name = "updateAccumulator";
+
+const ::std::string __RdbRealData__RdbDataOpt__updateRemoteUnit_name = "updateRemoteUnit";
+
+const ::std::string __RdbRealData__RdbDataOpt__getCurvePointDataSeq_name = "getCurvePointDataSeq";
+
 }
 
 namespace
@@ -2370,7 +2386,7 @@ IceProxy::RdbRealData::RdbDataOpt::end_UpdateTopoData(const ::Ice::AsyncResultPt
 }
 
 bool
-IceProxy::RdbRealData::RdbDataOpt::GetSectionData(const ::std::string& __p_deviceRid, ::Ice::Double& __p_analogValue, ::Ice::Int& __p_discreteValue, const ::Ice::Context* __ctx)
+IceProxy::RdbRealData::RdbDataOpt::GetSectionData(const ::std::string& __p_deviceRid, ::RdbRealData::DoubleSeq& __p_analogValues, ::RdbRealData::IntegerSeq& __p_discreteValues, const ::Ice::Context* __ctx)
 {
     __checkTwowayOnly(__RdbRealData__RdbDataOpt__GetSectionData_name);
     ::IceInternal::Outgoing __og(this, __RdbRealData__RdbDataOpt__GetSectionData_name, ::Ice::Normal, __ctx);
@@ -2398,8 +2414,8 @@ IceProxy::RdbRealData::RdbDataOpt::GetSectionData(const ::std::string& __p_devic
     }
     bool __ret;
     ::IceInternal::BasicStream* __is = __og.startReadParams();
-    __is->read(__p_analogValue);
-    __is->read(__p_discreteValue);
+    __is->read(__p_analogValues);
+    __is->read(__p_discreteValues);
     __is->read(__ret);
     __og.endReadParams();
     return __ret;
@@ -2428,13 +2444,13 @@ IceProxy::RdbRealData::RdbDataOpt::begin_GetSectionData(const ::std::string& __p
 #ifdef ICE_CPP11
 
 ::Ice::AsyncResultPtr
-IceProxy::RdbRealData::RdbDataOpt::__begin_GetSectionData(const ::std::string& __p_deviceRid, const ::Ice::Context* __ctx, const ::IceInternal::Function<void (bool, ::Ice::Double, ::Ice::Int)>& __response, const ::IceInternal::Function<void (const ::Ice::Exception&)>& __exception, const ::IceInternal::Function<void (bool)>& __sent)
+IceProxy::RdbRealData::RdbDataOpt::__begin_GetSectionData(const ::std::string& __p_deviceRid, const ::Ice::Context* __ctx, const ::IceInternal::Function<void (bool, const ::RdbRealData::DoubleSeq&, const ::RdbRealData::IntegerSeq&)>& __response, const ::IceInternal::Function<void (const ::Ice::Exception&)>& __exception, const ::IceInternal::Function<void (bool)>& __sent)
 {
     class Cpp11CB : public ::IceInternal::Cpp11FnCallbackNC
     {
     public:
 
-        Cpp11CB(const ::std::function<void (bool, ::Ice::Double, ::Ice::Int)>& responseFunc, const ::std::function<void (const ::Ice::Exception&)>& exceptionFunc, const ::std::function<void (bool)>& sentFunc) :
+        Cpp11CB(const ::std::function<void (bool, const ::RdbRealData::DoubleSeq&, const ::RdbRealData::IntegerSeq&)>& responseFunc, const ::std::function<void (const ::Ice::Exception&)>& exceptionFunc, const ::std::function<void (bool)>& sentFunc) :
             ::IceInternal::Cpp11FnCallbackNC(exceptionFunc, sentFunc),
             _response(responseFunc)
         {
@@ -2444,12 +2460,12 @@ IceProxy::RdbRealData::RdbDataOpt::__begin_GetSectionData(const ::std::string& _
         virtual void completed(const ::Ice::AsyncResultPtr& __result) const
         {
             ::RdbRealData::RdbDataOptPrx __proxy = ::RdbRealData::RdbDataOptPrx::uncheckedCast(__result->getProxy());
-            ::Ice::Double __p_analogValue;
-            ::Ice::Int __p_discreteValue;
+            ::RdbRealData::DoubleSeq __p_analogValues;
+            ::RdbRealData::IntegerSeq __p_discreteValues;
             bool __ret;
             try
             {
-                __ret = __proxy->end_GetSectionData(__p_analogValue, __p_discreteValue, __result);
+                __ret = __proxy->end_GetSectionData(__p_analogValues, __p_discreteValues, __result);
             }
             catch(const ::Ice::Exception& ex)
             {
@@ -2458,20 +2474,20 @@ IceProxy::RdbRealData::RdbDataOpt::__begin_GetSectionData(const ::std::string& _
             }
             if(_response != nullptr)
             {
-                _response(__ret, __p_analogValue, __p_discreteValue);
+                _response(__ret, __p_analogValues, __p_discreteValues);
             }
         }
     
     private:
         
-        ::std::function<void (bool, ::Ice::Double, ::Ice::Int)> _response;
+        ::std::function<void (bool, const ::RdbRealData::DoubleSeq&, const ::RdbRealData::IntegerSeq&)> _response;
     };
     return begin_GetSectionData(__p_deviceRid, __ctx, new Cpp11CB(__response, __exception, __sent));
 }
 #endif
 
 bool
-IceProxy::RdbRealData::RdbDataOpt::end_GetSectionData(::Ice::Double& __p_analogValue, ::Ice::Int& __p_discreteValue, const ::Ice::AsyncResultPtr& __result)
+IceProxy::RdbRealData::RdbDataOpt::end_GetSectionData(::RdbRealData::DoubleSeq& __p_analogValues, ::RdbRealData::IntegerSeq& __p_discreteValues, const ::Ice::AsyncResultPtr& __result)
 {
     ::Ice::AsyncResult::__check(__result, this, __RdbRealData__RdbDataOpt__GetSectionData_name);
     bool __ret;
@@ -2487,8 +2503,977 @@ IceProxy::RdbRealData::RdbDataOpt::end_GetSectionData(::Ice::Double& __p_analogV
         }
     }
     ::IceInternal::BasicStream* __is = __result->__startReadParams();
-    __is->read(__p_analogValue);
-    __is->read(__p_discreteValue);
+    __is->read(__p_analogValues);
+    __is->read(__p_discreteValues);
+    __is->read(__ret);
+    __result->__endReadParams();
+    return __ret;
+}
+
+bool
+IceProxy::RdbRealData::RdbDataOpt::updateBreaker(const ::std::string& __p_mrid, const ::RdbRealData::FieldMap& __p_fieldData, const ::Ice::Context* __ctx)
+{
+    __checkTwowayOnly(__RdbRealData__RdbDataOpt__updateBreaker_name);
+    ::IceInternal::Outgoing __og(this, __RdbRealData__RdbDataOpt__updateBreaker_name, ::Ice::Normal, __ctx);
+    try
+    {
+        ::IceInternal::BasicStream* __os = __og.startWriteParams(::Ice::DefaultFormat);
+        __os->write(__p_mrid);
+        __os->write(__p_fieldData);
+        __og.endWriteParams();
+    }
+    catch(const ::Ice::LocalException& __ex)
+    {
+        __og.abort(__ex);
+    }
+    if(!__og.invoke())
+    {
+        try
+        {
+            __og.throwUserException();
+        }
+        catch(const ::Ice::UserException& __ex)
+        {
+            ::Ice::UnknownUserException __uue(__FILE__, __LINE__, __ex.ice_name());
+            throw __uue;
+        }
+    }
+    bool __ret;
+    ::IceInternal::BasicStream* __is = __og.startReadParams();
+    __is->read(__ret);
+    __og.endReadParams();
+    return __ret;
+}
+
+::Ice::AsyncResultPtr
+IceProxy::RdbRealData::RdbDataOpt::begin_updateBreaker(const ::std::string& __p_mrid, const ::RdbRealData::FieldMap& __p_fieldData, const ::Ice::Context* __ctx, const ::IceInternal::CallbackBasePtr& __del, const ::Ice::LocalObjectPtr& __cookie)
+{
+    __checkAsyncTwowayOnly(__RdbRealData__RdbDataOpt__updateBreaker_name);
+    ::IceInternal::OutgoingAsyncPtr __result = new ::IceInternal::OutgoingAsync(this, __RdbRealData__RdbDataOpt__updateBreaker_name, __del, __cookie);
+    try
+    {
+        __result->prepare(__RdbRealData__RdbDataOpt__updateBreaker_name, ::Ice::Normal, __ctx);
+        ::IceInternal::BasicStream* __os = __result->startWriteParams(::Ice::DefaultFormat);
+        __os->write(__p_mrid);
+        __os->write(__p_fieldData);
+        __result->endWriteParams();
+        __result->invoke();
+    }
+    catch(const ::Ice::Exception& __ex)
+    {
+        __result->abort(__ex);
+    }
+    return __result;
+}
+
+#ifdef ICE_CPP11
+
+::Ice::AsyncResultPtr
+IceProxy::RdbRealData::RdbDataOpt::__begin_updateBreaker(const ::std::string& __p_mrid, const ::RdbRealData::FieldMap& __p_fieldData, const ::Ice::Context* __ctx, const ::IceInternal::Function<void (bool)>& __response, const ::IceInternal::Function<void (const ::Ice::Exception&)>& __exception, const ::IceInternal::Function<void (bool)>& __sent)
+{
+    class Cpp11CB : public ::IceInternal::Cpp11FnCallbackNC
+    {
+    public:
+
+        Cpp11CB(const ::std::function<void (bool)>& responseFunc, const ::std::function<void (const ::Ice::Exception&)>& exceptionFunc, const ::std::function<void (bool)>& sentFunc) :
+            ::IceInternal::Cpp11FnCallbackNC(exceptionFunc, sentFunc),
+            _response(responseFunc)
+        {
+            CallbackBase::checkCallback(true, responseFunc || exceptionFunc != nullptr);
+        }
+
+        virtual void completed(const ::Ice::AsyncResultPtr& __result) const
+        {
+            ::RdbRealData::RdbDataOptPrx __proxy = ::RdbRealData::RdbDataOptPrx::uncheckedCast(__result->getProxy());
+            bool __ret;
+            try
+            {
+                __ret = __proxy->end_updateBreaker(__result);
+            }
+            catch(const ::Ice::Exception& ex)
+            {
+                Cpp11FnCallbackNC::exception(__result, ex);
+                return;
+            }
+            if(_response != nullptr)
+            {
+                _response(__ret);
+            }
+        }
+    
+    private:
+        
+        ::std::function<void (bool)> _response;
+    };
+    return begin_updateBreaker(__p_mrid, __p_fieldData, __ctx, new Cpp11CB(__response, __exception, __sent));
+}
+#endif
+
+bool
+IceProxy::RdbRealData::RdbDataOpt::end_updateBreaker(const ::Ice::AsyncResultPtr& __result)
+{
+    ::Ice::AsyncResult::__check(__result, this, __RdbRealData__RdbDataOpt__updateBreaker_name);
+    bool __ret;
+    if(!__result->__wait())
+    {
+        try
+        {
+            __result->__throwUserException();
+        }
+        catch(const ::Ice::UserException& __ex)
+        {
+            throw ::Ice::UnknownUserException(__FILE__, __LINE__, __ex.ice_name());
+        }
+    }
+    ::IceInternal::BasicStream* __is = __result->__startReadParams();
+    __is->read(__ret);
+    __result->__endReadParams();
+    return __ret;
+}
+
+bool
+IceProxy::RdbRealData::RdbDataOpt::updateDisconnector(const ::std::string& __p_mrid, const ::RdbRealData::FieldMap& __p_fieldData, const ::Ice::Context* __ctx)
+{
+    __checkTwowayOnly(__RdbRealData__RdbDataOpt__updateDisconnector_name);
+    ::IceInternal::Outgoing __og(this, __RdbRealData__RdbDataOpt__updateDisconnector_name, ::Ice::Normal, __ctx);
+    try
+    {
+        ::IceInternal::BasicStream* __os = __og.startWriteParams(::Ice::DefaultFormat);
+        __os->write(__p_mrid);
+        __os->write(__p_fieldData);
+        __og.endWriteParams();
+    }
+    catch(const ::Ice::LocalException& __ex)
+    {
+        __og.abort(__ex);
+    }
+    if(!__og.invoke())
+    {
+        try
+        {
+            __og.throwUserException();
+        }
+        catch(const ::Ice::UserException& __ex)
+        {
+            ::Ice::UnknownUserException __uue(__FILE__, __LINE__, __ex.ice_name());
+            throw __uue;
+        }
+    }
+    bool __ret;
+    ::IceInternal::BasicStream* __is = __og.startReadParams();
+    __is->read(__ret);
+    __og.endReadParams();
+    return __ret;
+}
+
+::Ice::AsyncResultPtr
+IceProxy::RdbRealData::RdbDataOpt::begin_updateDisconnector(const ::std::string& __p_mrid, const ::RdbRealData::FieldMap& __p_fieldData, const ::Ice::Context* __ctx, const ::IceInternal::CallbackBasePtr& __del, const ::Ice::LocalObjectPtr& __cookie)
+{
+    __checkAsyncTwowayOnly(__RdbRealData__RdbDataOpt__updateDisconnector_name);
+    ::IceInternal::OutgoingAsyncPtr __result = new ::IceInternal::OutgoingAsync(this, __RdbRealData__RdbDataOpt__updateDisconnector_name, __del, __cookie);
+    try
+    {
+        __result->prepare(__RdbRealData__RdbDataOpt__updateDisconnector_name, ::Ice::Normal, __ctx);
+        ::IceInternal::BasicStream* __os = __result->startWriteParams(::Ice::DefaultFormat);
+        __os->write(__p_mrid);
+        __os->write(__p_fieldData);
+        __result->endWriteParams();
+        __result->invoke();
+    }
+    catch(const ::Ice::Exception& __ex)
+    {
+        __result->abort(__ex);
+    }
+    return __result;
+}
+
+#ifdef ICE_CPP11
+
+::Ice::AsyncResultPtr
+IceProxy::RdbRealData::RdbDataOpt::__begin_updateDisconnector(const ::std::string& __p_mrid, const ::RdbRealData::FieldMap& __p_fieldData, const ::Ice::Context* __ctx, const ::IceInternal::Function<void (bool)>& __response, const ::IceInternal::Function<void (const ::Ice::Exception&)>& __exception, const ::IceInternal::Function<void (bool)>& __sent)
+{
+    class Cpp11CB : public ::IceInternal::Cpp11FnCallbackNC
+    {
+    public:
+
+        Cpp11CB(const ::std::function<void (bool)>& responseFunc, const ::std::function<void (const ::Ice::Exception&)>& exceptionFunc, const ::std::function<void (bool)>& sentFunc) :
+            ::IceInternal::Cpp11FnCallbackNC(exceptionFunc, sentFunc),
+            _response(responseFunc)
+        {
+            CallbackBase::checkCallback(true, responseFunc || exceptionFunc != nullptr);
+        }
+
+        virtual void completed(const ::Ice::AsyncResultPtr& __result) const
+        {
+            ::RdbRealData::RdbDataOptPrx __proxy = ::RdbRealData::RdbDataOptPrx::uncheckedCast(__result->getProxy());
+            bool __ret;
+            try
+            {
+                __ret = __proxy->end_updateDisconnector(__result);
+            }
+            catch(const ::Ice::Exception& ex)
+            {
+                Cpp11FnCallbackNC::exception(__result, ex);
+                return;
+            }
+            if(_response != nullptr)
+            {
+                _response(__ret);
+            }
+        }
+    
+    private:
+        
+        ::std::function<void (bool)> _response;
+    };
+    return begin_updateDisconnector(__p_mrid, __p_fieldData, __ctx, new Cpp11CB(__response, __exception, __sent));
+}
+#endif
+
+bool
+IceProxy::RdbRealData::RdbDataOpt::end_updateDisconnector(const ::Ice::AsyncResultPtr& __result)
+{
+    ::Ice::AsyncResult::__check(__result, this, __RdbRealData__RdbDataOpt__updateDisconnector_name);
+    bool __ret;
+    if(!__result->__wait())
+    {
+        try
+        {
+            __result->__throwUserException();
+        }
+        catch(const ::Ice::UserException& __ex)
+        {
+            throw ::Ice::UnknownUserException(__FILE__, __LINE__, __ex.ice_name());
+        }
+    }
+    ::IceInternal::BasicStream* __is = __result->__startReadParams();
+    __is->read(__ret);
+    __result->__endReadParams();
+    return __ret;
+}
+
+bool
+IceProxy::RdbRealData::RdbDataOpt::updatePowerTransformer(const ::std::string& __p_mrid, const ::RdbRealData::FieldMap& __p_fieldData, const ::Ice::Context* __ctx)
+{
+    __checkTwowayOnly(__RdbRealData__RdbDataOpt__updatePowerTransformer_name);
+    ::IceInternal::Outgoing __og(this, __RdbRealData__RdbDataOpt__updatePowerTransformer_name, ::Ice::Normal, __ctx);
+    try
+    {
+        ::IceInternal::BasicStream* __os = __og.startWriteParams(::Ice::DefaultFormat);
+        __os->write(__p_mrid);
+        __os->write(__p_fieldData);
+        __og.endWriteParams();
+    }
+    catch(const ::Ice::LocalException& __ex)
+    {
+        __og.abort(__ex);
+    }
+    if(!__og.invoke())
+    {
+        try
+        {
+            __og.throwUserException();
+        }
+        catch(const ::Ice::UserException& __ex)
+        {
+            ::Ice::UnknownUserException __uue(__FILE__, __LINE__, __ex.ice_name());
+            throw __uue;
+        }
+    }
+    bool __ret;
+    ::IceInternal::BasicStream* __is = __og.startReadParams();
+    __is->read(__ret);
+    __og.endReadParams();
+    return __ret;
+}
+
+::Ice::AsyncResultPtr
+IceProxy::RdbRealData::RdbDataOpt::begin_updatePowerTransformer(const ::std::string& __p_mrid, const ::RdbRealData::FieldMap& __p_fieldData, const ::Ice::Context* __ctx, const ::IceInternal::CallbackBasePtr& __del, const ::Ice::LocalObjectPtr& __cookie)
+{
+    __checkAsyncTwowayOnly(__RdbRealData__RdbDataOpt__updatePowerTransformer_name);
+    ::IceInternal::OutgoingAsyncPtr __result = new ::IceInternal::OutgoingAsync(this, __RdbRealData__RdbDataOpt__updatePowerTransformer_name, __del, __cookie);
+    try
+    {
+        __result->prepare(__RdbRealData__RdbDataOpt__updatePowerTransformer_name, ::Ice::Normal, __ctx);
+        ::IceInternal::BasicStream* __os = __result->startWriteParams(::Ice::DefaultFormat);
+        __os->write(__p_mrid);
+        __os->write(__p_fieldData);
+        __result->endWriteParams();
+        __result->invoke();
+    }
+    catch(const ::Ice::Exception& __ex)
+    {
+        __result->abort(__ex);
+    }
+    return __result;
+}
+
+#ifdef ICE_CPP11
+
+::Ice::AsyncResultPtr
+IceProxy::RdbRealData::RdbDataOpt::__begin_updatePowerTransformer(const ::std::string& __p_mrid, const ::RdbRealData::FieldMap& __p_fieldData, const ::Ice::Context* __ctx, const ::IceInternal::Function<void (bool)>& __response, const ::IceInternal::Function<void (const ::Ice::Exception&)>& __exception, const ::IceInternal::Function<void (bool)>& __sent)
+{
+    class Cpp11CB : public ::IceInternal::Cpp11FnCallbackNC
+    {
+    public:
+
+        Cpp11CB(const ::std::function<void (bool)>& responseFunc, const ::std::function<void (const ::Ice::Exception&)>& exceptionFunc, const ::std::function<void (bool)>& sentFunc) :
+            ::IceInternal::Cpp11FnCallbackNC(exceptionFunc, sentFunc),
+            _response(responseFunc)
+        {
+            CallbackBase::checkCallback(true, responseFunc || exceptionFunc != nullptr);
+        }
+
+        virtual void completed(const ::Ice::AsyncResultPtr& __result) const
+        {
+            ::RdbRealData::RdbDataOptPrx __proxy = ::RdbRealData::RdbDataOptPrx::uncheckedCast(__result->getProxy());
+            bool __ret;
+            try
+            {
+                __ret = __proxy->end_updatePowerTransformer(__result);
+            }
+            catch(const ::Ice::Exception& ex)
+            {
+                Cpp11FnCallbackNC::exception(__result, ex);
+                return;
+            }
+            if(_response != nullptr)
+            {
+                _response(__ret);
+            }
+        }
+    
+    private:
+        
+        ::std::function<void (bool)> _response;
+    };
+    return begin_updatePowerTransformer(__p_mrid, __p_fieldData, __ctx, new Cpp11CB(__response, __exception, __sent));
+}
+#endif
+
+bool
+IceProxy::RdbRealData::RdbDataOpt::end_updatePowerTransformer(const ::Ice::AsyncResultPtr& __result)
+{
+    ::Ice::AsyncResult::__check(__result, this, __RdbRealData__RdbDataOpt__updatePowerTransformer_name);
+    bool __ret;
+    if(!__result->__wait())
+    {
+        try
+        {
+            __result->__throwUserException();
+        }
+        catch(const ::Ice::UserException& __ex)
+        {
+            throw ::Ice::UnknownUserException(__FILE__, __LINE__, __ex.ice_name());
+        }
+    }
+    ::IceInternal::BasicStream* __is = __result->__startReadParams();
+    __is->read(__ret);
+    __result->__endReadParams();
+    return __ret;
+}
+
+bool
+IceProxy::RdbRealData::RdbDataOpt::updateAnalog(const ::std::string& __p_mrid, const ::RdbRealData::FieldMap& __p_fieldData, const ::Ice::Context* __ctx)
+{
+    __checkTwowayOnly(__RdbRealData__RdbDataOpt__updateAnalog_name);
+    ::IceInternal::Outgoing __og(this, __RdbRealData__RdbDataOpt__updateAnalog_name, ::Ice::Normal, __ctx);
+    try
+    {
+        ::IceInternal::BasicStream* __os = __og.startWriteParams(::Ice::DefaultFormat);
+        __os->write(__p_mrid);
+        __os->write(__p_fieldData);
+        __og.endWriteParams();
+    }
+    catch(const ::Ice::LocalException& __ex)
+    {
+        __og.abort(__ex);
+    }
+    if(!__og.invoke())
+    {
+        try
+        {
+            __og.throwUserException();
+        }
+        catch(const ::Ice::UserException& __ex)
+        {
+            ::Ice::UnknownUserException __uue(__FILE__, __LINE__, __ex.ice_name());
+            throw __uue;
+        }
+    }
+    bool __ret;
+    ::IceInternal::BasicStream* __is = __og.startReadParams();
+    __is->read(__ret);
+    __og.endReadParams();
+    return __ret;
+}
+
+::Ice::AsyncResultPtr
+IceProxy::RdbRealData::RdbDataOpt::begin_updateAnalog(const ::std::string& __p_mrid, const ::RdbRealData::FieldMap& __p_fieldData, const ::Ice::Context* __ctx, const ::IceInternal::CallbackBasePtr& __del, const ::Ice::LocalObjectPtr& __cookie)
+{
+    __checkAsyncTwowayOnly(__RdbRealData__RdbDataOpt__updateAnalog_name);
+    ::IceInternal::OutgoingAsyncPtr __result = new ::IceInternal::OutgoingAsync(this, __RdbRealData__RdbDataOpt__updateAnalog_name, __del, __cookie);
+    try
+    {
+        __result->prepare(__RdbRealData__RdbDataOpt__updateAnalog_name, ::Ice::Normal, __ctx);
+        ::IceInternal::BasicStream* __os = __result->startWriteParams(::Ice::DefaultFormat);
+        __os->write(__p_mrid);
+        __os->write(__p_fieldData);
+        __result->endWriteParams();
+        __result->invoke();
+    }
+    catch(const ::Ice::Exception& __ex)
+    {
+        __result->abort(__ex);
+    }
+    return __result;
+}
+
+#ifdef ICE_CPP11
+
+::Ice::AsyncResultPtr
+IceProxy::RdbRealData::RdbDataOpt::__begin_updateAnalog(const ::std::string& __p_mrid, const ::RdbRealData::FieldMap& __p_fieldData, const ::Ice::Context* __ctx, const ::IceInternal::Function<void (bool)>& __response, const ::IceInternal::Function<void (const ::Ice::Exception&)>& __exception, const ::IceInternal::Function<void (bool)>& __sent)
+{
+    class Cpp11CB : public ::IceInternal::Cpp11FnCallbackNC
+    {
+    public:
+
+        Cpp11CB(const ::std::function<void (bool)>& responseFunc, const ::std::function<void (const ::Ice::Exception&)>& exceptionFunc, const ::std::function<void (bool)>& sentFunc) :
+            ::IceInternal::Cpp11FnCallbackNC(exceptionFunc, sentFunc),
+            _response(responseFunc)
+        {
+            CallbackBase::checkCallback(true, responseFunc || exceptionFunc != nullptr);
+        }
+
+        virtual void completed(const ::Ice::AsyncResultPtr& __result) const
+        {
+            ::RdbRealData::RdbDataOptPrx __proxy = ::RdbRealData::RdbDataOptPrx::uncheckedCast(__result->getProxy());
+            bool __ret;
+            try
+            {
+                __ret = __proxy->end_updateAnalog(__result);
+            }
+            catch(const ::Ice::Exception& ex)
+            {
+                Cpp11FnCallbackNC::exception(__result, ex);
+                return;
+            }
+            if(_response != nullptr)
+            {
+                _response(__ret);
+            }
+        }
+    
+    private:
+        
+        ::std::function<void (bool)> _response;
+    };
+    return begin_updateAnalog(__p_mrid, __p_fieldData, __ctx, new Cpp11CB(__response, __exception, __sent));
+}
+#endif
+
+bool
+IceProxy::RdbRealData::RdbDataOpt::end_updateAnalog(const ::Ice::AsyncResultPtr& __result)
+{
+    ::Ice::AsyncResult::__check(__result, this, __RdbRealData__RdbDataOpt__updateAnalog_name);
+    bool __ret;
+    if(!__result->__wait())
+    {
+        try
+        {
+            __result->__throwUserException();
+        }
+        catch(const ::Ice::UserException& __ex)
+        {
+            throw ::Ice::UnknownUserException(__FILE__, __LINE__, __ex.ice_name());
+        }
+    }
+    ::IceInternal::BasicStream* __is = __result->__startReadParams();
+    __is->read(__ret);
+    __result->__endReadParams();
+    return __ret;
+}
+
+bool
+IceProxy::RdbRealData::RdbDataOpt::updateDiscrete(const ::std::string& __p_mrid, const ::RdbRealData::FieldMap& __p_fieldData, const ::Ice::Context* __ctx)
+{
+    __checkTwowayOnly(__RdbRealData__RdbDataOpt__updateDiscrete_name);
+    ::IceInternal::Outgoing __og(this, __RdbRealData__RdbDataOpt__updateDiscrete_name, ::Ice::Normal, __ctx);
+    try
+    {
+        ::IceInternal::BasicStream* __os = __og.startWriteParams(::Ice::DefaultFormat);
+        __os->write(__p_mrid);
+        __os->write(__p_fieldData);
+        __og.endWriteParams();
+    }
+    catch(const ::Ice::LocalException& __ex)
+    {
+        __og.abort(__ex);
+    }
+    if(!__og.invoke())
+    {
+        try
+        {
+            __og.throwUserException();
+        }
+        catch(const ::Ice::UserException& __ex)
+        {
+            ::Ice::UnknownUserException __uue(__FILE__, __LINE__, __ex.ice_name());
+            throw __uue;
+        }
+    }
+    bool __ret;
+    ::IceInternal::BasicStream* __is = __og.startReadParams();
+    __is->read(__ret);
+    __og.endReadParams();
+    return __ret;
+}
+
+::Ice::AsyncResultPtr
+IceProxy::RdbRealData::RdbDataOpt::begin_updateDiscrete(const ::std::string& __p_mrid, const ::RdbRealData::FieldMap& __p_fieldData, const ::Ice::Context* __ctx, const ::IceInternal::CallbackBasePtr& __del, const ::Ice::LocalObjectPtr& __cookie)
+{
+    __checkAsyncTwowayOnly(__RdbRealData__RdbDataOpt__updateDiscrete_name);
+    ::IceInternal::OutgoingAsyncPtr __result = new ::IceInternal::OutgoingAsync(this, __RdbRealData__RdbDataOpt__updateDiscrete_name, __del, __cookie);
+    try
+    {
+        __result->prepare(__RdbRealData__RdbDataOpt__updateDiscrete_name, ::Ice::Normal, __ctx);
+        ::IceInternal::BasicStream* __os = __result->startWriteParams(::Ice::DefaultFormat);
+        __os->write(__p_mrid);
+        __os->write(__p_fieldData);
+        __result->endWriteParams();
+        __result->invoke();
+    }
+    catch(const ::Ice::Exception& __ex)
+    {
+        __result->abort(__ex);
+    }
+    return __result;
+}
+
+#ifdef ICE_CPP11
+
+::Ice::AsyncResultPtr
+IceProxy::RdbRealData::RdbDataOpt::__begin_updateDiscrete(const ::std::string& __p_mrid, const ::RdbRealData::FieldMap& __p_fieldData, const ::Ice::Context* __ctx, const ::IceInternal::Function<void (bool)>& __response, const ::IceInternal::Function<void (const ::Ice::Exception&)>& __exception, const ::IceInternal::Function<void (bool)>& __sent)
+{
+    class Cpp11CB : public ::IceInternal::Cpp11FnCallbackNC
+    {
+    public:
+
+        Cpp11CB(const ::std::function<void (bool)>& responseFunc, const ::std::function<void (const ::Ice::Exception&)>& exceptionFunc, const ::std::function<void (bool)>& sentFunc) :
+            ::IceInternal::Cpp11FnCallbackNC(exceptionFunc, sentFunc),
+            _response(responseFunc)
+        {
+            CallbackBase::checkCallback(true, responseFunc || exceptionFunc != nullptr);
+        }
+
+        virtual void completed(const ::Ice::AsyncResultPtr& __result) const
+        {
+            ::RdbRealData::RdbDataOptPrx __proxy = ::RdbRealData::RdbDataOptPrx::uncheckedCast(__result->getProxy());
+            bool __ret;
+            try
+            {
+                __ret = __proxy->end_updateDiscrete(__result);
+            }
+            catch(const ::Ice::Exception& ex)
+            {
+                Cpp11FnCallbackNC::exception(__result, ex);
+                return;
+            }
+            if(_response != nullptr)
+            {
+                _response(__ret);
+            }
+        }
+    
+    private:
+        
+        ::std::function<void (bool)> _response;
+    };
+    return begin_updateDiscrete(__p_mrid, __p_fieldData, __ctx, new Cpp11CB(__response, __exception, __sent));
+}
+#endif
+
+bool
+IceProxy::RdbRealData::RdbDataOpt::end_updateDiscrete(const ::Ice::AsyncResultPtr& __result)
+{
+    ::Ice::AsyncResult::__check(__result, this, __RdbRealData__RdbDataOpt__updateDiscrete_name);
+    bool __ret;
+    if(!__result->__wait())
+    {
+        try
+        {
+            __result->__throwUserException();
+        }
+        catch(const ::Ice::UserException& __ex)
+        {
+            throw ::Ice::UnknownUserException(__FILE__, __LINE__, __ex.ice_name());
+        }
+    }
+    ::IceInternal::BasicStream* __is = __result->__startReadParams();
+    __is->read(__ret);
+    __result->__endReadParams();
+    return __ret;
+}
+
+bool
+IceProxy::RdbRealData::RdbDataOpt::updateAccumulator(const ::std::string& __p_mrid, const ::RdbRealData::FieldMap& __p_fieldData, const ::Ice::Context* __ctx)
+{
+    __checkTwowayOnly(__RdbRealData__RdbDataOpt__updateAccumulator_name);
+    ::IceInternal::Outgoing __og(this, __RdbRealData__RdbDataOpt__updateAccumulator_name, ::Ice::Normal, __ctx);
+    try
+    {
+        ::IceInternal::BasicStream* __os = __og.startWriteParams(::Ice::DefaultFormat);
+        __os->write(__p_mrid);
+        __os->write(__p_fieldData);
+        __og.endWriteParams();
+    }
+    catch(const ::Ice::LocalException& __ex)
+    {
+        __og.abort(__ex);
+    }
+    if(!__og.invoke())
+    {
+        try
+        {
+            __og.throwUserException();
+        }
+        catch(const ::Ice::UserException& __ex)
+        {
+            ::Ice::UnknownUserException __uue(__FILE__, __LINE__, __ex.ice_name());
+            throw __uue;
+        }
+    }
+    bool __ret;
+    ::IceInternal::BasicStream* __is = __og.startReadParams();
+    __is->read(__ret);
+    __og.endReadParams();
+    return __ret;
+}
+
+::Ice::AsyncResultPtr
+IceProxy::RdbRealData::RdbDataOpt::begin_updateAccumulator(const ::std::string& __p_mrid, const ::RdbRealData::FieldMap& __p_fieldData, const ::Ice::Context* __ctx, const ::IceInternal::CallbackBasePtr& __del, const ::Ice::LocalObjectPtr& __cookie)
+{
+    __checkAsyncTwowayOnly(__RdbRealData__RdbDataOpt__updateAccumulator_name);
+    ::IceInternal::OutgoingAsyncPtr __result = new ::IceInternal::OutgoingAsync(this, __RdbRealData__RdbDataOpt__updateAccumulator_name, __del, __cookie);
+    try
+    {
+        __result->prepare(__RdbRealData__RdbDataOpt__updateAccumulator_name, ::Ice::Normal, __ctx);
+        ::IceInternal::BasicStream* __os = __result->startWriteParams(::Ice::DefaultFormat);
+        __os->write(__p_mrid);
+        __os->write(__p_fieldData);
+        __result->endWriteParams();
+        __result->invoke();
+    }
+    catch(const ::Ice::Exception& __ex)
+    {
+        __result->abort(__ex);
+    }
+    return __result;
+}
+
+#ifdef ICE_CPP11
+
+::Ice::AsyncResultPtr
+IceProxy::RdbRealData::RdbDataOpt::__begin_updateAccumulator(const ::std::string& __p_mrid, const ::RdbRealData::FieldMap& __p_fieldData, const ::Ice::Context* __ctx, const ::IceInternal::Function<void (bool)>& __response, const ::IceInternal::Function<void (const ::Ice::Exception&)>& __exception, const ::IceInternal::Function<void (bool)>& __sent)
+{
+    class Cpp11CB : public ::IceInternal::Cpp11FnCallbackNC
+    {
+    public:
+
+        Cpp11CB(const ::std::function<void (bool)>& responseFunc, const ::std::function<void (const ::Ice::Exception&)>& exceptionFunc, const ::std::function<void (bool)>& sentFunc) :
+            ::IceInternal::Cpp11FnCallbackNC(exceptionFunc, sentFunc),
+            _response(responseFunc)
+        {
+            CallbackBase::checkCallback(true, responseFunc || exceptionFunc != nullptr);
+        }
+
+        virtual void completed(const ::Ice::AsyncResultPtr& __result) const
+        {
+            ::RdbRealData::RdbDataOptPrx __proxy = ::RdbRealData::RdbDataOptPrx::uncheckedCast(__result->getProxy());
+            bool __ret;
+            try
+            {
+                __ret = __proxy->end_updateAccumulator(__result);
+            }
+            catch(const ::Ice::Exception& ex)
+            {
+                Cpp11FnCallbackNC::exception(__result, ex);
+                return;
+            }
+            if(_response != nullptr)
+            {
+                _response(__ret);
+            }
+        }
+    
+    private:
+        
+        ::std::function<void (bool)> _response;
+    };
+    return begin_updateAccumulator(__p_mrid, __p_fieldData, __ctx, new Cpp11CB(__response, __exception, __sent));
+}
+#endif
+
+bool
+IceProxy::RdbRealData::RdbDataOpt::end_updateAccumulator(const ::Ice::AsyncResultPtr& __result)
+{
+    ::Ice::AsyncResult::__check(__result, this, __RdbRealData__RdbDataOpt__updateAccumulator_name);
+    bool __ret;
+    if(!__result->__wait())
+    {
+        try
+        {
+            __result->__throwUserException();
+        }
+        catch(const ::Ice::UserException& __ex)
+        {
+            throw ::Ice::UnknownUserException(__FILE__, __LINE__, __ex.ice_name());
+        }
+    }
+    ::IceInternal::BasicStream* __is = __result->__startReadParams();
+    __is->read(__ret);
+    __result->__endReadParams();
+    return __ret;
+}
+
+bool
+IceProxy::RdbRealData::RdbDataOpt::updateRemoteUnit(const ::std::string& __p_mrid, const ::RdbRealData::FieldMap& __p_fieldData, const ::Ice::Context* __ctx)
+{
+    __checkTwowayOnly(__RdbRealData__RdbDataOpt__updateRemoteUnit_name);
+    ::IceInternal::Outgoing __og(this, __RdbRealData__RdbDataOpt__updateRemoteUnit_name, ::Ice::Normal, __ctx);
+    try
+    {
+        ::IceInternal::BasicStream* __os = __og.startWriteParams(::Ice::DefaultFormat);
+        __os->write(__p_mrid);
+        __os->write(__p_fieldData);
+        __og.endWriteParams();
+    }
+    catch(const ::Ice::LocalException& __ex)
+    {
+        __og.abort(__ex);
+    }
+    if(!__og.invoke())
+    {
+        try
+        {
+            __og.throwUserException();
+        }
+        catch(const ::Ice::UserException& __ex)
+        {
+            ::Ice::UnknownUserException __uue(__FILE__, __LINE__, __ex.ice_name());
+            throw __uue;
+        }
+    }
+    bool __ret;
+    ::IceInternal::BasicStream* __is = __og.startReadParams();
+    __is->read(__ret);
+    __og.endReadParams();
+    return __ret;
+}
+
+::Ice::AsyncResultPtr
+IceProxy::RdbRealData::RdbDataOpt::begin_updateRemoteUnit(const ::std::string& __p_mrid, const ::RdbRealData::FieldMap& __p_fieldData, const ::Ice::Context* __ctx, const ::IceInternal::CallbackBasePtr& __del, const ::Ice::LocalObjectPtr& __cookie)
+{
+    __checkAsyncTwowayOnly(__RdbRealData__RdbDataOpt__updateRemoteUnit_name);
+    ::IceInternal::OutgoingAsyncPtr __result = new ::IceInternal::OutgoingAsync(this, __RdbRealData__RdbDataOpt__updateRemoteUnit_name, __del, __cookie);
+    try
+    {
+        __result->prepare(__RdbRealData__RdbDataOpt__updateRemoteUnit_name, ::Ice::Normal, __ctx);
+        ::IceInternal::BasicStream* __os = __result->startWriteParams(::Ice::DefaultFormat);
+        __os->write(__p_mrid);
+        __os->write(__p_fieldData);
+        __result->endWriteParams();
+        __result->invoke();
+    }
+    catch(const ::Ice::Exception& __ex)
+    {
+        __result->abort(__ex);
+    }
+    return __result;
+}
+
+#ifdef ICE_CPP11
+
+::Ice::AsyncResultPtr
+IceProxy::RdbRealData::RdbDataOpt::__begin_updateRemoteUnit(const ::std::string& __p_mrid, const ::RdbRealData::FieldMap& __p_fieldData, const ::Ice::Context* __ctx, const ::IceInternal::Function<void (bool)>& __response, const ::IceInternal::Function<void (const ::Ice::Exception&)>& __exception, const ::IceInternal::Function<void (bool)>& __sent)
+{
+    class Cpp11CB : public ::IceInternal::Cpp11FnCallbackNC
+    {
+    public:
+
+        Cpp11CB(const ::std::function<void (bool)>& responseFunc, const ::std::function<void (const ::Ice::Exception&)>& exceptionFunc, const ::std::function<void (bool)>& sentFunc) :
+            ::IceInternal::Cpp11FnCallbackNC(exceptionFunc, sentFunc),
+            _response(responseFunc)
+        {
+            CallbackBase::checkCallback(true, responseFunc || exceptionFunc != nullptr);
+        }
+
+        virtual void completed(const ::Ice::AsyncResultPtr& __result) const
+        {
+            ::RdbRealData::RdbDataOptPrx __proxy = ::RdbRealData::RdbDataOptPrx::uncheckedCast(__result->getProxy());
+            bool __ret;
+            try
+            {
+                __ret = __proxy->end_updateRemoteUnit(__result);
+            }
+            catch(const ::Ice::Exception& ex)
+            {
+                Cpp11FnCallbackNC::exception(__result, ex);
+                return;
+            }
+            if(_response != nullptr)
+            {
+                _response(__ret);
+            }
+        }
+    
+    private:
+        
+        ::std::function<void (bool)> _response;
+    };
+    return begin_updateRemoteUnit(__p_mrid, __p_fieldData, __ctx, new Cpp11CB(__response, __exception, __sent));
+}
+#endif
+
+bool
+IceProxy::RdbRealData::RdbDataOpt::end_updateRemoteUnit(const ::Ice::AsyncResultPtr& __result)
+{
+    ::Ice::AsyncResult::__check(__result, this, __RdbRealData__RdbDataOpt__updateRemoteUnit_name);
+    bool __ret;
+    if(!__result->__wait())
+    {
+        try
+        {
+            __result->__throwUserException();
+        }
+        catch(const ::Ice::UserException& __ex)
+        {
+            throw ::Ice::UnknownUserException(__FILE__, __LINE__, __ex.ice_name());
+        }
+    }
+    ::IceInternal::BasicStream* __is = __result->__startReadParams();
+    __is->read(__ret);
+    __result->__endReadParams();
+    return __ret;
+}
+
+bool
+IceProxy::RdbRealData::RdbDataOpt::getCurvePointDataSeq(const ::RdbRealData::Strings& __p_analogs, ::RdbRealData::CurvePointDataSeq& __p_dataSeq, const ::Ice::Context* __ctx)
+{
+    __checkTwowayOnly(__RdbRealData__RdbDataOpt__getCurvePointDataSeq_name);
+    ::IceInternal::Outgoing __og(this, __RdbRealData__RdbDataOpt__getCurvePointDataSeq_name, ::Ice::Normal, __ctx);
+    try
+    {
+        ::IceInternal::BasicStream* __os = __og.startWriteParams(::Ice::DefaultFormat);
+        __os->write(__p_analogs);
+        __og.endWriteParams();
+    }
+    catch(const ::Ice::LocalException& __ex)
+    {
+        __og.abort(__ex);
+    }
+    if(!__og.invoke())
+    {
+        try
+        {
+            __og.throwUserException();
+        }
+        catch(const ::Ice::UserException& __ex)
+        {
+            ::Ice::UnknownUserException __uue(__FILE__, __LINE__, __ex.ice_name());
+            throw __uue;
+        }
+    }
+    bool __ret;
+    ::IceInternal::BasicStream* __is = __og.startReadParams();
+    __is->read(__p_dataSeq);
+    __is->read(__ret);
+    __og.endReadParams();
+    return __ret;
+}
+
+::Ice::AsyncResultPtr
+IceProxy::RdbRealData::RdbDataOpt::begin_getCurvePointDataSeq(const ::RdbRealData::Strings& __p_analogs, const ::Ice::Context* __ctx, const ::IceInternal::CallbackBasePtr& __del, const ::Ice::LocalObjectPtr& __cookie)
+{
+    __checkAsyncTwowayOnly(__RdbRealData__RdbDataOpt__getCurvePointDataSeq_name);
+    ::IceInternal::OutgoingAsyncPtr __result = new ::IceInternal::OutgoingAsync(this, __RdbRealData__RdbDataOpt__getCurvePointDataSeq_name, __del, __cookie);
+    try
+    {
+        __result->prepare(__RdbRealData__RdbDataOpt__getCurvePointDataSeq_name, ::Ice::Normal, __ctx);
+        ::IceInternal::BasicStream* __os = __result->startWriteParams(::Ice::DefaultFormat);
+        __os->write(__p_analogs);
+        __result->endWriteParams();
+        __result->invoke();
+    }
+    catch(const ::Ice::Exception& __ex)
+    {
+        __result->abort(__ex);
+    }
+    return __result;
+}
+
+#ifdef ICE_CPP11
+
+::Ice::AsyncResultPtr
+IceProxy::RdbRealData::RdbDataOpt::__begin_getCurvePointDataSeq(const ::RdbRealData::Strings& __p_analogs, const ::Ice::Context* __ctx, const ::IceInternal::Function<void (bool, const ::RdbRealData::CurvePointDataSeq&)>& __response, const ::IceInternal::Function<void (const ::Ice::Exception&)>& __exception, const ::IceInternal::Function<void (bool)>& __sent)
+{
+    class Cpp11CB : public ::IceInternal::Cpp11FnCallbackNC
+    {
+    public:
+
+        Cpp11CB(const ::std::function<void (bool, const ::RdbRealData::CurvePointDataSeq&)>& responseFunc, const ::std::function<void (const ::Ice::Exception&)>& exceptionFunc, const ::std::function<void (bool)>& sentFunc) :
+            ::IceInternal::Cpp11FnCallbackNC(exceptionFunc, sentFunc),
+            _response(responseFunc)
+        {
+            CallbackBase::checkCallback(true, responseFunc || exceptionFunc != nullptr);
+        }
+
+        virtual void completed(const ::Ice::AsyncResultPtr& __result) const
+        {
+            ::RdbRealData::RdbDataOptPrx __proxy = ::RdbRealData::RdbDataOptPrx::uncheckedCast(__result->getProxy());
+            ::RdbRealData::CurvePointDataSeq __p_dataSeq;
+            bool __ret;
+            try
+            {
+                __ret = __proxy->end_getCurvePointDataSeq(__p_dataSeq, __result);
+            }
+            catch(const ::Ice::Exception& ex)
+            {
+                Cpp11FnCallbackNC::exception(__result, ex);
+                return;
+            }
+            if(_response != nullptr)
+            {
+                _response(__ret, __p_dataSeq);
+            }
+        }
+    
+    private:
+        
+        ::std::function<void (bool, const ::RdbRealData::CurvePointDataSeq&)> _response;
+    };
+    return begin_getCurvePointDataSeq(__p_analogs, __ctx, new Cpp11CB(__response, __exception, __sent));
+}
+#endif
+
+bool
+IceProxy::RdbRealData::RdbDataOpt::end_getCurvePointDataSeq(::RdbRealData::CurvePointDataSeq& __p_dataSeq, const ::Ice::AsyncResultPtr& __result)
+{
+    ::Ice::AsyncResult::__check(__result, this, __RdbRealData__RdbDataOpt__getCurvePointDataSeq_name);
+    bool __ret;
+    if(!__result->__wait())
+    {
+        try
+        {
+            __result->__throwUserException();
+        }
+        catch(const ::Ice::UserException& __ex)
+        {
+            throw ::Ice::UnknownUserException(__FILE__, __LINE__, __ex.ice_name());
+        }
+    }
+    ::IceInternal::BasicStream* __is = __result->__startReadParams();
+    __is->read(__p_dataSeq);
     __is->read(__ret);
     __result->__endReadParams();
     return __ret;
@@ -3259,12 +4244,148 @@ RdbRealData::RdbDataOpt::___GetSectionData(::IceInternal::Incoming& __inS, const
     ::std::string __p_deviceRid;
     __is->read(__p_deviceRid);
     __inS.endReadParams();
-    ::Ice::Double __p_analogValue;
-    ::Ice::Int __p_discreteValue;
-    bool __ret = GetSectionData(__p_deviceRid, __p_analogValue, __p_discreteValue, __current);
+    ::RdbRealData::DoubleSeq __p_analogValues;
+    ::RdbRealData::IntegerSeq __p_discreteValues;
+    bool __ret = GetSectionData(__p_deviceRid, __p_analogValues, __p_discreteValues, __current);
     ::IceInternal::BasicStream* __os = __inS.__startWriteParams(::Ice::DefaultFormat);
-    __os->write(__p_analogValue);
-    __os->write(__p_discreteValue);
+    __os->write(__p_analogValues);
+    __os->write(__p_discreteValues);
+    __os->write(__ret);
+    __inS.__endWriteParams(true);
+    return ::Ice::DispatchOK;
+}
+
+::Ice::DispatchStatus
+RdbRealData::RdbDataOpt::___updateBreaker(::IceInternal::Incoming& __inS, const ::Ice::Current& __current)
+{
+    __checkMode(::Ice::Normal, __current.mode);
+    ::IceInternal::BasicStream* __is = __inS.startReadParams();
+    ::std::string __p_mrid;
+    ::RdbRealData::FieldMap __p_fieldData;
+    __is->read(__p_mrid);
+    __is->read(__p_fieldData);
+    __inS.endReadParams();
+    bool __ret = updateBreaker(__p_mrid, __p_fieldData, __current);
+    ::IceInternal::BasicStream* __os = __inS.__startWriteParams(::Ice::DefaultFormat);
+    __os->write(__ret);
+    __inS.__endWriteParams(true);
+    return ::Ice::DispatchOK;
+}
+
+::Ice::DispatchStatus
+RdbRealData::RdbDataOpt::___updateDisconnector(::IceInternal::Incoming& __inS, const ::Ice::Current& __current)
+{
+    __checkMode(::Ice::Normal, __current.mode);
+    ::IceInternal::BasicStream* __is = __inS.startReadParams();
+    ::std::string __p_mrid;
+    ::RdbRealData::FieldMap __p_fieldData;
+    __is->read(__p_mrid);
+    __is->read(__p_fieldData);
+    __inS.endReadParams();
+    bool __ret = updateDisconnector(__p_mrid, __p_fieldData, __current);
+    ::IceInternal::BasicStream* __os = __inS.__startWriteParams(::Ice::DefaultFormat);
+    __os->write(__ret);
+    __inS.__endWriteParams(true);
+    return ::Ice::DispatchOK;
+}
+
+::Ice::DispatchStatus
+RdbRealData::RdbDataOpt::___updatePowerTransformer(::IceInternal::Incoming& __inS, const ::Ice::Current& __current)
+{
+    __checkMode(::Ice::Normal, __current.mode);
+    ::IceInternal::BasicStream* __is = __inS.startReadParams();
+    ::std::string __p_mrid;
+    ::RdbRealData::FieldMap __p_fieldData;
+    __is->read(__p_mrid);
+    __is->read(__p_fieldData);
+    __inS.endReadParams();
+    bool __ret = updatePowerTransformer(__p_mrid, __p_fieldData, __current);
+    ::IceInternal::BasicStream* __os = __inS.__startWriteParams(::Ice::DefaultFormat);
+    __os->write(__ret);
+    __inS.__endWriteParams(true);
+    return ::Ice::DispatchOK;
+}
+
+::Ice::DispatchStatus
+RdbRealData::RdbDataOpt::___updateAnalog(::IceInternal::Incoming& __inS, const ::Ice::Current& __current)
+{
+    __checkMode(::Ice::Normal, __current.mode);
+    ::IceInternal::BasicStream* __is = __inS.startReadParams();
+    ::std::string __p_mrid;
+    ::RdbRealData::FieldMap __p_fieldData;
+    __is->read(__p_mrid);
+    __is->read(__p_fieldData);
+    __inS.endReadParams();
+    bool __ret = updateAnalog(__p_mrid, __p_fieldData, __current);
+    ::IceInternal::BasicStream* __os = __inS.__startWriteParams(::Ice::DefaultFormat);
+    __os->write(__ret);
+    __inS.__endWriteParams(true);
+    return ::Ice::DispatchOK;
+}
+
+::Ice::DispatchStatus
+RdbRealData::RdbDataOpt::___updateDiscrete(::IceInternal::Incoming& __inS, const ::Ice::Current& __current)
+{
+    __checkMode(::Ice::Normal, __current.mode);
+    ::IceInternal::BasicStream* __is = __inS.startReadParams();
+    ::std::string __p_mrid;
+    ::RdbRealData::FieldMap __p_fieldData;
+    __is->read(__p_mrid);
+    __is->read(__p_fieldData);
+    __inS.endReadParams();
+    bool __ret = updateDiscrete(__p_mrid, __p_fieldData, __current);
+    ::IceInternal::BasicStream* __os = __inS.__startWriteParams(::Ice::DefaultFormat);
+    __os->write(__ret);
+    __inS.__endWriteParams(true);
+    return ::Ice::DispatchOK;
+}
+
+::Ice::DispatchStatus
+RdbRealData::RdbDataOpt::___updateAccumulator(::IceInternal::Incoming& __inS, const ::Ice::Current& __current)
+{
+    __checkMode(::Ice::Normal, __current.mode);
+    ::IceInternal::BasicStream* __is = __inS.startReadParams();
+    ::std::string __p_mrid;
+    ::RdbRealData::FieldMap __p_fieldData;
+    __is->read(__p_mrid);
+    __is->read(__p_fieldData);
+    __inS.endReadParams();
+    bool __ret = updateAccumulator(__p_mrid, __p_fieldData, __current);
+    ::IceInternal::BasicStream* __os = __inS.__startWriteParams(::Ice::DefaultFormat);
+    __os->write(__ret);
+    __inS.__endWriteParams(true);
+    return ::Ice::DispatchOK;
+}
+
+::Ice::DispatchStatus
+RdbRealData::RdbDataOpt::___updateRemoteUnit(::IceInternal::Incoming& __inS, const ::Ice::Current& __current)
+{
+    __checkMode(::Ice::Normal, __current.mode);
+    ::IceInternal::BasicStream* __is = __inS.startReadParams();
+    ::std::string __p_mrid;
+    ::RdbRealData::FieldMap __p_fieldData;
+    __is->read(__p_mrid);
+    __is->read(__p_fieldData);
+    __inS.endReadParams();
+    bool __ret = updateRemoteUnit(__p_mrid, __p_fieldData, __current);
+    ::IceInternal::BasicStream* __os = __inS.__startWriteParams(::Ice::DefaultFormat);
+    __os->write(__ret);
+    __inS.__endWriteParams(true);
+    return ::Ice::DispatchOK;
+}
+
+::Ice::DispatchStatus
+RdbRealData::RdbDataOpt::___getCurvePointDataSeq(::IceInternal::Incoming& __inS, const ::Ice::Current& __current)
+{
+    __checkMode(::Ice::Normal, __current.mode);
+    ::IceInternal::BasicStream* __is = __inS.startReadParams();
+    ::RdbRealData::Strings __p_analogs;
+    __is->read(__p_analogs);
+    __inS.endReadParams();
+    ::RdbRealData::CurvePointDataSeq __p_dataSeq;
+    bool __ret = getCurvePointDataSeq(__p_analogs, __p_dataSeq, __current);
+    ::IceInternal::BasicStream* __os = __inS.__startWriteParams(::Ice::DefaultFormat);
+    __os->write(__p_dataSeq);
     __os->write(__ret);
     __inS.__endWriteParams(true);
     return ::Ice::DispatchOK;
@@ -3289,12 +4410,20 @@ const ::std::string __RdbRealData__RdbDataOpt_all[] =
     "SelectSpecificData",
     "UpdateCompleteData",
     "UpdateTopoData",
+    "getCurvePointDataSeq",
     "ice_id",
     "ice_ids",
     "ice_isA",
     "ice_ping",
     "isEmptyNode",
-    "isOrphanNode"
+    "isOrphanNode",
+    "updateAccumulator",
+    "updateAnalog",
+    "updateBreaker",
+    "updateDisconnector",
+    "updateDiscrete",
+    "updatePowerTransformer",
+    "updateRemoteUnit"
 };
 
 }
@@ -3302,7 +4431,7 @@ const ::std::string __RdbRealData__RdbDataOpt_all[] =
 ::Ice::DispatchStatus
 RdbRealData::RdbDataOpt::__dispatch(::IceInternal::Incoming& in, const ::Ice::Current& current)
 {
-    ::std::pair< const ::std::string*, const ::std::string*> r = ::std::equal_range(__RdbRealData__RdbDataOpt_all, __RdbRealData__RdbDataOpt_all + 21, current.operation);
+    ::std::pair< const ::std::string*, const ::std::string*> r = ::std::equal_range(__RdbRealData__RdbDataOpt_all, __RdbRealData__RdbDataOpt_all + 29, current.operation);
     if(r.first == r.second)
     {
         throw ::Ice::OperationNotExistException(__FILE__, __LINE__, current.id, current.facet, current.operation);
@@ -3372,27 +4501,59 @@ RdbRealData::RdbDataOpt::__dispatch(::IceInternal::Incoming& in, const ::Ice::Cu
         }
         case 15:
         {
-            return ___ice_id(in, current);
+            return ___getCurvePointDataSeq(in, current);
         }
         case 16:
         {
-            return ___ice_ids(in, current);
+            return ___ice_id(in, current);
         }
         case 17:
         {
-            return ___ice_isA(in, current);
+            return ___ice_ids(in, current);
         }
         case 18:
         {
-            return ___ice_ping(in, current);
+            return ___ice_isA(in, current);
         }
         case 19:
         {
-            return ___isEmptyNode(in, current);
+            return ___ice_ping(in, current);
         }
         case 20:
         {
+            return ___isEmptyNode(in, current);
+        }
+        case 21:
+        {
             return ___isOrphanNode(in, current);
+        }
+        case 22:
+        {
+            return ___updateAccumulator(in, current);
+        }
+        case 23:
+        {
+            return ___updateAnalog(in, current);
+        }
+        case 24:
+        {
+            return ___updateBreaker(in, current);
+        }
+        case 25:
+        {
+            return ___updateDisconnector(in, current);
+        }
+        case 26:
+        {
+            return ___updateDiscrete(in, current);
+        }
+        case 27:
+        {
+            return ___updatePowerTransformer(in, current);
+        }
+        case 28:
+        {
+            return ___updateRemoteUnit(in, current);
         }
     }
 

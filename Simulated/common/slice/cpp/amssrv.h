@@ -127,6 +127,7 @@ struct ServerNode
     ::std::string runRole;
     ::std::string runPartName;
     ::std::string runSecName;
+    ::std::string isXbfep;
 
     bool operator==(const ServerNode& __rhs) const
     {
@@ -179,6 +180,10 @@ struct ServerNode
             return false;
         }
         if(runSecName != __rhs.runSecName)
+        {
+            return false;
+        }
+        if(isXbfep != __rhs.isXbfep)
         {
             return false;
         }
@@ -287,6 +292,14 @@ struct ServerNode
         {
             return false;
         }
+        if(isXbfep < __rhs.isXbfep)
+        {
+            return true;
+        }
+        else if(__rhs.isXbfep < isXbfep)
+        {
+            return false;
+        }
         return false;
     }
 
@@ -324,7 +337,7 @@ template<>
 struct StreamableTraits< ::Amssrv::ServerNode>
 {
     static const StreamHelperCategory helper = StreamHelperCategoryStruct;
-    static const int minWireSize = 18;
+    static const int minWireSize = 19;
     static const bool fixedLength = false;
 };
 
@@ -345,6 +358,7 @@ struct StreamWriter< ::Amssrv::ServerNode, S>
         __os->write(v.runRole);
         __os->write(v.runPartName);
         __os->write(v.runSecName);
+        __os->write(v.isXbfep);
     }
 };
 
@@ -365,6 +379,7 @@ struct StreamReader< ::Amssrv::ServerNode, S>
         __is->read(v.runRole);
         __is->read(v.runPartName);
         __is->read(v.runSecName);
+        __is->read(v.isXbfep);
     }
 };
 

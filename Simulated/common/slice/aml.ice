@@ -78,7 +78,7 @@ module Aml{
 	     * @throws AmlException:其它原因
 	     *
 	     **/
-	    void SetConfig(string role, string strDistrict, string strSection, string strDistrictName, string strSectionName)throws CAmlException;
+	    void SetConfig(string role, string strDistrict, string strSection, string strDistrictName, string strSectionName, string isXbfep)throws CAmlException;
 	};
 };
 

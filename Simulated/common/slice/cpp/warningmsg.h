@@ -147,6 +147,9 @@ typedef ::IceUtil::Handle< Callback_SendWarningMsg_sendRfwFileBinary_Base> Callb
 class Callback_SendWarningMsg_sendCurveFileBinary_Base : virtual public ::IceInternal::CallbackBase { };
 typedef ::IceUtil::Handle< Callback_SendWarningMsg_sendCurveFileBinary_Base> Callback_SendWarningMsg_sendCurveFileBinaryPtr;
 
+class Callback_SendWarningMsg_sendReportFileBinary_Base : virtual public ::IceInternal::CallbackBase { };
+typedef ::IceUtil::Handle< Callback_SendWarningMsg_sendReportFileBinary_Base> Callback_SendWarningMsg_sendReportFileBinaryPtr;
+
 }
 
 namespace IceProxy
@@ -559,6 +562,76 @@ private:
     ::Ice::AsyncResultPtr begin_sendCurveFileBinary(const ::std::string&, const ::std::string&, const ::WarningMsg::Bytes&, const ::Ice::Context*, const ::IceInternal::CallbackBasePtr&, const ::Ice::LocalObjectPtr& __cookie = 0);
     
 public:
+
+    void sendReportFileBinary(const ::std::string& __p_folder, const ::std::string& __p_title, const ::WarningMsg::Bytes& __p_datas)
+    {
+        sendReportFileBinary(__p_folder, __p_title, __p_datas, 0);
+    }
+    void sendReportFileBinary(const ::std::string& __p_folder, const ::std::string& __p_title, const ::WarningMsg::Bytes& __p_datas, const ::Ice::Context& __ctx)
+    {
+        sendReportFileBinary(__p_folder, __p_title, __p_datas, &__ctx);
+    }
+#ifdef ICE_CPP11
+    ::Ice::AsyncResultPtr
+    begin_sendReportFileBinary(const ::std::string& __p_folder, const ::std::string& __p_title, const ::WarningMsg::Bytes& __p_datas, const ::IceInternal::Function<void ()>& __response, const ::IceInternal::Function<void (const ::Ice::Exception&)>& __exception = ::IceInternal::Function<void (const ::Ice::Exception&)>(), const ::IceInternal::Function<void (bool)>& __sent = ::IceInternal::Function<void (bool)>())
+    {
+        return begin_sendReportFileBinary(__p_folder, __p_title, __p_datas, 0, new ::IceInternal::Cpp11FnOnewayCallbackNC(__response, __exception, __sent));
+    }
+    ::Ice::AsyncResultPtr
+    begin_sendReportFileBinary(const ::std::string& __p_folder, const ::std::string& __p_title, const ::WarningMsg::Bytes& __p_datas, const ::IceInternal::Function<void (const ::Ice::AsyncResultPtr&)>& __completed, const ::IceInternal::Function<void (const ::Ice::AsyncResultPtr&)>& __sent = ::IceInternal::Function<void (const ::Ice::AsyncResultPtr&)>())
+    {
+        return begin_sendReportFileBinary(__p_folder, __p_title, __p_datas, 0, ::Ice::newCallback(__completed, __sent), 0);
+    }
+    ::Ice::AsyncResultPtr
+    begin_sendReportFileBinary(const ::std::string& __p_folder, const ::std::string& __p_title, const ::WarningMsg::Bytes& __p_datas, const ::Ice::Context& __ctx, const ::IceInternal::Function<void ()>& __response, const ::IceInternal::Function<void (const ::Ice::Exception&)>& __exception = ::IceInternal::Function<void (const ::Ice::Exception&)>(), const ::IceInternal::Function<void (bool)>& __sent = ::IceInternal::Function<void (bool)>())
+    {
+        return begin_sendReportFileBinary(__p_folder, __p_title, __p_datas, &__ctx, new ::IceInternal::Cpp11FnOnewayCallbackNC(__response, __exception, __sent), 0);
+    }
+    ::Ice::AsyncResultPtr
+    begin_sendReportFileBinary(const ::std::string& __p_folder, const ::std::string& __p_title, const ::WarningMsg::Bytes& __p_datas, const ::Ice::Context& __ctx, const ::IceInternal::Function<void (const ::Ice::AsyncResultPtr&)>& __completed, const ::IceInternal::Function<void (const ::Ice::AsyncResultPtr&)>& __sent = ::IceInternal::Function<void (const ::Ice::AsyncResultPtr&)>())
+    {
+        return begin_sendReportFileBinary(__p_folder, __p_title, __p_datas, &__ctx, ::Ice::newCallback(__completed, __sent));
+    }
+#endif
+
+    ::Ice::AsyncResultPtr begin_sendReportFileBinary(const ::std::string& __p_folder, const ::std::string& __p_title, const ::WarningMsg::Bytes& __p_datas)
+    {
+        return begin_sendReportFileBinary(__p_folder, __p_title, __p_datas, 0, ::IceInternal::__dummyCallback, 0);
+    }
+
+    ::Ice::AsyncResultPtr begin_sendReportFileBinary(const ::std::string& __p_folder, const ::std::string& __p_title, const ::WarningMsg::Bytes& __p_datas, const ::Ice::Context& __ctx)
+    {
+        return begin_sendReportFileBinary(__p_folder, __p_title, __p_datas, &__ctx, ::IceInternal::__dummyCallback, 0);
+    }
+
+    ::Ice::AsyncResultPtr begin_sendReportFileBinary(const ::std::string& __p_folder, const ::std::string& __p_title, const ::WarningMsg::Bytes& __p_datas, const ::Ice::CallbackPtr& __del, const ::Ice::LocalObjectPtr& __cookie = 0)
+    {
+        return begin_sendReportFileBinary(__p_folder, __p_title, __p_datas, 0, __del, __cookie);
+    }
+
+    ::Ice::AsyncResultPtr begin_sendReportFileBinary(const ::std::string& __p_folder, const ::std::string& __p_title, const ::WarningMsg::Bytes& __p_datas, const ::Ice::Context& __ctx, const ::Ice::CallbackPtr& __del, const ::Ice::LocalObjectPtr& __cookie = 0)
+    {
+        return begin_sendReportFileBinary(__p_folder, __p_title, __p_datas, &__ctx, __del, __cookie);
+    }
+
+    ::Ice::AsyncResultPtr begin_sendReportFileBinary(const ::std::string& __p_folder, const ::std::string& __p_title, const ::WarningMsg::Bytes& __p_datas, const ::WarningMsg::Callback_SendWarningMsg_sendReportFileBinaryPtr& __del, const ::Ice::LocalObjectPtr& __cookie = 0)
+    {
+        return begin_sendReportFileBinary(__p_folder, __p_title, __p_datas, 0, __del, __cookie);
+    }
+
+    ::Ice::AsyncResultPtr begin_sendReportFileBinary(const ::std::string& __p_folder, const ::std::string& __p_title, const ::WarningMsg::Bytes& __p_datas, const ::Ice::Context& __ctx, const ::WarningMsg::Callback_SendWarningMsg_sendReportFileBinaryPtr& __del, const ::Ice::LocalObjectPtr& __cookie = 0)
+    {
+        return begin_sendReportFileBinary(__p_folder, __p_title, __p_datas, &__ctx, __del, __cookie);
+    }
+
+    void end_sendReportFileBinary(const ::Ice::AsyncResultPtr&);
+    
+private:
+
+    void sendReportFileBinary(const ::std::string&, const ::std::string&, const ::WarningMsg::Bytes&, const ::Ice::Context*);
+    ::Ice::AsyncResultPtr begin_sendReportFileBinary(const ::std::string&, const ::std::string&, const ::WarningMsg::Bytes&, const ::Ice::Context*, const ::IceInternal::CallbackBasePtr&, const ::Ice::LocalObjectPtr& __cookie = 0);
+    
+public:
     
     ::IceInternal::ProxyHandle<SendWarningMsg> ice_context(const ::Ice::Context& __context) const
     {
@@ -732,6 +805,9 @@ public:
 
     virtual void sendCurveFileBinary(const ::std::string&, const ::std::string&, const ::WarningMsg::Bytes&, const ::Ice::Current& = ::Ice::Current()) = 0;
     ::Ice::DispatchStatus ___sendCurveFileBinary(::IceInternal::Incoming&, const ::Ice::Current&);
+
+    virtual void sendReportFileBinary(const ::std::string&, const ::std::string&, const ::WarningMsg::Bytes&, const ::Ice::Current& = ::Ice::Current()) = 0;
+    ::Ice::DispatchStatus ___sendReportFileBinary(::IceInternal::Incoming&, const ::Ice::Current&);
 
     virtual ::Ice::DispatchStatus __dispatch(::IceInternal::Incoming&, const ::Ice::Current&);
 
@@ -1105,6 +1181,88 @@ template<class T, typename CT> Callback_SendWarningMsg_sendCurveFileBinaryPtr
 newCallback_SendWarningMsg_sendCurveFileBinary(T* instance, void (T::*excb)(const ::Ice::Exception&, const CT&), void (T::*sentcb)(bool, const CT&) = 0)
 {
     return new Callback_SendWarningMsg_sendCurveFileBinary<T, CT>(instance, 0, excb, sentcb);
+}
+
+template<class T>
+class CallbackNC_SendWarningMsg_sendReportFileBinary : public Callback_SendWarningMsg_sendReportFileBinary_Base, public ::IceInternal::OnewayCallbackNC<T>
+{
+public:
+
+    typedef IceUtil::Handle<T> TPtr;
+
+    typedef void (T::*Exception)(const ::Ice::Exception&);
+    typedef void (T::*Sent)(bool);
+    typedef void (T::*Response)();
+
+    CallbackNC_SendWarningMsg_sendReportFileBinary(const TPtr& obj, Response cb, Exception excb, Sent sentcb)
+        : ::IceInternal::OnewayCallbackNC<T>(obj, cb, excb, sentcb)
+    {
+    }
+};
+
+template<class T> Callback_SendWarningMsg_sendReportFileBinaryPtr
+newCallback_SendWarningMsg_sendReportFileBinary(const IceUtil::Handle<T>& instance, void (T::*cb)(), void (T::*excb)(const ::Ice::Exception&), void (T::*sentcb)(bool) = 0)
+{
+    return new CallbackNC_SendWarningMsg_sendReportFileBinary<T>(instance, cb, excb, sentcb);
+}
+
+template<class T> Callback_SendWarningMsg_sendReportFileBinaryPtr
+newCallback_SendWarningMsg_sendReportFileBinary(const IceUtil::Handle<T>& instance, void (T::*excb)(const ::Ice::Exception&), void (T::*sentcb)(bool) = 0)
+{
+    return new CallbackNC_SendWarningMsg_sendReportFileBinary<T>(instance, 0, excb, sentcb);
+}
+
+template<class T> Callback_SendWarningMsg_sendReportFileBinaryPtr
+newCallback_SendWarningMsg_sendReportFileBinary(T* instance, void (T::*cb)(), void (T::*excb)(const ::Ice::Exception&), void (T::*sentcb)(bool) = 0)
+{
+    return new CallbackNC_SendWarningMsg_sendReportFileBinary<T>(instance, cb, excb, sentcb);
+}
+
+template<class T> Callback_SendWarningMsg_sendReportFileBinaryPtr
+newCallback_SendWarningMsg_sendReportFileBinary(T* instance, void (T::*excb)(const ::Ice::Exception&), void (T::*sentcb)(bool) = 0)
+{
+    return new CallbackNC_SendWarningMsg_sendReportFileBinary<T>(instance, 0, excb, sentcb);
+}
+
+template<class T, typename CT>
+class Callback_SendWarningMsg_sendReportFileBinary : public Callback_SendWarningMsg_sendReportFileBinary_Base, public ::IceInternal::OnewayCallback<T, CT>
+{
+public:
+
+    typedef IceUtil::Handle<T> TPtr;
+
+    typedef void (T::*Exception)(const ::Ice::Exception& , const CT&);
+    typedef void (T::*Sent)(bool , const CT&);
+    typedef void (T::*Response)(const CT&);
+
+    Callback_SendWarningMsg_sendReportFileBinary(const TPtr& obj, Response cb, Exception excb, Sent sentcb)
+        : ::IceInternal::OnewayCallback<T, CT>(obj, cb, excb, sentcb)
+    {
+    }
+};
+
+template<class T, typename CT> Callback_SendWarningMsg_sendReportFileBinaryPtr
+newCallback_SendWarningMsg_sendReportFileBinary(const IceUtil::Handle<T>& instance, void (T::*cb)(const CT&), void (T::*excb)(const ::Ice::Exception&, const CT&), void (T::*sentcb)(bool, const CT&) = 0)
+{
+    return new Callback_SendWarningMsg_sendReportFileBinary<T, CT>(instance, cb, excb, sentcb);
+}
+
+template<class T, typename CT> Callback_SendWarningMsg_sendReportFileBinaryPtr
+newCallback_SendWarningMsg_sendReportFileBinary(const IceUtil::Handle<T>& instance, void (T::*excb)(const ::Ice::Exception&, const CT&), void (T::*sentcb)(bool, const CT&) = 0)
+{
+    return new Callback_SendWarningMsg_sendReportFileBinary<T, CT>(instance, 0, excb, sentcb);
+}
+
+template<class T, typename CT> Callback_SendWarningMsg_sendReportFileBinaryPtr
+newCallback_SendWarningMsg_sendReportFileBinary(T* instance, void (T::*cb)(const CT&), void (T::*excb)(const ::Ice::Exception&, const CT&), void (T::*sentcb)(bool, const CT&) = 0)
+{
+    return new Callback_SendWarningMsg_sendReportFileBinary<T, CT>(instance, cb, excb, sentcb);
+}
+
+template<class T, typename CT> Callback_SendWarningMsg_sendReportFileBinaryPtr
+newCallback_SendWarningMsg_sendReportFileBinary(T* instance, void (T::*excb)(const ::Ice::Exception&, const CT&), void (T::*sentcb)(bool, const CT&) = 0)
+{
+    return new Callback_SendWarningMsg_sendReportFileBinary<T, CT>(instance, 0, excb, sentcb);
 }
 
 }

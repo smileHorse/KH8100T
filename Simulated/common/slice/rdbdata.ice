@@ -304,6 +304,24 @@ module RdbRealData
 		void SendTopoDataRespond (ReceiveTopoDataSeq  seq );//响应拓朴数据
 	};
 
+	["java:type:java.util.ArrayList<Double>"]
+	sequence<double> DoubleSeq;
+	["java:type:java.util.ArrayList<Integer>"]
+	sequence<int> IntegerSeq;
+	
+	//字段名与值的map
+	dictionary<string, string> FieldMap;
+
+	//遥测整点数据
+	struct CurvePointData
+	{
+		string analog; 
+		Strings values;
+	};
+	["java:type:java.util.ArrayList<CurvePointData>"]
+	sequence<CurvePointData> CurvePointDataSeq;
+
+
 	//实时库ICE接口定义
 	interface RdbDataOpt
 	{
@@ -353,8 +371,31 @@ module RdbRealData
 		void UpdateTopoData();
 
 		//获取断面数据
-		bool GetSectionData(string deviceRid, out double analogValue, out int discreteValue);
+		bool GetSectionData(string deviceRid, out DoubleSeq analogValues, out IntegerSeq discreteValues);
+	
+		//更新开关表
+		bool updateBreaker(string mrid, FieldMap fieldData);
+		
+		//更新刀闸表
+		bool updateDisconnector(string mrid, FieldMap fieldData);
+		
+		//更新变压器
+		bool updatePowerTransformer(string mrid, FieldMap fieldData);
+		
+		//更新遥测
+		bool updateAnalog(string mrid, FieldMap fieldData);
+		
+		//更新遥信
+		bool updateDiscrete(string mrid, FieldMap fieldData);
+		
+		//更新电度
+		bool updateAccumulator(string mrid, FieldMap fieldData);
+		
+		//更新单元
+		bool updateRemoteUnit(string mrid, FieldMap fieldData);
 
+		// 提取遥测曲线整点数据
+		bool getCurvePointDataSeq(Strings analogs, out CurvePointDataSeq dataSeq);
 	};
 };
 

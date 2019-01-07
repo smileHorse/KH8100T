@@ -481,7 +481,7 @@ IceProxy::Aml::CAmlRole::end_SetRole(const ::Ice::AsyncResultPtr& __result)
 }
 
 void
-IceProxy::Aml::CAmlRole::SetConfig(const ::std::string& __p_role, const ::std::string& __p_strDistrict, const ::std::string& __p_strSection, const ::std::string& __p_strDistrictName, const ::std::string& __p_strSectionName, const ::Ice::Context* __ctx)
+IceProxy::Aml::CAmlRole::SetConfig(const ::std::string& __p_role, const ::std::string& __p_strDistrict, const ::std::string& __p_strSection, const ::std::string& __p_strDistrictName, const ::std::string& __p_strSectionName, const ::std::string& __p_isXbfep, const ::Ice::Context* __ctx)
 {
     __checkTwowayOnly(__Aml__CAmlRole__SetConfig_name);
     ::IceInternal::Outgoing __og(this, __Aml__CAmlRole__SetConfig_name, ::Ice::Normal, __ctx);
@@ -493,6 +493,7 @@ IceProxy::Aml::CAmlRole::SetConfig(const ::std::string& __p_role, const ::std::s
         __os->write(__p_strSection);
         __os->write(__p_strDistrictName);
         __os->write(__p_strSectionName);
+        __os->write(__p_isXbfep);
         __og.endWriteParams();
     }
     catch(const ::Ice::LocalException& __ex)
@@ -518,7 +519,7 @@ IceProxy::Aml::CAmlRole::SetConfig(const ::std::string& __p_role, const ::std::s
 }
 
 ::Ice::AsyncResultPtr
-IceProxy::Aml::CAmlRole::begin_SetConfig(const ::std::string& __p_role, const ::std::string& __p_strDistrict, const ::std::string& __p_strSection, const ::std::string& __p_strDistrictName, const ::std::string& __p_strSectionName, const ::Ice::Context* __ctx, const ::IceInternal::CallbackBasePtr& __del, const ::Ice::LocalObjectPtr& __cookie)
+IceProxy::Aml::CAmlRole::begin_SetConfig(const ::std::string& __p_role, const ::std::string& __p_strDistrict, const ::std::string& __p_strSection, const ::std::string& __p_strDistrictName, const ::std::string& __p_strSectionName, const ::std::string& __p_isXbfep, const ::Ice::Context* __ctx, const ::IceInternal::CallbackBasePtr& __del, const ::Ice::LocalObjectPtr& __cookie)
 {
     __checkAsyncTwowayOnly(__Aml__CAmlRole__SetConfig_name);
     ::IceInternal::OutgoingAsyncPtr __result = new ::IceInternal::OutgoingAsync(this, __Aml__CAmlRole__SetConfig_name, __del, __cookie);
@@ -531,6 +532,7 @@ IceProxy::Aml::CAmlRole::begin_SetConfig(const ::std::string& __p_role, const ::
         __os->write(__p_strSection);
         __os->write(__p_strDistrictName);
         __os->write(__p_strSectionName);
+        __os->write(__p_isXbfep);
         __result->endWriteParams();
         __result->invoke();
     }
@@ -544,7 +546,7 @@ IceProxy::Aml::CAmlRole::begin_SetConfig(const ::std::string& __p_role, const ::
 #ifdef ICE_CPP11
 
 ::Ice::AsyncResultPtr
-IceProxy::Aml::CAmlRole::__begin_SetConfig(const ::std::string& __p_role, const ::std::string& __p_strDistrict, const ::std::string& __p_strSection, const ::std::string& __p_strDistrictName, const ::std::string& __p_strSectionName, const ::Ice::Context* __ctx, const ::IceInternal::Function<void ()>& __response, const ::IceInternal::Function<void (const ::Ice::Exception&)>& __exception, const ::IceInternal::Function<void (bool)>& __sent)
+IceProxy::Aml::CAmlRole::__begin_SetConfig(const ::std::string& __p_role, const ::std::string& __p_strDistrict, const ::std::string& __p_strSection, const ::std::string& __p_strDistrictName, const ::std::string& __p_strSectionName, const ::std::string& __p_isXbfep, const ::Ice::Context* __ctx, const ::IceInternal::Function<void ()>& __response, const ::IceInternal::Function<void (const ::Ice::Exception&)>& __exception, const ::IceInternal::Function<void (bool)>& __sent)
 {
     class Cpp11CB : public ::IceInternal::Cpp11FnCallbackNC
     {
@@ -579,7 +581,7 @@ IceProxy::Aml::CAmlRole::__begin_SetConfig(const ::std::string& __p_role, const 
         
         ::std::function<void ()> _response;
     };
-    return begin_SetConfig(__p_role, __p_strDistrict, __p_strSection, __p_strDistrictName, __p_strSectionName, __ctx, new Cpp11CB(__response, __exception, __sent));
+    return begin_SetConfig(__p_role, __p_strDistrict, __p_strSection, __p_strDistrictName, __p_strSectionName, __p_isXbfep, __ctx, new Cpp11CB(__response, __exception, __sent));
 }
 #endif
 
@@ -733,15 +735,17 @@ Aml::CAmlRole::___SetConfig(::IceInternal::Incoming& __inS, const ::Ice::Current
     ::std::string __p_strSection;
     ::std::string __p_strDistrictName;
     ::std::string __p_strSectionName;
+    ::std::string __p_isXbfep;
     __is->read(__p_role);
     __is->read(__p_strDistrict);
     __is->read(__p_strSection);
     __is->read(__p_strDistrictName);
     __is->read(__p_strSectionName);
+    __is->read(__p_isXbfep);
     __inS.endReadParams();
     try
     {
-        SetConfig(__p_role, __p_strDistrict, __p_strSection, __p_strDistrictName, __p_strSectionName, __current);
+        SetConfig(__p_role, __p_strDistrict, __p_strSection, __p_strDistrictName, __p_strSectionName, __p_isXbfep, __current);
         __inS.__writeEmptyParams();
         return ::Ice::DispatchOK;
     }
