@@ -237,6 +237,7 @@
 		<field type = "bool">lockFlag</field>
 		<field type = "bool">holdFlag</field>
 		<field type = "bool">holdFaFlag</field>
+		<field type = "string">graph</field>
 	</table>
 	<table name="AnalogUnitPoint">
 		<field type = "string">mRID</field>

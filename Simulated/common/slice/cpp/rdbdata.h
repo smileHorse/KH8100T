@@ -1009,6 +1009,14 @@ struct CurvePointData
 
 typedef ::std::vector< ::RdbRealData::CurvePointData> CurvePointDataSeq;
 
+struct SectionValue
+{
+    ::std::string measurmentType;
+    ::RdbRealData::DoubleSeq values;
+};
+
+typedef ::std::vector< ::RdbRealData::SectionValue> SectionValueSeq;
+
 }
 
 namespace RdbWarningData
@@ -1842,6 +1850,34 @@ struct StreamReader< ::RdbRealData::CurvePointData, S>
     }
 };
 
+template<>
+struct StreamableTraits< ::RdbRealData::SectionValue>
+{
+    static const StreamHelperCategory helper = StreamHelperCategoryStruct;
+    static const int minWireSize = 2;
+    static const bool fixedLength = false;
+};
+
+template<class S>
+struct StreamWriter< ::RdbRealData::SectionValue, S>
+{
+    static void write(S* __os, const ::RdbRealData::SectionValue& v)
+    {
+        __os->write(v.measurmentType);
+        __os->write(v.values);
+    }
+};
+
+template<class S>
+struct StreamReader< ::RdbRealData::SectionValue, S>
+{
+    static void read(S* __is, ::RdbRealData::SectionValue& v)
+    {
+        __is->read(v.measurmentType);
+        __is->read(v.values);
+    }
+};
+
 }
 
 namespace Ice
@@ -1983,6 +2019,9 @@ typedef ::IceUtil::Handle< Callback_RdbDataOpt_UpdateTopoData_Base> Callback_Rdb
 
 class Callback_RdbDataOpt_GetSectionData_Base : virtual public ::IceInternal::CallbackBase { };
 typedef ::IceUtil::Handle< Callback_RdbDataOpt_GetSectionData_Base> Callback_RdbDataOpt_GetSectionDataPtr;
+
+class Callback_RdbDataOpt_GetAllSectionData_Base : virtual public ::IceInternal::CallbackBase { };
+typedef ::IceUtil::Handle< Callback_RdbDataOpt_GetAllSectionData_Base> Callback_RdbDataOpt_GetAllSectionDataPtr;
 
 class Callback_RdbDataOpt_updateBreaker_Base : virtual public ::IceInternal::CallbackBase { };
 typedef ::IceUtil::Handle< Callback_RdbDataOpt_updateBreaker_Base> Callback_RdbDataOpt_updateBreakerPtr;
@@ -4104,6 +4143,82 @@ private:
     
 public:
 
+    bool GetAllSectionData(const ::std::string& __p_deviceRid, ::RdbRealData::SectionValueSeq& __p_analogValues, ::RdbRealData::IntegerSeq& __p_discreteValues)
+    {
+        return GetAllSectionData(__p_deviceRid, __p_analogValues, __p_discreteValues, 0);
+    }
+    bool GetAllSectionData(const ::std::string& __p_deviceRid, ::RdbRealData::SectionValueSeq& __p_analogValues, ::RdbRealData::IntegerSeq& __p_discreteValues, const ::Ice::Context& __ctx)
+    {
+        return GetAllSectionData(__p_deviceRid, __p_analogValues, __p_discreteValues, &__ctx);
+    }
+#ifdef ICE_CPP11
+    ::Ice::AsyncResultPtr
+    begin_GetAllSectionData(const ::std::string& __p_deviceRid, const ::IceInternal::Function<void (bool, const ::RdbRealData::SectionValueSeq&, const ::RdbRealData::IntegerSeq&)>& __response, const ::IceInternal::Function<void (const ::Ice::Exception&)>& __exception = ::IceInternal::Function<void (const ::Ice::Exception&)>(), const ::IceInternal::Function<void (bool)>& __sent = ::IceInternal::Function<void (bool)>())
+    {
+        return __begin_GetAllSectionData(__p_deviceRid, 0, __response, __exception, __sent);
+    }
+    ::Ice::AsyncResultPtr
+    begin_GetAllSectionData(const ::std::string& __p_deviceRid, const ::IceInternal::Function<void (const ::Ice::AsyncResultPtr&)>& __completed, const ::IceInternal::Function<void (const ::Ice::AsyncResultPtr&)>& __sent = ::IceInternal::Function<void (const ::Ice::AsyncResultPtr&)>())
+    {
+        return begin_GetAllSectionData(__p_deviceRid, 0, ::Ice::newCallback(__completed, __sent), 0);
+    }
+    ::Ice::AsyncResultPtr
+    begin_GetAllSectionData(const ::std::string& __p_deviceRid, const ::Ice::Context& __ctx, const ::IceInternal::Function<void (bool, const ::RdbRealData::SectionValueSeq&, const ::RdbRealData::IntegerSeq&)>& __response, const ::IceInternal::Function<void (const ::Ice::Exception&)>& __exception = ::IceInternal::Function<void (const ::Ice::Exception&)>(), const ::IceInternal::Function<void (bool)>& __sent = ::IceInternal::Function<void (bool)>())
+    {
+        return __begin_GetAllSectionData(__p_deviceRid, &__ctx, __response, __exception, __sent);
+    }
+    ::Ice::AsyncResultPtr
+    begin_GetAllSectionData(const ::std::string& __p_deviceRid, const ::Ice::Context& __ctx, const ::IceInternal::Function<void (const ::Ice::AsyncResultPtr&)>& __completed, const ::IceInternal::Function<void (const ::Ice::AsyncResultPtr&)>& __sent = ::IceInternal::Function<void (const ::Ice::AsyncResultPtr&)>())
+    {
+        return begin_GetAllSectionData(__p_deviceRid, &__ctx, ::Ice::newCallback(__completed, __sent));
+    }
+    
+private:
+
+    ::Ice::AsyncResultPtr __begin_GetAllSectionData(const ::std::string& __p_deviceRid, const ::Ice::Context* __ctx, const ::IceInternal::Function<void (bool, const ::RdbRealData::SectionValueSeq&, const ::RdbRealData::IntegerSeq&)>& __response, const ::IceInternal::Function<void (const ::Ice::Exception&)>& __exception, const ::IceInternal::Function<void (bool)>& __sent);
+    
+public:
+#endif
+
+    ::Ice::AsyncResultPtr begin_GetAllSectionData(const ::std::string& __p_deviceRid)
+    {
+        return begin_GetAllSectionData(__p_deviceRid, 0, ::IceInternal::__dummyCallback, 0);
+    }
+
+    ::Ice::AsyncResultPtr begin_GetAllSectionData(const ::std::string& __p_deviceRid, const ::Ice::Context& __ctx)
+    {
+        return begin_GetAllSectionData(__p_deviceRid, &__ctx, ::IceInternal::__dummyCallback, 0);
+    }
+
+    ::Ice::AsyncResultPtr begin_GetAllSectionData(const ::std::string& __p_deviceRid, const ::Ice::CallbackPtr& __del, const ::Ice::LocalObjectPtr& __cookie = 0)
+    {
+        return begin_GetAllSectionData(__p_deviceRid, 0, __del, __cookie);
+    }
+
+    ::Ice::AsyncResultPtr begin_GetAllSectionData(const ::std::string& __p_deviceRid, const ::Ice::Context& __ctx, const ::Ice::CallbackPtr& __del, const ::Ice::LocalObjectPtr& __cookie = 0)
+    {
+        return begin_GetAllSectionData(__p_deviceRid, &__ctx, __del, __cookie);
+    }
+
+    ::Ice::AsyncResultPtr begin_GetAllSectionData(const ::std::string& __p_deviceRid, const ::RdbRealData::Callback_RdbDataOpt_GetAllSectionDataPtr& __del, const ::Ice::LocalObjectPtr& __cookie = 0)
+    {
+        return begin_GetAllSectionData(__p_deviceRid, 0, __del, __cookie);
+    }
+
+    ::Ice::AsyncResultPtr begin_GetAllSectionData(const ::std::string& __p_deviceRid, const ::Ice::Context& __ctx, const ::RdbRealData::Callback_RdbDataOpt_GetAllSectionDataPtr& __del, const ::Ice::LocalObjectPtr& __cookie = 0)
+    {
+        return begin_GetAllSectionData(__p_deviceRid, &__ctx, __del, __cookie);
+    }
+
+    bool end_GetAllSectionData(::RdbRealData::SectionValueSeq& __p_analogValues, ::RdbRealData::IntegerSeq& __p_discreteValues, const ::Ice::AsyncResultPtr&);
+    
+private:
+
+    bool GetAllSectionData(const ::std::string&, ::RdbRealData::SectionValueSeq&, ::RdbRealData::IntegerSeq&, const ::Ice::Context*);
+    ::Ice::AsyncResultPtr begin_GetAllSectionData(const ::std::string&, const ::Ice::Context*, const ::IceInternal::CallbackBasePtr&, const ::Ice::LocalObjectPtr& __cookie = 0);
+    
+public:
+
     bool updateBreaker(const ::std::string& __p_mrid, const ::RdbRealData::FieldMap& __p_fieldData)
     {
         return updateBreaker(__p_mrid, __p_fieldData, 0);
@@ -5168,6 +5283,9 @@ public:
 
     virtual bool GetSectionData(const ::std::string&, ::RdbRealData::DoubleSeq&, ::RdbRealData::IntegerSeq&, const ::Ice::Current& = ::Ice::Current()) = 0;
     ::Ice::DispatchStatus ___GetSectionData(::IceInternal::Incoming&, const ::Ice::Current&);
+
+    virtual bool GetAllSectionData(const ::std::string&, ::RdbRealData::SectionValueSeq&, ::RdbRealData::IntegerSeq&, const ::Ice::Current& = ::Ice::Current()) = 0;
+    ::Ice::DispatchStatus ___GetAllSectionData(::IceInternal::Incoming&, const ::Ice::Current&);
 
     virtual bool updateBreaker(const ::std::string&, const ::RdbRealData::FieldMap&, const ::Ice::Current& = ::Ice::Current()) = 0;
     ::Ice::DispatchStatus ___updateBreaker(::IceInternal::Incoming&, const ::Ice::Current&);
@@ -7682,6 +7800,114 @@ template<class T, typename CT> Callback_RdbDataOpt_GetSectionDataPtr
 newCallback_RdbDataOpt_GetSectionData(T* instance, void (T::*cb)(bool, const ::RdbRealData::DoubleSeq&, const ::RdbRealData::IntegerSeq&, const CT&), void (T::*excb)(const ::Ice::Exception&, const CT&), void (T::*sentcb)(bool, const CT&) = 0)
 {
     return new Callback_RdbDataOpt_GetSectionData<T, CT>(instance, cb, excb, sentcb);
+}
+
+template<class T>
+class CallbackNC_RdbDataOpt_GetAllSectionData : public Callback_RdbDataOpt_GetAllSectionData_Base, public ::IceInternal::TwowayCallbackNC<T>
+{
+public:
+
+    typedef IceUtil::Handle<T> TPtr;
+
+    typedef void (T::*Exception)(const ::Ice::Exception&);
+    typedef void (T::*Sent)(bool);
+    typedef void (T::*Response)(bool, const ::RdbRealData::SectionValueSeq&, const ::RdbRealData::IntegerSeq&);
+
+    CallbackNC_RdbDataOpt_GetAllSectionData(const TPtr& obj, Response cb, Exception excb, Sent sentcb)
+        : ::IceInternal::TwowayCallbackNC<T>(obj, cb != 0, excb, sentcb), _response(cb)
+    {
+    }
+
+    virtual void completed(const ::Ice::AsyncResultPtr& __result) const
+    {
+        ::RdbRealData::RdbDataOptPrx __proxy = ::RdbRealData::RdbDataOptPrx::uncheckedCast(__result->getProxy());
+        ::RdbRealData::SectionValueSeq analogValues;
+        ::RdbRealData::IntegerSeq discreteValues;
+        bool __ret;
+        try
+        {
+            __ret = __proxy->end_GetAllSectionData(analogValues, discreteValues, __result);
+        }
+        catch(const ::Ice::Exception& ex)
+        {
+            ::IceInternal::CallbackNC<T>::exception(__result, ex);
+            return;
+        }
+        if(_response)
+        {
+            (::IceInternal::CallbackNC<T>::_callback.get()->*_response)(__ret, analogValues, discreteValues);
+        }
+    }
+
+    private:
+
+    Response _response;
+};
+
+template<class T> Callback_RdbDataOpt_GetAllSectionDataPtr
+newCallback_RdbDataOpt_GetAllSectionData(const IceUtil::Handle<T>& instance, void (T::*cb)(bool, const ::RdbRealData::SectionValueSeq&, const ::RdbRealData::IntegerSeq&), void (T::*excb)(const ::Ice::Exception&), void (T::*sentcb)(bool) = 0)
+{
+    return new CallbackNC_RdbDataOpt_GetAllSectionData<T>(instance, cb, excb, sentcb);
+}
+
+template<class T> Callback_RdbDataOpt_GetAllSectionDataPtr
+newCallback_RdbDataOpt_GetAllSectionData(T* instance, void (T::*cb)(bool, const ::RdbRealData::SectionValueSeq&, const ::RdbRealData::IntegerSeq&), void (T::*excb)(const ::Ice::Exception&), void (T::*sentcb)(bool) = 0)
+{
+    return new CallbackNC_RdbDataOpt_GetAllSectionData<T>(instance, cb, excb, sentcb);
+}
+
+template<class T, typename CT>
+class Callback_RdbDataOpt_GetAllSectionData : public Callback_RdbDataOpt_GetAllSectionData_Base, public ::IceInternal::TwowayCallback<T, CT>
+{
+public:
+
+    typedef IceUtil::Handle<T> TPtr;
+
+    typedef void (T::*Exception)(const ::Ice::Exception& , const CT&);
+    typedef void (T::*Sent)(bool , const CT&);
+    typedef void (T::*Response)(bool, const ::RdbRealData::SectionValueSeq&, const ::RdbRealData::IntegerSeq&, const CT&);
+
+    Callback_RdbDataOpt_GetAllSectionData(const TPtr& obj, Response cb, Exception excb, Sent sentcb)
+        : ::IceInternal::TwowayCallback<T, CT>(obj, cb != 0, excb, sentcb), _response(cb)
+    {
+    }
+
+    virtual void completed(const ::Ice::AsyncResultPtr& __result) const
+    {
+        ::RdbRealData::RdbDataOptPrx __proxy = ::RdbRealData::RdbDataOptPrx::uncheckedCast(__result->getProxy());
+        ::RdbRealData::SectionValueSeq analogValues;
+        ::RdbRealData::IntegerSeq discreteValues;
+        bool __ret;
+        try
+        {
+            __ret = __proxy->end_GetAllSectionData(analogValues, discreteValues, __result);
+        }
+        catch(const ::Ice::Exception& ex)
+        {
+            ::IceInternal::Callback<T, CT>::exception(__result, ex);
+            return;
+        }
+        if(_response)
+        {
+            (::IceInternal::Callback<T, CT>::_callback.get()->*_response)(__ret, analogValues, discreteValues, CT::dynamicCast(__result->getCookie()));
+        }
+    }
+
+    private:
+
+    Response _response;
+};
+
+template<class T, typename CT> Callback_RdbDataOpt_GetAllSectionDataPtr
+newCallback_RdbDataOpt_GetAllSectionData(const IceUtil::Handle<T>& instance, void (T::*cb)(bool, const ::RdbRealData::SectionValueSeq&, const ::RdbRealData::IntegerSeq&, const CT&), void (T::*excb)(const ::Ice::Exception&, const CT&), void (T::*sentcb)(bool, const CT&) = 0)
+{
+    return new Callback_RdbDataOpt_GetAllSectionData<T, CT>(instance, cb, excb, sentcb);
+}
+
+template<class T, typename CT> Callback_RdbDataOpt_GetAllSectionDataPtr
+newCallback_RdbDataOpt_GetAllSectionData(T* instance, void (T::*cb)(bool, const ::RdbRealData::SectionValueSeq&, const ::RdbRealData::IntegerSeq&, const CT&), void (T::*excb)(const ::Ice::Exception&, const CT&), void (T::*sentcb)(bool, const CT&) = 0)
+{
+    return new Callback_RdbDataOpt_GetAllSectionData<T, CT>(instance, cb, excb, sentcb);
 }
 
 template<class T>
