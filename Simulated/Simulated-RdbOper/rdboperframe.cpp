@@ -254,6 +254,7 @@ void RdbOperFrame::startServer()
 		int argc = 0;
 		Ice::InitializationData initData;
 		initData.properties = Ice::createProperties();
+		initData.properties->setProperty("Ice.MessageSizeMax", "10240");
 		m_communicatorPtr = Ice::initialize(argc, 0, initData);
 		QString endPoints = QString("tcp -h %1 -p %2").arg(m_configIceInfo.iceIp).arg(m_configIceInfo.icePort);
 		m_objectAdapterPtr = m_communicatorPtr->createObjectAdapterWithEndpoints(m_adapterIdentify.toStdString(), 

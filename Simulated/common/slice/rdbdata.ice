@@ -77,9 +77,21 @@ module RdbRealData
 		
 		string 	fieldName;//指定列名
 		string	fieldValue;//指定列查询条件值
+		Strings fieldValues;
 	};
 	["java:type:java.util.ArrayList<RequestCompleteData>"]
 	sequence<RequestCompleteData> RequestCompleteDataSequence;
+		
+	//请求全列
+	struct BatchRequestCompleteData
+	{
+		string	tableName;//查询表名
+		
+		string 	fieldName;//指定列名
+		Strings fieldValues;//指定列查询条件值
+	};
+	["java:type:java.util.ArrayList<BatchRequestCompleteData>"]
+	sequence<BatchRequestCompleteData> BatchRequestCompleteDataSequence;
 	
 	struct RequestCompleteDataSeq
 	{
@@ -92,6 +104,19 @@ module RdbRealData
 	
 		long		dataCount; //请求序列的个数
 		RequestCompleteDataSequence	seq;
+	};
+		
+	struct BatchRequestCompleteDataSeq
+	{
+		long		id;     
+		long		requestId; //请求编号
+		string 		requestNode;	//请求节点
+
+		bool		isStop; //是否停止此数据请求,ice接口忽略该项
+		int			refreshFreq; //刷新频率,0表示只一次请求,ice接口忽略该项
+	
+		long		dataCount; //请求序列的个数
+		BatchRequestCompleteDataSequence	seq;
 	};
 	
 	//返回"请求默认值"的结果
@@ -321,6 +346,16 @@ module RdbRealData
 	["java:type:java.util.ArrayList<CurvePointData>"]
 	sequence<CurvePointData> CurvePointDataSeq;
 
+	// 断面数据
+	struct SectionValue
+	{
+		string measurmentType;
+		string measurmentId;
+		DoubleSeq values;
+	};
+	["java:type:java.util.ArrayList<SectionValue>"]
+	sequence<SectionValue> SectionValueSeq;
+
 
 	//实时库ICE接口定义
 	interface RdbDataOpt
@@ -333,6 +368,7 @@ module RdbRealData
 		bool SelectDefaultData(RequestDefaultDataSeq reqSeq,out RespondDefaultDataSeq repSeq);
 		bool SelectSpecificData(RequestSpecficDataSeq reqSeq, out RespondSpecficDataSeq repSeq);
 		bool SelectCompleteData(RequestCompleteDataSeq reqSeq, out RespondCompleteDataSeq repSeq);
+		bool BatchSelectCompleteData(BatchRequestCompleteDataSeq reqSeq, out RespondCompleteDataSeq repSeq);
 		
 		//查询结果集的个数
 		bool  SelectDataCount(RequestDefaultDataSeq reqSeq,out RespondDataCountSequence repSeq);
@@ -372,6 +408,9 @@ module RdbRealData
 
 		//获取断面数据
 		bool GetSectionData(string deviceRid, out DoubleSeq analogValues, out IntegerSeq discreteValues);
+
+		//获取断面数据
+		bool GetAllSectionData(string deviceRid, out SectionValueSeq analogValues, out IntegerSeq discreteValues);
 	
 		//更新开关表
 		bool updateBreaker(string mrid, FieldMap fieldData);

@@ -310,12 +310,15 @@ void FepServerThread::processDLFault()
 	FepData::FaultPacket packet;
 	packet.id = 15;
 	packet.fepNode = "fep36";
-	FepData::FaultEvent event;
-	event.unitNo = 1;
-	event.lineNo = 1;
-	event.timeStamp = IceUtil::Time::now().toMilliSeconds();
-	event.eventType = 0;
-	packet.events.push_back(event);
+	for (int i = 1; i < 51; ++i)
+	{
+		FepData::FaultEvent event;
+		event.unitNo = i;
+		event.lineNo = i;
+		event.timeStamp = IceUtil::Time::now().toMilliSeconds();
+		event.eventType = 0;
+		packet.events.push_back(event);
+	}
 
 	m_fepDataManagerPrx->processFault(packet);
 

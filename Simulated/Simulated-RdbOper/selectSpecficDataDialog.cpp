@@ -134,6 +134,7 @@ void SelectSpecficDataDialog::tableNameChanged( const QString& tableName )
 	fieldSeqListWidget->clear();
 	fieldNameComboBox->clear();
 
+	fieldNameComboBox->addItem("");
 	QStringList fieldNames = RdbTableFactory::getTableFields(tableName);
 	if (!fieldNames.isEmpty())
 	{

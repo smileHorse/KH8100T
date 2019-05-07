@@ -235,80 +235,19 @@ struct RequestCompleteData
     ::std::string tableName;
     ::std::string fieldName;
     ::std::string fieldValue;
-
-    bool operator==(const RequestCompleteData& __rhs) const
-    {
-        if(this == &__rhs)
-        {
-            return true;
-        }
-        if(tableName != __rhs.tableName)
-        {
-            return false;
-        }
-        if(fieldName != __rhs.fieldName)
-        {
-            return false;
-        }
-        if(fieldValue != __rhs.fieldValue)
-        {
-            return false;
-        }
-        return true;
-    }
-
-    bool operator<(const RequestCompleteData& __rhs) const
-    {
-        if(this == &__rhs)
-        {
-            return false;
-        }
-        if(tableName < __rhs.tableName)
-        {
-            return true;
-        }
-        else if(__rhs.tableName < tableName)
-        {
-            return false;
-        }
-        if(fieldName < __rhs.fieldName)
-        {
-            return true;
-        }
-        else if(__rhs.fieldName < fieldName)
-        {
-            return false;
-        }
-        if(fieldValue < __rhs.fieldValue)
-        {
-            return true;
-        }
-        else if(__rhs.fieldValue < fieldValue)
-        {
-            return false;
-        }
-        return false;
-    }
-
-    bool operator!=(const RequestCompleteData& __rhs) const
-    {
-        return !operator==(__rhs);
-    }
-    bool operator<=(const RequestCompleteData& __rhs) const
-    {
-        return operator<(__rhs) || operator==(__rhs);
-    }
-    bool operator>(const RequestCompleteData& __rhs) const
-    {
-        return !operator<(__rhs) && !operator==(__rhs);
-    }
-    bool operator>=(const RequestCompleteData& __rhs) const
-    {
-        return !operator<(__rhs);
-    }
+    ::RdbRealData::Strings fieldValues;
 };
 
 typedef ::std::vector< ::RdbRealData::RequestCompleteData> RequestCompleteDataSequence;
+
+struct BatchRequestCompleteData
+{
+    ::std::string tableName;
+    ::std::string fieldName;
+    ::RdbRealData::Strings fieldValues;
+};
+
+typedef ::std::vector< ::RdbRealData::BatchRequestCompleteData> BatchRequestCompleteDataSequence;
 
 struct RequestCompleteDataSeq
 {
@@ -319,6 +258,17 @@ struct RequestCompleteDataSeq
     ::Ice::Int refreshFreq;
     ::Ice::Long dataCount;
     ::RdbRealData::RequestCompleteDataSequence seq;
+};
+
+struct BatchRequestCompleteDataSeq
+{
+    ::Ice::Long id;
+    ::Ice::Long requestId;
+    ::std::string requestNode;
+    bool isStop;
+    ::Ice::Int refreshFreq;
+    ::Ice::Long dataCount;
+    ::RdbRealData::BatchRequestCompleteDataSequence seq;
 };
 
 struct RespondDefaultData
@@ -1012,6 +962,7 @@ typedef ::std::vector< ::RdbRealData::CurvePointData> CurvePointDataSeq;
 struct SectionValue
 {
     ::std::string measurmentType;
+    ::std::string measurmentId;
     ::RdbRealData::DoubleSeq values;
 };
 
@@ -1210,7 +1161,7 @@ template<>
 struct StreamableTraits< ::RdbRealData::RequestCompleteData>
 {
     static const StreamHelperCategory helper = StreamHelperCategoryStruct;
-    static const int minWireSize = 3;
+    static const int minWireSize = 4;
     static const bool fixedLength = false;
 };
 
@@ -1222,6 +1173,7 @@ struct StreamWriter< ::RdbRealData::RequestCompleteData, S>
         __os->write(v.tableName);
         __os->write(v.fieldName);
         __os->write(v.fieldValue);
+        __os->write(v.fieldValues);
     }
 };
 
@@ -1233,6 +1185,37 @@ struct StreamReader< ::RdbRealData::RequestCompleteData, S>
         __is->read(v.tableName);
         __is->read(v.fieldName);
         __is->read(v.fieldValue);
+        __is->read(v.fieldValues);
+    }
+};
+
+template<>
+struct StreamableTraits< ::RdbRealData::BatchRequestCompleteData>
+{
+    static const StreamHelperCategory helper = StreamHelperCategoryStruct;
+    static const int minWireSize = 3;
+    static const bool fixedLength = false;
+};
+
+template<class S>
+struct StreamWriter< ::RdbRealData::BatchRequestCompleteData, S>
+{
+    static void write(S* __os, const ::RdbRealData::BatchRequestCompleteData& v)
+    {
+        __os->write(v.tableName);
+        __os->write(v.fieldName);
+        __os->write(v.fieldValues);
+    }
+};
+
+template<class S>
+struct StreamReader< ::RdbRealData::BatchRequestCompleteData, S>
+{
+    static void read(S* __is, ::RdbRealData::BatchRequestCompleteData& v)
+    {
+        __is->read(v.tableName);
+        __is->read(v.fieldName);
+        __is->read(v.fieldValues);
     }
 };
 
@@ -1263,6 +1246,44 @@ template<class S>
 struct StreamReader< ::RdbRealData::RequestCompleteDataSeq, S>
 {
     static void read(S* __is, ::RdbRealData::RequestCompleteDataSeq& v)
+    {
+        __is->read(v.id);
+        __is->read(v.requestId);
+        __is->read(v.requestNode);
+        __is->read(v.isStop);
+        __is->read(v.refreshFreq);
+        __is->read(v.dataCount);
+        __is->read(v.seq);
+    }
+};
+
+template<>
+struct StreamableTraits< ::RdbRealData::BatchRequestCompleteDataSeq>
+{
+    static const StreamHelperCategory helper = StreamHelperCategoryStruct;
+    static const int minWireSize = 31;
+    static const bool fixedLength = false;
+};
+
+template<class S>
+struct StreamWriter< ::RdbRealData::BatchRequestCompleteDataSeq, S>
+{
+    static void write(S* __os, const ::RdbRealData::BatchRequestCompleteDataSeq& v)
+    {
+        __os->write(v.id);
+        __os->write(v.requestId);
+        __os->write(v.requestNode);
+        __os->write(v.isStop);
+        __os->write(v.refreshFreq);
+        __os->write(v.dataCount);
+        __os->write(v.seq);
+    }
+};
+
+template<class S>
+struct StreamReader< ::RdbRealData::BatchRequestCompleteDataSeq, S>
+{
+    static void read(S* __is, ::RdbRealData::BatchRequestCompleteDataSeq& v)
     {
         __is->read(v.id);
         __is->read(v.requestId);
@@ -1854,7 +1875,7 @@ template<>
 struct StreamableTraits< ::RdbRealData::SectionValue>
 {
     static const StreamHelperCategory helper = StreamHelperCategoryStruct;
-    static const int minWireSize = 2;
+    static const int minWireSize = 3;
     static const bool fixedLength = false;
 };
 
@@ -1864,6 +1885,7 @@ struct StreamWriter< ::RdbRealData::SectionValue, S>
     static void write(S* __os, const ::RdbRealData::SectionValue& v)
     {
         __os->write(v.measurmentType);
+        __os->write(v.measurmentId);
         __os->write(v.values);
     }
 };
@@ -1874,6 +1896,7 @@ struct StreamReader< ::RdbRealData::SectionValue, S>
     static void read(S* __is, ::RdbRealData::SectionValue& v)
     {
         __is->read(v.measurmentType);
+        __is->read(v.measurmentId);
         __is->read(v.values);
     }
 };
@@ -1980,6 +2003,9 @@ typedef ::IceUtil::Handle< Callback_RdbDataOpt_SelectSpecificData_Base> Callback
 
 class Callback_RdbDataOpt_SelectCompleteData_Base : virtual public ::IceInternal::CallbackBase { };
 typedef ::IceUtil::Handle< Callback_RdbDataOpt_SelectCompleteData_Base> Callback_RdbDataOpt_SelectCompleteDataPtr;
+
+class Callback_RdbDataOpt_BatchSelectCompleteData_Base : virtual public ::IceInternal::CallbackBase { };
+typedef ::IceUtil::Handle< Callback_RdbDataOpt_BatchSelectCompleteData_Base> Callback_RdbDataOpt_BatchSelectCompleteDataPtr;
 
 class Callback_RdbDataOpt_SelectDataCount_Base : virtual public ::IceInternal::CallbackBase { };
 typedef ::IceUtil::Handle< Callback_RdbDataOpt_SelectDataCount_Base> Callback_RdbDataOpt_SelectDataCountPtr;
@@ -3158,6 +3184,82 @@ private:
 
     bool SelectCompleteData(const ::RdbRealData::RequestCompleteDataSeq&, ::RdbRealData::RespondCompleteDataSeq&, const ::Ice::Context*);
     ::Ice::AsyncResultPtr begin_SelectCompleteData(const ::RdbRealData::RequestCompleteDataSeq&, const ::Ice::Context*, const ::IceInternal::CallbackBasePtr&, const ::Ice::LocalObjectPtr& __cookie = 0);
+    
+public:
+
+    bool BatchSelectCompleteData(const ::RdbRealData::BatchRequestCompleteDataSeq& __p_reqSeq, ::RdbRealData::RespondCompleteDataSeq& __p_repSeq)
+    {
+        return BatchSelectCompleteData(__p_reqSeq, __p_repSeq, 0);
+    }
+    bool BatchSelectCompleteData(const ::RdbRealData::BatchRequestCompleteDataSeq& __p_reqSeq, ::RdbRealData::RespondCompleteDataSeq& __p_repSeq, const ::Ice::Context& __ctx)
+    {
+        return BatchSelectCompleteData(__p_reqSeq, __p_repSeq, &__ctx);
+    }
+#ifdef ICE_CPP11
+    ::Ice::AsyncResultPtr
+    begin_BatchSelectCompleteData(const ::RdbRealData::BatchRequestCompleteDataSeq& __p_reqSeq, const ::IceInternal::Function<void (bool, const ::RdbRealData::RespondCompleteDataSeq&)>& __response, const ::IceInternal::Function<void (const ::Ice::Exception&)>& __exception = ::IceInternal::Function<void (const ::Ice::Exception&)>(), const ::IceInternal::Function<void (bool)>& __sent = ::IceInternal::Function<void (bool)>())
+    {
+        return __begin_BatchSelectCompleteData(__p_reqSeq, 0, __response, __exception, __sent);
+    }
+    ::Ice::AsyncResultPtr
+    begin_BatchSelectCompleteData(const ::RdbRealData::BatchRequestCompleteDataSeq& __p_reqSeq, const ::IceInternal::Function<void (const ::Ice::AsyncResultPtr&)>& __completed, const ::IceInternal::Function<void (const ::Ice::AsyncResultPtr&)>& __sent = ::IceInternal::Function<void (const ::Ice::AsyncResultPtr&)>())
+    {
+        return begin_BatchSelectCompleteData(__p_reqSeq, 0, ::Ice::newCallback(__completed, __sent), 0);
+    }
+    ::Ice::AsyncResultPtr
+    begin_BatchSelectCompleteData(const ::RdbRealData::BatchRequestCompleteDataSeq& __p_reqSeq, const ::Ice::Context& __ctx, const ::IceInternal::Function<void (bool, const ::RdbRealData::RespondCompleteDataSeq&)>& __response, const ::IceInternal::Function<void (const ::Ice::Exception&)>& __exception = ::IceInternal::Function<void (const ::Ice::Exception&)>(), const ::IceInternal::Function<void (bool)>& __sent = ::IceInternal::Function<void (bool)>())
+    {
+        return __begin_BatchSelectCompleteData(__p_reqSeq, &__ctx, __response, __exception, __sent);
+    }
+    ::Ice::AsyncResultPtr
+    begin_BatchSelectCompleteData(const ::RdbRealData::BatchRequestCompleteDataSeq& __p_reqSeq, const ::Ice::Context& __ctx, const ::IceInternal::Function<void (const ::Ice::AsyncResultPtr&)>& __completed, const ::IceInternal::Function<void (const ::Ice::AsyncResultPtr&)>& __sent = ::IceInternal::Function<void (const ::Ice::AsyncResultPtr&)>())
+    {
+        return begin_BatchSelectCompleteData(__p_reqSeq, &__ctx, ::Ice::newCallback(__completed, __sent));
+    }
+    
+private:
+
+    ::Ice::AsyncResultPtr __begin_BatchSelectCompleteData(const ::RdbRealData::BatchRequestCompleteDataSeq& __p_reqSeq, const ::Ice::Context* __ctx, const ::IceInternal::Function<void (bool, const ::RdbRealData::RespondCompleteDataSeq&)>& __response, const ::IceInternal::Function<void (const ::Ice::Exception&)>& __exception, const ::IceInternal::Function<void (bool)>& __sent);
+    
+public:
+#endif
+
+    ::Ice::AsyncResultPtr begin_BatchSelectCompleteData(const ::RdbRealData::BatchRequestCompleteDataSeq& __p_reqSeq)
+    {
+        return begin_BatchSelectCompleteData(__p_reqSeq, 0, ::IceInternal::__dummyCallback, 0);
+    }
+
+    ::Ice::AsyncResultPtr begin_BatchSelectCompleteData(const ::RdbRealData::BatchRequestCompleteDataSeq& __p_reqSeq, const ::Ice::Context& __ctx)
+    {
+        return begin_BatchSelectCompleteData(__p_reqSeq, &__ctx, ::IceInternal::__dummyCallback, 0);
+    }
+
+    ::Ice::AsyncResultPtr begin_BatchSelectCompleteData(const ::RdbRealData::BatchRequestCompleteDataSeq& __p_reqSeq, const ::Ice::CallbackPtr& __del, const ::Ice::LocalObjectPtr& __cookie = 0)
+    {
+        return begin_BatchSelectCompleteData(__p_reqSeq, 0, __del, __cookie);
+    }
+
+    ::Ice::AsyncResultPtr begin_BatchSelectCompleteData(const ::RdbRealData::BatchRequestCompleteDataSeq& __p_reqSeq, const ::Ice::Context& __ctx, const ::Ice::CallbackPtr& __del, const ::Ice::LocalObjectPtr& __cookie = 0)
+    {
+        return begin_BatchSelectCompleteData(__p_reqSeq, &__ctx, __del, __cookie);
+    }
+
+    ::Ice::AsyncResultPtr begin_BatchSelectCompleteData(const ::RdbRealData::BatchRequestCompleteDataSeq& __p_reqSeq, const ::RdbRealData::Callback_RdbDataOpt_BatchSelectCompleteDataPtr& __del, const ::Ice::LocalObjectPtr& __cookie = 0)
+    {
+        return begin_BatchSelectCompleteData(__p_reqSeq, 0, __del, __cookie);
+    }
+
+    ::Ice::AsyncResultPtr begin_BatchSelectCompleteData(const ::RdbRealData::BatchRequestCompleteDataSeq& __p_reqSeq, const ::Ice::Context& __ctx, const ::RdbRealData::Callback_RdbDataOpt_BatchSelectCompleteDataPtr& __del, const ::Ice::LocalObjectPtr& __cookie = 0)
+    {
+        return begin_BatchSelectCompleteData(__p_reqSeq, &__ctx, __del, __cookie);
+    }
+
+    bool end_BatchSelectCompleteData(::RdbRealData::RespondCompleteDataSeq& __p_repSeq, const ::Ice::AsyncResultPtr&);
+    
+private:
+
+    bool BatchSelectCompleteData(const ::RdbRealData::BatchRequestCompleteDataSeq&, ::RdbRealData::RespondCompleteDataSeq&, const ::Ice::Context*);
+    ::Ice::AsyncResultPtr begin_BatchSelectCompleteData(const ::RdbRealData::BatchRequestCompleteDataSeq&, const ::Ice::Context*, const ::IceInternal::CallbackBasePtr&, const ::Ice::LocalObjectPtr& __cookie = 0);
     
 public:
 
@@ -5245,6 +5347,9 @@ public:
     virtual bool SelectCompleteData(const ::RdbRealData::RequestCompleteDataSeq&, ::RdbRealData::RespondCompleteDataSeq&, const ::Ice::Current& = ::Ice::Current()) = 0;
     ::Ice::DispatchStatus ___SelectCompleteData(::IceInternal::Incoming&, const ::Ice::Current&);
 
+    virtual bool BatchSelectCompleteData(const ::RdbRealData::BatchRequestCompleteDataSeq&, ::RdbRealData::RespondCompleteDataSeq&, const ::Ice::Current& = ::Ice::Current()) = 0;
+    ::Ice::DispatchStatus ___BatchSelectCompleteData(::IceInternal::Incoming&, const ::Ice::Current&);
+
     virtual bool SelectDataCount(const ::RdbRealData::RequestDefaultDataSeq&, ::RdbRealData::RespondDataCountSequence&, const ::Ice::Current& = ::Ice::Current()) = 0;
     ::Ice::DispatchStatus ___SelectDataCount(::IceInternal::Incoming&, const ::Ice::Current&);
 
@@ -6452,6 +6557,112 @@ template<class T, typename CT> Callback_RdbDataOpt_SelectCompleteDataPtr
 newCallback_RdbDataOpt_SelectCompleteData(T* instance, void (T::*cb)(bool, const ::RdbRealData::RespondCompleteDataSeq&, const CT&), void (T::*excb)(const ::Ice::Exception&, const CT&), void (T::*sentcb)(bool, const CT&) = 0)
 {
     return new Callback_RdbDataOpt_SelectCompleteData<T, CT>(instance, cb, excb, sentcb);
+}
+
+template<class T>
+class CallbackNC_RdbDataOpt_BatchSelectCompleteData : public Callback_RdbDataOpt_BatchSelectCompleteData_Base, public ::IceInternal::TwowayCallbackNC<T>
+{
+public:
+
+    typedef IceUtil::Handle<T> TPtr;
+
+    typedef void (T::*Exception)(const ::Ice::Exception&);
+    typedef void (T::*Sent)(bool);
+    typedef void (T::*Response)(bool, const ::RdbRealData::RespondCompleteDataSeq&);
+
+    CallbackNC_RdbDataOpt_BatchSelectCompleteData(const TPtr& obj, Response cb, Exception excb, Sent sentcb)
+        : ::IceInternal::TwowayCallbackNC<T>(obj, cb != 0, excb, sentcb), _response(cb)
+    {
+    }
+
+    virtual void completed(const ::Ice::AsyncResultPtr& __result) const
+    {
+        ::RdbRealData::RdbDataOptPrx __proxy = ::RdbRealData::RdbDataOptPrx::uncheckedCast(__result->getProxy());
+        ::RdbRealData::RespondCompleteDataSeq repSeq;
+        bool __ret;
+        try
+        {
+            __ret = __proxy->end_BatchSelectCompleteData(repSeq, __result);
+        }
+        catch(const ::Ice::Exception& ex)
+        {
+            ::IceInternal::CallbackNC<T>::exception(__result, ex);
+            return;
+        }
+        if(_response)
+        {
+            (::IceInternal::CallbackNC<T>::_callback.get()->*_response)(__ret, repSeq);
+        }
+    }
+
+    private:
+
+    Response _response;
+};
+
+template<class T> Callback_RdbDataOpt_BatchSelectCompleteDataPtr
+newCallback_RdbDataOpt_BatchSelectCompleteData(const IceUtil::Handle<T>& instance, void (T::*cb)(bool, const ::RdbRealData::RespondCompleteDataSeq&), void (T::*excb)(const ::Ice::Exception&), void (T::*sentcb)(bool) = 0)
+{
+    return new CallbackNC_RdbDataOpt_BatchSelectCompleteData<T>(instance, cb, excb, sentcb);
+}
+
+template<class T> Callback_RdbDataOpt_BatchSelectCompleteDataPtr
+newCallback_RdbDataOpt_BatchSelectCompleteData(T* instance, void (T::*cb)(bool, const ::RdbRealData::RespondCompleteDataSeq&), void (T::*excb)(const ::Ice::Exception&), void (T::*sentcb)(bool) = 0)
+{
+    return new CallbackNC_RdbDataOpt_BatchSelectCompleteData<T>(instance, cb, excb, sentcb);
+}
+
+template<class T, typename CT>
+class Callback_RdbDataOpt_BatchSelectCompleteData : public Callback_RdbDataOpt_BatchSelectCompleteData_Base, public ::IceInternal::TwowayCallback<T, CT>
+{
+public:
+
+    typedef IceUtil::Handle<T> TPtr;
+
+    typedef void (T::*Exception)(const ::Ice::Exception& , const CT&);
+    typedef void (T::*Sent)(bool , const CT&);
+    typedef void (T::*Response)(bool, const ::RdbRealData::RespondCompleteDataSeq&, const CT&);
+
+    Callback_RdbDataOpt_BatchSelectCompleteData(const TPtr& obj, Response cb, Exception excb, Sent sentcb)
+        : ::IceInternal::TwowayCallback<T, CT>(obj, cb != 0, excb, sentcb), _response(cb)
+    {
+    }
+
+    virtual void completed(const ::Ice::AsyncResultPtr& __result) const
+    {
+        ::RdbRealData::RdbDataOptPrx __proxy = ::RdbRealData::RdbDataOptPrx::uncheckedCast(__result->getProxy());
+        ::RdbRealData::RespondCompleteDataSeq repSeq;
+        bool __ret;
+        try
+        {
+            __ret = __proxy->end_BatchSelectCompleteData(repSeq, __result);
+        }
+        catch(const ::Ice::Exception& ex)
+        {
+            ::IceInternal::Callback<T, CT>::exception(__result, ex);
+            return;
+        }
+        if(_response)
+        {
+            (::IceInternal::Callback<T, CT>::_callback.get()->*_response)(__ret, repSeq, CT::dynamicCast(__result->getCookie()));
+        }
+    }
+
+    private:
+
+    Response _response;
+};
+
+template<class T, typename CT> Callback_RdbDataOpt_BatchSelectCompleteDataPtr
+newCallback_RdbDataOpt_BatchSelectCompleteData(const IceUtil::Handle<T>& instance, void (T::*cb)(bool, const ::RdbRealData::RespondCompleteDataSeq&, const CT&), void (T::*excb)(const ::Ice::Exception&, const CT&), void (T::*sentcb)(bool, const CT&) = 0)
+{
+    return new Callback_RdbDataOpt_BatchSelectCompleteData<T, CT>(instance, cb, excb, sentcb);
+}
+
+template<class T, typename CT> Callback_RdbDataOpt_BatchSelectCompleteDataPtr
+newCallback_RdbDataOpt_BatchSelectCompleteData(T* instance, void (T::*cb)(bool, const ::RdbRealData::RespondCompleteDataSeq&, const CT&), void (T::*excb)(const ::Ice::Exception&, const CT&), void (T::*sentcb)(bool, const CT&) = 0)
+{
+    return new Callback_RdbDataOpt_BatchSelectCompleteData<T, CT>(instance, cb, excb, sentcb);
 }
 
 template<class T>

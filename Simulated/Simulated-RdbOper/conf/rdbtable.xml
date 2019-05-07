@@ -686,4 +686,10 @@
 		<field type = "string">groupMrid</field>
 		<field type = "string">stationMrid</field>
 	</table>
+	<table name="FATopo">
+		<field type = "string">mRID</field>
+		<field type = "string">name</field>
+		<field type = "string">configFile</field>
+		<field type = "string">lastTime</field>
+	</table>
 </rdb>

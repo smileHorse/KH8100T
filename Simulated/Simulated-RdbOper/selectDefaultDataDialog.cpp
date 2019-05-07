@@ -167,7 +167,7 @@ void SelectDefaultDataDialog::queryData()
 		string deviceId = fieldValueLineEdit->text().toStdString();
 		double analogValue = 0.0;
 		int discreteValue = 0;
-		bool result = m_rdbDataOptPrx->GetSectionData(deviceId, analogValue, discreteValue);
+		//bool result = m_rdbDataOptPrx->GetSectionData(deviceId, analogValue, discreteValue);
 
 		updateTableWidget(repSeq);
 	}

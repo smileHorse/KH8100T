@@ -2,7 +2,7 @@
 
 #include <QtWidgets/QtWidgets>
 
-const int COUNT = 10;
+const int COUNT = 40;
 
 ProcessDataDialog::ProcessDataDialog(DataType type, AllDataTypeType alltype, QWidget* parent /*= 0*/ )
 	: QDialog(parent), dataType(type), allDataTypeType(alltype), m_processCount(0)
@@ -194,7 +194,7 @@ void ProcessDataDialog::getDataPacket( SelfDataPacket& packet )
 			{
 				for (int j = 0; j < COUNT; ++j)
 				{
-					packet.analogs.push_back(i * 10 + j + 1);
+					packet.analogs.push_back(i * COUNT + j + 1);
 					packet.analogs.push_back(dataTable->item(i, j)->text().toDouble());
 				}
 			}			
@@ -205,7 +205,7 @@ void ProcessDataDialog::getDataPacket( SelfDataPacket& packet )
 			{
 				for (int j = 0; j < COUNT; ++j)
 				{
-					packet.discretes.push_back(i * 10 + j + 1);
+					packet.discretes.push_back(i * COUNT + j + 1);
 					packet.discretes.push_back(dataTable->item(i, j)->text().toInt());
 				}
 			}			
