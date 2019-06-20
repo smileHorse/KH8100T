@@ -641,6 +641,11 @@
 		<field type = "int">type</field>
 		<field type = "int">state</field>
 	</table>
+	<table name="GraphFile">
+		<field type = "string">mRID</field>
+		<field type = "string">name</field>
+		<field type = "int">type</field>
+	</table>
 
 	<table name="WavWaveConfig">
 		<field type = "string">mRID</field>

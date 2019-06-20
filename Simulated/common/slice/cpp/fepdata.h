@@ -18,8 +18,8 @@
 // </auto-generated>
 //
 
-#ifndef __cpp_fepdata_h__
-#define __cpp_fepdata_h__
+#ifndef __fepdata_h__
+#define __fepdata_h__
 
 #include <IceUtil/PushDisableWarnings.h>
 #include <Ice/ProxyF.h>
@@ -80,8 +80,8 @@ enum DiscreteValue
 {
     Open,
     Close,
-	DblOpen,
-	DblClose,
+    DblOpen,
+    DblClose,
     Unknown
 };
 
@@ -744,7 +744,7 @@ struct StreamableTraits< ::FepData::DiscreteValue>
 {
     static const StreamHelperCategory helper = StreamHelperCategoryEnum;
     static const int minValue = 0;
-    static const int maxValue = 2;
+    static const int maxValue = 4;
     static const int minWireSize = 1;
     static const bool fixedLength = false;
 };

@@ -417,8 +417,8 @@ void FepServerThread::processYxTypeEventImpl()
 	packet.type = FepData::YxType;
 	FepData::ChangedDigital changedDigital;
 	changedDigital.unitNo = 11;
-	changedDigital.index = 17;
-	changedDigital.value = FepData::Close;
+	changedDigital.index = 256;
+	changedDigital.value = FepData::DblClose;
 	changedDigital.timeStamp = IceUtil::Time::now().toMilliSeconds();
 	packet.digitals.push_back(changedDigital);
 
