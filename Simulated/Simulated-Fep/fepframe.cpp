@@ -103,7 +103,7 @@ void FepFrame::createActions()
 
 	processSoeTypeEventAction = new QAction(QIcon(":/images/soetype.png"), QStringLiteral("发布SOE事项"), this);
 	processSoeTypeEventAction->setStatusTip(QStringLiteral("发布前置机SOE事项"));
-	connect(processSoeTypeEventAction, SIGNAL(triggered()), m_fepServerThreadPtr, SLOT(processSoeTypeEvent()));
+	connect(processSoeTypeEventAction, SIGNAL(triggered()), this, SLOT(processSoeTypeEvent()));
 
 	processUnitTypeEventAction = new QAction(QIcon(":/images/unittype.png"), QStringLiteral("发布单元事项"), this);
 	processUnitTypeEventAction->setStatusTip(QStringLiteral("发布前置机单元事项"));
@@ -112,7 +112,8 @@ void FepFrame::createActions()
 	processProTypeEventAction = new QAction(QIcon(":/images/protype.png"), QStringLiteral("发布保护事项"), this);
 	processProTypeEventAction->setStatusTip(QStringLiteral("发布前置机保护事项"));
 	//connect(processProTypeEventAction, SIGNAL(triggered()), m_fepServerThreadPtr, SLOT(processProTypeEvent()));
-	connect(processProTypeEventAction, SIGNAL(triggered()), this, SLOT(configFaultEvent()));
+	//connect(processProTypeEventAction, SIGNAL(triggered()), this, SLOT(configFaultEvent()));
+	connect(processProTypeEventAction, SIGNAL(triggered()), this, SLOT(processProTypeEvent()));
 	
 	processWaveAction = new QAction(QIcon(":/images/wave.png"), QStringLiteral("发布录波事项"), this);
 	processWaveAction->setStatusTip(QStringLiteral("发布前置机录波事项"));
@@ -255,6 +256,44 @@ void FepFrame::processYxTypeEvent()
 		processYxTypeEventAction->setStatusTip(QStringLiteral("取消发布遥信变位事项"));
 
 		m_fepServerThreadPtr->processYxTypeEvent(true);
+	}
+}
+
+void FepFrame::processSoeTypeEvent()
+{
+	QString text = processSoeTypeEventAction->text();
+	if (text.contains(QStringLiteral("取消")))
+	{
+		processSoeTypeEventAction->setText(QStringLiteral("发布SOE事项"));
+		processSoeTypeEventAction->setStatusTip(QStringLiteral("发布SOE事项"));
+
+		m_fepServerThreadPtr->processSoeTypeEvent(false);
+	}
+	else
+	{
+		processSoeTypeEventAction->setText(QStringLiteral("取消发布SOE事项"));
+		processSoeTypeEventAction->setStatusTip(QStringLiteral("取消发布SOE事项"));
+
+		m_fepServerThreadPtr->processSoeTypeEvent(true);
+	}
+}
+
+void FepFrame::processProTypeEvent()
+{
+	QString text = processProTypeEventAction->text();
+	if (text.contains(QStringLiteral("取消")))
+	{
+		processProTypeEventAction->setText(QStringLiteral("发布保护事项"));
+		processProTypeEventAction->setStatusTip(QStringLiteral("发布保护事项"));
+
+		m_fepServerThreadPtr->processProTypeEvent(false);
+	}
+	else
+	{
+		processProTypeEventAction->setText(QStringLiteral("取消发布保护事项"));
+		processProTypeEventAction->setStatusTip(QStringLiteral("取消发布保护事项"));
+
+		m_fepServerThreadPtr->processProTypeEvent(true);
 	}
 }
 

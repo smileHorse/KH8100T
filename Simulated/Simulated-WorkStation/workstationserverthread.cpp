@@ -10,6 +10,7 @@
 #include "warningmsg.h"
 #include "WarningMsgI.h"
 #include "YkDataManagerI.h"
+#include "RequestDataDialog.h"
 
 #include <string>
 
@@ -114,12 +115,18 @@ void WorkStationServerThread::run()
 	try 
 	{
 		connect(&m_ykSelectTimer, SIGNAL(timeout()), this, SLOT(select()));
+
+		while(true)
+		{
+			requestCompleteData();
+
+			IceUtil::ThreadControl::sleep(IceUtil::Time::seconds(3));
+		}
 	}
 	catch(const Ice::Exception& ex)
 	{
 		string error = ex.what();
-	}
-	
+	}	
 }
 
 bool WorkStationServerThread::getRdbRealDataRequestPublisher()
@@ -284,70 +291,108 @@ bool WorkStationServerThread::getPublisher( const std::string& topic, const QStr
 	return true;
 }
 
+//void WorkStationServerThread::requestCompleteData()
+//{
+//	try 
+//	{
+//		int count = 0;
+//		// 每隔30s发送一次请求
+//		while(count == 0)
+//		{
+//			if (++count > 120)
+//			{
+//				break;
+//			}
+//
+//			if (!getRdbRealDataRequestPublisher())
+//			{
+//				return;
+//			}
+//
+//			RdbRealData::RequestCompleteDataSeq requestSeq;
+//			requestSeq.id = 1;
+//			requestSeq.requestId = 1;
+//			requestSeq.requestNode = "test";
+//			requestSeq.isStop = false;
+//			requestSeq.refreshFreq = 3;
+//
+//			RdbRealData::RequestCompleteData requestData;
+//			requestData.tableName = "Substation";
+//			requestData.fieldName = "name";
+//			requestData.fieldValue = "科汇站";
+//			requestSeq.seq.push_back(requestData);
+//			requestSeq.dataCount = requestSeq.seq.size();
+//
+//			// 获取实时数据请求的订阅者
+//			string strTopic = ::RdbRealData::strRealRequestTopic;
+//			IceStorm::TopicPrx topic = BaseIceStorm::GetTopicProxy(m_communicatorPtr, strTopic);
+//			if (topic)
+//			{
+//				::Ice::IdentitySeq identitySeq = topic->getSubscribers();
+//
+//				QTime currTime = QDateTime::currentDateTime().time();
+//				QString text = QString("%1-%2-%3").arg(currTime.hour()).arg(currTime.minute()).arg(currTime.second());
+//				emit outputReceiveData(text);
+//
+//				if (identitySeq.empty())
+//				{
+//					emit outputReceiveData("\t不存在订阅者");
+//				}
+//				for (size_t i = 0; i < identitySeq.size(); ++i)
+//				{
+//					Ice::Identity identity = identitySeq.at(i);
+//					emit outputReceiveData(QString("\t%1\t%2").arg(QString().fromStdString(identity.category)).
+//						arg(QString().fromStdString(identity.name)));
+//				}
+//			}
+//
+//			m_rdbRealDataRequestPrx->RequestCompleteData(requestSeq);
+//			
+//			QString text("%1 请求全部实时数据 %2-%3-%4");
+//			QTime currTime = QDateTime::currentDateTime().time();
+//			text = text.arg(count).arg(currTime.hour()).arg(currTime.minute()).arg(currTime.second());
+//			emit outputReceiveData(text);
+//
+//			IceUtil::ThreadControl::sleep(IceUtil::Time::seconds(2));
+//		}
+//	}
+//	catch(const Ice::Exception& ex)
+//	{
+//		QString error = QString().fromStdString(ex.what());
+//		emit outputReceiveData(QString("请求全部实时数据失败:%1").arg(error));
+//	}
+//}
 void WorkStationServerThread::requestCompleteData()
 {
 	try 
 	{
-		int count = 0;
-		// 每隔30s发送一次请求
-		while(count == 0)
+		if (!CRequestManager::isRequestChanged())
 		{
-			if (++count > 120)
-			{
-				break;
-			}
-
-			if (!getRdbRealDataRequestPublisher())
-			{
-				return;
-			}
-
-			RdbRealData::RequestCompleteDataSeq requestSeq;
-			requestSeq.id = 1;
-			requestSeq.requestId = 1;
-			requestSeq.requestNode = "test";
-			requestSeq.isStop = false;
-			requestSeq.refreshFreq = 3;
-
-			RdbRealData::RequestCompleteData requestData;
-			requestData.tableName = "Substation";
-			requestData.fieldName = "name";
-			requestData.fieldValue = "科汇站";
-			requestSeq.seq.push_back(requestData);
-			requestSeq.dataCount = requestSeq.seq.size();
-
-			// 获取实时数据请求的订阅者
-			string strTopic = ::RdbRealData::strRealRequestTopic;
-			IceStorm::TopicPrx topic = BaseIceStorm::GetTopicProxy(m_communicatorPtr, strTopic);
-			if (topic)
-			{
-				::Ice::IdentitySeq identitySeq = topic->getSubscribers();
-
-				QTime currTime = QDateTime::currentDateTime().time();
-				QString text = QString("%1-%2-%3").arg(currTime.hour()).arg(currTime.minute()).arg(currTime.second());
-				emit outputReceiveData(text);
-
-				if (identitySeq.empty())
-				{
-					emit outputReceiveData("\t不存在订阅者");
-				}
-				for (size_t i = 0; i < identitySeq.size(); ++i)
-				{
-					Ice::Identity identity = identitySeq.at(i);
-					emit outputReceiveData(QString("\t%1\t%2").arg(QString().fromStdString(identity.category)).
-						arg(QString().fromStdString(identity.name)));
-				}
-			}
-
-			m_rdbRealDataRequestPrx->RequestCompleteData(requestSeq);
-			
-			QString text("%1 请求全部实时数据 %2-%3-%4");
-			QTime currTime = QDateTime::currentDateTime().time();
-			text = text.arg(count).arg(currTime.hour()).arg(currTime.minute()).arg(currTime.second());
-			emit outputReceiveData(text);
-
-			IceUtil::ThreadControl::sleep(IceUtil::Time::seconds(2));
+			return;
 		}
+
+		if (!getRdbRealDataRequestPublisher())
+		{
+			return;
+		}
+
+		// 循环处理所有的请求
+		QList<RdbRealData::RequestCompleteDataSeq> requestSeq = CRequestManager::getCompleteDataSeq();
+		Q_FOREACH(RdbRealData::RequestCompleteDataSeq request, requestSeq)
+		{
+			m_rdbRealDataRequestPrx->RequestCompleteData(request);
+			if (request.isStop)
+			{
+				CRequestManager::removeCompleteDataSeq(request.requestNode);
+			}
+
+			QString text("请求全部实时数据 %1-%2-%3");
+			QTime currTime = QDateTime::currentDateTime().time();
+			text = text.arg(currTime.hour()).arg(currTime.minute()).arg(currTime.second());
+			emit outputReceiveData(text);
+		}
+
+		CRequestManager::setRequestChanged(false);
 	}
 	catch(const Ice::Exception& ex)
 	{
@@ -471,7 +516,7 @@ void WorkStationServerThread::subscriberRdbRespond( bool isStop )
 				m_communicatorPtr->stringToIdentity(m_rdbRespondSubIdentity));
 		}
 
-		string strTopic = "mmi192.168.3.26";
+		string strTopic = "mmi192.168.3.33";
 		QString type = "实时数据响应";
 
 		if (isStop)

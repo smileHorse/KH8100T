@@ -43,6 +43,8 @@ private slots:
 
 	void processUnitStateData();
 	void processYxTypeEvent();
+	void processSoeTypeEvent();
+	void processProTypeEvent();
 
 	void configFaultEvent();
 

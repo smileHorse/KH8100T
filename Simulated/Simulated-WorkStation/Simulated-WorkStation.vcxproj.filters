@@ -116,6 +116,18 @@
     <ClCompile Include="..\common\slice\cpp\transferfile.cpp">
       <Filter>Slice</Filter>
     </ClCompile>
+    <ClCompile Include="RequestDataDialog.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="GeneratedFiles\Debug\moc_RequestDataDialog.cpp">
+      <Filter>Generated Files\Debug</Filter>
+    </ClCompile>
+    <ClCompile Include="GeneratedFiles\Release\moc_RequestDataDialog.cpp">
+      <Filter>Generated Files\Release</Filter>
+    </ClCompile>
+    <ClCompile Include="IceHelper.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <CustomBuild Include="workstationframe.h">
@@ -129,6 +141,9 @@
     </CustomBuild>
     <CustomBuild Include="workstationframe.qrc">
       <Filter>Resource Files</Filter>
+    </CustomBuild>
+    <CustomBuild Include="RequestDataDialog.h">
+      <Filter>Header Files</Filter>
     </CustomBuild>
   </ItemGroup>
   <ItemGroup>
@@ -179,6 +194,9 @@
     </ClInclude>
     <ClInclude Include="..\common\slice\cpp\transferfile.h">
       <Filter>Slice</Filter>
+    </ClInclude>
+    <ClInclude Include="IceHelper.h">
+      <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

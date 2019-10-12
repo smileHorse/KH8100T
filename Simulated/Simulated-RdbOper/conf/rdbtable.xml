@@ -123,6 +123,16 @@
 		<field type = "double">factorDL_I</field>
 		<field type = "double">factorJD_I</field>
 		<field type = "bool">breakerImportant</field>
+		<field type = "int">actionCount</field>
+		<field type = "string">groupNo</field>
+		<field type = "string">manufacturer</field>
+		<field type = "string">deviceType</field>
+		<field type = "string">deviceModel</field>
+		<field type = "string">installTime</field>
+		<field type = "string">runTime</field>
+		<field type = "double">load</field>
+		<field type = "double">voltage</field>
+		<field type = "double">current</field>
 	</table>
 	<table name="Disconnector">
 		<field type = "string">mRID</field>
@@ -143,6 +153,15 @@
 		<field type = "string">switchTranMode</field>
 		<field type = "string">switchCommandType</field>
 		<field type = "string">brandFlag</field>
+		<field type = "string">groupNo</field>
+		<field type = "string">manufacturer</field>
+		<field type = "string">deviceType</field>
+		<field type = "string">deviceModel</field>
+		<field type = "string">installTime</field>
+		<field type = "string">runTime</field>
+		<field type = "double">load</field>
+		<field type = "double">voltage</field>
+		<field type = "double">current</field>
 	</table>
 	<table name="PowerTransformer">
 		<field type = "string">mRID</field>
@@ -166,6 +185,12 @@
 		<field type = "int">startDiscrete</field>
 		<field type = "int">discreteNum</field>
 		<field type = "int">controlNo</field>
+		<field type = "string">groupNo</field>
+		<field type = "string">manufacturer</field>
+		<field type = "string">deviceType</field>
+		<field type = "string">deviceModel</field>
+		<field type = "string">installTime</field>
+		<field type = "string">runTime</field>
 	</table>
 	<table name="TransformerWinding">
 		<field type = "string">mRID</field>
@@ -238,6 +263,8 @@
 		<field type = "bool">holdFlag</field>
 		<field type = "bool">holdFaFlag</field>
 		<field type = "string">graph</field>
+		<field type = "string">deviceModel</field>
+		<field type = "string">installTime</field>
 	</table>
 	<table name="AnalogUnitPoint">
 		<field type = "string">mRID</field>
@@ -696,5 +723,21 @@
 		<field type = "string">name</field>
 		<field type = "string">configFile</field>
 		<field type = "string">lastTime</field>
+	</table>
+	<table name="EquipGroup">
+		<field type = "string">mRID</field>
+		<field type = "string">no</field>
+		<field type = "string">name</field>
+	</table>
+	<table name="EquipParam">
+		<field type = "string">mRID</field>
+		<field type = "string">no</field>
+		<field type = "string">name</field>
+		<field type = "string">groupNo</field>
+		<field type = "string">manufacturer</field>
+		<field type = "string">deviceType</field>
+		<field type = "string">deviceModel</field>
+		<field type = "string">installTime</field>
+		<field type = "string">runTime</field>
 	</table>
 </rdb>

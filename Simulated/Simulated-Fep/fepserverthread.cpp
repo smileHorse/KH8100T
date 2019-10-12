@@ -26,6 +26,10 @@ string	getDiscreteValue(FepData::DiscreteValue value)
 		return "分闸";
 	case FepData::Close:
 		return "合闸";
+	case FepData::DblOpen:
+		return "双合";
+	case FepData::DblClose:
+		return "双分";
 	case  FepData::Unknown:
 	default:
 		return "未知";
@@ -139,6 +143,7 @@ void FepServerThread::setCommunicatorPtr( Ice::CommunicatorPtr ptr )
 
 void FepServerThread::run()
 {
+	qsrand(QDateTime::currentDateTime().toTime_t());
 }
 
 bool FepServerThread::getFepDataPublisher()
@@ -391,7 +396,7 @@ void FepServerThread::processYxTypeEvent(bool isProcess)
 		// 定时发送终端状态
 		m_yxTypeEventTimer = QSharedPointer<QTimer>::create();
 		connect(m_yxTypeEventTimer.data(), SIGNAL(timeout()), this, SLOT(processYxTypeEventImpl()));
-		m_yxTypeEventTimer->start(5000);
+		m_yxTypeEventTimer->start(1000);
 	}
 	else
 	{
@@ -416,24 +421,51 @@ void FepServerThread::processYxTypeEventImpl()
 	packet.fepNode = "fep36";
 	packet.type = FepData::YxType;
 	FepData::ChangedDigital changedDigital;
-	changedDigital.unitNo = 11;
-	changedDigital.index = 256;
-	changedDigital.value = FepData::DblClose;
-	changedDigital.timeStamp = IceUtil::Time::now().toMilliSeconds();
-	packet.digitals.push_back(changedDigital);
+
+	for(int i = 0; i < 1; ++i) 
+	{
+		changedDigital.unitNo = getRandomUnitNo();
+		//changedDigital.unitNo = (changedDigital.unitNo % 2 == 0) ? 24 : 28;
+		for (int j = 0; j < 100; ++j)
+		{
+			changedDigital.index = getRandomIndex();
+			changedDigital.value = getRandomDiscreteValue();
+
+			changedDigital.timeStamp = IceUtil::Time::now().toMilliSeconds();
+			packet.digitals.push_back(changedDigital);
+		}
+	}
 
 	m_fepDataManagerPrx->processEvent(packet);
 
 	// 输出发送的数据
-	QString text = outputFepEvent(packet);
-	emit publishFepData(text);
+	//QString text = outputFepEvent(packet);
+	//emit publishFepData(text);
 
-	OperationInfo info(TYPE_FEP);
-	info.setOperationInfo(QStringLiteral("发布遥信变位事项"));
-	emit executeOperation(info);
+	//OperationInfo info(TYPE_FEP);
+	//info.setOperationInfo(QStringLiteral("发布遥信变位事项"));
+	//emit executeOperation(info);
 }
 
-void FepServerThread::processSoeTypeEvent()
+void FepServerThread::processSoeTypeEvent(bool isProcess)
+{
+	if (isProcess)
+	{
+		// 定时发送终端状态
+		m_soeTypeEventTimer = QSharedPointer<QTimer>::create();
+		connect(m_soeTypeEventTimer.data(), SIGNAL(timeout()), this, SLOT(processSoeTypeEventImpl()));
+		m_soeTypeEventTimer->start(1000);
+	}
+	else
+	{
+		if (!m_soeTypeEventTimer.isNull() && m_soeTypeEventTimer->isActive())
+		{
+			m_soeTypeEventTimer->stop();
+		}
+	}	
+}
+
+void FepServerThread::processSoeTypeEventImpl()
 {
 	// 获取发布者对象
 	if (!getFepDataPublisher())
@@ -447,21 +479,29 @@ void FepServerThread::processSoeTypeEvent()
 	packet.fepNode = "fep36";
 	packet.type = FepData::SoeType;
 	FepData::Soe soe;
-	soe.unitNo = 1;
-	soe.index = 1;
-	soe.value = FepData::Open;
-	soe.timeStamp = IceUtil::Time::now().toMilliSeconds();
-	packet.soes.push_back(soe);
+
+	for (int i = 0; i < 1; ++i)
+	{
+		soe.unitNo = getRandomUnitNo();
+		//soe.unitNo = (soe.unitNo % 2 == 0) ? 24 : 28;
+		for (int j = 0; j < 100; ++j)
+		{
+			soe.index = getRandomIndex();
+			soe.value = getRandomDiscreteValue();
+			soe.timeStamp = IceUtil::Time::now().toMilliSeconds();
+			packet.soes.push_back(soe);
+		}
+	}
 
 	m_fepDataManagerPrx->processEvent(packet);
 
 	// 输出发送的数据
 	QString text = outputFepEvent(packet);
-	emit publishFepData(text);
+	//emit publishFepData(text);
 
 	OperationInfo info(TYPE_FEP);
 	info.setOperationInfo(QStringLiteral("发布SOE事项"));
-	emit executeOperation(info);
+	//emit executeOperation(info);
 }
 
 void FepServerThread::processUnitTypeEvent()
@@ -516,7 +556,7 @@ void FepServerThread::processProTypeEvent()
 	protectEvent.timeStamp = IceUtil::Time::now().toMilliSeconds();
 	protectEvent.moduleNo = 1;
 	protectEvent.moduleType = 0;
-	protectEvent.infoNo = 0;
+	protectEvent.infoNo = 1;
 	protectEvent.state = 0;
 	for (int i = 0; i < 10; ++i)
 	{
@@ -537,6 +577,24 @@ void FepServerThread::processProTypeEvent()
 	OperationInfo info(TYPE_FEP);
 	info.setOperationInfo(QStringLiteral("发布保护事项"));
 	emit executeOperation(info);
+}
+
+void FepServerThread::processProTypeEvent(bool isProcess)
+{
+	if (isProcess)
+	{
+		// 定时发送终端状态
+		m_proTypeEventTimer = QSharedPointer<QTimer>::create();
+		connect(m_proTypeEventTimer.data(), SIGNAL(timeout()), this, SLOT(processProTypeEventImpl()));
+		m_proTypeEventTimer->start(5000);
+	}
+	else
+	{
+		if (!m_proTypeEventTimer.isNull() && m_proTypeEventTimer->isActive())
+		{
+			m_proTypeEventTimer->stop();
+		}
+	}
 }
 
 void FepServerThread::processProTypeEvent(int unitNo, int moduleNo, int moduleType, int infoNo, int state)
@@ -581,9 +639,88 @@ void FepServerThread::processProTypeEvent(int unitNo, int moduleNo, int moduleTy
 	emit executeOperation(info);
 }
 
+void FepServerThread::processProTypeEventImpl()
+{
+	// 获取发布者对象
+	if (!getFepDataPublisher())
+	{
+		return;
+	}
+
+	// 发布保护事项
+	FepData::EventPacket packet;
+	packet.id = 15;
+	packet.fepNode = "fep36";
+	packet.type = FepData::ProType;
+	FepData::ProtectEvent protectEvent;
+
+	for(int i = 0; i < 1; ++i) 
+	{
+		protectEvent.unitNo = getRandomUnitNo();
+		protectEvent.unitNo = (protectEvent.unitNo % 2 == 0) ? 24 : 28;
+		protectEvent.Type = FepData::ProtectAlarm;
+
+		for (int j = 0; j < 30; ++j)
+		{
+			protectEvent.moduleNo = getRandomIndex();
+			protectEvent.moduleType = getRandomIndex();
+			protectEvent.infoNo = getRandomIndex();
+			protectEvent.state = getRandomIndex();
+			protectEvent.timeStamp = IceUtil::Time::now().toMilliSeconds();
+			
+			for (int i = 0; i < 10; ++i)
+			{
+				FepData::ProValue proVal;
+				proVal.index = i;
+				proVal.value = (i + 1) * 1.0;
+				protectEvent.values.push_back(proVal);
+
+			}
+			packet.protects.push_back(protectEvent);
+		}
+	}
+
+	m_fepDataManagerPrx->processEvent(packet);
+
+	// 输出发送的数据
+	//QString text = outputFepEvent(packet);
+	//emit publishFepData(text);
+
+	//OperationInfo info(TYPE_FEP);
+	//info.setOperationInfo(QStringLiteral("发布保护事项"));
+	//emit executeOperation(info);
+}
+
 void FepServerThread::processWave()
 {
 
+}
+
+int FepServerThread::getRandomUnitNo()
+{
+	return qrand() % 255;
+}
+
+int FepServerThread::getRandomIndex()
+{
+	return qrand() % 256;
+}
+
+::FepData::DiscreteValue FepServerThread::getRandomDiscreteValue()
+{
+	int value = qrand() % 4;
+	switch(value)
+	{
+	case 0:
+		return ::FepData::Open;
+	case 1:
+		return ::FepData::Close;
+	case 2:
+		return ::FepData::DblOpen;
+	case 3:
+		return ::FepData::DblClose;
+	}
+	return ::FepData::Close;
 }
 
 QString FepServerThread::outputFepData( const FepData::DataPacket& packet )

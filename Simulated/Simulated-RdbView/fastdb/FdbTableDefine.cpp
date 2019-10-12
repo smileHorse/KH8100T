@@ -2,6 +2,7 @@
 
 //需要实际创建的fastdb数据库表
 
+REGISTER( FATopo );
 
 REGISTER( GeographicalRegion );
 REGISTER( SubGeographicalRegion );
@@ -14,6 +15,7 @@ REGISTER( AnalogUnitPoint );
 REGISTER( DiscreteUnitPoint );
 REGISTER( ControlUnitPoint );
 REGISTER( AccumulatorUnitPoint );
+REGISTER( ProtectValue );
 
 REGISTER( Terminal );
 REGISTER( BaseVoltage);
@@ -42,10 +44,15 @@ REGISTER( TransformerWinding);
 
 REGISTER( AnalogCurveData);
 
+REGISTER( AnalogSectionData);
+REGISTER( DiscreteSectionData);
+REGISTER( AccumulatorSectionData);
+
 REGISTER( FormulaDefinition);
 REGISTER( VariableDefinition);
 
 REGISTER(Step);
+REGISTER(ControlLockingFormula);
 
 REGISTER(ConfigFaultDesc);
 REGISTER(ConfigYxDesc);
@@ -66,6 +73,11 @@ REGISTER(SystemRole);
 REGISTER(SystemUser);
 REGISTER(SystemPhone);
 REGISTER(SystemMsgCfg);
+REGISTER(GraphFile);
 
 REGISTER(WavWaveConfig);
 REGISTER(WavTrendCurve);
+
+REGISTER(SecurityGroups);
+REGISTER(SecurityGroupsUsers);
+REGISTER(SecurityGroupsStations);

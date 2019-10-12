@@ -94,6 +94,7 @@ private slots:
 	void startProcessData();
 	void cancelProcessData();
 	void processRandomData();
+	void processAccumulatorData();
 
 private:
 	DataType	dataType;

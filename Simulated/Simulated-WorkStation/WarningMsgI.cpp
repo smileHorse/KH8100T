@@ -22,8 +22,9 @@ void SendWarningMsgI::sendWarningMsgBinary( const ::std::string& title, const ::
 
 	if (!bytes.empty())
 	{
-		char szBuf[BUFFER_SIZE] = {0};  
 		unsigned size = bytes.size();
+		char* szBuf = new char[size];
+		memset(szBuf, 0, size);
 		for (int i = 0; i < size; ++i)
 		{
 			szBuf[i] = bytes[i];
@@ -38,6 +39,11 @@ void SendWarningMsgI::sendRfwFileBinary(const ::std::string&, const ::std::strin
 }
 
 void SendWarningMsgI::sendCurveFileBinary(const ::std::string&, const ::std::string&, const ::WarningMsg::Bytes&, const ::Ice::Current& /* = ::Ice::Current() */)
+{
+
+}
+
+void SendWarningMsgI::sendReportFileBinary(const ::std::string&, const ::std::string&, const ::WarningMsg::Bytes&, const ::Ice::Current& /*= ::Ice::Current()*/)
 {
 
 }

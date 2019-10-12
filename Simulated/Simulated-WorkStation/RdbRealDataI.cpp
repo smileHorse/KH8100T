@@ -34,7 +34,7 @@ void RdbRealDataRequestI::RequestCompleteData( const ::RdbRealData::RequestCompl
 	m_threadPtr->outputOperationData(QString("收到请求 %1").arg(++count));
 
 
-	/*TextElement parent("收到 全部实时数据请求", "");
+	TextElement parent("收到 全部实时数据请求", "");
 	parent.insertChild(new TextElement("id", ConvertTypeToString<long>().convertToString(seq.id)));
 	parent.insertChild(new TextElement("id", ConvertTypeToString<long>().convertToString(seq.requestId)));
 	parent.insertChild(new TextElement("requestNode", seq.requestNode));
@@ -53,7 +53,7 @@ void RdbRealDataRequestI::RequestCompleteData( const ::RdbRealData::RequestCompl
 	}
 
 	QString text = QString().fromStdString(parent.toString());
-	m_threadPtr->outputOperationData(text);*/
+	m_threadPtr->outputOperationData(text);
 }
 
 void RdbRealDataRequestI::SendTopoDataRequest( const ::RdbRealData::RequestTopoDataSeq&, const ::Ice::Current& /* = ::Ice::Current() */ )
@@ -88,7 +88,7 @@ void RdbRealDataRespondI::RespondSpecificData( const ::RdbRealData::RespondSpecf
 
 }
 
-void RdbRealDataRespondI::RespondCompleteData( const ::RdbRealData::RespondCompleteDataSeq&, const ::Ice::Current& /* = ::Ice::Current() */ )
+void RdbRealDataRespondI::RespondCompleteData( const ::RdbRealData::RespondCompleteDataSeq& dataSeq, const ::Ice::Current& /* = ::Ice::Current() */ )
 {
 	if (!m_threadPtr)
 	{
@@ -97,6 +97,21 @@ void RdbRealDataRespondI::RespondCompleteData( const ::RdbRealData::RespondCompl
 
 	static int count = 0;
 	m_threadPtr->outputOperationData(QString("收到数据响应 %1").arg(++count));
+
+	m_threadPtr->outputOperationData(QString().fromStdString(dataSeq.requestNode));
+	string str = "";
+	for(size_t i = 0; i < dataSeq.seq.size(); ++i)
+	{
+		::RdbRealData::RespondCompleteData data = dataSeq.seq[i];
+		str += "tableName: " + data.tableName;
+		str += "dataValues: ";
+		for (size_t j = 0; j < data.dataValues.size(); ++j)
+		{
+			str += data.dataValues[j] + ";";
+		}
+		str += " dataRid: " + data.dataRid;
+	}
+	m_threadPtr->outputOperationData(QString().fromStdString(str));
 }
 
 void RdbRealDataRespondI::SendTopoDataRespond( const ::RdbRealData::ReceiveTopoDataSeq&, const ::Ice::Current& /* = ::Ice::Current() */ )

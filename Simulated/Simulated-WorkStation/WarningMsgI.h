@@ -17,7 +17,9 @@ public:
 	virtual void sendRfwFileBinary(const ::std::string&, const ::std::string&, const ::WarningMsg::Bytes&, const ::Ice::Current& /* = ::Ice::Current() */);
 
 	virtual void sendCurveFileBinary(const ::std::string&, const ::std::string&, const ::WarningMsg::Bytes&, const ::Ice::Current& /* = ::Ice::Current() */);
-	
+
+	virtual void sendReportFileBinary(const ::std::string&, const ::std::string&, const ::WarningMsg::Bytes&, const ::Ice::Current& = ::Ice::Current());
+
 private:
 	WorkStationServerThread*	m_threadPtr;
 };

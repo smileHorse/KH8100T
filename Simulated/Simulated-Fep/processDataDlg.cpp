@@ -110,7 +110,14 @@ void ProcessDataDialog::createWidgets()
 
 void ProcessDataDialog::createConnections()
 {
-	connect(m_timer.data(), SIGNAL(timeout()), this, SLOT(processRandomData()));
+	if (dataType == AllDataType && allDataTypeType == AccumulatorType)
+	{
+		connect(m_timer.data(), SIGNAL(timeout()), this, SLOT(processAccumulatorData()));
+	}
+	else
+	{
+		connect(m_timer.data(), SIGNAL(timeout()), this, SLOT(processRandomData()));
+	}
 }
 
 QString ProcessDataDialog::getWindowTitle() const
@@ -259,24 +266,48 @@ void ProcessDataDialog::generateYxValues()
 
 void ProcessDataDialog::generateDdValues()
 {
-	// 随机参数200以内的数据
-	QList<double> values;
+	// 电度数据应该随时递增
 	qsrand(QDateTime::currentDateTime().toTime_t());
 	for (int i = 0; i < COUNT; ++i)
 	{
 		for (int j = 0; j < COUNT; ++j)
 		{
+			double itemValue = 0.0;
+			QTableWidgetItem* item = dataTable->item(i, j);
+			if (item != NULL)
+			{
+				bool ok = false;
+				itemValue = item->text().toDouble(&ok);
+				itemValue = ok ? itemValue : 0.0;
+			}
 			double value = qrand() % 200;
-			dataTable->setItem(i, j, new QTableWidgetItem(QString("%1").arg(value)));
+			dataTable->setItem(i, j, new QTableWidgetItem(QString("%1").arg(itemValue + value)));
 		}
 	}
+
+	//// 随机参数200以内的数据
+	//QList<double> values;
+	//qsrand(QDateTime::currentDateTime().toTime_t());
+	//for (int i = 0; i < COUNT; ++i)
+	//{
+	//	for (int j = 0; j < COUNT; ++j)
+	//	{
+	//		double value = qrand() % 200;
+	//		dataTable->setItem(i, j, new QTableWidgetItem(QString("%1").arg(value)));
+	//	}
+	//}
 }
 
 void ProcessDataDialog::generateValue()
 {
 	qsrand(QDateTime::currentDateTime().toTime_t());
-	int unitNo = qrand() % 5 + 1;
-	unitNoEdit->setText(QString("%1").arg(unitNo));
+	
+	GenerateValueMode mode = getValueMode();
+	if (mode == Random)
+	{
+		int unitNo = qrand() % 5 + 1;
+		unitNoEdit->setText(QString("%1").arg(unitNo));
+	}
 	switch(allDataTypeType)
 	{
 	case Analog:
@@ -315,7 +346,7 @@ void ProcessDataDialog::startProcessData()
 	else if (mode == Timed)
 	{
 		// 定时发送数据时，每隔5s发送一次
-		m_timer->start(5000);
+		m_timer->start(15000);
 	}
 }
 
@@ -348,4 +379,12 @@ void ProcessDataDialog::processRandomData()
 			}
 		}
 	}
+}
+
+void ProcessDataDialog::processAccumulatorData()
+{
+	generateValue();
+	SelfDataPacket dataPacket;
+	getDataPacket(dataPacket);
+	emit start(dataPacket);
 }

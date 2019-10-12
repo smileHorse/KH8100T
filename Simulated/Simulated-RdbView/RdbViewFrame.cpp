@@ -5,6 +5,7 @@
 #include "xmlStreamReader.h"
 
 #include <QtWidgets/QtWidgets>
+#include <IceStorm/IceStorm.h>
 
 RdbViewFrame::RdbViewFrame(QWidget *parent)
 	: QMainWindow(parent)
@@ -473,7 +474,7 @@ bool RdbViewFrame::openRdbDatabase()
 {
 	try
 	{
-		if (!m_dbPtr->open("serverdb1"))
+		if (!m_dbPtr->open("serverdb"))
 		{
 			emit databaseOpenState(false);
 			QMessageBox::critical(this, QStringLiteral("实时库操作"), QStringLiteral("数据库打开失败"));

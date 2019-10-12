@@ -3,8 +3,11 @@
 #include "workstationserver.h"
 #include "workstationserverthread.h"
 #include "OperationInfo.h"
+#include "RequestDataDialog.h"
 
 #include <QtWidgets/QtWidgets>
+
+#define MAX_TABLE_ROWS 999
 
 WorkStationFrame::WorkStationFrame(int argc, char* argv[], QWidget *parent)
 	: QMainWindow(parent), m_argc(argc), m_argv(argv)
@@ -56,112 +59,70 @@ void WorkStationFrame::createWidgets()
 
 void WorkStationFrame::createActions()
 {
-	startServerAction = new QAction(QIcon(":/images/startServer.png"), QStringLiteral("启动服务"), this);
-	startServerAction->setStatusTip(QStringLiteral("启动Ice服务"));
-	connect(startServerAction, SIGNAL(triggered()), this, SLOT(startServer()));
+	startServerAction = createActionImpl(QIcon(":/images/startServer.png"), QStringLiteral("启动服务"), 
+		QStringLiteral("启动Ice服务"),	this, SLOT(startServer()));
+	stopServerAction = createActionImpl(QIcon(":/images/stopServer.png"), QStringLiteral("停止服务"), 
+		QStringLiteral("停止Ice服务"),	this, SLOT(stopServer()));
+	exitAction = createActionImpl(QIcon(":/images/exit.png"), QStringLiteral("退出"), 
+		QStringLiteral("退出模拟机程序"),	this, SLOT(close()));
+		
+	requestStormRdbDataAction = createActionImpl(QIcon(":/images/requestStormRdb.png"), 
+		QStringLiteral("请求实时数据(IceStorm)"), QStringLiteral("通过IceStorm请求实时数据"),	
+		this, SLOT(requestStormRdbData()), false);
+	requestStormTopoDataAction = createActionImpl(QIcon(":/images/requestStormTopo.png"), 
+		QStringLiteral("请求拓扑数据(IceStorm)"), QStringLiteral("通过IceStorm请求拓扑数据"),	
+		this, SLOT(requestStormTopoData()), false);
+	requestRdbDataAction = createActionImpl(QIcon(":/images/requestRdb.png"), 
+		QStringLiteral("请求实时数据(Ice)"), QStringLiteral("通过Ice请求实时数据"),	
+		this, SLOT(requestRdbData()), false);
+	requestTopoDataAction = createActionImpl(QIcon(":/images/requestTopo.png"), 
+		QStringLiteral("请求拓扑数据(Ice)"), QStringLiteral("通过Ice请求拓扑数据"),	
+		this, SLOT(requestTopoData()), false);
+	requestWarningMsgAction = createActionImpl(QIcon(":/images/requestTopo.png"), 
+		QStringLiteral("请求告警文件(Ice)"), QStringLiteral("通过Ice请求告警文件"),	
+		this, SLOT(requestWarningMsg()), false);
 
-	stopServerAction = new QAction(QIcon(":/images/stopServer.png"), QStringLiteral("停止服务"), this);
-	stopServerAction->setStatusTip(QStringLiteral("停止Ice服务"));
-	stopServerAction->setEnabled(false);
-	connect(stopServerAction, SIGNAL(triggered()), this, SLOT(stopServer()));
+	subscriberRdbRequestAction = createActionImpl(QIcon(":/images/subscribeRdbRequest.png"), 
+		QStringLiteral("订阅实时数据请求"), "",	this, SLOT(subscriberRdbRequest()), false);
+	subscriberRdbRespondAction = createActionImpl(QIcon(":/images/subscribeRdbRespond.png"), 
+		QStringLiteral("订阅实时数据响应"), "",	this, SLOT(subscriberRdbRespond()), false);
+	subscriberAlarmDataAction = createActionImpl(QIcon(":/images/subscribeAlarmData.png"), 
+		QStringLiteral("订阅报警数据"), "",	this, SLOT(subscriberAlarmData()), false);
+	subscriberFepDataAction = createActionImpl(QIcon(":/images/subscribeFepData.png"), 
+		QStringLiteral("订阅前置机数据请求"), "",	this, SLOT(subscriberFepData()), false);
+	subscriberYkFepAction = createActionImpl(QIcon(":/images/subscribeFepData.png"), 
+		QStringLiteral("订阅遥控请求"), "",	this, SLOT(subscriberYkFep()), false);
+	subscriberYkAppAction = createActionImpl(QIcon(":/images/subscribeFepData.png"), 
+		QStringLiteral("订阅遥控响应"), "",	this, SLOT(subscriberYkApp()), false);
+	subscriberWarningMsgAction = createActionImpl(QIcon(":/images/subscribeFepData.png"), 
+		QStringLiteral("订阅告警数据"), "",	this, SLOT(subscribeWarningMsg()), false);
+	ykSelectAction = createActionImpl(QIcon(":/images/subscribeFepData.png"), QStringLiteral("遥控选择"), 
+		"",	this, SLOT(ykSelect()), false);
 
-	exitAction = new QAction(QIcon(":/images/exit.png"), QStringLiteral("退出"), this);
-	exitAction->setShortcut(QKeySequence::Quit);
-	exitAction->setStatusTip(QStringLiteral("退出模拟机程序"));
-	connect(exitAction, SIGNAL(triggered()), this, SLOT(close()));
-	
-	requestStormRdbDataAction = new QAction(QIcon(":/images/requestStormRdb.png"), QStringLiteral("请求实时数据(IceStorm)"), this);
-	requestStormRdbDataAction->setStatusTip(QStringLiteral("通过IceStorm请求实时数据"));
-	requestStormRdbDataAction->setEnabled(false);
-	connect(requestStormRdbDataAction, SIGNAL(triggered()), this, SLOT(requestStormRdbData()));
-	
-	requestStormTopoDataAction = new QAction(QIcon(":/images/requestStormTopo.png"), QStringLiteral("请求拓扑数据(IceStorm)"), this);
-	requestStormTopoDataAction->setStatusTip(QStringLiteral("通过IceStorm请求拓扑数据"));
-	requestStormTopoDataAction->setEnabled(false);
-	connect(requestStormTopoDataAction, SIGNAL(triggered()), this, SLOT(requestStormTopoData()));
+	transferCurveFileAction = createActionImpl(QIcon(":/images/icemenu.png"), QStringLiteral("请求历史曲线文件"), 
+		"",	this, SLOT(transferCurveFile()), false);
+	transferWarningFileAction = createActionImpl(QIcon(":/images/icemenu.png"), QStringLiteral("请求告警文件"), 
+		"",	this, SLOT(transferWarningFile()), false);
 
-	requestRdbDataAction = new QAction(QIcon(":/images/requestRdb.png"), QStringLiteral("请求实时数据(Ice)"), this);
-	requestRdbDataAction->setStatusTip(QStringLiteral("通过Ice请求实时数据"));
-	requestRdbDataAction->setEnabled(false);
-	connect(requestRdbDataAction, SIGNAL(triggered()), this, SLOT(requestRdbData()));
+	getSubscribersAction = createActionImpl(QIcon(":/images/icemenu.png"), QStringLiteral("获取订阅者"), 
+		"",	this, SLOT(getSubscribers()), false);
+	getPublishersAction = createActionImpl(QIcon(":/images/icemenu.png"), QStringLiteral("获取发布者"), 
+		"",	this, SLOT(getPublishers()), false);
 
-	requestTopoDataAction = new QAction(QIcon(":/images/requestTopo.png"), QStringLiteral("请求拓扑数据(Ice)"), this);
-	requestTopoDataAction->setStatusTip(QStringLiteral("通过Ice请求拓扑数据"));
-	requestTopoDataAction->setEnabled(false);
-	connect(requestTopoDataAction, SIGNAL(triggered()), this, SLOT(requestTopoData()));
+	clearAction = createActionImpl(QIcon(":/images/clear.png"), QStringLiteral("清空文本"), 
+		"",	this, SLOT(clearTextEdit()));
+	helpAction = createActionImpl(QIcon(":/images/about.png"), QStringLiteral("关于"), 
+		QStringLiteral("关于模拟机程序"),	this, SLOT(about()));
+}
 
-	requestWarningMsgAction = new QAction(QIcon(":/images/requestTopo.png"), QStringLiteral("请求告警文件(Ice)"), this);
-	requestWarningMsgAction->setStatusTip(QStringLiteral("通过Ice请求告警文件"));
-	requestWarningMsgAction->setEnabled(false);
-	connect(requestWarningMsgAction, SIGNAL(triggered()), this, SLOT(requestWarningMsg()));
-
-	subscriberRdbRequestAction = new QAction(QIcon(":/images/subscribeRdbRequest.png"), QStringLiteral("订阅实时数据请求"), this);
-	subscriberRdbRequestAction->setStatusTip(QStringLiteral("订阅实时数据请求"));
-	subscriberRdbRequestAction->setEnabled(false);
-	connect(subscriberRdbRequestAction, SIGNAL(triggered()), this, SLOT(subscriberRdbRequest()));
-
-	subscriberRdbRespondAction = new QAction(QIcon(":/images/subscribeRdbRespond.png"), QStringLiteral("订阅实时数据响应"), this);
-	subscriberRdbRespondAction->setStatusTip(QStringLiteral("订阅实时数据响应"));
-	subscriberRdbRespondAction->setEnabled(false);
-	connect(subscriberRdbRespondAction, SIGNAL(triggered()), this, SLOT(subscriberRdbRespond()));
-
-	subscriberAlarmDataAction = new QAction(QIcon(":/images/subscribeAlarmData.png"), QStringLiteral("订阅报警数据"), this);
-	subscriberAlarmDataAction->setStatusTip(QStringLiteral("订阅报警数据"));
-	subscriberAlarmDataAction->setEnabled(false);
-	connect(subscriberAlarmDataAction, SIGNAL(triggered()), this, SLOT(subscriberAlarmData()));
-
-	subscriberFepDataAction = new QAction(QIcon(":/images/subscribeFepData.png"), QStringLiteral("订阅前置机数据请求"), this);
-	subscriberFepDataAction->setStatusTip(QStringLiteral("订阅前置机数据请求"));
-	subscriberFepDataAction->setEnabled(false);
-	connect(subscriberFepDataAction, SIGNAL(triggered()), this, SLOT(subscriberFepData()));
-
-	subscriberYkFepAction = new QAction(QIcon(":/images/subscribeFepData.png"), QStringLiteral("订阅遥控请求"), this);
-	subscriberYkFepAction->setStatusTip(QStringLiteral("订阅遥控请求"));
-	subscriberYkFepAction->setEnabled(false);
-	connect(subscriberYkFepAction, SIGNAL(triggered()), this, SLOT(subscriberYkFep()));
-
-	subscriberYkAppAction = new QAction(QIcon(":/images/subscribeFepData.png"), QStringLiteral("订阅遥控响应"), this);
-	subscriberYkAppAction->setStatusTip(QStringLiteral("订阅遥控响应"));
-	subscriberYkAppAction->setEnabled(false);
-	connect(subscriberYkAppAction, SIGNAL(triggered()), this, SLOT(subscriberYkApp()));
-
-	subscriberWarningMsgAction = new QAction(QIcon(":/images/subscribeFepData.png"), QStringLiteral("订阅告警数据"), this);
-	subscriberWarningMsgAction->setStatusTip(QStringLiteral("订阅告警数据"));
-	subscriberWarningMsgAction->setEnabled(false);
-	connect(subscriberWarningMsgAction, SIGNAL(triggered()), this, SLOT(subscribeWarningMsg()));
-
-	ykSelectAction = new QAction(QIcon(":/images/subscribeFepData.png"), QStringLiteral("遥控选择"), this);
-	ykSelectAction->setStatusTip(QStringLiteral("遥控选择"));
-	ykSelectAction->setEnabled(false);
-	connect(ykSelectAction, SIGNAL(triggered()), this, SLOT(ykSelect()));
-	
-	transferCurveFileAction = new QAction(QIcon(":/images/icemenu.png"), QStringLiteral("请求历史曲线文件"), this);
-	transferCurveFileAction->setStatusTip(QStringLiteral("请求历史曲线文件"));
-	transferCurveFileAction->setEnabled(false);
-	connect(transferCurveFileAction, SIGNAL(triggered()), this, SLOT(transferCurveFile()));
-
-	transferWarningFileAction = new QAction(QIcon(":/images/icemenu.png"), QStringLiteral("请求告警文件"), this);
-	transferWarningFileAction->setStatusTip(QStringLiteral("请求告警文件"));
-	transferWarningFileAction->setEnabled(false);
-	connect(transferWarningFileAction, SIGNAL(triggered()), this, SLOT(transferWarningFile()));
-
-	getSubscribersAction = new QAction(QIcon(":/images/icemenu.png"), QStringLiteral("获取订阅者"), this);
-	getSubscribersAction->setStatusTip(QStringLiteral("获取订阅者"));
-	getSubscribersAction->setEnabled(false);
-	connect(getSubscribersAction, SIGNAL(triggered()), this, SLOT(getSubscribers()));
-
-	getPublishersAction = new QAction(QIcon(":/images/icemenu.png"), QStringLiteral("获取发布者"), this);
-	getPublishersAction->setStatusTip(QStringLiteral("获取发布者"));
-	getPublishersAction->setEnabled(false);
-	connect(getPublishersAction, SIGNAL(triggered()), this, SLOT(getPublishers()));
-	
-	clearAction = new QAction(QIcon(":/images/clear.png"), QStringLiteral("清空文本"), this);
-	clearAction->setStatusTip(QStringLiteral("清空文本"));
-	connect(clearAction, SIGNAL(triggered()), this, SLOT(clearTextEdit()));
-
-	helpAction = new QAction(QIcon(":/images/about.png"), QStringLiteral("关于"), this);
-	helpAction->setStatusTip(QStringLiteral("关于模拟机程序"));
-	connect(helpAction, SIGNAL(triggered()), this, SLOT(about()));
+QAction* WorkStationFrame::createActionImpl(const QIcon &icon, const QString &text, const QString& statusTip, 
+	const QObject* receiver, const char* member, bool enabled)
+{
+	QAction* action = new QAction(icon, text, this);
+	action->setEnabled(enabled);
+	action->setStatusTip(statusTip.isEmpty() ? text : statusTip);
+	connect(action, SIGNAL(triggered()), receiver, member);
+	return action;
 }
 
 void WorkStationFrame::createMenus()
@@ -244,9 +205,9 @@ void WorkStationFrame::createConnects()
 {
 	qRegisterMetaType<OperationInfo>("OperationInfo");
 	connect(this, SIGNAL(serverStarted(bool)), this, SLOT(updateActions(bool)));
-	connect(this, SIGNAL(requestCompleteData()), m_workStationServerThreadPtr, SLOT(requestCompleteData()));
+	connect(this, SIGNAL(requestCompleteDataSingal()), m_workStationServerThreadPtr, SLOT(requestCompleteData()));
 	connect(this, SIGNAL(requestStormTopoDataSingal()), m_workStationServerThreadPtr, SLOT(requestStormTopoData()));
-	connect(this, SIGNAL(selectCompleteData()), m_workStationServerThreadPtr, SLOT(selectCompleteData()));
+	connect(this, SIGNAL(selectCompleteDataSingal()), m_workStationServerThreadPtr, SLOT(selectCompleteData()));
 	connect(this, SIGNAL(requestWarningMsgSingal()), m_workStationServerThreadPtr, SLOT(requestWarningMsg()));
 	connect(this, SIGNAL(subscriberRdbRequestSignal(bool)), m_workStationServerThreadPtr, SLOT(subscriberRdbRequest(bool)));
 	connect(this, SIGNAL(subscriberRdbRespondSignal(bool)), m_workStationServerThreadPtr, SLOT(subscriberRdbRespond(bool)));
@@ -297,6 +258,10 @@ void WorkStationFrame::updateTableWidget( const OperationInfo& info )
 		for (int i = 0; i < Header_Count; ++i)
 		{
 			tableWidget->setItem(count, i, new QTableWidgetItem(info.getContent(i)));
+		}
+		if (tableWidget->rowCount() > MAX_TABLE_ROWS)
+		{
+			tableWidget->removeRow(0);
 		}
 
 		tableWidget->resizeColumnsToContents();
@@ -354,7 +319,11 @@ void WorkStationFrame::stopServer()
 
 void WorkStationFrame::requestStormRdbData()
 {
-	emit requestCompleteData();
+	CRequestDataDialog dialog(CompleteData, this);
+	if (dialog.exec() == QDialog::Accepted)
+	{
+	}
+	emit requestCompleteDataSingal();
 }
 
 void WorkStationFrame::requestStormTopoData()
@@ -364,7 +333,7 @@ void WorkStationFrame::requestStormTopoData()
 
 void WorkStationFrame::requestRdbData()
 {
-	emit selectCompleteData();
+	emit selectCompleteDataSingal();
 }
 
 void WorkStationFrame::requestTopoData()

@@ -27,6 +27,8 @@ private:
 	void createWidgets();
 
 	void createActions();
+	QAction* createActionImpl(const QIcon &icon, const QString &text, const QString& statusTip, 
+		const QObject* receiver, const char* member, bool enabled = true);
 	void createMenus();
 	void createToolBars();
 	void createStatusBar();
@@ -36,9 +38,9 @@ private:
 
 signals:
 	void serverStarted(bool serverStarted);
-	void requestCompleteData();
+	void requestCompleteDataSingal();
 	void requestStormTopoDataSingal();
-	void selectCompleteData();
+	void selectCompleteDataSingal();
 	void requestWarningMsgSingal();
 	void subscriberRdbRequestSignal(bool isStop);
 	void subscriberRdbRespondSignal(bool isStop);

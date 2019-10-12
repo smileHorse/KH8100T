@@ -3,6 +3,7 @@
 #include "AmlConst.h"
 #include "OperationInfo.h"
 #include "workstationserverthread.h"
+#include "IceHelper.h"
 
 #include <string>
 using namespace std;
@@ -23,6 +24,7 @@ int WorkStationServer::run( int argc, char* argv[] )
 		Ice::PropertiesPtr props = communicator()->getProperties();
 		Ice::Int maxSize = props->getPropertyAsIntWithDefault("Ice.MessageSizeMax", 1024);
 		string strEndPoints = props->getPropertyWithDefault("WorkStation.Endpoints", "");
+		string strProxyPoints = props->getPropertyWithDefault("WorkStation.Proxypoints", "");
 		string iceStormIps = props->getPropertyWithDefault("IceStrom_Ip", "");
 		string iceStormPorts = props->getPropertyWithDefault("IceStrom_Port", "");
 		if (strEndPoints.empty() || iceStormIps.empty() || iceStormPorts.empty())
@@ -51,6 +53,10 @@ int WorkStationServer::run( int argc, char* argv[] )
 			m_threadPtr->setObjectAdapterPtr(adapter);
 			m_threadPtr->start();
 		}
+
+		// 设置Ice信息
+		CIceHelper::instance()->setCommunicatorPtr(m_communicatorPtr);
+		CIceHelper::instance()->setProxyPoints(strProxyPoints);
 
 		adapter->activate();
 		info.setOperationInfo("激活适配器");

@@ -45,17 +45,27 @@ public slots:
 	void processJDFault();
 	void processYxTypeEvent(bool isProcess);
 	void processYxTypeEventImpl();
-	void processSoeTypeEvent();
+	void processSoeTypeEvent(bool isProcess);
+	void processSoeTypeEventImpl();
 	void processUnitTypeEvent();
 	void processProTypeEvent();
 	void processProTypeEvent(int unitNo, int moduleNo, int moduleType, int infoNo, int state);
+	void processProTypeEvent(bool isProcess);
+	void processProTypeEventImpl();
 	void processWave();
+
+private:
+	int getRandomUnitNo();
+	int getRandomIndex();
+	::FepData::DiscreteValue getRandomDiscreteValue();
 
 private:
 	Ice::CommunicatorPtr m_communicatorPtr;
 	FepData::FepDataManagerPrx	m_fepDataManagerPrx;
 	QSharedPointer<QTimer>	m_unitStateTimer;
 	QSharedPointer<QTimer>	m_yxTypeEventTimer;
+	QSharedPointer<QTimer>	m_soeTypeEventTimer;
+	QSharedPointer<QTimer>	m_proTypeEventTimer;
 };
 
 #endif

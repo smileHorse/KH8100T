@@ -29,11 +29,12 @@ Ice.MessageSizeMax = 1024 	# Largest message size is 1MB
 # Local ip & port
 #
 WorkStation.Endpoints=tcp -h 192.168.3.25 -p 10005 -t 1
+WorkStation.Proxypoints=-h 192.168.3.25 -p 10002 -t 5000
 
 # 
 # IceStorm ip & port 
 #
-#IceStrom_Ip = 192.168.3.25:192.168.3.25:192.168.3.25
-#IceStrom_Port = 10000:10010:10020
+#IceStrom_Ip = 192.168.40.211:192.168.40.212:192.168.40.214
+#IceStrom_Port = 10010:10000:10020
 IceStrom_Ip = 192.168.3.25
 IceStrom_Port = 10000
