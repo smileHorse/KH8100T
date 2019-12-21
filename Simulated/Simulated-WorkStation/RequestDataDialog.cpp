@@ -1,6 +1,7 @@
 
 #include "RequestDataDialog.h"
 #include "IceHelper.h"
+#include "GlobalVariable.h"
 
 QList<RdbRealData::RequestCompleteDataSeq> CRequestManager::m_completeDatasList;
 
@@ -90,7 +91,7 @@ void CRequestDataDialog::addRequest()
 		dataSeq.id = 0;
 		dataSeq.isStop = false;
 		dataSeq.refreshFreq = 3;
-		dataSeq.requestNode = substationId;
+		dataSeq.requestNode = CGlobalVariable::instance().getRdbRequestTopic().toStdString();
 		dataSeq.requestId = s_requestId++;
 
 		RdbDataItemVct breakerItems;
@@ -123,7 +124,7 @@ void CRequestDataDialog::addRequest()
 		measurmentSeq.id = 0;
 		measurmentSeq.isStop = false;
 		measurmentSeq.refreshFreq = 3;
-		measurmentSeq.requestNode = "mea-" + substationId;
+		measurmentSeq.requestNode = CGlobalVariable::instance().getRdbRequestTopic().toStdString();
 		measurmentSeq.requestId = s_requestId++;
 
 		RdbDataItemVct analogItems;

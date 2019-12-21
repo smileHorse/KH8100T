@@ -82,6 +82,7 @@ private slots:
 	void getPublishers();
 	void clearTextEdit();
 	void about();
+	QString getInputText(const QString& defaultText);
 
 
 private:

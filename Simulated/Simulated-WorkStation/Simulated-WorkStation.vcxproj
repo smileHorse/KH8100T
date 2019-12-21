@@ -166,6 +166,7 @@
     <ClInclude Include="..\common\slice\cpp\warningmsg.h" />
     <ClInclude Include="..\common\slice\cpp\ykdata.h" />
     <ClInclude Include="FepDataManagerI.h" />
+    <ClInclude Include="GlobalVariable.h" />
     <ClInclude Include="IceHelper.h" />
     <ClInclude Include="RdbAlarmDataI.h" />
     <ClInclude Include="RdbRealDataI.h" />

@@ -38,10 +38,14 @@ void RestoreDb::createActions()
 	openAction->setStatusTip(QStringLiteral("打开实时库"));
 	connect(openAction, SIGNAL(triggered()), this, SLOT(openDb()));
 
-	closeAction = new QAction(QIcon(":/images/close.png"), QStringLiteral("退出程序"), this);
-	closeAction->setShortcut(QKeySequence::Close);
-	closeAction->setStatusTip(QStringLiteral("退出程序"));
-	connect(closeAction, SIGNAL(triggered()), this, SLOT(close()));
+	closeAction = new QAction(QIcon(":/images/close.png"), QStringLiteral("关闭实时库"), this);
+	closeAction->setStatusTip(QStringLiteral("关闭实时库"));
+	connect(closeAction, SIGNAL(triggered()), this, SLOT(closeDb()));
+
+	exitAction = new QAction(QIcon(":/images/close.png"), QStringLiteral("退出程序"), this);
+	exitAction->setShortcut(QKeySequence::Close);
+	exitAction->setStatusTip(QStringLiteral("退出程序"));
+	connect(exitAction, SIGNAL(triggered()), this, SLOT(close()));
 
 	restoreAction = new QAction(QIcon(":/images/restore.png"), QStringLiteral("恢复实时库"), this);
 	restoreAction->setStatusTip(QStringLiteral("恢复实时库"));
@@ -62,6 +66,7 @@ void RestoreDb::createMenus()
 	fileMenu = menuBar()->addMenu(QStringLiteral("文件"));
 	fileMenu->addAction(openAction);
 	fileMenu->addAction(closeAction);
+	fileMenu->addAction(exitAction);
 
 	operMenu = menuBar()->addMenu(QStringLiteral("操作"));
 	operMenu->addAction(restoreAction);
@@ -73,6 +78,7 @@ void RestoreDb::createToolBars()
 	fileToolbar = addToolBar(QStringLiteral("文件"));
 	fileToolbar->addAction(openAction);
 	fileToolbar->addAction(closeAction);
+	fileToolbar->addAction(exitAction);
 
 	operToolbar = addToolBar(QStringLiteral("操作"));
 	operToolbar->addAction(restoreAction);
@@ -98,7 +104,28 @@ void RestoreDb::openDb()
 	}
 
 	dbName = dbName.left(dbName.indexOf("."));
-	m_fastdbManager->openDatabase(dbName.toStdString());
+	try {
+		m_fastdbManager->openDatabase(dbName.toStdString());
+	} catch (dbException& ex) {
+		outputOperationInfo(QString("fastdb exception: %1").arg(ex.what()));
+	} catch (std::exception& ex) {
+		outputOperationInfo(QString("std exception: %1").arg(ex.what()));
+	} catch (...) {
+		outputOperationInfo("unknown exception");
+	}
+}
+
+void RestoreDb::closeDb()
+{
+	try {
+		m_fastdbManager->closeDatabase();
+	} catch (dbException& ex) {
+		outputOperationInfo(QString("fastdb exception: %1").arg(ex.what()));
+	} catch (std::exception& ex) {
+		outputOperationInfo(QString("std exception: %1").arg(ex.what()));
+	} catch (...) {
+		outputOperationInfo("unknown exception");
+	}
 }
 
 void RestoreDb::restoreDb()

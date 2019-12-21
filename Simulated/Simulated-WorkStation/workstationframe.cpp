@@ -4,6 +4,7 @@
 #include "workstationserverthread.h"
 #include "OperationInfo.h"
 #include "RequestDataDialog.h"
+#include "GlobalVariable.h"
 
 #include <QtWidgets/QtWidgets>
 
@@ -89,7 +90,7 @@ void WorkStationFrame::createActions()
 	subscriberAlarmDataAction = createActionImpl(QIcon(":/images/subscribeAlarmData.png"), 
 		QStringLiteral("订阅报警数据"), "",	this, SLOT(subscriberAlarmData()), false);
 	subscriberFepDataAction = createActionImpl(QIcon(":/images/subscribeFepData.png"), 
-		QStringLiteral("订阅前置机数据请求"), "",	this, SLOT(subscriberFepData()), false);
+		QStringLiteral("订阅前置机数据"), "",	this, SLOT(subscriberFepData()), false);
 	subscriberYkFepAction = createActionImpl(QIcon(":/images/subscribeFepData.png"), 
 		QStringLiteral("订阅遥控请求"), "",	this, SLOT(subscriberYkFep()), false);
 	subscriberYkAppAction = createActionImpl(QIcon(":/images/subscribeFepData.png"), 
@@ -319,6 +320,12 @@ void WorkStationFrame::stopServer()
 
 void WorkStationFrame::requestStormRdbData()
 {
+	QString topic = getInputText(CGlobalVariable::instance().getRdbRequestTopic());
+	if (!topic.isEmpty())
+	{
+		CGlobalVariable::instance().setRdbRequestTopic(topic);
+	}
+
 	CRequestDataDialog dialog(CompleteData, this);
 	if (dialog.exec() == QDialog::Accepted)
 	{
@@ -328,6 +335,12 @@ void WorkStationFrame::requestStormRdbData()
 
 void WorkStationFrame::requestStormTopoData()
 {
+	QString topic = getInputText(CGlobalVariable::instance().getRdbRequestTopic());
+	if (!topic.isEmpty())
+	{
+		CGlobalVariable::instance().setRdbRequestTopic(topic);
+	}
+
 	emit requestStormTopoDataSingal();
 }
 
@@ -358,6 +371,14 @@ void WorkStationFrame::subscriberRdbRespond()
 {
 	bool isStop = false;
 	updateActionText(subscriberRdbRespondAction, isStop);
+	if (!isStop)
+	{
+		QString text =getInputText(CGlobalVariable::instance().getRdbRespondTopic());
+		if (!text.isEmpty())
+		{
+			CGlobalVariable::instance().setRdbRespondTopic(text);
+		}
+	}
 	emit subscriberRdbRespondSignal(isStop);
 }
 
@@ -457,4 +478,12 @@ void WorkStationFrame::about()
 {
 	QMessageBox::information(this, QStringLiteral("工作站模拟机"), 
 		QStringLiteral("提供模拟工作站请求数据的功能"));
+}
+
+QString WorkStationFrame::getInputText(const QString& defaultText)
+{
+	bool ok = false;
+	QString text = QInputDialog::getText(this, QStringLiteral("主题名称"), QStringLiteral("请输入:"), QLineEdit::Normal, 
+		defaultText, &ok);
+	return ok ? text : "";
 }

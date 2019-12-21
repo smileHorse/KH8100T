@@ -28,6 +28,7 @@ private:
 
 private slots:
 	void openDb();
+	void closeDb();
 	void restoreDb();
 	void clearTextEdit();
 	void outputOperationInfo(QString text);
@@ -38,6 +39,7 @@ private:
 	QTextEdit*	textEdit;
 	QAction*	openAction;
 	QAction*	closeAction;
+	QAction*	exitAction;
 	QAction*	restoreAction;
 	QAction*	clearAction;
 

@@ -27,6 +27,9 @@
 
 USE_FASTDB_NAMESPACE
 
+//FA参数配置
+class FATopo;
+
 class IdentifiedObject;
 class GeographicalRegion;
 class SubGeographicalRegion;
@@ -71,8 +74,44 @@ class TransformerWinding;
 
 class AnalogCurveData;
 
+class AnalogSectionData;
+class DiscreteSectionData;
+class AccumulatorSectionData;
+
 class FormulaDefinition;
 class VariableDefinition;
+
+class DevManufacturer;
+class DevDeviceType;
+class DevSettingLine;
+class DevSettingType;
+
+class FepPartition;
+class FepSection;
+class FepProtocol;
+class FepChannel;
+
+class SystemRole;
+class SystemUser;
+
+class ProtectValueDesc;
+
+
+//FA参数、拓扑表
+class FATopo
+{
+public:
+	std::string mRID;
+	std::string name;	//参数文件名
+	std::string configFile;	//参数内容
+	std::string lastTime;	//最后修改时间
+
+	TYPE_DESCRIPTOR((
+		KEY(mRID,INDEXED|HASHED),
+		FIELD(name),
+		FIELD(configFile),
+		FIELD(lastTime)));
+};
 
 //为所有需要命名属性的类提供一个通用命名属性的基类
 // This is a root class to provide common naming attributes for all classes
@@ -176,8 +215,23 @@ public:
 
 	TYPE_DESCRIPTOR((SUPERCLASS(PowerSystemResource),
 					FIELD(ec_type),
-					FIELD(ec_rid)));
+					KEY(ec_rid, INDEXED|HASHED)));
 
+};
+
+// 量测采集设备类型
+enum RemoteUnitType
+{
+	RemoteUnit_Rtu = 0,		// RTU
+	RemoteUnit_Prp,			// 保护装置
+	RemoteUnit_Ftu,			// FTU
+	RemoteUnit_Stu,			// STU
+	RemoteUnit_Other,		// 其他
+	RemoteUnit_PRO_NEW,    //新保护装置 //chenxin add 2006.6.22
+	RemoteUnit_DTS,        //DTS //LJF ADD 2010.4.7
+	RemoteUnit_XBJ_300,   
+	RemoteUnit_STU_104,	 
+	RemoteUnit_DTS_500
 };
 
 //量测采集设备
@@ -201,6 +255,40 @@ public:
 	real8	dayRate;	// 日投运率
 	real8	monthRate;	// 月投运率
 
+	std::string ec_type;	//设备所属设备容器的psrType	
+	std::string	ec_rid;		//设备所属设备容器的RID
+
+	int4	unitType;	// 设备类型
+
+	int			replyTimeouts;		// 无响应时间
+	int			faultJudgeCount;	// 故障判定次数
+	std::string	paramLine;			// 参数
+	bool		isTrans;			// 是否转发
+	bool		manuGetRFW;			// 是否人工录波
+	int			statNo;				// 站址
+	int			yxNum;				// 遥信个数
+	int			ycNum;				// 遥测个数
+	int			ddNum;				// 电度个数
+	int			ykNum;				// 遥控个数
+	std::string	groupNo;			// 所属组
+	std::string voltage;			// 电压
+	std::string electric;			// 电流
+	std::string facTime;			// 出厂时间
+	std::string runTime;			// 投运时间
+	std::string reserved;			// 备注
+
+	bool	lockFlag;				// 是否封锁
+	bool	holdFlag;				// 是否处理事项
+	bool	holdFaFlag;				// 是否处理FA事项
+
+	std::string graph;				// 所属图形
+
+	dbReference<DevManufacturer>	manufacturer;	// 所属厂家
+	dbReference<DevDeviceType>		deviceType;		// 设备型号
+
+	std::string installTime;		// 安装日期
+	std::string deviceModel;		// 设备模型
+
 	int update_unitdata(std::string timeStamp, int status, int channelState1, int channelState2, int errorRate)
 	{
 		int  value_changed = 0;
@@ -219,8 +307,7 @@ public:
 	}
 
 	TYPE_DESCRIPTOR((KEY(mRID,INDEXED|HASHED),
-
-					FIELD(IEDID),
+					KEY(IEDID,INDEXED|HASHED),
 					FIELD(IEDName),
 					FIELD(IEDType),
 
@@ -232,7 +319,35 @@ public:
 					FIELD(errorRate),
 					FIELD(safeDays),
 					FIELD(dayRate),
-					FIELD(monthRate)));
+					FIELD(monthRate),
+					FIELD(ec_type),
+					FIELD(ec_rid),
+					FIELD(unitType),
+					FIELD(replyTimeouts),
+					FIELD(faultJudgeCount),
+					FIELD(paramLine),
+					FIELD(isTrans),
+					FIELD(manuGetRFW),
+					FIELD(statNo),
+					FIELD(yxNum),
+					FIELD(ycNum),
+					FIELD(ddNum),
+					FIELD(ykNum),
+					FIELD(groupNo),
+					FIELD(voltage),
+					FIELD(electric),
+					FIELD(facTime),
+					FIELD(runTime),
+					FIELD(reserved),
+					FIELD(lockFlag),
+					FIELD(holdFlag),
+					FIELD(holdFaFlag),
+					FIELD(graph),
+					RELATION(manufacturer, remoteUnits),
+					RELATION(deviceType, remoteUnits),
+					FIELD(installTime),
+					FIELD(deviceModel)
+					));
 };
 
 //遥测点表（AnalogUnitPoint）
@@ -292,49 +407,70 @@ public:
 			));
 };
 
+//电度点表(AccumulatorUnitPoint)
+class AccumulatorUnitPoint
+{
+public:
+	std::string mRID;	//	记录ID
+
+	int IEDID;			//	IED设备号
+	int ddIndex;		//	电度号
+	std::string ddName;	//	电度描述
+
+	TYPE_DESCRIPTOR((KEY(mRID,INDEXED|HASHED),
+		FIELD(IEDID),
+		FIELD(ddIndex),
+		FIELD(ddName)
+		));
+};
+
 // The kind of regulation model.   For example regulating voltage, reactive
 // power, active power, etc.
 //##ModelId=3748506400EC
-enum RegulatingControlModeKind
+// Masf add 20171025 解决与QTextStream中fixed函数的编译冲突，增加命名空间
+namespace FdbTableDefine
 {
-	// Voltage is specified.
-	//##ModelId=4CF46A490370
-	voltage,
+	enum RegulatingControlModeKind
+	{
+		// Voltage is specified.
+		//##ModelId=4CF46A490370
+		voltage,
 
-	// Active power is specified.
-	//##ModelId=4CF46A5C00C4
-	activePower,
+		// Active power is specified.
+		//##ModelId=4CF46A5C00C4
+		activePower,
 
-	// Reactive power is specified.
-	//##ModelId=4CF46A7A03C1
-	reactivePower,
+		// Reactive power is specified.
+		//##ModelId=4CF46A7A03C1
+		reactivePower,
 
-	// Current flow is specified.
-	//##ModelId=4CF46A9102BD
-	currentFlow,
+		// Current flow is specified.
+		//##ModelId=4CF46A9102BD
+		currentFlow,
 
-	// The regulation mode is fixed, and thus not regulating.
-	//##ModelId=4CF46AAD02D1
-	fixed,
+		// The regulation mode is fixed, and thus not regulating.
+		//##ModelId=4CF46AAD02D1
+		fixed,
 
-	// Admittance is specified
-	//##ModelId=4CF46AC802D1
-	admittance,
+		// Admittance is specified
+		//##ModelId=4CF46AC802D1
+		admittance,
 
-	// Control switches on/off by time of day. The times may change on the
-	// weekend, or in different seasons.
-	//##ModelId=4CF46AE20123
-	timeScheduled,
+		// Control switches on/off by time of day. The times may change on the
+		// weekend, or in different seasons.
+		//##ModelId=4CF46AE20123
+		timeScheduled,
 
-	// Control switches on/off based on the local temperature (i.e., a
-	// thermostat).
-	//##ModelId=4CF46AFE0376
-	temperature,
+		// Control switches on/off based on the local temperature (i.e., a
+		// thermostat).
+		//##ModelId=4CF46AFE0376
+		temperature,
 
-	//##ModelId=4CF46B1B0380
-	powerFactor
+		//##ModelId=4CF46B1B0380
+		powerFactor
 
-};
+	};
+}
 
 // Transformer tap changer type. Indicates the capabilities of the tap changer
 // independent of the operating mode.
@@ -1296,12 +1432,15 @@ public:
 	int ftuPointId;//IED设备遥控号
 	std::string ftuVlDesc;//IED设备61850遥控描述
 
+	bool	directControl;	// 直控标志
+
 	TYPE_DESCRIPTOR((SUPERCLASS(Control),
-					FIELD(psr_rid),
+					KEY(psr_rid, INDEXED | HASHED),
 					FIELD(psr_type),
 					FIELD(ftuUnitId),
 					FIELD(ftuPointId),
-					FIELD(ftuVlDesc)
+					FIELD(ftuVlDesc),
+					FIELD(directControl)
 			));
 };
 
@@ -1439,7 +1578,8 @@ public:
 	//dbReference<Terminal> terminal;
 
 	TYPE_DESCRIPTOR((SUPERCLASS(IdentifiedObject),
-					FIELD(measurementType),
+					//FIELD(measurementType),
+					KEY(measurementType,INDEXED|HASHED),
 					FIELD(unitMultiplier),
 					FIELD(unitSymbol),
 
@@ -1467,7 +1607,8 @@ public:
 					FIELD(holdFlag),
 
 					FIELD(psr_type),
-					FIELD(psr_rid)
+					//FIELD(psr_rid)
+					KEY(psr_rid,INDEXED|HASHED)
 
 					//RELATION(terminal, measurements)
 			));
@@ -1487,11 +1628,15 @@ public:
 //遥测越限状态
 //0-越上上限；1-越上限；2-越限回归；3-越下限；4-越下下限
 
-#define UP_HH_LIMIT		0 //越上上限
-#define UP_H_LIMIT		1 //越上限
-#define NORMAL_LIMIT	2 //越限回归
-#define LOW_L_LIMIT		3 //越下限
-#define LOW_LL_LIMIT	4 //越下下限
+#define UP_HH_LIMIT			0 //越上上限
+#define UP_H_LIMIT			1 //越上限
+#define NORMAL_LIMIT		2 //越限回归
+#define LOW_L_LIMIT			3 //越下限
+#define LOW_LL_LIMIT		4 //越下下限
+#define UP_HH_LIMIT_RET		5 //越上上限回归
+#define UP_H_LIMIT_RET		6 //越上限回归
+#define LOW_LL_LIMIT_RET	7 //越下下限回归
+#define LOW_L_LIMIT_RET		8 //越下限回归
 // Analog represents an analog Measurement.
 //##ModelId=40E50BEE0226
 class Analog: public Measurement
@@ -1568,9 +1713,15 @@ public:
 
 	//61850规约值描述
 	std::string ftuVlDesc;
+
+	//档位序号
+	int4 dw_order;
 	
 	//关联的曲线数据
 	dbReference<AnalogCurveData> analog_curve;
+
+	//管理的断面数据
+	dbReference<AnalogSectionData> analog_sec;
 
 	//关联的计算公式
 	dbReference<FormulaDefinition> analog_formula;
@@ -1709,7 +1860,10 @@ public:
 					KEY(ftuPointId,INDEXED|HASHED),
 					KEY(ftuVlDesc,INDEXED|HASHED),
 
+					FIELD(dw_order),
+
 					OWNER(analog_curve, analog),
+					OWNER(analog_sec, analog),
 					OWNER(analog_formula, analog)
 			));
 
@@ -2106,6 +2260,100 @@ public:
 //断面数据的个数
 #define SEC_DATA_LEN 16
 
+//断面数据
+class SectionData
+{
+public:
+	//序号
+	int pos;
+
+	//保存的指
+	dbArray<real8> secData;
+
+	void init()
+	{
+		pos = 0;
+		secData.resize(SEC_DATA_LEN);
+
+		for (int i = 0; i < secData.length(); i++)
+			secData.putat(i, 0);
+	}
+
+	void update_data(double new_vl)
+	{
+		if (pos < secData.length())
+			secData.putat(pos, new_vl);
+
+		pos++;
+
+		if (pos >= SEC_DATA_LEN)
+			pos = 0;
+	}
+
+	void get_data(double* vl)
+	{
+		//获得最后更新数据的位置
+		int data_pos = pos - 1;
+
+		for (int i = 0; i < SEC_DATA_LEN; i++)
+		{
+			if (data_pos < 0)
+				data_pos = SEC_DATA_LEN - 1;
+
+			vl[i] = secData[data_pos];
+			data_pos--;
+		}
+	}
+
+	TYPE_DESCRIPTOR((FIELD (pos),
+					FIELD (secData)
+			));
+};
+
+//遥测断面数据
+class AnalogSectionData: public SectionData
+{
+public:
+
+	//关联的模拟量
+	dbReference<Analog> analog;
+
+	TYPE_DESCRIPTOR((
+					SUPERCLASS(SectionData),
+
+					RELATION(analog, analog_sec)
+			));
+};
+
+//遥信断面数据
+class DiscreteSectionData: public SectionData
+{
+public:
+
+	//关联的模拟量
+	dbReference<Discrete> discrete;
+
+	TYPE_DESCRIPTOR((
+					SUPERCLASS(SectionData),
+
+					RELATION(discrete, discrete_sec)
+			));
+};
+
+//电度断面数据
+class AccumulatorSectionData: public SectionData
+{
+public:
+
+	//关联的模拟量
+	dbReference<Accumulator> accumulator;
+
+	TYPE_DESCRIPTOR((
+					SUPERCLASS(SectionData),
+
+					RELATION(accumulator, accumulator_sec)
+			));
+};
 
 /*********************************************************************************************************
  * 当前版本：0.0.1
@@ -2168,6 +2416,38 @@ public:
 	//61850规约值描述
 	std::string ftuVlDesc;
 
+	//档位编号
+	int4 dw;
+
+	//档位起始号
+	int4 dw_order;
+
+	// 附加于遥信的遥控属性
+	// 是否遥控
+	bool isControl;
+
+	// 遥控点号
+	int4 ykFtuPointId;
+
+	// The last time a control output was sent
+	std::string timeStamp;
+
+	// Indicates that a client is currently sending control commands that has
+	// not completed
+	bool operationInProgress;
+
+	int bilaFlag;//双点遥控标志
+
+	bool	directControl;	// 直控标志
+	
+	// 相关遥测
+	std::string	relatedAnalog;
+
+	//关联的断面数据
+	dbReference<DiscreteSectionData> discrete_sec;
+
+	//关联的计算公式
+	dbReference<FormulaDefinition> discrete_formula;
 
 	//判断更新数据是否为开关开关变位
 	bool IsBreakChangeValue(unsigned char old_vl, unsigned char vl)
@@ -2205,9 +2485,36 @@ public:
 					FIELD(value),
 					KEY(ftuUnitId,INDEXED|HASHED),
 					KEY(ftuPointId,INDEXED|HASHED),
-					KEY(ftuVlDesc,INDEXED|HASHED)
+					KEY(ftuVlDesc,INDEXED|HASHED),
+					FIELD(dw),
+					FIELD(dw_order),
+					FIELD(isControl),
+					FIELD(ykFtuPointId),
+					FIELD(timeStamp),
+					FIELD(operationInProgress),
+					FIELD(bilaFlag),
+					FIELD(directControl),
+					FIELD(relatedAnalog),
+					OWNER(discrete_sec, discrete),
+					OWNER(discrete_formula, discrete)
 			));
 
+};
+
+// 电度类型
+enum AccumulatorType
+{
+	HARD_KWH_TYPE = 0,		// 脉冲电度
+	SOFT_KWH_TYPE			// 积分电度
+};
+
+// 电度计算方式
+enum AccumulatorTag
+{
+	KWH_IN_MIN_OUT_TYPE = 0,	// 正负相抵计算
+	KWH_IN_ADD_OUT_TYPE,		// 正负相加计算
+	KWH_IN_TYPE,				// 只计算正电度
+	KWH_OUT_TYPE				// 只计算负电度
 };
 
 // Accumulator represents a accumulated (counted) Measurement, e.g. an energy
@@ -2219,11 +2526,11 @@ public:
 	// Normal value range maximum for any of the MeasurementValue.values. Used
 	// for scaling, e.g. in bar graphs or of telemetered raw values.
 	//##ModelId=447316F803BF
-	int4 maxValue;
+	real8 maxValue;
 
 	// The value to supervise.
 	//##ModelId=4CF4A9480150
-	int4 value;
+	real8 value;
 
 	//采集设备单元号
 	int4 ftuUnitId;
@@ -2234,13 +2541,78 @@ public:
 	//61850规约值描述
 	std::string ftuVlDesc;
 
+	bool saveReport;		// 是否保存报表
+	double modulus;			// 系数
+	int type;				// 电度类型，AccumulatorType类型
+	int	tag;				// 计算方式, AccumulatorTag类型
+	double preValue;		// 前一帧值
+	double high1Kwh;		// 高峰一段电度
+	double high2Kwh;		// 高峰二段电度
+	double low1Kwh;			// 低谷一段电度
+	double low2Kwh;			// 低谷二段电度
+	double hourKwh;			// 时电度
+	double dayLowKwh;		// 日低谷电度
+	double dayHighKwh;		// 日高峰电度
+	double dayNormalKwh;	// 日平谷电度
+	double dayKwh;			// 日电度
+	double monthLowKwh;		// 月低谷电度
+	double monthHighKwh;	// 月高峰电度
+	double monthNormalKwh;	// 月平谷电度
+	double monthKwh;		// 月电度
+	double yearLowKwh;		// 年低谷电度
+	double yearHighKwh;		// 年高峰电度
+	double yearNormalKwh;	// 年平谷电度
+	double yearKwh;			// 年电度
 
+	//更新遥测值，如果越限状态变化则返回值为ture,否则为false
+	bool update_data(std::string tm, double org_vl)
+	{
+		//封锁值
+		if (lockFlag)
+			return false;
+
+		double actual_vl = org_vl * this->modulus;
+
+		if(actual_vl < 0.000001 && actual_vl > -0.000001)
+			actual_vl = 0.00;
+
+		this->timeStamp = tm;
+		this->value = actual_vl;
+		
+		return true;
+	}
+	
+	//关联的断面数据
+	dbReference<AccumulatorSectionData> accumulator_sec;
 	TYPE_DESCRIPTOR((SUPERCLASS(Measurement),
 					FIELD(maxValue),
 					FIELD(value),
 					KEY(ftuUnitId,INDEXED|HASHED),
 					KEY(ftuPointId,INDEXED|HASHED),
-					KEY(ftuVlDesc,INDEXED|HASHED)
+					KEY(ftuVlDesc,INDEXED|HASHED),
+					FIELD(saveReport),
+					FIELD(modulus),
+					FIELD(type),
+					FIELD(tag),
+					FIELD(preValue),
+					FIELD(high1Kwh),
+					FIELD(high2Kwh),
+					FIELD(low1Kwh),
+					FIELD(low2Kwh),
+					FIELD(hourKwh),
+					FIELD(dayLowKwh),
+					FIELD(dayHighKwh),
+					FIELD(dayNormalKwh),
+					FIELD(dayKwh),
+					FIELD(monthLowKwh),
+					FIELD(monthHighKwh),
+					FIELD(monthNormalKwh),
+					FIELD(monthKwh),
+					FIELD(yearLowKwh),
+					FIELD(yearHighKwh),
+					FIELD(yearNormalKwh),
+					FIELD(yearKwh),
+					OWNER(accumulator_sec, accumulator)
 			));
 
 };
@@ -2262,8 +2634,10 @@ public:
 	real8	ctRatio;	// CT变比
 	real8	ptRatio;	// PT变比
 
-	std::string	lineType;	// 线路类型
+	int4	lineType;	// 线路类型
 	int4	lineNo;		// 线路号
+
+	real8	capacity;	// 变压器容量
 
 	TYPE_DESCRIPTOR((SUPERCLASS(EquipmentContainer),
 		FIELD(voltageLevel),
@@ -2272,7 +2646,8 @@ public:
 		FIELD(ctRatio),
 		FIELD(ptRatio),
 		FIELD(lineType),
-		FIELD(lineNo)
+		FIELD(lineNo),
+		FIELD(capacity)
 		));
 };
 
@@ -2417,15 +2792,36 @@ public:
 	std::string switchTranMode;//开关采集模式
 	std::string switchCommandType;//开关遥控类型
 
-	std::string brandFlag;//设备是否挂牌及挂牌信息
+	std::string brandFlag;//设备是否挂牌及挂牌信息,
 
+	int	actionCount;	// 开关动作次数
+	std::string groupNo;		// 分组号
+	std::string manufacturer;	// 设备厂家
+	std::string deviceType;		// 设备类型
+	std::string deviceModel;	// 设备型号
+	std::string installTime;	// 安装日期
+	std::string runTime;		// 投运日期
+	double load;				// 负荷
+	double voltage;				// 额定电压
+	double current;				// 额定电流
+	
 	TYPE_DESCRIPTOR((SUPERCLASS(ConductingEquipment),
 					FIELD(normalOpen),
 					FIELD(switchOnCount),
 					FIELD(switchOnDate),
 					FIELD(switchTranMode),
 					FIELD(switchCommandType),
-					FIELD(brandFlag)
+					FIELD(brandFlag),
+					FIELD(actionCount),
+					FIELD(groupNo),
+					FIELD(manufacturer),
+					FIELD(deviceType),
+					FIELD(deviceModel),
+					FIELD(installTime),
+					FIELD(runTime),
+					FIELD(load),
+					FIELD(voltage),
+					FIELD(current)
 			));
 
 };
@@ -2504,7 +2900,7 @@ public:
 	real8 factorJD_I;//接地电流数据系数
 
     bool breakerImportant;//负荷级别，0-普通，1-重要 zhoucw20130715
-
+	
 	TYPE_DESCRIPTOR((SUPERCLASS(ProtectedSwitch),
 					//FIELD(ratedCurrent),
 					FIELD(ratedCurrent),
@@ -2521,7 +2917,8 @@ public:
 					FIELD (WaveDirFlag),
 					FIELD (factorDL_I),
                     FIELD (factorJD_I),
-                    FIELD (breakerImportant)));//zhoucw20130715
+                    FIELD (breakerImportant)
+					));//zhoucw20130715
 };
 
 // An electrical device consisting of  two or more coupled windings, with or
@@ -2560,10 +2957,35 @@ public:
 	//##ModelId=3A8A8F6C00F5
 	int transformerType;
 
+	//档位
+	int stall;
+
+	//档位计算方法
+	int stallCalcu;
+
+	//厂号
+	int4 FTUNo;
+
+	//起始遥信号
+	int4 startDiscrete;
+
+	//数目
+	int4 discreteNum;
+
+	//遥调号
+	int4 controlNo;
+
 	// A transformer has windings
 	//##ModelId=3530DBBF0121
 	//TransformerWinding TransformerWindings;
 	dbArray<dbReference<TransformerWinding> > transformer_windings;
+
+	std::string groupNo;		// 分组号
+	std::string manufacturer;	// 设备厂家
+	std::string deviceType;		// 设备类型
+	std::string deviceModel;	// 设备型号
+	std::string installTime;	// 安装日期
+	std::string runTime;		// 投运日期
 
 	TYPE_DESCRIPTOR((SUPERCLASS(Equipment),
 					FIELD(bmagSat),
@@ -2574,7 +2996,20 @@ public:
 					FIELD(phases),
 					FIELD(transfCoolingType),
 					FIELD(transformerType),
-					RELATION(transformer_windings,power_tranformer )));
+					FIELD(stall),
+					FIELD(stallCalcu),
+					FIELD(FTUNo),
+					FIELD(startDiscrete),
+					FIELD(discreteNum),
+					FIELD(controlNo),
+					RELATION(transformer_windings,power_tranformer ),
+					FIELD(groupNo),
+					FIELD(manufacturer),
+					FIELD(deviceType),
+					FIELD(deviceModel),
+					FIELD(installTime),
+					FIELD(runTime)
+					));
 };
 
 // Product of the RMS value of the voltage and the RMS value of the current
@@ -2782,6 +3217,7 @@ public:
 	std::string descr;//公式描述
 
 	dbReference<Analog> analog;//关联Analog
+	dbReference<Discrete> discrete;//关联Analog
 
 	TYPE_DESCRIPTOR((KEY(mRID,INDEXED|HASHED),
 					FIELD (name),
@@ -2790,11 +3226,12 @@ public:
 					FIELD (type),
 
 					FIELD (ce_type),
-					FIELD (ce_rid),
+					KEY (ce_rid, INDEXED|HASHED),
 
 					FIELD (descr),
 
-					OWNER(analog, analog_formula)
+					OWNER(analog, analog_formula),
+					OWNER(discrete, discrete_formula)
 			));
 };
 
@@ -2815,6 +3252,630 @@ public:
 					FIELD (measure_type),
 					FIELD (measure_rid)
 			));
+};
+
+// 档位库
+class Step
+{
+public:
+	std::string	mRID;			// 档位id
+	std::string	name;			// 档位名称
+	std::string	psr_type;		// 所属容器类型
+	std::string psr_rid;		// 所属容器id
+	int			compute_type;	// 计算方法
+	int			step;			// 当前档位值
+	int			highStep;		// 档位上限
+	int			lowStep;		// 档位下限
+
+	TYPE_DESCRIPTOR((
+		KEY(mRID, INDEXED | HASHED),
+		FIELD(name),
+		FIELD(psr_type),
+		FIELD(psr_rid),
+		FIELD(compute_type),
+		FIELD(step),
+		FIELD(highStep),
+		FIELD(lowStep)
+		));
+};
+
+//遥控闭锁公式定义
+class ControlLockingFormula
+{
+public:
+	std::string mRID;
+	std::string name;
+	std::string formula;//公式定义
+	bool value;			// 公式值
+	std::string discrete;//关联Discrete
+
+	TYPE_DESCRIPTOR((KEY(mRID,INDEXED|HASHED),
+		FIELD (name),
+		FIELD (formula),
+		FIELD (value),
+		FIELD (discrete)
+		));
+};
+
+// 告警描述表
+class ConfigFaultDesc
+{
+public:
+	std::string	mRID;					// 告警描述id
+	std::string	manufactId;				// 设备厂商id
+	int			lineType;				// 线路类型
+	int			protectTypeNo;			// 保护类型号
+	bool		protectHasValue;		// 有无事项值
+	std::string	name;					// 名称
+	std::string	units;					// 单位
+	real8		modulus;				// 系数
+
+	TYPE_DESCRIPTOR((
+		KEY(mRID, INDEXED | HASHED),
+		FIELD(manufactId),
+		FIELD(lineType),
+		FIELD(protectTypeNo),
+		FIELD(protectHasValue),
+		FIELD(name),
+		FIELD(units),
+		FIELD(modulus)
+		));
+};
+
+// 遥信描述表
+class ConfigYxDesc
+{
+public:
+	std::string	mRID;		// 遥信描述id
+	int			yxType;		// 遥信类型
+	int			yxValue;	// 遥信值
+	std::string	name;		// 名称
+
+	TYPE_DESCRIPTOR((
+		KEY(mRID, INDEXED | HASHED),
+		FIELD(yxType),
+		FIELD(yxValue),
+		FIELD(name)
+		));
+};
+
+// 电度时段表
+class AccumulatorTimeSegment
+{
+public:
+	std::string	mRID;		// 遥信描述id
+	int			up1Start;	// 第一高峰时段起点
+	int			up1End;		// 第一高峰时段终点
+	int			low1Start;	// 第一低谷时段起点
+	int			low1End;	// 第一低谷时段终点
+	int			up2Start;	// 第二高峰时段起点
+	int			up2End;		// 第二高峰时段终点
+	int			low2Start;	// 第二低谷时段起点
+	int			low2End;	// 第二低谷时段终点
+
+	TYPE_DESCRIPTOR((
+		KEY(mRID, INDEXED | HASHED),
+		FIELD(up1Start),
+		FIELD(up1End),
+		FIELD(low1Start),
+		FIELD(low1End),
+		FIELD(up2Start),
+		FIELD(up2End),
+		FIELD(low2Start),
+		FIELD(low2End)
+		));
+};
+
+// 故障电量表
+class ProtectValue
+{
+public:
+	std::string mRID;	// id
+	int	unitNo;			// 单元号
+	int lineNo;			// 线路号
+	int no;				// 索引
+	std::string name;	// 名称
+	std::string unit;	// 单位
+	double factor;		// 系数
+	int index;			// 序号	KH8000T系统中该字段没有使用，暂时保留以备以后使用
+
+	dbArray< dbReference<ProtectValueDesc> > valueDesces;
+
+	TYPE_DESCRIPTOR((
+		KEY(mRID, INDEXED | HASHED),
+		FIELD(unitNo),
+		FIELD(lineNo),
+		FIELD(no),
+		FIELD(name),
+		FIELD(unit),
+		FIELD(factor),
+		FIELD(index),
+		RELATION(valueDesces, protectValue)
+		));
+};
+
+// 故障电量描述表
+class ProtectValueDesc
+{
+public:
+	std::string mRID;	// id
+	int value;			// 值
+	std::string valueDesc;	// 值的描述信息
+
+	dbReference<ProtectValue> protectValue;	// 所属故障电量
+
+	TYPE_DESCRIPTOR((
+		KEY(mRID, INDEXED | HASHED),
+		FIELD(value),
+		FIELD(valueDesc),
+		RELATION(protectValue, valueDesces)
+		));
+};
+
+// 设备厂家表
+class DevManufacturer
+{
+public:
+	std::string	mRID;		// 厂家id
+	std::string	name;		// 厂家名称
+	std::string type;		// 类型
+	dbArray< dbReference<DevDeviceType> >	deviceTypes;	// 设备型号
+	dbArray< dbReference<RemoteUnit> >	remoteUnits;		// 单元
+	dbArray< dbReference<DevSettingLine> >	settingLines;	// 整定线路
+	dbArray< dbReference<DevSettingType> >	settingTypes;	// 整定类型
+
+	TYPE_DESCRIPTOR((
+		KEY(mRID, INDEXED | HASHED),
+		FIELD(name),
+		FIELD(type),
+		RELATION(deviceTypes, manufacturer),
+		RELATION(remoteUnits, manufacturer),
+		RELATION(settingLines, manufacturer),
+		RELATION(settingTypes, manufacturer)
+		));
+};
+
+// 设备型号表
+class DevDeviceType
+{
+public:
+	std::string	mRID;		// 设备型号id
+	std::string	name;		// 设备型号名称
+	dbReference<DevManufacturer>	manufacturer;	// 所属厂家
+	dbArray< dbReference<RemoteUnit> > remoteUnits;	// 单元
+	dbArray< dbReference<DevSettingLine> >	settingLines;	// 整定线路
+	dbArray< dbReference<DevSettingType> >	settingTypes;	// 整定类型
+
+	TYPE_DESCRIPTOR((
+		KEY(mRID, INDEXED | HASHED),
+		FIELD(name),
+		RELATION(manufacturer, deviceTypes),
+		RELATION(remoteUnits, deviceType),
+		RELATION(settingLines, deviceType),
+		RELATION(settingTypes, deviceType)
+		));
+};
+
+// 整定线路类型表
+class DevSettingLine
+{
+public:
+	std::string	mRID;			// 设备型号id
+	int			no;				// 序号
+	int			lineType;		// 线路类型
+	int			settingWay;		// 整定方式
+	int			startProNo;		// 起始保护号
+	int			endProNo;		// 终止保护号
+	int			protectNum;		// 保护个数
+	int			fc;				// 功能码
+	int			proTypeVal;		// 保护类型大小
+	int			funType;		// 功能类型
+
+	dbReference<DevManufacturer>	manufacturer;	// 设备厂商
+	dbReference<DevDeviceType>		deviceType;		// 设备类型
+
+	TYPE_DESCRIPTOR((
+		KEY(mRID, INDEXED | HASHED),
+		FIELD(no),
+		FIELD(lineType),
+		FIELD(settingWay),
+		FIELD(startProNo),
+		FIELD(endProNo),
+		FIELD(protectNum),
+		FIELD(fc),
+		FIELD(proTypeVal),
+		FIELD(funType),
+		RELATION(manufacturer, settingLines),
+		RELATION(deviceType, settingLines)
+		));
+};
+
+// 整定类型表
+class DevSettingType
+{
+public:
+	std::string	mRID;			// 设备型号id
+	int			no;				// 序号
+	int			lineType;		// 线路类型
+	int			settingNo;		// 整定类型号
+	std::string	settingName;	// 整定类型名称
+	int			proTypeVal;		// 保护类型号
+	int			settingType;	// 定值类型
+	int			saveType;		// 存储类型
+	int			startSingle;	// 起始(单一)
+	int			endSingle;		// 终止(单一)
+	int			startLine;		// 起始(线路)
+	int			endLine;		// 终止(线路)
+	int			infoAddr;		// 信息地址
+	real8		modulus;		// 系数
+	std::string	units;			// 单位
+	int			settingLevel;	// 整定级别
+	int			funType;		// 功能类型
+	int			qpm;			// QPM
+
+	dbReference<DevManufacturer>	manufacturer;	// 设备厂商
+	dbReference<DevDeviceType>		deviceType;		// 设备类型
+
+	TYPE_DESCRIPTOR((
+		KEY(mRID, INDEXED | HASHED),
+		FIELD(no),
+		FIELD(lineType),
+		FIELD(settingNo),
+		FIELD(settingName),
+		FIELD(proTypeVal),
+		FIELD(settingType),
+		FIELD(saveType),
+		FIELD(startSingle),
+		FIELD(endSingle),
+		FIELD(startLine),
+		FIELD(endLine),
+		FIELD(infoAddr),
+		FIELD(modulus),
+		FIELD(units),
+		FIELD(settingLevel),
+		FIELD(funType),
+		FIELD(qpm),
+		RELATION(manufacturer, settingTypes),
+		RELATION(deviceType, settingTypes)
+		));
+};
+
+// 分区表
+class FepPartition
+{
+public:
+	std::string	mRID;								// 分区id
+	std::string	name;								// 分区名称
+	dbArray< dbReference<FepSection> > sections;	// 分段
+	dbArray< dbReference<FepProtocol> > protocols;	// 规约
+
+	TYPE_DESCRIPTOR((
+		KEY(mRID, INDEXED | HASHED),
+		FIELD(name),
+		RELATION(sections, partition),
+		RELATION(protocols, partition)
+		));
+};
+
+// 分段表
+class FepSection
+{
+public:
+	std::string	mRID;						// 分段id
+	std::string	name;						// 分段名称
+	dbReference<FepPartition> partition;	// 分区id
+	dbArray< dbReference<FepProtocol> > protocols;	// 规约
+
+	TYPE_DESCRIPTOR((
+		KEY(mRID, INDEXED | HASHED),
+		FIELD(name),
+		RELATION(partition, sections),
+		RELATION(protocols, section)
+		));
+};
+
+// 规约表
+class FepProtocol
+{
+public:
+	std::string	mRID;						// 规约id
+	int			protocolNo;					// 规约号码
+	std::string	name;						// 规约名称
+	int			type;						// 规约类型
+	bool		isUse;						// 是否使用
+	std::string	paramLine;					// 参数
+	int			commCount;					// 通道个数
+	int			unitCount;					// 单元个数
+	dbReference<FepPartition>	partition;	// 所属分区
+	dbReference<FepSection>		section;	// 所属分段
+	dbArray< dbReference<FepChannel> > channels;	// 通道
+
+	TYPE_DESCRIPTOR((
+		KEY(mRID, INDEXED | HASHED),
+		FIELD(protocolNo),
+		FIELD(name),
+		FIELD(type),
+		FIELD(isUse),
+		FIELD(paramLine),
+		FIELD(commCount),
+		FIELD(unitCount),
+		RELATION(partition, protocols),
+		RELATION(section, protocols),
+		RELATION(channels, protocol)
+		));
+};
+
+// 通道表
+class FepChannel
+{
+public:
+	std::string	mRID;			// 通道id
+	int			channelId;		// 通道号
+	std::string	param;			// 参数
+	dbReference<FepProtocol>	protocol;		// 规约id
+
+	TYPE_DESCRIPTOR((
+		KEY(mRID, INDEXED | HASHED),
+		FIELD(channelId),
+		FIELD(param),
+		RELATION(protocol, channels)
+		));
+};
+
+// 规约单元关联表
+class FepProtocolUnit
+{
+public:
+	std::string	mRID;			// id
+	std::string	protocolId;		// 所属规约
+	int			deviceId;		// 所属单元
+
+	TYPE_DESCRIPTOR((
+		KEY(mRID, INDEXED | HASHED),
+		KEY(protocolId, INDEXED | HASHED),
+		KEY(deviceId, INDEXED | HASHED)
+		));
+};
+
+// 角色表
+class SystemRole
+{
+public:
+	std::string	mRID;			// 角色id
+	std::string	roleName;		// 名称
+	std::string	permission;		// 权限状态
+	std::string roleDesc;		// 描述
+	std::string operDesc;		// 操作描述
+
+	TYPE_DESCRIPTOR((
+		KEY(mRID, INDEXED | HASHED),
+		FIELD(roleName),
+		FIELD(permission),
+		FIELD(roleDesc),
+		FIELD(operDesc)
+		));
+};
+
+// 用户表
+class SystemUser
+{
+public:
+	std::string	mRID;			// 用户id
+	std::string	loginId;		// 登录id
+	std::string	loginName;		// 登录名称
+	std::string userPwd;		// 密码
+	std::string roleId;			// 角色
+	std::string userName;		// 名称
+
+	TYPE_DESCRIPTOR((
+		KEY(mRID, INDEXED | HASHED),
+		FIELD(loginId),
+		FIELD(loginName),
+		FIELD(userPwd),
+		FIELD(roleId),
+		FIELD(userName)
+		));
+};
+
+// 电话号码表
+class SystemPhone
+{
+public:
+	std::string	mRID;		// id
+	std::string	name;		// 名称
+	std::string	phone;		// 电话号码
+
+	TYPE_DESCRIPTOR((
+		KEY(mRID, INDEXED | HASHED),
+		FIELD(name),
+		FIELD(phone)
+		));
+};
+
+// 短信配置表
+class SystemMsgCfg
+{
+public:
+	std::string	mRID;		// id
+	int			type;		// 类型
+	int			state;		// 状态
+
+	TYPE_DESCRIPTOR((
+		KEY(mRID, INDEXED | HASHED),
+		FIELD(type),
+		FIELD(state)
+		));
+};
+
+// 图形文件表
+class GraphFile
+{
+public:
+	std::string	mRID;		// id
+	std::string	name;		// 名称
+	int			type;		// 类型
+
+	TYPE_DESCRIPTOR((
+		KEY(mRID, INDEXED | HASHED),
+		FIELD(name),
+		FIELD(type)
+		));
+};
+
+// 录波参数表
+class WavWaveConfig
+{
+public:
+	std::string	mRID;			// id
+	int			deviceId;		// 单元号
+	int			configNo;		// 序号
+	std::string dataName;		// 数据名称
+	int			maxVal;			// 最大值
+	int			minVal;			// 最小值
+	std::string unit;			// 单位
+	real8		modulus;		// 系数
+	std::string color;			// 曲线颜色
+	int			belongBmp;		// 所属画面
+	int			protectLineNo;	// 所属线路号
+	int			channelNo;		// 通道号
+	int			zhouBoNum;		// 故障前周波数
+
+	TYPE_DESCRIPTOR((
+		KEY(mRID, INDEXED | HASHED),
+		FIELD(deviceId),
+		FIELD(configNo),
+		FIELD(dataName),
+		FIELD(maxVal),
+		FIELD(minVal),
+		FIELD(unit),
+		FIELD(modulus),
+		FIELD(color),
+		FIELD(belongBmp),
+		FIELD(protectLineNo),
+		FIELD(channelNo),
+		FIELD(zhouBoNum)
+		));
+};
+
+// 趋势曲线参数表
+class WavTrendCurve
+{
+public:
+	std::string	mRID;			// id
+	int			deviceId;		// 单元号
+	std::string	ycDesc;			// 描述
+	int			no;				// 序号
+	int			ycIndex;		// 遥测点号
+	real8		modulus;		// 系数
+	int			analogType;		// 遥测类型
+	std::string curveColor;		// 曲线颜色
+	int			coordinateNo;	// 坐标系号
+	std::string reserved;		// 预留
+
+	TYPE_DESCRIPTOR((
+		KEY(mRID, INDEXED | HASHED),
+		FIELD(deviceId),
+		FIELD(ycDesc),
+		FIELD(no),
+		FIELD(ycIndex),
+		FIELD(modulus),
+		FIELD(analogType),
+		FIELD(curveColor),
+		FIELD(coordinateNo),
+		FIELD(reserved)
+		));
+};
+
+// 安全组表
+class SecurityGroups
+{
+public:
+	std::string	mRID;		// id
+	int			no;			// 安全组号
+	std::string	name;		// 安全组名
+	std::string	state1;		// 状态1
+	std::string state2;		// 状态2
+
+	TYPE_DESCRIPTOR((
+		KEY(mRID, INDEXED | HASHED),
+		FIELD(no),
+		FIELD(name),
+		FIELD(state1),
+		FIELD(state2)
+		));
+};
+
+// 安全组与用户表
+class SecurityGroupsUsers
+{
+public:
+	std::string	mRID;		// id
+	std::string	groupMrid;	// 安全组id
+	std::string	userMrid;	// 用户id
+
+	TYPE_DESCRIPTOR((
+		KEY(mRID, INDEXED | HASHED),
+		KEY(groupMrid, INDEXED | HASHED),
+		FIELD(userMrid)
+		));
+};
+
+// 安全组与站点表
+class SecurityGroupsStations
+{
+public:
+	std::string	mRID;			// id
+	std::string	groupMrid;		// 安全组id
+	std::string	stationMrid;	// 配电所/车站id
+
+	TYPE_DESCRIPTOR((
+		KEY(mRID, INDEXED | HASHED),
+		FIELD(groupMrid),
+		FIELD(stationMrid)
+		));
+};
+
+// 分组信息表
+class EquipGroup
+{
+public:
+	std::string	mRID;	// id
+	std::string	no;		// 分组号
+	std::string	name;	// 分组名称
+
+	TYPE_DESCRIPTOR((
+		KEY(mRID, INDEXED | HASHED),
+		FIELD(no),
+		FIELD(name)
+		));
+};
+
+// 设备参数表
+class EquipParam
+{
+public:
+	std::string	mRID;	// id
+	std::string	no;		// 设备号
+	std::string	name;	// 设备名称
+	std::string groupNo; // 所属分组号
+	std::string manufacturer; // 设备厂家
+	std::string deviceType; // 设备类型
+	std::string deviceModel; // 设备型号
+	std::string installTime; // 安装日期
+	std::string runTime;	// 投运日期
+
+
+	TYPE_DESCRIPTOR((
+		KEY(mRID, INDEXED | HASHED),
+		FIELD(no),
+		FIELD(name),
+		FIELD(groupNo),
+		FIELD(manufacturer),
+		FIELD(deviceType),
+		FIELD(deviceModel),
+		FIELD(installTime),
+		FIELD(runTime)
+		));
 };
 
 #endif

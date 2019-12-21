@@ -11,6 +11,7 @@
 #include "WarningMsgI.h"
 #include "YkDataManagerI.h"
 #include "RequestDataDialog.h"
+#include "GlobalVariable.h"
 
 #include <string>
 
@@ -406,27 +407,25 @@ void WorkStationServerThread::requestStormTopoData()
 	try 
 	{
 		int count = 0;
-		while(true)
+
+		if (!getRdbRealDataRequestPublisher())
 		{
-			if (!getRdbRealDataRequestPublisher())
-			{
-				return;
-			}
-
-			RdbRealData::RequestTopoDataSeq	dataSeq;
-			dataSeq.id = qrand();
-			dataSeq.requestId = count++;
-			dataSeq.requestNode = "mmi192.168.3.25";
-			dataSeq.isStop = false;
-			dataSeq.refreshFreq = 3;
-			
-			m_rdbRealDataRequestPrx->SendTopoDataRequest(dataSeq);
-
-			QString text("%1 请求拓扑数据 %2-%3-%4");
-			QTime currTime = QDateTime::currentDateTime().time();
-			text = text.arg(count).arg(currTime.hour()).arg(currTime.minute()).arg(currTime.second());
-			emit outputReceiveData(text);
+			return;
 		}
+
+		RdbRealData::RequestTopoDataSeq	dataSeq;
+		dataSeq.id = qrand();
+		dataSeq.requestId = qrand();
+		dataSeq.requestNode = CGlobalVariable::instance().getRdbRequestTopic().toStdString();
+		dataSeq.isStop = false;
+		dataSeq.refreshFreq = 3;
+
+		m_rdbRealDataRequestPrx->SendTopoDataRequest(dataSeq);
+
+		QString text("%1 请求拓扑数据 %2-%3-%4");
+		QTime currTime = QDateTime::currentDateTime().time();
+		text = text.arg(count).arg(currTime.hour()).arg(currTime.minute()).arg(currTime.second());
+		emit outputReceiveData(text);
 	}
 	catch(const Ice::Exception& ex)
 	{
@@ -516,7 +515,7 @@ void WorkStationServerThread::subscriberRdbRespond( bool isStop )
 				m_communicatorPtr->stringToIdentity(m_rdbRespondSubIdentity));
 		}
 
-		string strTopic = "mmi192.168.3.33";
+		string strTopic = CGlobalVariable::instance().getRdbRespondTopic().toStdString();
 		QString type = "实时数据响应";
 
 		if (isStop)
