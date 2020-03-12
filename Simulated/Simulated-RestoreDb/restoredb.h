@@ -30,6 +30,8 @@ private slots:
 	void openDb();
 	void closeDb();
 	void restoreDb();
+	void backupDb();
+	void checkDb();
 	void clearTextEdit();
 	void outputOperationInfo(QString text);
 
@@ -41,6 +43,8 @@ private:
 	QAction*	closeAction;
 	QAction*	exitAction;
 	QAction*	restoreAction;
+	QAction*	backupAction;
+	QAction*	checkAction;
 	QAction*	clearAction;
 
 	QMenu*		fileMenu;

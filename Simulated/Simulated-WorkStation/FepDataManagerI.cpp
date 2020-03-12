@@ -20,7 +20,7 @@ void FepDataManagerI::processData( const ::FepData::DataPacket& data, const ::Ic
 	QString text = QString("%1-%2-%3 %4\t%5").arg(currTime.hour()).arg(currTime.minute()).arg(currTime.second()).
 		arg(data.id).arg(QString().fromStdString(data.fepNode));
 
-	//m_threadPtr->outputOperationData(text);
+	m_threadPtr->outputOperationData(text);
 }
 
 void FepDataManagerI::processFault( const ::FepData::FaultPacket& data, const ::Ice::Current& /* = ::Ice::Current() */ )

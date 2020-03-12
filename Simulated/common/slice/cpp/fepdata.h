@@ -676,12 +676,123 @@ struct ChangedUnit
     }
 };
 
+enum ChannelEventType
+{
+    ChannelSwitch,
+    ChannelRun
+};
+
+struct UnitChannel
+{
+    ::Ice::Short unitNo;
+    ::FepData::ChannelEventType type;
+    ::Ice::Byte channelNo;
+    ::Ice::Byte channelState;
+    ::Ice::Long timeStamp;
+
+    bool operator==(const UnitChannel& __rhs) const
+    {
+        if(this == &__rhs)
+        {
+            return true;
+        }
+        if(unitNo != __rhs.unitNo)
+        {
+            return false;
+        }
+        if(type != __rhs.type)
+        {
+            return false;
+        }
+        if(channelNo != __rhs.channelNo)
+        {
+            return false;
+        }
+        if(channelState != __rhs.channelState)
+        {
+            return false;
+        }
+        if(timeStamp != __rhs.timeStamp)
+        {
+            return false;
+        }
+        return true;
+    }
+
+    bool operator<(const UnitChannel& __rhs) const
+    {
+        if(this == &__rhs)
+        {
+            return false;
+        }
+        if(unitNo < __rhs.unitNo)
+        {
+            return true;
+        }
+        else if(__rhs.unitNo < unitNo)
+        {
+            return false;
+        }
+        if(type < __rhs.type)
+        {
+            return true;
+        }
+        else if(__rhs.type < type)
+        {
+            return false;
+        }
+        if(channelNo < __rhs.channelNo)
+        {
+            return true;
+        }
+        else if(__rhs.channelNo < channelNo)
+        {
+            return false;
+        }
+        if(channelState < __rhs.channelState)
+        {
+            return true;
+        }
+        else if(__rhs.channelState < channelState)
+        {
+            return false;
+        }
+        if(timeStamp < __rhs.timeStamp)
+        {
+            return true;
+        }
+        else if(__rhs.timeStamp < timeStamp)
+        {
+            return false;
+        }
+        return false;
+    }
+
+    bool operator!=(const UnitChannel& __rhs) const
+    {
+        return !operator==(__rhs);
+    }
+    bool operator<=(const UnitChannel& __rhs) const
+    {
+        return operator<(__rhs) || operator==(__rhs);
+    }
+    bool operator>(const UnitChannel& __rhs) const
+    {
+        return !operator<(__rhs) && !operator==(__rhs);
+    }
+    bool operator>=(const UnitChannel& __rhs) const
+    {
+        return !operator<(__rhs);
+    }
+};
+
 enum EventType
 {
     YxType,
     SoeType,
     UnitType,
-    ProType
+    ProType,
+    ChannelType
 };
 
 typedef ::std::vector< ::FepData::ChangedDigital> ChangedDigitalSeq;
@@ -692,6 +803,8 @@ typedef ::std::vector< ::FepData::ProtectEvent> ProtectEventSeq;
 
 typedef ::std::vector< ::FepData::ChangedUnit> ChangedUnitSeq;
 
+typedef ::std::vector< ::FepData::UnitChannel> ChangedUnitChannelSeq;
+
 struct EventPacket
 {
     ::Ice::Int id;
@@ -701,6 +814,7 @@ struct EventPacket
     ::FepData::SoeSeq soes;
     ::FepData::ProtectEventSeq protects;
     ::FepData::ChangedUnitSeq units;
+    ::FepData::ChangedUnitChannelSeq channels;
 };
 
 typedef ::std::vector< ::Ice::Short> WaveValueSeq;
@@ -1140,11 +1254,55 @@ struct StreamReader< ::FepData::ChangedUnit, S>
 };
 
 template<>
+struct StreamableTraits< ::FepData::ChannelEventType>
+{
+    static const StreamHelperCategory helper = StreamHelperCategoryEnum;
+    static const int minValue = 0;
+    static const int maxValue = 1;
+    static const int minWireSize = 1;
+    static const bool fixedLength = false;
+};
+
+template<>
+struct StreamableTraits< ::FepData::UnitChannel>
+{
+    static const StreamHelperCategory helper = StreamHelperCategoryStruct;
+    static const int minWireSize = 13;
+    static const bool fixedLength = false;
+};
+
+template<class S>
+struct StreamWriter< ::FepData::UnitChannel, S>
+{
+    static void write(S* __os, const ::FepData::UnitChannel& v)
+    {
+        __os->write(v.unitNo);
+        __os->write(v.type);
+        __os->write(v.channelNo);
+        __os->write(v.channelState);
+        __os->write(v.timeStamp);
+    }
+};
+
+template<class S>
+struct StreamReader< ::FepData::UnitChannel, S>
+{
+    static void read(S* __is, ::FepData::UnitChannel& v)
+    {
+        __is->read(v.unitNo);
+        __is->read(v.type);
+        __is->read(v.channelNo);
+        __is->read(v.channelState);
+        __is->read(v.timeStamp);
+    }
+};
+
+template<>
 struct StreamableTraits< ::FepData::EventType>
 {
     static const StreamHelperCategory helper = StreamHelperCategoryEnum;
     static const int minValue = 0;
-    static const int maxValue = 3;
+    static const int maxValue = 4;
     static const int minWireSize = 1;
     static const bool fixedLength = false;
 };
@@ -1153,7 +1311,7 @@ template<>
 struct StreamableTraits< ::FepData::EventPacket>
 {
     static const StreamHelperCategory helper = StreamHelperCategoryStruct;
-    static const int minWireSize = 10;
+    static const int minWireSize = 11;
     static const bool fixedLength = false;
 };
 
@@ -1169,6 +1327,7 @@ struct StreamWriter< ::FepData::EventPacket, S>
         __os->write(v.soes);
         __os->write(v.protects);
         __os->write(v.units);
+        __os->write(v.channels);
     }
 };
 
@@ -1184,6 +1343,7 @@ struct StreamReader< ::FepData::EventPacket, S>
         __is->read(v.soes);
         __is->read(v.protects);
         __is->read(v.units);
+        __is->read(v.channels);
     }
 };
 

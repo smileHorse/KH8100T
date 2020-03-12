@@ -136,20 +136,13 @@ class FASTDB_DLL_ENTRY dbAnyCursor : public dbL2List {
      */
     cardinality_t select(dbQuery& query, dbCursorType aType, void* paramStruct = NULL) {
         type = aType;
-		printf("fastdb-1\n");
         reset();
-		printf("fastdb-2\n");
         paramBase = paramStruct;
-		printf("fastdb-3\n");
         db->select(this, query);
-		printf("fastdb-4\n");
         paramBase = NULL;
         if (gotoFirst() && prefetch) { 
-			printf("fastdb-5\n");
             fetch();
-			printf("fastdb-6\n");
         }
-		printf("fastdb-7\n");
         return selection.nRows;
     } 
     
@@ -401,7 +394,9 @@ class FASTDB_DLL_ENTRY dbAnyCursor : public dbL2List {
      * Check if there is more records in the selection
      */
     bool hasNext() const;
-    
+        
+	byte* fetchNext();
+
   protected: 
     dbDatabase*        db;
     dbTableDescriptor* table;
@@ -469,7 +464,7 @@ class FASTDB_DLL_ENTRY dbAnyCursor : public dbL2List {
         return false;
     }
 
-    byte* fetchNext();
+    //byte* fetchNext();
     byte* fetchPrev();
 
     bool gotoNext();

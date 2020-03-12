@@ -14,6 +14,7 @@ using namespace std;
 using namespace Yk;
 
 class OperationInfo;
+class BatchRequestDataThread;
 
 #pragma execution_character_set("utf-8")
 
@@ -64,6 +65,7 @@ public slots:
 private slots:
 	void requestCompleteData();
 	void requestStormTopoData();
+	void batchRequestStormData();
 	void selectCompleteData();
 	void requestWarningMsg();
 	void subscriberRdbRequest(bool isStop);
@@ -96,6 +98,8 @@ private:
 	Yk::YkAppManagerPrx					m_ykAppManagerPrx;
 
 	QTimer			m_ykSelectTimer;	// Ò£¿ØÑ¡Ôñ¶¨Ê±Æ÷
+
+	BatchRequestDataThread* m_batchRequestThread;
 
 	string		m_rdbRequestSubIdentity;
 	string		m_rdbRespondSubIdentity;

@@ -28,6 +28,6 @@ QString getServiceType(ServiceType type)
 QString LoggerInfo::getLoggerInfo( QString text, ServiceType type )
 {
 	QTime currTime = QDateTime::currentDateTime().time();
-	return QString("%1:%2:%3\t%4\t%5\n").arg(currTime.hour()).arg(currTime.minute()).arg(currTime.second()).
-		arg(getServiceType(type)).arg(text);
+	return QString("%1:%2:%3.%4\t%5\t%6\n").arg(currTime.hour()).arg(currTime.minute()).arg(currTime.second()).
+		arg(currTime.msec()).arg(getServiceType(type)).arg(text);
 }

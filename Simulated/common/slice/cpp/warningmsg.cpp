@@ -47,6 +47,8 @@ const ::std::string __WarningMsg__WarningMsgFile__getContent_name = "getContent"
 
 const ::std::string __WarningMsg__SendWarningMsg__sendWarningMsgBinary_name = "sendWarningMsgBinary";
 
+const ::std::string __WarningMsg__SendWarningMsg__sendFaFileBinary_name = "sendFaFileBinary";
+
 const ::std::string __WarningMsg__SendWarningMsg__sendRfwFileBinary_name = "sendRfwFileBinary";
 
 const ::std::string __WarningMsg__SendWarningMsg__sendCurveFileBinary_name = "sendCurveFileBinary";
@@ -273,13 +275,13 @@ IceProxy::WarningMsg::SendWarningMsg::end_sendWarningMsgBinary(const ::Ice::Asyn
 }
 
 void
-IceProxy::WarningMsg::SendWarningMsg::sendRfwFileBinary(const ::std::string& __p_unitNo, const ::std::string& __p_title, const ::WarningMsg::Bytes& __p_datas, const ::Ice::Context* __ctx)
+IceProxy::WarningMsg::SendWarningMsg::sendFaFileBinary(const ::std::string& __p_folder, const ::std::string& __p_title, const ::WarningMsg::Bytes& __p_datas, const ::Ice::Context* __ctx)
 {
-    ::IceInternal::Outgoing __og(this, __WarningMsg__SendWarningMsg__sendRfwFileBinary_name, ::Ice::Normal, __ctx);
+    ::IceInternal::Outgoing __og(this, __WarningMsg__SendWarningMsg__sendFaFileBinary_name, ::Ice::Normal, __ctx);
     try
     {
         ::IceInternal::BasicStream* __os = __og.startWriteParams(::Ice::DefaultFormat);
-        __os->write(__p_unitNo);
+        __os->write(__p_folder);
         __os->write(__p_title);
         __os->write(__p_datas);
         __og.endWriteParams();
@@ -292,7 +294,54 @@ IceProxy::WarningMsg::SendWarningMsg::sendRfwFileBinary(const ::std::string& __p
 }
 
 ::Ice::AsyncResultPtr
-IceProxy::WarningMsg::SendWarningMsg::begin_sendRfwFileBinary(const ::std::string& __p_unitNo, const ::std::string& __p_title, const ::WarningMsg::Bytes& __p_datas, const ::Ice::Context* __ctx, const ::IceInternal::CallbackBasePtr& __del, const ::Ice::LocalObjectPtr& __cookie)
+IceProxy::WarningMsg::SendWarningMsg::begin_sendFaFileBinary(const ::std::string& __p_folder, const ::std::string& __p_title, const ::WarningMsg::Bytes& __p_datas, const ::Ice::Context* __ctx, const ::IceInternal::CallbackBasePtr& __del, const ::Ice::LocalObjectPtr& __cookie)
+{
+    ::IceInternal::OutgoingAsyncPtr __result = new ::IceInternal::OutgoingAsync(this, __WarningMsg__SendWarningMsg__sendFaFileBinary_name, __del, __cookie);
+    try
+    {
+        __result->prepare(__WarningMsg__SendWarningMsg__sendFaFileBinary_name, ::Ice::Normal, __ctx);
+        ::IceInternal::BasicStream* __os = __result->startWriteParams(::Ice::DefaultFormat);
+        __os->write(__p_folder);
+        __os->write(__p_title);
+        __os->write(__p_datas);
+        __result->endWriteParams();
+        __result->invoke();
+    }
+    catch(const ::Ice::Exception& __ex)
+    {
+        __result->abort(__ex);
+    }
+    return __result;
+}
+
+void
+IceProxy::WarningMsg::SendWarningMsg::end_sendFaFileBinary(const ::Ice::AsyncResultPtr& __result)
+{
+    __end(__result, __WarningMsg__SendWarningMsg__sendFaFileBinary_name);
+}
+
+void
+IceProxy::WarningMsg::SendWarningMsg::sendRfwFileBinary(const ::std::string& __p_unitNo, const ::std::string& __p_title, const ::WarningMsg::Bytes& __p_datas, bool __p_append, const ::Ice::Context* __ctx)
+{
+    ::IceInternal::Outgoing __og(this, __WarningMsg__SendWarningMsg__sendRfwFileBinary_name, ::Ice::Normal, __ctx);
+    try
+    {
+        ::IceInternal::BasicStream* __os = __og.startWriteParams(::Ice::DefaultFormat);
+        __os->write(__p_unitNo);
+        __os->write(__p_title);
+        __os->write(__p_datas);
+        __os->write(__p_append);
+        __og.endWriteParams();
+    }
+    catch(const ::Ice::LocalException& __ex)
+    {
+        __og.abort(__ex);
+    }
+    __invoke(__og);
+}
+
+::Ice::AsyncResultPtr
+IceProxy::WarningMsg::SendWarningMsg::begin_sendRfwFileBinary(const ::std::string& __p_unitNo, const ::std::string& __p_title, const ::WarningMsg::Bytes& __p_datas, bool __p_append, const ::Ice::Context* __ctx, const ::IceInternal::CallbackBasePtr& __del, const ::Ice::LocalObjectPtr& __cookie)
 {
     ::IceInternal::OutgoingAsyncPtr __result = new ::IceInternal::OutgoingAsync(this, __WarningMsg__SendWarningMsg__sendRfwFileBinary_name, __del, __cookie);
     try
@@ -302,6 +351,7 @@ IceProxy::WarningMsg::SendWarningMsg::begin_sendRfwFileBinary(const ::std::strin
         __os->write(__p_unitNo);
         __os->write(__p_title);
         __os->write(__p_datas);
+        __os->write(__p_append);
         __result->endWriteParams();
         __result->invoke();
     }
@@ -319,7 +369,7 @@ IceProxy::WarningMsg::SendWarningMsg::end_sendRfwFileBinary(const ::Ice::AsyncRe
 }
 
 void
-IceProxy::WarningMsg::SendWarningMsg::sendCurveFileBinary(const ::std::string& __p_date, const ::std::string& __p_title, const ::WarningMsg::Bytes& __p_datas, const ::Ice::Context* __ctx)
+IceProxy::WarningMsg::SendWarningMsg::sendCurveFileBinary(const ::std::string& __p_date, const ::std::string& __p_title, const ::WarningMsg::Bytes& __p_datas, bool __p_append, const ::Ice::Context* __ctx)
 {
     ::IceInternal::Outgoing __og(this, __WarningMsg__SendWarningMsg__sendCurveFileBinary_name, ::Ice::Normal, __ctx);
     try
@@ -328,6 +378,7 @@ IceProxy::WarningMsg::SendWarningMsg::sendCurveFileBinary(const ::std::string& _
         __os->write(__p_date);
         __os->write(__p_title);
         __os->write(__p_datas);
+        __os->write(__p_append);
         __og.endWriteParams();
     }
     catch(const ::Ice::LocalException& __ex)
@@ -338,7 +389,7 @@ IceProxy::WarningMsg::SendWarningMsg::sendCurveFileBinary(const ::std::string& _
 }
 
 ::Ice::AsyncResultPtr
-IceProxy::WarningMsg::SendWarningMsg::begin_sendCurveFileBinary(const ::std::string& __p_date, const ::std::string& __p_title, const ::WarningMsg::Bytes& __p_datas, const ::Ice::Context* __ctx, const ::IceInternal::CallbackBasePtr& __del, const ::Ice::LocalObjectPtr& __cookie)
+IceProxy::WarningMsg::SendWarningMsg::begin_sendCurveFileBinary(const ::std::string& __p_date, const ::std::string& __p_title, const ::WarningMsg::Bytes& __p_datas, bool __p_append, const ::Ice::Context* __ctx, const ::IceInternal::CallbackBasePtr& __del, const ::Ice::LocalObjectPtr& __cookie)
 {
     ::IceInternal::OutgoingAsyncPtr __result = new ::IceInternal::OutgoingAsync(this, __WarningMsg__SendWarningMsg__sendCurveFileBinary_name, __del, __cookie);
     try
@@ -348,6 +399,7 @@ IceProxy::WarningMsg::SendWarningMsg::begin_sendCurveFileBinary(const ::std::str
         __os->write(__p_date);
         __os->write(__p_title);
         __os->write(__p_datas);
+        __os->write(__p_append);
         __result->endWriteParams();
         __result->invoke();
     }
@@ -365,7 +417,7 @@ IceProxy::WarningMsg::SendWarningMsg::end_sendCurveFileBinary(const ::Ice::Async
 }
 
 void
-IceProxy::WarningMsg::SendWarningMsg::sendReportFileBinary(const ::std::string& __p_folder, const ::std::string& __p_title, const ::WarningMsg::Bytes& __p_datas, const ::Ice::Context* __ctx)
+IceProxy::WarningMsg::SendWarningMsg::sendReportFileBinary(const ::std::string& __p_folder, const ::std::string& __p_title, const ::WarningMsg::Bytes& __p_datas, bool __p_append, const ::Ice::Context* __ctx)
 {
     ::IceInternal::Outgoing __og(this, __WarningMsg__SendWarningMsg__sendReportFileBinary_name, ::Ice::Normal, __ctx);
     try
@@ -374,6 +426,7 @@ IceProxy::WarningMsg::SendWarningMsg::sendReportFileBinary(const ::std::string& 
         __os->write(__p_folder);
         __os->write(__p_title);
         __os->write(__p_datas);
+        __os->write(__p_append);
         __og.endWriteParams();
     }
     catch(const ::Ice::LocalException& __ex)
@@ -384,7 +437,7 @@ IceProxy::WarningMsg::SendWarningMsg::sendReportFileBinary(const ::std::string& 
 }
 
 ::Ice::AsyncResultPtr
-IceProxy::WarningMsg::SendWarningMsg::begin_sendReportFileBinary(const ::std::string& __p_folder, const ::std::string& __p_title, const ::WarningMsg::Bytes& __p_datas, const ::Ice::Context* __ctx, const ::IceInternal::CallbackBasePtr& __del, const ::Ice::LocalObjectPtr& __cookie)
+IceProxy::WarningMsg::SendWarningMsg::begin_sendReportFileBinary(const ::std::string& __p_folder, const ::std::string& __p_title, const ::WarningMsg::Bytes& __p_datas, bool __p_append, const ::Ice::Context* __ctx, const ::IceInternal::CallbackBasePtr& __del, const ::Ice::LocalObjectPtr& __cookie)
 {
     ::IceInternal::OutgoingAsyncPtr __result = new ::IceInternal::OutgoingAsync(this, __WarningMsg__SendWarningMsg__sendReportFileBinary_name, __del, __cookie);
     try
@@ -394,6 +447,7 @@ IceProxy::WarningMsg::SendWarningMsg::begin_sendReportFileBinary(const ::std::st
         __os->write(__p_folder);
         __os->write(__p_title);
         __os->write(__p_datas);
+        __os->write(__p_append);
         __result->endWriteParams();
         __result->invoke();
     }
@@ -613,6 +667,23 @@ WarningMsg::SendWarningMsg::___sendWarningMsgBinary(::IceInternal::Incoming& __i
 }
 
 ::Ice::DispatchStatus
+WarningMsg::SendWarningMsg::___sendFaFileBinary(::IceInternal::Incoming& __inS, const ::Ice::Current& __current)
+{
+    __checkMode(::Ice::Normal, __current.mode);
+    ::IceInternal::BasicStream* __is = __inS.startReadParams();
+    ::std::string __p_folder;
+    ::std::string __p_title;
+    ::WarningMsg::Bytes __p_datas;
+    __is->read(__p_folder);
+    __is->read(__p_title);
+    __is->read(__p_datas);
+    __inS.endReadParams();
+    sendFaFileBinary(__p_folder, __p_title, __p_datas, __current);
+    __inS.__writeEmptyParams();
+    return ::Ice::DispatchOK;
+}
+
+::Ice::DispatchStatus
 WarningMsg::SendWarningMsg::___sendRfwFileBinary(::IceInternal::Incoming& __inS, const ::Ice::Current& __current)
 {
     __checkMode(::Ice::Normal, __current.mode);
@@ -620,11 +691,13 @@ WarningMsg::SendWarningMsg::___sendRfwFileBinary(::IceInternal::Incoming& __inS,
     ::std::string __p_unitNo;
     ::std::string __p_title;
     ::WarningMsg::Bytes __p_datas;
+    bool __p_append;
     __is->read(__p_unitNo);
     __is->read(__p_title);
     __is->read(__p_datas);
+    __is->read(__p_append);
     __inS.endReadParams();
-    sendRfwFileBinary(__p_unitNo, __p_title, __p_datas, __current);
+    sendRfwFileBinary(__p_unitNo, __p_title, __p_datas, __p_append, __current);
     __inS.__writeEmptyParams();
     return ::Ice::DispatchOK;
 }
@@ -637,11 +710,13 @@ WarningMsg::SendWarningMsg::___sendCurveFileBinary(::IceInternal::Incoming& __in
     ::std::string __p_date;
     ::std::string __p_title;
     ::WarningMsg::Bytes __p_datas;
+    bool __p_append;
     __is->read(__p_date);
     __is->read(__p_title);
     __is->read(__p_datas);
+    __is->read(__p_append);
     __inS.endReadParams();
-    sendCurveFileBinary(__p_date, __p_title, __p_datas, __current);
+    sendCurveFileBinary(__p_date, __p_title, __p_datas, __p_append, __current);
     __inS.__writeEmptyParams();
     return ::Ice::DispatchOK;
 }
@@ -654,11 +729,13 @@ WarningMsg::SendWarningMsg::___sendReportFileBinary(::IceInternal::Incoming& __i
     ::std::string __p_folder;
     ::std::string __p_title;
     ::WarningMsg::Bytes __p_datas;
+    bool __p_append;
     __is->read(__p_folder);
     __is->read(__p_title);
     __is->read(__p_datas);
+    __is->read(__p_append);
     __inS.endReadParams();
-    sendReportFileBinary(__p_folder, __p_title, __p_datas, __current);
+    sendReportFileBinary(__p_folder, __p_title, __p_datas, __p_append, __current);
     __inS.__writeEmptyParams();
     return ::Ice::DispatchOK;
 }
@@ -672,6 +749,7 @@ const ::std::string __WarningMsg__SendWarningMsg_all[] =
     "ice_isA",
     "ice_ping",
     "sendCurveFileBinary",
+    "sendFaFileBinary",
     "sendReportFileBinary",
     "sendRfwFileBinary",
     "sendWarningMsgBinary"
@@ -682,7 +760,7 @@ const ::std::string __WarningMsg__SendWarningMsg_all[] =
 ::Ice::DispatchStatus
 WarningMsg::SendWarningMsg::__dispatch(::IceInternal::Incoming& in, const ::Ice::Current& current)
 {
-    ::std::pair< const ::std::string*, const ::std::string*> r = ::std::equal_range(__WarningMsg__SendWarningMsg_all, __WarningMsg__SendWarningMsg_all + 8, current.operation);
+    ::std::pair< const ::std::string*, const ::std::string*> r = ::std::equal_range(__WarningMsg__SendWarningMsg_all, __WarningMsg__SendWarningMsg_all + 9, current.operation);
     if(r.first == r.second)
     {
         throw ::Ice::OperationNotExistException(__FILE__, __LINE__, current.id, current.facet, current.operation);
@@ -712,13 +790,17 @@ WarningMsg::SendWarningMsg::__dispatch(::IceInternal::Incoming& in, const ::Ice:
         }
         case 5:
         {
-            return ___sendReportFileBinary(in, current);
+            return ___sendFaFileBinary(in, current);
         }
         case 6:
         {
-            return ___sendRfwFileBinary(in, current);
+            return ___sendReportFileBinary(in, current);
         }
         case 7:
+        {
+            return ___sendRfwFileBinary(in, current);
+        }
+        case 8:
         {
             return ___sendWarningMsgBinary(in, current);
         }

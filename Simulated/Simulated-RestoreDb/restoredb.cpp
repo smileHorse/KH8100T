@@ -51,6 +51,14 @@ void RestoreDb::createActions()
 	restoreAction->setStatusTip(QStringLiteral("恢复实时库"));
 	connect(restoreAction, SIGNAL(triggered()), this, SLOT(restoreDb()));
 
+	backupAction = new QAction(QIcon(":/images/restore.png"), QStringLiteral("备份实时库"), this);
+	backupAction->setStatusTip(QStringLiteral("备份实时库"));
+	connect(backupAction, SIGNAL(triggered()), this, SLOT(backupDb()));
+
+	checkAction = new QAction(QIcon(":/images/restore.png"), QStringLiteral("检查实时库"), this);
+	checkAction->setStatusTip(QStringLiteral("检查实时库"));
+	connect(checkAction, SIGNAL(triggered()), this, SLOT(checkDb()));
+
 	clearAction = new QAction(QIcon(":/images/clear.png"), QStringLiteral("清空文本"), this);
 	clearAction->setStatusTip(QStringLiteral("清空文本"));
 	connect(clearAction, SIGNAL(triggered()), this, SLOT(clearTextEdit()));
@@ -70,6 +78,8 @@ void RestoreDb::createMenus()
 
 	operMenu = menuBar()->addMenu(QStringLiteral("操作"));
 	operMenu->addAction(restoreAction);
+	operMenu->addAction(backupAction);
+	operMenu->addAction(checkAction);
 	operMenu->addAction(clearAction);
 }
 
@@ -82,6 +92,8 @@ void RestoreDb::createToolBars()
 
 	operToolbar = addToolBar(QStringLiteral("操作"));
 	operToolbar->addAction(restoreAction);
+	operToolbar->addAction(backupAction);
+	operToolbar->addAction(checkAction);
 	operToolbar->addAction(clearAction);
 }
 
@@ -141,7 +153,51 @@ void RestoreDb::restoreDb()
 		return;
 	}
 
-	m_fastdbManager->restoreDatabase(fileName.toStdString());
+	try {
+		m_fastdbManager->restoreDatabase(fileName.toStdString());
+	} catch (dbException& ex) {
+		outputOperationInfo(QString("fastdb exception: %1").arg(ex.what()));
+	} catch (std::exception& ex) {
+		outputOperationInfo(QString("std exception: %1").arg(ex.what()));
+	} catch (...) {
+		outputOperationInfo("unknown exception");
+	}
+}
+
+void RestoreDb::backupDb()
+{
+	if (!m_fastdbManager)
+	{
+		return;
+	}
+
+	try {
+		m_fastdbManager->backupDatabase();
+	} catch (dbException& ex) {
+		outputOperationInfo(QString("fastdb exception: %1").arg(ex.what()));
+	} catch (std::exception& ex) {
+		outputOperationInfo(QString("std exception: %1").arg(ex.what()));
+	} catch (...) {
+		outputOperationInfo("unknown exception");
+	}
+}
+
+void RestoreDb::checkDb()
+{
+	if (!m_fastdbManager)
+	{
+		return;
+	}
+
+	try {
+		m_fastdbManager->checkDatabase();
+	} catch (dbException& ex) {
+		outputOperationInfo(QString("fastdb exception: %1").arg(ex.what()));
+	} catch (std::exception& ex) {
+		outputOperationInfo(QString("std exception: %1").arg(ex.what()));
+	} catch (...) {
+		outputOperationInfo("unknown exception");
+	}
 }
 
 void RestoreDb::clearTextEdit()

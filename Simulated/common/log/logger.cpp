@@ -9,6 +9,8 @@
 #include "logger.h"
 #include <stdarg.h>
 
+#include <time.h>
+
 //静态变量初始化
 enum CLogger::Write_Mode CLogger::log_write_mode = CLogger::Mode_Both;
 
@@ -20,12 +22,12 @@ Logger CLogger::init(string init_file)
 {
 	try
 	{
-		
 #ifdef WIN32
 		Logger root = Logger::getRoot();
 #endif
 		my_logger = Logger::getInstance(LOG4CPLUS_TEXT("log"));
 		PropertyConfigurator::doConfigure(LOG4CPLUS_TEXT(init_file.c_str()));
+		//PropertyConfigurator::doConfigure(LOG4CPLUS_TEXT("../system/datasvr/DataCenter.log4"));
 
 
 	} catch (...)
@@ -226,24 +228,6 @@ void CLogger::BusFALog(string msg, enum Log_Type type)
 	WriteLog(info, type);
 }
 
-//获取当前系统时间
-string CLogger::GetCurrentTime()
-{
-	time_t timer;
-	struct tm* t_tm;
-
-	time(&timer);
-	t_tm = localtime(&timer);
-
-	char chtmp[1024] =
-	{ 0 };
-
-	strftime(chtmp, 1024, "%Y-%m-%d %H:%M:%S", t_tm);
-
-	return chtmp;
-}
-
-
 /******************************************************
  * 写“实时库”相关日志
  * @msg string 待写入的日志内容
@@ -255,7 +239,6 @@ void CLogger::WriteLog(string msg, enum Log_Type type)
 	//显示日志内容
 	if ((log_write_mode == Mode_Display) || (log_write_mode == Mode_Both))
 	{
-		cout << GetCurrentTime() << " ";
 		cout << msg << endl;
 	}
 
@@ -266,28 +249,28 @@ void CLogger::WriteLog(string msg, enum Log_Type type)
 	{
 	case Log_DEBUG:
 		{
-		LOG4CPLUS_DEBUG(my_logger, msg)
+        LOG4CPLUS_DEBUG(my_logger, msg.c_str())
 		;
 		}
 		break;
 	case Log_INFO:
-		LOG4CPLUS_INFO(my_logger, msg)
+        LOG4CPLUS_INFO(my_logger, msg.c_str())
 		;
 		break;
 	case Log_WARN:
-		LOG4CPLUS_WARN(my_logger, msg)
+        LOG4CPLUS_WARN(my_logger, msg.c_str())
 		;
 		break;
 	case Log_ERROR:
-		LOG4CPLUS_ERROR(my_logger, msg)
+        LOG4CPLUS_ERROR(my_logger, msg.c_str())
 		;
 		break;
 	case Log_FATAL:
-		LOG4CPLUS_FATAL(my_logger, msg)
+        LOG4CPLUS_FATAL(my_logger, msg.c_str())
 		;
 		break;
 	default:
-		LOG4CPLUS_INFO(my_logger, msg)
+        LOG4CPLUS_INFO(my_logger, msg.c_str())
 		;
 	}
 }

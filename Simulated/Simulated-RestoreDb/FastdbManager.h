@@ -39,6 +39,8 @@ public:
 	bool closeTransactionLogger();
 
 	bool restoreDatabase(const string& logger);
+	bool backupDatabase();
+	bool checkDatabase();
 
 	void commit();
 
@@ -53,6 +55,10 @@ private:
 	
 signals:
 	void outputOperationInfo(QString text);
+
+private slots:
+	void doThreadExec(const QString&);
+
 
 private:
 	dbDatabase	m_db;

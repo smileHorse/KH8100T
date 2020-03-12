@@ -141,6 +141,9 @@ typedef ::IceUtil::Handle< Callback_WarningMsgFile_getContent_Base> Callback_War
 class Callback_SendWarningMsg_sendWarningMsgBinary_Base : virtual public ::IceInternal::CallbackBase { };
 typedef ::IceUtil::Handle< Callback_SendWarningMsg_sendWarningMsgBinary_Base> Callback_SendWarningMsg_sendWarningMsgBinaryPtr;
 
+class Callback_SendWarningMsg_sendFaFileBinary_Base : virtual public ::IceInternal::CallbackBase { };
+typedef ::IceUtil::Handle< Callback_SendWarningMsg_sendFaFileBinary_Base> Callback_SendWarningMsg_sendFaFileBinaryPtr;
+
 class Callback_SendWarningMsg_sendRfwFileBinary_Base : virtual public ::IceInternal::CallbackBase { };
 typedef ::IceUtil::Handle< Callback_SendWarningMsg_sendRfwFileBinary_Base> Callback_SendWarningMsg_sendRfwFileBinaryPtr;
 
@@ -423,213 +426,283 @@ private:
     
 public:
 
-    void sendRfwFileBinary(const ::std::string& __p_unitNo, const ::std::string& __p_title, const ::WarningMsg::Bytes& __p_datas)
+    void sendFaFileBinary(const ::std::string& __p_folder, const ::std::string& __p_title, const ::WarningMsg::Bytes& __p_datas)
     {
-        sendRfwFileBinary(__p_unitNo, __p_title, __p_datas, 0);
+        sendFaFileBinary(__p_folder, __p_title, __p_datas, 0);
     }
-    void sendRfwFileBinary(const ::std::string& __p_unitNo, const ::std::string& __p_title, const ::WarningMsg::Bytes& __p_datas, const ::Ice::Context& __ctx)
+    void sendFaFileBinary(const ::std::string& __p_folder, const ::std::string& __p_title, const ::WarningMsg::Bytes& __p_datas, const ::Ice::Context& __ctx)
     {
-        sendRfwFileBinary(__p_unitNo, __p_title, __p_datas, &__ctx);
+        sendFaFileBinary(__p_folder, __p_title, __p_datas, &__ctx);
     }
 #ifdef ICE_CPP11
     ::Ice::AsyncResultPtr
-    begin_sendRfwFileBinary(const ::std::string& __p_unitNo, const ::std::string& __p_title, const ::WarningMsg::Bytes& __p_datas, const ::IceInternal::Function<void ()>& __response, const ::IceInternal::Function<void (const ::Ice::Exception&)>& __exception = ::IceInternal::Function<void (const ::Ice::Exception&)>(), const ::IceInternal::Function<void (bool)>& __sent = ::IceInternal::Function<void (bool)>())
+    begin_sendFaFileBinary(const ::std::string& __p_folder, const ::std::string& __p_title, const ::WarningMsg::Bytes& __p_datas, const ::IceInternal::Function<void ()>& __response, const ::IceInternal::Function<void (const ::Ice::Exception&)>& __exception = ::IceInternal::Function<void (const ::Ice::Exception&)>(), const ::IceInternal::Function<void (bool)>& __sent = ::IceInternal::Function<void (bool)>())
     {
-        return begin_sendRfwFileBinary(__p_unitNo, __p_title, __p_datas, 0, new ::IceInternal::Cpp11FnOnewayCallbackNC(__response, __exception, __sent));
+        return begin_sendFaFileBinary(__p_folder, __p_title, __p_datas, 0, new ::IceInternal::Cpp11FnOnewayCallbackNC(__response, __exception, __sent));
     }
     ::Ice::AsyncResultPtr
-    begin_sendRfwFileBinary(const ::std::string& __p_unitNo, const ::std::string& __p_title, const ::WarningMsg::Bytes& __p_datas, const ::IceInternal::Function<void (const ::Ice::AsyncResultPtr&)>& __completed, const ::IceInternal::Function<void (const ::Ice::AsyncResultPtr&)>& __sent = ::IceInternal::Function<void (const ::Ice::AsyncResultPtr&)>())
+    begin_sendFaFileBinary(const ::std::string& __p_folder, const ::std::string& __p_title, const ::WarningMsg::Bytes& __p_datas, const ::IceInternal::Function<void (const ::Ice::AsyncResultPtr&)>& __completed, const ::IceInternal::Function<void (const ::Ice::AsyncResultPtr&)>& __sent = ::IceInternal::Function<void (const ::Ice::AsyncResultPtr&)>())
     {
-        return begin_sendRfwFileBinary(__p_unitNo, __p_title, __p_datas, 0, ::Ice::newCallback(__completed, __sent), 0);
+        return begin_sendFaFileBinary(__p_folder, __p_title, __p_datas, 0, ::Ice::newCallback(__completed, __sent), 0);
     }
     ::Ice::AsyncResultPtr
-    begin_sendRfwFileBinary(const ::std::string& __p_unitNo, const ::std::string& __p_title, const ::WarningMsg::Bytes& __p_datas, const ::Ice::Context& __ctx, const ::IceInternal::Function<void ()>& __response, const ::IceInternal::Function<void (const ::Ice::Exception&)>& __exception = ::IceInternal::Function<void (const ::Ice::Exception&)>(), const ::IceInternal::Function<void (bool)>& __sent = ::IceInternal::Function<void (bool)>())
+    begin_sendFaFileBinary(const ::std::string& __p_folder, const ::std::string& __p_title, const ::WarningMsg::Bytes& __p_datas, const ::Ice::Context& __ctx, const ::IceInternal::Function<void ()>& __response, const ::IceInternal::Function<void (const ::Ice::Exception&)>& __exception = ::IceInternal::Function<void (const ::Ice::Exception&)>(), const ::IceInternal::Function<void (bool)>& __sent = ::IceInternal::Function<void (bool)>())
     {
-        return begin_sendRfwFileBinary(__p_unitNo, __p_title, __p_datas, &__ctx, new ::IceInternal::Cpp11FnOnewayCallbackNC(__response, __exception, __sent), 0);
+        return begin_sendFaFileBinary(__p_folder, __p_title, __p_datas, &__ctx, new ::IceInternal::Cpp11FnOnewayCallbackNC(__response, __exception, __sent), 0);
     }
     ::Ice::AsyncResultPtr
-    begin_sendRfwFileBinary(const ::std::string& __p_unitNo, const ::std::string& __p_title, const ::WarningMsg::Bytes& __p_datas, const ::Ice::Context& __ctx, const ::IceInternal::Function<void (const ::Ice::AsyncResultPtr&)>& __completed, const ::IceInternal::Function<void (const ::Ice::AsyncResultPtr&)>& __sent = ::IceInternal::Function<void (const ::Ice::AsyncResultPtr&)>())
+    begin_sendFaFileBinary(const ::std::string& __p_folder, const ::std::string& __p_title, const ::WarningMsg::Bytes& __p_datas, const ::Ice::Context& __ctx, const ::IceInternal::Function<void (const ::Ice::AsyncResultPtr&)>& __completed, const ::IceInternal::Function<void (const ::Ice::AsyncResultPtr&)>& __sent = ::IceInternal::Function<void (const ::Ice::AsyncResultPtr&)>())
     {
-        return begin_sendRfwFileBinary(__p_unitNo, __p_title, __p_datas, &__ctx, ::Ice::newCallback(__completed, __sent));
+        return begin_sendFaFileBinary(__p_folder, __p_title, __p_datas, &__ctx, ::Ice::newCallback(__completed, __sent));
     }
 #endif
 
-    ::Ice::AsyncResultPtr begin_sendRfwFileBinary(const ::std::string& __p_unitNo, const ::std::string& __p_title, const ::WarningMsg::Bytes& __p_datas)
+    ::Ice::AsyncResultPtr begin_sendFaFileBinary(const ::std::string& __p_folder, const ::std::string& __p_title, const ::WarningMsg::Bytes& __p_datas)
     {
-        return begin_sendRfwFileBinary(__p_unitNo, __p_title, __p_datas, 0, ::IceInternal::__dummyCallback, 0);
+        return begin_sendFaFileBinary(__p_folder, __p_title, __p_datas, 0, ::IceInternal::__dummyCallback, 0);
     }
 
-    ::Ice::AsyncResultPtr begin_sendRfwFileBinary(const ::std::string& __p_unitNo, const ::std::string& __p_title, const ::WarningMsg::Bytes& __p_datas, const ::Ice::Context& __ctx)
+    ::Ice::AsyncResultPtr begin_sendFaFileBinary(const ::std::string& __p_folder, const ::std::string& __p_title, const ::WarningMsg::Bytes& __p_datas, const ::Ice::Context& __ctx)
     {
-        return begin_sendRfwFileBinary(__p_unitNo, __p_title, __p_datas, &__ctx, ::IceInternal::__dummyCallback, 0);
+        return begin_sendFaFileBinary(__p_folder, __p_title, __p_datas, &__ctx, ::IceInternal::__dummyCallback, 0);
     }
 
-    ::Ice::AsyncResultPtr begin_sendRfwFileBinary(const ::std::string& __p_unitNo, const ::std::string& __p_title, const ::WarningMsg::Bytes& __p_datas, const ::Ice::CallbackPtr& __del, const ::Ice::LocalObjectPtr& __cookie = 0)
+    ::Ice::AsyncResultPtr begin_sendFaFileBinary(const ::std::string& __p_folder, const ::std::string& __p_title, const ::WarningMsg::Bytes& __p_datas, const ::Ice::CallbackPtr& __del, const ::Ice::LocalObjectPtr& __cookie = 0)
     {
-        return begin_sendRfwFileBinary(__p_unitNo, __p_title, __p_datas, 0, __del, __cookie);
+        return begin_sendFaFileBinary(__p_folder, __p_title, __p_datas, 0, __del, __cookie);
     }
 
-    ::Ice::AsyncResultPtr begin_sendRfwFileBinary(const ::std::string& __p_unitNo, const ::std::string& __p_title, const ::WarningMsg::Bytes& __p_datas, const ::Ice::Context& __ctx, const ::Ice::CallbackPtr& __del, const ::Ice::LocalObjectPtr& __cookie = 0)
+    ::Ice::AsyncResultPtr begin_sendFaFileBinary(const ::std::string& __p_folder, const ::std::string& __p_title, const ::WarningMsg::Bytes& __p_datas, const ::Ice::Context& __ctx, const ::Ice::CallbackPtr& __del, const ::Ice::LocalObjectPtr& __cookie = 0)
     {
-        return begin_sendRfwFileBinary(__p_unitNo, __p_title, __p_datas, &__ctx, __del, __cookie);
+        return begin_sendFaFileBinary(__p_folder, __p_title, __p_datas, &__ctx, __del, __cookie);
     }
 
-    ::Ice::AsyncResultPtr begin_sendRfwFileBinary(const ::std::string& __p_unitNo, const ::std::string& __p_title, const ::WarningMsg::Bytes& __p_datas, const ::WarningMsg::Callback_SendWarningMsg_sendRfwFileBinaryPtr& __del, const ::Ice::LocalObjectPtr& __cookie = 0)
+    ::Ice::AsyncResultPtr begin_sendFaFileBinary(const ::std::string& __p_folder, const ::std::string& __p_title, const ::WarningMsg::Bytes& __p_datas, const ::WarningMsg::Callback_SendWarningMsg_sendFaFileBinaryPtr& __del, const ::Ice::LocalObjectPtr& __cookie = 0)
     {
-        return begin_sendRfwFileBinary(__p_unitNo, __p_title, __p_datas, 0, __del, __cookie);
+        return begin_sendFaFileBinary(__p_folder, __p_title, __p_datas, 0, __del, __cookie);
     }
 
-    ::Ice::AsyncResultPtr begin_sendRfwFileBinary(const ::std::string& __p_unitNo, const ::std::string& __p_title, const ::WarningMsg::Bytes& __p_datas, const ::Ice::Context& __ctx, const ::WarningMsg::Callback_SendWarningMsg_sendRfwFileBinaryPtr& __del, const ::Ice::LocalObjectPtr& __cookie = 0)
+    ::Ice::AsyncResultPtr begin_sendFaFileBinary(const ::std::string& __p_folder, const ::std::string& __p_title, const ::WarningMsg::Bytes& __p_datas, const ::Ice::Context& __ctx, const ::WarningMsg::Callback_SendWarningMsg_sendFaFileBinaryPtr& __del, const ::Ice::LocalObjectPtr& __cookie = 0)
     {
-        return begin_sendRfwFileBinary(__p_unitNo, __p_title, __p_datas, &__ctx, __del, __cookie);
+        return begin_sendFaFileBinary(__p_folder, __p_title, __p_datas, &__ctx, __del, __cookie);
+    }
+
+    void end_sendFaFileBinary(const ::Ice::AsyncResultPtr&);
+    
+private:
+
+    void sendFaFileBinary(const ::std::string&, const ::std::string&, const ::WarningMsg::Bytes&, const ::Ice::Context*);
+    ::Ice::AsyncResultPtr begin_sendFaFileBinary(const ::std::string&, const ::std::string&, const ::WarningMsg::Bytes&, const ::Ice::Context*, const ::IceInternal::CallbackBasePtr&, const ::Ice::LocalObjectPtr& __cookie = 0);
+    
+public:
+
+    void sendRfwFileBinary(const ::std::string& __p_unitNo, const ::std::string& __p_title, const ::WarningMsg::Bytes& __p_datas, bool __p_append)
+    {
+        sendRfwFileBinary(__p_unitNo, __p_title, __p_datas, __p_append, 0);
+    }
+    void sendRfwFileBinary(const ::std::string& __p_unitNo, const ::std::string& __p_title, const ::WarningMsg::Bytes& __p_datas, bool __p_append, const ::Ice::Context& __ctx)
+    {
+        sendRfwFileBinary(__p_unitNo, __p_title, __p_datas, __p_append, &__ctx);
+    }
+#ifdef ICE_CPP11
+    ::Ice::AsyncResultPtr
+    begin_sendRfwFileBinary(const ::std::string& __p_unitNo, const ::std::string& __p_title, const ::WarningMsg::Bytes& __p_datas, bool __p_append, const ::IceInternal::Function<void ()>& __response, const ::IceInternal::Function<void (const ::Ice::Exception&)>& __exception = ::IceInternal::Function<void (const ::Ice::Exception&)>(), const ::IceInternal::Function<void (bool)>& __sent = ::IceInternal::Function<void (bool)>())
+    {
+        return begin_sendRfwFileBinary(__p_unitNo, __p_title, __p_datas, __p_append, 0, new ::IceInternal::Cpp11FnOnewayCallbackNC(__response, __exception, __sent));
+    }
+    ::Ice::AsyncResultPtr
+    begin_sendRfwFileBinary(const ::std::string& __p_unitNo, const ::std::string& __p_title, const ::WarningMsg::Bytes& __p_datas, bool __p_append, const ::IceInternal::Function<void (const ::Ice::AsyncResultPtr&)>& __completed, const ::IceInternal::Function<void (const ::Ice::AsyncResultPtr&)>& __sent = ::IceInternal::Function<void (const ::Ice::AsyncResultPtr&)>())
+    {
+        return begin_sendRfwFileBinary(__p_unitNo, __p_title, __p_datas, __p_append, 0, ::Ice::newCallback(__completed, __sent), 0);
+    }
+    ::Ice::AsyncResultPtr
+    begin_sendRfwFileBinary(const ::std::string& __p_unitNo, const ::std::string& __p_title, const ::WarningMsg::Bytes& __p_datas, bool __p_append, const ::Ice::Context& __ctx, const ::IceInternal::Function<void ()>& __response, const ::IceInternal::Function<void (const ::Ice::Exception&)>& __exception = ::IceInternal::Function<void (const ::Ice::Exception&)>(), const ::IceInternal::Function<void (bool)>& __sent = ::IceInternal::Function<void (bool)>())
+    {
+        return begin_sendRfwFileBinary(__p_unitNo, __p_title, __p_datas, __p_append, &__ctx, new ::IceInternal::Cpp11FnOnewayCallbackNC(__response, __exception, __sent), 0);
+    }
+    ::Ice::AsyncResultPtr
+    begin_sendRfwFileBinary(const ::std::string& __p_unitNo, const ::std::string& __p_title, const ::WarningMsg::Bytes& __p_datas, bool __p_append, const ::Ice::Context& __ctx, const ::IceInternal::Function<void (const ::Ice::AsyncResultPtr&)>& __completed, const ::IceInternal::Function<void (const ::Ice::AsyncResultPtr&)>& __sent = ::IceInternal::Function<void (const ::Ice::AsyncResultPtr&)>())
+    {
+        return begin_sendRfwFileBinary(__p_unitNo, __p_title, __p_datas, __p_append, &__ctx, ::Ice::newCallback(__completed, __sent));
+    }
+#endif
+
+    ::Ice::AsyncResultPtr begin_sendRfwFileBinary(const ::std::string& __p_unitNo, const ::std::string& __p_title, const ::WarningMsg::Bytes& __p_datas, bool __p_append)
+    {
+        return begin_sendRfwFileBinary(__p_unitNo, __p_title, __p_datas, __p_append, 0, ::IceInternal::__dummyCallback, 0);
+    }
+
+    ::Ice::AsyncResultPtr begin_sendRfwFileBinary(const ::std::string& __p_unitNo, const ::std::string& __p_title, const ::WarningMsg::Bytes& __p_datas, bool __p_append, const ::Ice::Context& __ctx)
+    {
+        return begin_sendRfwFileBinary(__p_unitNo, __p_title, __p_datas, __p_append, &__ctx, ::IceInternal::__dummyCallback, 0);
+    }
+
+    ::Ice::AsyncResultPtr begin_sendRfwFileBinary(const ::std::string& __p_unitNo, const ::std::string& __p_title, const ::WarningMsg::Bytes& __p_datas, bool __p_append, const ::Ice::CallbackPtr& __del, const ::Ice::LocalObjectPtr& __cookie = 0)
+    {
+        return begin_sendRfwFileBinary(__p_unitNo, __p_title, __p_datas, __p_append, 0, __del, __cookie);
+    }
+
+    ::Ice::AsyncResultPtr begin_sendRfwFileBinary(const ::std::string& __p_unitNo, const ::std::string& __p_title, const ::WarningMsg::Bytes& __p_datas, bool __p_append, const ::Ice::Context& __ctx, const ::Ice::CallbackPtr& __del, const ::Ice::LocalObjectPtr& __cookie = 0)
+    {
+        return begin_sendRfwFileBinary(__p_unitNo, __p_title, __p_datas, __p_append, &__ctx, __del, __cookie);
+    }
+
+    ::Ice::AsyncResultPtr begin_sendRfwFileBinary(const ::std::string& __p_unitNo, const ::std::string& __p_title, const ::WarningMsg::Bytes& __p_datas, bool __p_append, const ::WarningMsg::Callback_SendWarningMsg_sendRfwFileBinaryPtr& __del, const ::Ice::LocalObjectPtr& __cookie = 0)
+    {
+        return begin_sendRfwFileBinary(__p_unitNo, __p_title, __p_datas, __p_append, 0, __del, __cookie);
+    }
+
+    ::Ice::AsyncResultPtr begin_sendRfwFileBinary(const ::std::string& __p_unitNo, const ::std::string& __p_title, const ::WarningMsg::Bytes& __p_datas, bool __p_append, const ::Ice::Context& __ctx, const ::WarningMsg::Callback_SendWarningMsg_sendRfwFileBinaryPtr& __del, const ::Ice::LocalObjectPtr& __cookie = 0)
+    {
+        return begin_sendRfwFileBinary(__p_unitNo, __p_title, __p_datas, __p_append, &__ctx, __del, __cookie);
     }
 
     void end_sendRfwFileBinary(const ::Ice::AsyncResultPtr&);
     
 private:
 
-    void sendRfwFileBinary(const ::std::string&, const ::std::string&, const ::WarningMsg::Bytes&, const ::Ice::Context*);
-    ::Ice::AsyncResultPtr begin_sendRfwFileBinary(const ::std::string&, const ::std::string&, const ::WarningMsg::Bytes&, const ::Ice::Context*, const ::IceInternal::CallbackBasePtr&, const ::Ice::LocalObjectPtr& __cookie = 0);
+    void sendRfwFileBinary(const ::std::string&, const ::std::string&, const ::WarningMsg::Bytes&, bool, const ::Ice::Context*);
+    ::Ice::AsyncResultPtr begin_sendRfwFileBinary(const ::std::string&, const ::std::string&, const ::WarningMsg::Bytes&, bool, const ::Ice::Context*, const ::IceInternal::CallbackBasePtr&, const ::Ice::LocalObjectPtr& __cookie = 0);
     
 public:
 
-    void sendCurveFileBinary(const ::std::string& __p_date, const ::std::string& __p_title, const ::WarningMsg::Bytes& __p_datas)
+    void sendCurveFileBinary(const ::std::string& __p_date, const ::std::string& __p_title, const ::WarningMsg::Bytes& __p_datas, bool __p_append)
     {
-        sendCurveFileBinary(__p_date, __p_title, __p_datas, 0);
+        sendCurveFileBinary(__p_date, __p_title, __p_datas, __p_append, 0);
     }
-    void sendCurveFileBinary(const ::std::string& __p_date, const ::std::string& __p_title, const ::WarningMsg::Bytes& __p_datas, const ::Ice::Context& __ctx)
+    void sendCurveFileBinary(const ::std::string& __p_date, const ::std::string& __p_title, const ::WarningMsg::Bytes& __p_datas, bool __p_append, const ::Ice::Context& __ctx)
     {
-        sendCurveFileBinary(__p_date, __p_title, __p_datas, &__ctx);
+        sendCurveFileBinary(__p_date, __p_title, __p_datas, __p_append, &__ctx);
     }
 #ifdef ICE_CPP11
     ::Ice::AsyncResultPtr
-    begin_sendCurveFileBinary(const ::std::string& __p_date, const ::std::string& __p_title, const ::WarningMsg::Bytes& __p_datas, const ::IceInternal::Function<void ()>& __response, const ::IceInternal::Function<void (const ::Ice::Exception&)>& __exception = ::IceInternal::Function<void (const ::Ice::Exception&)>(), const ::IceInternal::Function<void (bool)>& __sent = ::IceInternal::Function<void (bool)>())
+    begin_sendCurveFileBinary(const ::std::string& __p_date, const ::std::string& __p_title, const ::WarningMsg::Bytes& __p_datas, bool __p_append, const ::IceInternal::Function<void ()>& __response, const ::IceInternal::Function<void (const ::Ice::Exception&)>& __exception = ::IceInternal::Function<void (const ::Ice::Exception&)>(), const ::IceInternal::Function<void (bool)>& __sent = ::IceInternal::Function<void (bool)>())
     {
-        return begin_sendCurveFileBinary(__p_date, __p_title, __p_datas, 0, new ::IceInternal::Cpp11FnOnewayCallbackNC(__response, __exception, __sent));
+        return begin_sendCurveFileBinary(__p_date, __p_title, __p_datas, __p_append, 0, new ::IceInternal::Cpp11FnOnewayCallbackNC(__response, __exception, __sent));
     }
     ::Ice::AsyncResultPtr
-    begin_sendCurveFileBinary(const ::std::string& __p_date, const ::std::string& __p_title, const ::WarningMsg::Bytes& __p_datas, const ::IceInternal::Function<void (const ::Ice::AsyncResultPtr&)>& __completed, const ::IceInternal::Function<void (const ::Ice::AsyncResultPtr&)>& __sent = ::IceInternal::Function<void (const ::Ice::AsyncResultPtr&)>())
+    begin_sendCurveFileBinary(const ::std::string& __p_date, const ::std::string& __p_title, const ::WarningMsg::Bytes& __p_datas, bool __p_append, const ::IceInternal::Function<void (const ::Ice::AsyncResultPtr&)>& __completed, const ::IceInternal::Function<void (const ::Ice::AsyncResultPtr&)>& __sent = ::IceInternal::Function<void (const ::Ice::AsyncResultPtr&)>())
     {
-        return begin_sendCurveFileBinary(__p_date, __p_title, __p_datas, 0, ::Ice::newCallback(__completed, __sent), 0);
+        return begin_sendCurveFileBinary(__p_date, __p_title, __p_datas, __p_append, 0, ::Ice::newCallback(__completed, __sent), 0);
     }
     ::Ice::AsyncResultPtr
-    begin_sendCurveFileBinary(const ::std::string& __p_date, const ::std::string& __p_title, const ::WarningMsg::Bytes& __p_datas, const ::Ice::Context& __ctx, const ::IceInternal::Function<void ()>& __response, const ::IceInternal::Function<void (const ::Ice::Exception&)>& __exception = ::IceInternal::Function<void (const ::Ice::Exception&)>(), const ::IceInternal::Function<void (bool)>& __sent = ::IceInternal::Function<void (bool)>())
+    begin_sendCurveFileBinary(const ::std::string& __p_date, const ::std::string& __p_title, const ::WarningMsg::Bytes& __p_datas, bool __p_append, const ::Ice::Context& __ctx, const ::IceInternal::Function<void ()>& __response, const ::IceInternal::Function<void (const ::Ice::Exception&)>& __exception = ::IceInternal::Function<void (const ::Ice::Exception&)>(), const ::IceInternal::Function<void (bool)>& __sent = ::IceInternal::Function<void (bool)>())
     {
-        return begin_sendCurveFileBinary(__p_date, __p_title, __p_datas, &__ctx, new ::IceInternal::Cpp11FnOnewayCallbackNC(__response, __exception, __sent), 0);
+        return begin_sendCurveFileBinary(__p_date, __p_title, __p_datas, __p_append, &__ctx, new ::IceInternal::Cpp11FnOnewayCallbackNC(__response, __exception, __sent), 0);
     }
     ::Ice::AsyncResultPtr
-    begin_sendCurveFileBinary(const ::std::string& __p_date, const ::std::string& __p_title, const ::WarningMsg::Bytes& __p_datas, const ::Ice::Context& __ctx, const ::IceInternal::Function<void (const ::Ice::AsyncResultPtr&)>& __completed, const ::IceInternal::Function<void (const ::Ice::AsyncResultPtr&)>& __sent = ::IceInternal::Function<void (const ::Ice::AsyncResultPtr&)>())
+    begin_sendCurveFileBinary(const ::std::string& __p_date, const ::std::string& __p_title, const ::WarningMsg::Bytes& __p_datas, bool __p_append, const ::Ice::Context& __ctx, const ::IceInternal::Function<void (const ::Ice::AsyncResultPtr&)>& __completed, const ::IceInternal::Function<void (const ::Ice::AsyncResultPtr&)>& __sent = ::IceInternal::Function<void (const ::Ice::AsyncResultPtr&)>())
     {
-        return begin_sendCurveFileBinary(__p_date, __p_title, __p_datas, &__ctx, ::Ice::newCallback(__completed, __sent));
+        return begin_sendCurveFileBinary(__p_date, __p_title, __p_datas, __p_append, &__ctx, ::Ice::newCallback(__completed, __sent));
     }
 #endif
 
-    ::Ice::AsyncResultPtr begin_sendCurveFileBinary(const ::std::string& __p_date, const ::std::string& __p_title, const ::WarningMsg::Bytes& __p_datas)
+    ::Ice::AsyncResultPtr begin_sendCurveFileBinary(const ::std::string& __p_date, const ::std::string& __p_title, const ::WarningMsg::Bytes& __p_datas, bool __p_append)
     {
-        return begin_sendCurveFileBinary(__p_date, __p_title, __p_datas, 0, ::IceInternal::__dummyCallback, 0);
+        return begin_sendCurveFileBinary(__p_date, __p_title, __p_datas, __p_append, 0, ::IceInternal::__dummyCallback, 0);
     }
 
-    ::Ice::AsyncResultPtr begin_sendCurveFileBinary(const ::std::string& __p_date, const ::std::string& __p_title, const ::WarningMsg::Bytes& __p_datas, const ::Ice::Context& __ctx)
+    ::Ice::AsyncResultPtr begin_sendCurveFileBinary(const ::std::string& __p_date, const ::std::string& __p_title, const ::WarningMsg::Bytes& __p_datas, bool __p_append, const ::Ice::Context& __ctx)
     {
-        return begin_sendCurveFileBinary(__p_date, __p_title, __p_datas, &__ctx, ::IceInternal::__dummyCallback, 0);
+        return begin_sendCurveFileBinary(__p_date, __p_title, __p_datas, __p_append, &__ctx, ::IceInternal::__dummyCallback, 0);
     }
 
-    ::Ice::AsyncResultPtr begin_sendCurveFileBinary(const ::std::string& __p_date, const ::std::string& __p_title, const ::WarningMsg::Bytes& __p_datas, const ::Ice::CallbackPtr& __del, const ::Ice::LocalObjectPtr& __cookie = 0)
+    ::Ice::AsyncResultPtr begin_sendCurveFileBinary(const ::std::string& __p_date, const ::std::string& __p_title, const ::WarningMsg::Bytes& __p_datas, bool __p_append, const ::Ice::CallbackPtr& __del, const ::Ice::LocalObjectPtr& __cookie = 0)
     {
-        return begin_sendCurveFileBinary(__p_date, __p_title, __p_datas, 0, __del, __cookie);
+        return begin_sendCurveFileBinary(__p_date, __p_title, __p_datas, __p_append, 0, __del, __cookie);
     }
 
-    ::Ice::AsyncResultPtr begin_sendCurveFileBinary(const ::std::string& __p_date, const ::std::string& __p_title, const ::WarningMsg::Bytes& __p_datas, const ::Ice::Context& __ctx, const ::Ice::CallbackPtr& __del, const ::Ice::LocalObjectPtr& __cookie = 0)
+    ::Ice::AsyncResultPtr begin_sendCurveFileBinary(const ::std::string& __p_date, const ::std::string& __p_title, const ::WarningMsg::Bytes& __p_datas, bool __p_append, const ::Ice::Context& __ctx, const ::Ice::CallbackPtr& __del, const ::Ice::LocalObjectPtr& __cookie = 0)
     {
-        return begin_sendCurveFileBinary(__p_date, __p_title, __p_datas, &__ctx, __del, __cookie);
+        return begin_sendCurveFileBinary(__p_date, __p_title, __p_datas, __p_append, &__ctx, __del, __cookie);
     }
 
-    ::Ice::AsyncResultPtr begin_sendCurveFileBinary(const ::std::string& __p_date, const ::std::string& __p_title, const ::WarningMsg::Bytes& __p_datas, const ::WarningMsg::Callback_SendWarningMsg_sendCurveFileBinaryPtr& __del, const ::Ice::LocalObjectPtr& __cookie = 0)
+    ::Ice::AsyncResultPtr begin_sendCurveFileBinary(const ::std::string& __p_date, const ::std::string& __p_title, const ::WarningMsg::Bytes& __p_datas, bool __p_append, const ::WarningMsg::Callback_SendWarningMsg_sendCurveFileBinaryPtr& __del, const ::Ice::LocalObjectPtr& __cookie = 0)
     {
-        return begin_sendCurveFileBinary(__p_date, __p_title, __p_datas, 0, __del, __cookie);
+        return begin_sendCurveFileBinary(__p_date, __p_title, __p_datas, __p_append, 0, __del, __cookie);
     }
 
-    ::Ice::AsyncResultPtr begin_sendCurveFileBinary(const ::std::string& __p_date, const ::std::string& __p_title, const ::WarningMsg::Bytes& __p_datas, const ::Ice::Context& __ctx, const ::WarningMsg::Callback_SendWarningMsg_sendCurveFileBinaryPtr& __del, const ::Ice::LocalObjectPtr& __cookie = 0)
+    ::Ice::AsyncResultPtr begin_sendCurveFileBinary(const ::std::string& __p_date, const ::std::string& __p_title, const ::WarningMsg::Bytes& __p_datas, bool __p_append, const ::Ice::Context& __ctx, const ::WarningMsg::Callback_SendWarningMsg_sendCurveFileBinaryPtr& __del, const ::Ice::LocalObjectPtr& __cookie = 0)
     {
-        return begin_sendCurveFileBinary(__p_date, __p_title, __p_datas, &__ctx, __del, __cookie);
+        return begin_sendCurveFileBinary(__p_date, __p_title, __p_datas, __p_append, &__ctx, __del, __cookie);
     }
 
     void end_sendCurveFileBinary(const ::Ice::AsyncResultPtr&);
     
 private:
 
-    void sendCurveFileBinary(const ::std::string&, const ::std::string&, const ::WarningMsg::Bytes&, const ::Ice::Context*);
-    ::Ice::AsyncResultPtr begin_sendCurveFileBinary(const ::std::string&, const ::std::string&, const ::WarningMsg::Bytes&, const ::Ice::Context*, const ::IceInternal::CallbackBasePtr&, const ::Ice::LocalObjectPtr& __cookie = 0);
+    void sendCurveFileBinary(const ::std::string&, const ::std::string&, const ::WarningMsg::Bytes&, bool, const ::Ice::Context*);
+    ::Ice::AsyncResultPtr begin_sendCurveFileBinary(const ::std::string&, const ::std::string&, const ::WarningMsg::Bytes&, bool, const ::Ice::Context*, const ::IceInternal::CallbackBasePtr&, const ::Ice::LocalObjectPtr& __cookie = 0);
     
 public:
 
-    void sendReportFileBinary(const ::std::string& __p_folder, const ::std::string& __p_title, const ::WarningMsg::Bytes& __p_datas)
+    void sendReportFileBinary(const ::std::string& __p_folder, const ::std::string& __p_title, const ::WarningMsg::Bytes& __p_datas, bool __p_append)
     {
-        sendReportFileBinary(__p_folder, __p_title, __p_datas, 0);
+        sendReportFileBinary(__p_folder, __p_title, __p_datas, __p_append, 0);
     }
-    void sendReportFileBinary(const ::std::string& __p_folder, const ::std::string& __p_title, const ::WarningMsg::Bytes& __p_datas, const ::Ice::Context& __ctx)
+    void sendReportFileBinary(const ::std::string& __p_folder, const ::std::string& __p_title, const ::WarningMsg::Bytes& __p_datas, bool __p_append, const ::Ice::Context& __ctx)
     {
-        sendReportFileBinary(__p_folder, __p_title, __p_datas, &__ctx);
+        sendReportFileBinary(__p_folder, __p_title, __p_datas, __p_append, &__ctx);
     }
 #ifdef ICE_CPP11
     ::Ice::AsyncResultPtr
-    begin_sendReportFileBinary(const ::std::string& __p_folder, const ::std::string& __p_title, const ::WarningMsg::Bytes& __p_datas, const ::IceInternal::Function<void ()>& __response, const ::IceInternal::Function<void (const ::Ice::Exception&)>& __exception = ::IceInternal::Function<void (const ::Ice::Exception&)>(), const ::IceInternal::Function<void (bool)>& __sent = ::IceInternal::Function<void (bool)>())
+    begin_sendReportFileBinary(const ::std::string& __p_folder, const ::std::string& __p_title, const ::WarningMsg::Bytes& __p_datas, bool __p_append, const ::IceInternal::Function<void ()>& __response, const ::IceInternal::Function<void (const ::Ice::Exception&)>& __exception = ::IceInternal::Function<void (const ::Ice::Exception&)>(), const ::IceInternal::Function<void (bool)>& __sent = ::IceInternal::Function<void (bool)>())
     {
-        return begin_sendReportFileBinary(__p_folder, __p_title, __p_datas, 0, new ::IceInternal::Cpp11FnOnewayCallbackNC(__response, __exception, __sent));
+        return begin_sendReportFileBinary(__p_folder, __p_title, __p_datas, __p_append, 0, new ::IceInternal::Cpp11FnOnewayCallbackNC(__response, __exception, __sent));
     }
     ::Ice::AsyncResultPtr
-    begin_sendReportFileBinary(const ::std::string& __p_folder, const ::std::string& __p_title, const ::WarningMsg::Bytes& __p_datas, const ::IceInternal::Function<void (const ::Ice::AsyncResultPtr&)>& __completed, const ::IceInternal::Function<void (const ::Ice::AsyncResultPtr&)>& __sent = ::IceInternal::Function<void (const ::Ice::AsyncResultPtr&)>())
+    begin_sendReportFileBinary(const ::std::string& __p_folder, const ::std::string& __p_title, const ::WarningMsg::Bytes& __p_datas, bool __p_append, const ::IceInternal::Function<void (const ::Ice::AsyncResultPtr&)>& __completed, const ::IceInternal::Function<void (const ::Ice::AsyncResultPtr&)>& __sent = ::IceInternal::Function<void (const ::Ice::AsyncResultPtr&)>())
     {
-        return begin_sendReportFileBinary(__p_folder, __p_title, __p_datas, 0, ::Ice::newCallback(__completed, __sent), 0);
+        return begin_sendReportFileBinary(__p_folder, __p_title, __p_datas, __p_append, 0, ::Ice::newCallback(__completed, __sent), 0);
     }
     ::Ice::AsyncResultPtr
-    begin_sendReportFileBinary(const ::std::string& __p_folder, const ::std::string& __p_title, const ::WarningMsg::Bytes& __p_datas, const ::Ice::Context& __ctx, const ::IceInternal::Function<void ()>& __response, const ::IceInternal::Function<void (const ::Ice::Exception&)>& __exception = ::IceInternal::Function<void (const ::Ice::Exception&)>(), const ::IceInternal::Function<void (bool)>& __sent = ::IceInternal::Function<void (bool)>())
+    begin_sendReportFileBinary(const ::std::string& __p_folder, const ::std::string& __p_title, const ::WarningMsg::Bytes& __p_datas, bool __p_append, const ::Ice::Context& __ctx, const ::IceInternal::Function<void ()>& __response, const ::IceInternal::Function<void (const ::Ice::Exception&)>& __exception = ::IceInternal::Function<void (const ::Ice::Exception&)>(), const ::IceInternal::Function<void (bool)>& __sent = ::IceInternal::Function<void (bool)>())
     {
-        return begin_sendReportFileBinary(__p_folder, __p_title, __p_datas, &__ctx, new ::IceInternal::Cpp11FnOnewayCallbackNC(__response, __exception, __sent), 0);
+        return begin_sendReportFileBinary(__p_folder, __p_title, __p_datas, __p_append, &__ctx, new ::IceInternal::Cpp11FnOnewayCallbackNC(__response, __exception, __sent), 0);
     }
     ::Ice::AsyncResultPtr
-    begin_sendReportFileBinary(const ::std::string& __p_folder, const ::std::string& __p_title, const ::WarningMsg::Bytes& __p_datas, const ::Ice::Context& __ctx, const ::IceInternal::Function<void (const ::Ice::AsyncResultPtr&)>& __completed, const ::IceInternal::Function<void (const ::Ice::AsyncResultPtr&)>& __sent = ::IceInternal::Function<void (const ::Ice::AsyncResultPtr&)>())
+    begin_sendReportFileBinary(const ::std::string& __p_folder, const ::std::string& __p_title, const ::WarningMsg::Bytes& __p_datas, bool __p_append, const ::Ice::Context& __ctx, const ::IceInternal::Function<void (const ::Ice::AsyncResultPtr&)>& __completed, const ::IceInternal::Function<void (const ::Ice::AsyncResultPtr&)>& __sent = ::IceInternal::Function<void (const ::Ice::AsyncResultPtr&)>())
     {
-        return begin_sendReportFileBinary(__p_folder, __p_title, __p_datas, &__ctx, ::Ice::newCallback(__completed, __sent));
+        return begin_sendReportFileBinary(__p_folder, __p_title, __p_datas, __p_append, &__ctx, ::Ice::newCallback(__completed, __sent));
     }
 #endif
 
-    ::Ice::AsyncResultPtr begin_sendReportFileBinary(const ::std::string& __p_folder, const ::std::string& __p_title, const ::WarningMsg::Bytes& __p_datas)
+    ::Ice::AsyncResultPtr begin_sendReportFileBinary(const ::std::string& __p_folder, const ::std::string& __p_title, const ::WarningMsg::Bytes& __p_datas, bool __p_append)
     {
-        return begin_sendReportFileBinary(__p_folder, __p_title, __p_datas, 0, ::IceInternal::__dummyCallback, 0);
+        return begin_sendReportFileBinary(__p_folder, __p_title, __p_datas, __p_append, 0, ::IceInternal::__dummyCallback, 0);
     }
 
-    ::Ice::AsyncResultPtr begin_sendReportFileBinary(const ::std::string& __p_folder, const ::std::string& __p_title, const ::WarningMsg::Bytes& __p_datas, const ::Ice::Context& __ctx)
+    ::Ice::AsyncResultPtr begin_sendReportFileBinary(const ::std::string& __p_folder, const ::std::string& __p_title, const ::WarningMsg::Bytes& __p_datas, bool __p_append, const ::Ice::Context& __ctx)
     {
-        return begin_sendReportFileBinary(__p_folder, __p_title, __p_datas, &__ctx, ::IceInternal::__dummyCallback, 0);
+        return begin_sendReportFileBinary(__p_folder, __p_title, __p_datas, __p_append, &__ctx, ::IceInternal::__dummyCallback, 0);
     }
 
-    ::Ice::AsyncResultPtr begin_sendReportFileBinary(const ::std::string& __p_folder, const ::std::string& __p_title, const ::WarningMsg::Bytes& __p_datas, const ::Ice::CallbackPtr& __del, const ::Ice::LocalObjectPtr& __cookie = 0)
+    ::Ice::AsyncResultPtr begin_sendReportFileBinary(const ::std::string& __p_folder, const ::std::string& __p_title, const ::WarningMsg::Bytes& __p_datas, bool __p_append, const ::Ice::CallbackPtr& __del, const ::Ice::LocalObjectPtr& __cookie = 0)
     {
-        return begin_sendReportFileBinary(__p_folder, __p_title, __p_datas, 0, __del, __cookie);
+        return begin_sendReportFileBinary(__p_folder, __p_title, __p_datas, __p_append, 0, __del, __cookie);
     }
 
-    ::Ice::AsyncResultPtr begin_sendReportFileBinary(const ::std::string& __p_folder, const ::std::string& __p_title, const ::WarningMsg::Bytes& __p_datas, const ::Ice::Context& __ctx, const ::Ice::CallbackPtr& __del, const ::Ice::LocalObjectPtr& __cookie = 0)
+    ::Ice::AsyncResultPtr begin_sendReportFileBinary(const ::std::string& __p_folder, const ::std::string& __p_title, const ::WarningMsg::Bytes& __p_datas, bool __p_append, const ::Ice::Context& __ctx, const ::Ice::CallbackPtr& __del, const ::Ice::LocalObjectPtr& __cookie = 0)
     {
-        return begin_sendReportFileBinary(__p_folder, __p_title, __p_datas, &__ctx, __del, __cookie);
+        return begin_sendReportFileBinary(__p_folder, __p_title, __p_datas, __p_append, &__ctx, __del, __cookie);
     }
 
-    ::Ice::AsyncResultPtr begin_sendReportFileBinary(const ::std::string& __p_folder, const ::std::string& __p_title, const ::WarningMsg::Bytes& __p_datas, const ::WarningMsg::Callback_SendWarningMsg_sendReportFileBinaryPtr& __del, const ::Ice::LocalObjectPtr& __cookie = 0)
+    ::Ice::AsyncResultPtr begin_sendReportFileBinary(const ::std::string& __p_folder, const ::std::string& __p_title, const ::WarningMsg::Bytes& __p_datas, bool __p_append, const ::WarningMsg::Callback_SendWarningMsg_sendReportFileBinaryPtr& __del, const ::Ice::LocalObjectPtr& __cookie = 0)
     {
-        return begin_sendReportFileBinary(__p_folder, __p_title, __p_datas, 0, __del, __cookie);
+        return begin_sendReportFileBinary(__p_folder, __p_title, __p_datas, __p_append, 0, __del, __cookie);
     }
 
-    ::Ice::AsyncResultPtr begin_sendReportFileBinary(const ::std::string& __p_folder, const ::std::string& __p_title, const ::WarningMsg::Bytes& __p_datas, const ::Ice::Context& __ctx, const ::WarningMsg::Callback_SendWarningMsg_sendReportFileBinaryPtr& __del, const ::Ice::LocalObjectPtr& __cookie = 0)
+    ::Ice::AsyncResultPtr begin_sendReportFileBinary(const ::std::string& __p_folder, const ::std::string& __p_title, const ::WarningMsg::Bytes& __p_datas, bool __p_append, const ::Ice::Context& __ctx, const ::WarningMsg::Callback_SendWarningMsg_sendReportFileBinaryPtr& __del, const ::Ice::LocalObjectPtr& __cookie = 0)
     {
-        return begin_sendReportFileBinary(__p_folder, __p_title, __p_datas, &__ctx, __del, __cookie);
+        return begin_sendReportFileBinary(__p_folder, __p_title, __p_datas, __p_append, &__ctx, __del, __cookie);
     }
 
     void end_sendReportFileBinary(const ::Ice::AsyncResultPtr&);
     
 private:
 
-    void sendReportFileBinary(const ::std::string&, const ::std::string&, const ::WarningMsg::Bytes&, const ::Ice::Context*);
-    ::Ice::AsyncResultPtr begin_sendReportFileBinary(const ::std::string&, const ::std::string&, const ::WarningMsg::Bytes&, const ::Ice::Context*, const ::IceInternal::CallbackBasePtr&, const ::Ice::LocalObjectPtr& __cookie = 0);
+    void sendReportFileBinary(const ::std::string&, const ::std::string&, const ::WarningMsg::Bytes&, bool, const ::Ice::Context*);
+    ::Ice::AsyncResultPtr begin_sendReportFileBinary(const ::std::string&, const ::std::string&, const ::WarningMsg::Bytes&, bool, const ::Ice::Context*, const ::IceInternal::CallbackBasePtr&, const ::Ice::LocalObjectPtr& __cookie = 0);
     
 public:
     
@@ -800,13 +873,16 @@ public:
     virtual void sendWarningMsgBinary(const ::std::string&, const ::WarningMsg::Bytes&, const ::Ice::Current& = ::Ice::Current()) = 0;
     ::Ice::DispatchStatus ___sendWarningMsgBinary(::IceInternal::Incoming&, const ::Ice::Current&);
 
-    virtual void sendRfwFileBinary(const ::std::string&, const ::std::string&, const ::WarningMsg::Bytes&, const ::Ice::Current& = ::Ice::Current()) = 0;
+    virtual void sendFaFileBinary(const ::std::string&, const ::std::string&, const ::WarningMsg::Bytes&, const ::Ice::Current& = ::Ice::Current()) = 0;
+    ::Ice::DispatchStatus ___sendFaFileBinary(::IceInternal::Incoming&, const ::Ice::Current&);
+
+    virtual void sendRfwFileBinary(const ::std::string&, const ::std::string&, const ::WarningMsg::Bytes&, bool, const ::Ice::Current& = ::Ice::Current()) = 0;
     ::Ice::DispatchStatus ___sendRfwFileBinary(::IceInternal::Incoming&, const ::Ice::Current&);
 
-    virtual void sendCurveFileBinary(const ::std::string&, const ::std::string&, const ::WarningMsg::Bytes&, const ::Ice::Current& = ::Ice::Current()) = 0;
+    virtual void sendCurveFileBinary(const ::std::string&, const ::std::string&, const ::WarningMsg::Bytes&, bool, const ::Ice::Current& = ::Ice::Current()) = 0;
     ::Ice::DispatchStatus ___sendCurveFileBinary(::IceInternal::Incoming&, const ::Ice::Current&);
 
-    virtual void sendReportFileBinary(const ::std::string&, const ::std::string&, const ::WarningMsg::Bytes&, const ::Ice::Current& = ::Ice::Current()) = 0;
+    virtual void sendReportFileBinary(const ::std::string&, const ::std::string&, const ::WarningMsg::Bytes&, bool, const ::Ice::Current& = ::Ice::Current()) = 0;
     ::Ice::DispatchStatus ___sendReportFileBinary(::IceInternal::Incoming&, const ::Ice::Current&);
 
     virtual ::Ice::DispatchStatus __dispatch(::IceInternal::Incoming&, const ::Ice::Current&);
@@ -1017,6 +1093,88 @@ template<class T, typename CT> Callback_SendWarningMsg_sendWarningMsgBinaryPtr
 newCallback_SendWarningMsg_sendWarningMsgBinary(T* instance, void (T::*excb)(const ::Ice::Exception&, const CT&), void (T::*sentcb)(bool, const CT&) = 0)
 {
     return new Callback_SendWarningMsg_sendWarningMsgBinary<T, CT>(instance, 0, excb, sentcb);
+}
+
+template<class T>
+class CallbackNC_SendWarningMsg_sendFaFileBinary : public Callback_SendWarningMsg_sendFaFileBinary_Base, public ::IceInternal::OnewayCallbackNC<T>
+{
+public:
+
+    typedef IceUtil::Handle<T> TPtr;
+
+    typedef void (T::*Exception)(const ::Ice::Exception&);
+    typedef void (T::*Sent)(bool);
+    typedef void (T::*Response)();
+
+    CallbackNC_SendWarningMsg_sendFaFileBinary(const TPtr& obj, Response cb, Exception excb, Sent sentcb)
+        : ::IceInternal::OnewayCallbackNC<T>(obj, cb, excb, sentcb)
+    {
+    }
+};
+
+template<class T> Callback_SendWarningMsg_sendFaFileBinaryPtr
+newCallback_SendWarningMsg_sendFaFileBinary(const IceUtil::Handle<T>& instance, void (T::*cb)(), void (T::*excb)(const ::Ice::Exception&), void (T::*sentcb)(bool) = 0)
+{
+    return new CallbackNC_SendWarningMsg_sendFaFileBinary<T>(instance, cb, excb, sentcb);
+}
+
+template<class T> Callback_SendWarningMsg_sendFaFileBinaryPtr
+newCallback_SendWarningMsg_sendFaFileBinary(const IceUtil::Handle<T>& instance, void (T::*excb)(const ::Ice::Exception&), void (T::*sentcb)(bool) = 0)
+{
+    return new CallbackNC_SendWarningMsg_sendFaFileBinary<T>(instance, 0, excb, sentcb);
+}
+
+template<class T> Callback_SendWarningMsg_sendFaFileBinaryPtr
+newCallback_SendWarningMsg_sendFaFileBinary(T* instance, void (T::*cb)(), void (T::*excb)(const ::Ice::Exception&), void (T::*sentcb)(bool) = 0)
+{
+    return new CallbackNC_SendWarningMsg_sendFaFileBinary<T>(instance, cb, excb, sentcb);
+}
+
+template<class T> Callback_SendWarningMsg_sendFaFileBinaryPtr
+newCallback_SendWarningMsg_sendFaFileBinary(T* instance, void (T::*excb)(const ::Ice::Exception&), void (T::*sentcb)(bool) = 0)
+{
+    return new CallbackNC_SendWarningMsg_sendFaFileBinary<T>(instance, 0, excb, sentcb);
+}
+
+template<class T, typename CT>
+class Callback_SendWarningMsg_sendFaFileBinary : public Callback_SendWarningMsg_sendFaFileBinary_Base, public ::IceInternal::OnewayCallback<T, CT>
+{
+public:
+
+    typedef IceUtil::Handle<T> TPtr;
+
+    typedef void (T::*Exception)(const ::Ice::Exception& , const CT&);
+    typedef void (T::*Sent)(bool , const CT&);
+    typedef void (T::*Response)(const CT&);
+
+    Callback_SendWarningMsg_sendFaFileBinary(const TPtr& obj, Response cb, Exception excb, Sent sentcb)
+        : ::IceInternal::OnewayCallback<T, CT>(obj, cb, excb, sentcb)
+    {
+    }
+};
+
+template<class T, typename CT> Callback_SendWarningMsg_sendFaFileBinaryPtr
+newCallback_SendWarningMsg_sendFaFileBinary(const IceUtil::Handle<T>& instance, void (T::*cb)(const CT&), void (T::*excb)(const ::Ice::Exception&, const CT&), void (T::*sentcb)(bool, const CT&) = 0)
+{
+    return new Callback_SendWarningMsg_sendFaFileBinary<T, CT>(instance, cb, excb, sentcb);
+}
+
+template<class T, typename CT> Callback_SendWarningMsg_sendFaFileBinaryPtr
+newCallback_SendWarningMsg_sendFaFileBinary(const IceUtil::Handle<T>& instance, void (T::*excb)(const ::Ice::Exception&, const CT&), void (T::*sentcb)(bool, const CT&) = 0)
+{
+    return new Callback_SendWarningMsg_sendFaFileBinary<T, CT>(instance, 0, excb, sentcb);
+}
+
+template<class T, typename CT> Callback_SendWarningMsg_sendFaFileBinaryPtr
+newCallback_SendWarningMsg_sendFaFileBinary(T* instance, void (T::*cb)(const CT&), void (T::*excb)(const ::Ice::Exception&, const CT&), void (T::*sentcb)(bool, const CT&) = 0)
+{
+    return new Callback_SendWarningMsg_sendFaFileBinary<T, CT>(instance, cb, excb, sentcb);
+}
+
+template<class T, typename CT> Callback_SendWarningMsg_sendFaFileBinaryPtr
+newCallback_SendWarningMsg_sendFaFileBinary(T* instance, void (T::*excb)(const ::Ice::Exception&, const CT&), void (T::*sentcb)(bool, const CT&) = 0)
+{
+    return new Callback_SendWarningMsg_sendFaFileBinary<T, CT>(instance, 0, excb, sentcb);
 }
 
 template<class T>

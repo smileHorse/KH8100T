@@ -6,10 +6,15 @@
 *.opensdf
 *.suo
 *.user
+*.log
 
 #忽略以下指定目录
 Simulated/IceStorm/db/
-Simulated/*/Debug/
-Simulated/*/GeneratedFiles/
-Simulated/*/ipch/
-Simulated/*/Win32/
+Simulated/**/Debug/
+Simulated/**/GeneratedFiles/
+Simulated/**/ipch/
+Simulated/**/Win32/
+**/db1/
+**/db2/
+**/db3/
+*/log/

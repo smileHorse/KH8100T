@@ -109,6 +109,10 @@ void FepFrame::createActions()
 	processUnitTypeEventAction->setStatusTip(QStringLiteral("发布前置机单元事项"));
 	connect(processUnitTypeEventAction, SIGNAL(triggered()), m_fepServerThreadPtr, SLOT(processUnitTypeEvent()));
 
+	processUnitChannelEventAction = new QAction(QIcon(":/images/unittype.png"), QStringLiteral("发布通道事项"), this);
+	processUnitChannelEventAction->setStatusTip(QStringLiteral("发布前置机通道事项"));
+	connect(processUnitChannelEventAction, SIGNAL(triggered()), m_fepServerThreadPtr, SLOT(processUnitChannelEvent()));
+
 	processProTypeEventAction = new QAction(QIcon(":/images/protype.png"), QStringLiteral("发布保护事项"), this);
 	processProTypeEventAction->setStatusTip(QStringLiteral("发布前置机保护事项"));
 	//connect(processProTypeEventAction, SIGNAL(triggered()), m_fepServerThreadPtr, SLOT(processProTypeEvent()));
@@ -145,6 +149,7 @@ void FepFrame::createMenus()
 	operMenu->addAction(processYxTypeEventAction);
 	operMenu->addAction(processSoeTypeEventAction);
 	operMenu->addAction(processUnitTypeEventAction);
+	operMenu->addAction(processUnitChannelEventAction);
 	operMenu->addAction(processProTypeEventAction);
 	operMenu->addSeparator();
 	operMenu->addAction(processWaveAction);
@@ -172,6 +177,7 @@ void FepFrame::createToolBars()
 	operToolBar->addAction(processYxTypeEventAction);
 	operToolBar->addAction(processSoeTypeEventAction);
 	operToolBar->addAction(processUnitTypeEventAction);
+	operToolBar->addAction(processUnitChannelEventAction);
 	operToolBar->addAction(processProTypeEventAction);
 	operToolBar->addSeparator();
 	operToolBar->addAction(processWaveAction);

@@ -162,19 +162,36 @@ module FepData {
         byte     errorRate;       // 误码率，0~100，不计小数
         long     timeStamp;       // 时标
      };
+	 
+	 enum ChannelEventType
+    {
+        ChannelSwitch,  // 0-通道切换
+        ChannelRun      // 1-通道投入退出
+    };
+	
+	 // 通道事项，包括通道切换，通道投入退出
+	 struct UnitChannel {
+        short    			 unitNo;          // 终端编号
+        ChannelEventType	 type;			  // 类型
+		byte				 channelNo;		  // 原始通道号；	通道号
+		byte				 channelState;	  // 切换后通道号；	通道状态：投入or退出；
+		long     			 timeStamp;       // 时标
+     };
     
     // 事项类型
     enum EventType {
         YxType,     // 0-遥信变位
         SoeType,    // 1-SOE
         UnitType,   // 2-终端状态
-        ProType     // 3-保护事项
+        ProType,    // 3-保护事项
+		ChannelType	// 4-通道事项
     }; 
     
     sequence<ChangedDigital> ChangedDigitalSeq;
     sequence<Soe> SoeSeq;
     sequence<ProtectEvent> ProtectEventSeq;
     sequence<ChangedUnit> ChangedUnitSeq;
+	sequence<UnitChannel> ChangedUnitChannelSeq;
 
     // 事项数据包
     struct EventPacket {
@@ -185,6 +202,7 @@ module FepData {
         SoeSeq   soes;               // SOE序列
         ProtectEventSeq  protects;   // 保护事项序列
         ChangedUnitSeq   units;      // 变化的终端序列
+		ChangedUnitChannelSeq	channels; // 通道事项序列
     };
 	
 	  sequence<short>   WaveValueSeq;

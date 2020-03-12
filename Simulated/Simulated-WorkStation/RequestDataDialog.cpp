@@ -4,6 +4,8 @@
 #include "GlobalVariable.h"
 
 QList<RdbRealData::RequestCompleteDataSeq> CRequestManager::m_completeDatasList;
+QList<RdbRealData::RequestCompleteDataSeq> CRequestManager::m_batchCompleteDatasList;
+QMutex CRequestManager::s_mutex;
 
 CRequestDataDialog::CRequestDataDialog(RequestType requestType, QWidget* parent /*= 0*/)
 	: QDialog(parent)
@@ -214,6 +216,42 @@ void CRequestManager::removeCompleteDataSeq(const string& requestNode)
 		if (iter->requestNode == requestNode)
 		{
 			m_completeDatasList.erase(iter);
+			return;
+		}
+	}
+}
+
+QList<RdbRealData::RequestCompleteDataSeq> CRequestManager::getBatchCompleteDataSeq()
+{
+	QMutexLocker lock(&s_mutex);
+	return m_batchCompleteDatasList;
+}
+
+void CRequestManager::addBatchCompleteDataSeq(const RdbRealData::RequestCompleteDataSeq& seq)
+{
+	QMutexLocker lock(&s_mutex);
+	m_batchCompleteDatasList.push_back(seq);
+}
+
+void CRequestManager::stopBatchCompleteDataSeq()
+{
+	QMutexLocker lock(&s_mutex);
+	for (QList<RdbRealData::RequestCompleteDataSeq>::iterator it = m_batchCompleteDatasList.begin(); 
+		it != m_batchCompleteDatasList.end(); ++it)
+	{
+		it->isStop = true;
+	}
+}
+
+void CRequestManager::removeBatchCompleteDataSeq(long requestId)
+{
+	QMutexLocker lock(&s_mutex);
+	QList<RdbRealData::RequestCompleteDataSeq>::iterator iter = m_batchCompleteDatasList.begin();
+	for (; iter != m_batchCompleteDatasList.end(); ++iter)
+	{
+		if (iter->requestId == requestId)
+		{
+			m_batchCompleteDatasList.erase(iter);
 			return;
 		}
 	}

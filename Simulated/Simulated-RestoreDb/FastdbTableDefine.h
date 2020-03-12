@@ -1844,7 +1844,7 @@ public:
 					FIELD(ratioFactor),
 					FIELD(value),
 
-					FIELD(checkLimit),
+					KEY(checkLimit,INDEXED|HASHED),
 					FIELD(hhLimitValue),
 					FIELD(hLimitValue),
 					FIELD(lLimitValue),
@@ -2987,6 +2987,8 @@ public:
 	std::string installTime;	// 安装日期
 	std::string runTime;		// 投运日期
 
+	int controlMode;	// 遥调方式
+
 	TYPE_DESCRIPTOR((SUPERCLASS(Equipment),
 					FIELD(bmagSat),
 					//FIELD(magBaseU),
@@ -3008,7 +3010,8 @@ public:
 					FIELD(deviceType),
 					FIELD(deviceModel),
 					FIELD(installTime),
-					FIELD(runTime)
+					FIELD(runTime),
+					FIELD(controlMode)
 					));
 };
 

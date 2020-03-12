@@ -17,6 +17,7 @@
 
 #ifdef USE_STD_STRING
 #include <string>
+#include <vector>
 #endif
 
 BEGIN_FASTDB_NAMESPACE
@@ -533,7 +534,9 @@ class FASTDB_DLL_ENTRY dbFieldDescriptor {
      * @param dst pointer to the application object into which record is extract
      * @param src image of the object in the database
      */
-    void fetchRecordFields(byte* dst, byte* src);
+	void fetchRecordFields(byte* dst, byte* src);
+	// Masf add 20190920 为解决restore时内存不断增大的问题增加该函数，用于释放string内存
+	void fetchRecordFields(byte* dst, byte* src, std::vector<std::string*>& vct);
 
     /**
      * Adjust references in all fetched records (current records in all opened cursors)

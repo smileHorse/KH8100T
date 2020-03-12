@@ -40,6 +40,7 @@ signals:
 	void serverStarted(bool serverStarted);
 	void requestCompleteDataSingal();
 	void requestStormTopoDataSingal();
+	void batchRequestStormDataSingal();
 	void selectCompleteDataSingal();
 	void requestWarningMsgSingal();
 	void subscriberRdbRequestSignal(bool isStop);
@@ -65,6 +66,7 @@ private slots:
 	void stopServer();
 	void requestStormRdbData();
 	void requestStormTopoData();
+	void batchRequestStormData();
 	void requestRdbData();
 	void requestTopoData();
 	void requestWarningMsg();
@@ -100,6 +102,7 @@ private:
 	QAction*	exitAction;
 	QAction*	requestStormRdbDataAction;
 	QAction*	requestStormTopoDataAction;
+	QAction*	batchRequestStormDataAction;
 	QAction*	requestRdbDataAction;
 	QAction*	requestTopoDataAction;
 	QAction*	requestWarningMsgAction;

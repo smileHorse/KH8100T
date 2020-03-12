@@ -5,6 +5,7 @@
 #include "OperationInfo.h"
 #include "RequestDataDialog.h"
 #include "GlobalVariable.h"
+#include "BatchRequestDialog.h"
 
 #include <QtWidgets/QtWidgets>
 
@@ -73,6 +74,10 @@ void WorkStationFrame::createActions()
 	requestStormTopoDataAction = createActionImpl(QIcon(":/images/requestStormTopo.png"), 
 		QStringLiteral("请求拓扑数据(IceStorm)"), QStringLiteral("通过IceStorm请求拓扑数据"),	
 		this, SLOT(requestStormTopoData()), false);
+	batchRequestStormDataAction = createActionImpl(QIcon(":/images/requestStormRdb.png"), 
+		QStringLiteral("批量请求实时数据(IceStorm)"), QStringLiteral("通过IceStorm批量请求实时数据"),	
+		this, SLOT(batchRequestStormData()), false);
+
 	requestRdbDataAction = createActionImpl(QIcon(":/images/requestRdb.png"), 
 		QStringLiteral("请求实时数据(Ice)"), QStringLiteral("通过Ice请求实时数据"),	
 		this, SLOT(requestRdbData()), false);
@@ -96,7 +101,7 @@ void WorkStationFrame::createActions()
 	subscriberYkAppAction = createActionImpl(QIcon(":/images/subscribeFepData.png"), 
 		QStringLiteral("订阅遥控响应"), "",	this, SLOT(subscriberYkApp()), false);
 	subscriberWarningMsgAction = createActionImpl(QIcon(":/images/subscribeFepData.png"), 
-		QStringLiteral("订阅告警数据"), "",	this, SLOT(subscribeWarningMsg()), false);
+		QStringLiteral("订阅告警文件"), "",	this, SLOT(subscribeWarningMsg()), false);
 	ykSelectAction = createActionImpl(QIcon(":/images/subscribeFepData.png"), QStringLiteral("遥控选择"), 
 		"",	this, SLOT(ykSelect()), false);
 
@@ -138,6 +143,8 @@ void WorkStationFrame::createMenus()
 	QMenu* iceStormMenu = operMenu->addMenu(QIcon(":/images/icestormmenu.png"), QStringLiteral("IceStorm"));
 	iceStormMenu->addAction(requestStormRdbDataAction);
 	iceStormMenu->addAction(requestStormTopoDataAction);
+	iceStormMenu->addAction(batchRequestStormDataAction);
+
 	QMenu* iceMenu = operMenu->addMenu(QIcon(":/images/icemenu.png"), QStringLiteral("Ice"));
 	iceMenu->addAction(requestRdbDataAction);
 	iceMenu->addAction(requestTopoDataAction);
@@ -173,6 +180,8 @@ void WorkStationFrame::createToolBars()
 	operToolBar = addToolBar(QStringLiteral("操作"));
 	operToolBar->addAction(requestStormRdbDataAction);
 	operToolBar->addAction(requestStormTopoDataAction);
+	operToolBar->addAction(batchRequestStormDataAction);
+
 	operToolBar->addSeparator();
 	operToolBar->addAction(requestRdbDataAction);
 	operToolBar->addAction(requestTopoDataAction);
@@ -208,6 +217,8 @@ void WorkStationFrame::createConnects()
 	connect(this, SIGNAL(serverStarted(bool)), this, SLOT(updateActions(bool)));
 	connect(this, SIGNAL(requestCompleteDataSingal()), m_workStationServerThreadPtr, SLOT(requestCompleteData()));
 	connect(this, SIGNAL(requestStormTopoDataSingal()), m_workStationServerThreadPtr, SLOT(requestStormTopoData()));
+	connect(this, SIGNAL(batchRequestStormDataSingal()), m_workStationServerThreadPtr, SLOT(batchRequestStormData()));
+
 	connect(this, SIGNAL(selectCompleteDataSingal()), m_workStationServerThreadPtr, SLOT(selectCompleteData()));
 	connect(this, SIGNAL(requestWarningMsgSingal()), m_workStationServerThreadPtr, SLOT(requestWarningMsg()));
 	connect(this, SIGNAL(subscriberRdbRequestSignal(bool)), m_workStationServerThreadPtr, SLOT(subscriberRdbRequest(bool)));
@@ -283,6 +294,7 @@ void WorkStationFrame::updateActions( bool serverStarted )
 	stopServerAction->setEnabled(serverStarted);
 	requestStormRdbDataAction->setEnabled(serverStarted);
 	requestStormTopoDataAction->setEnabled(serverStarted);
+	batchRequestStormDataAction->setEnabled(serverStarted);
 	requestRdbDataAction->setEnabled(serverStarted);
 	requestTopoDataAction->setEnabled(serverStarted);
 	requestWarningMsgAction->setEnabled(serverStarted);
@@ -342,6 +354,17 @@ void WorkStationFrame::requestStormTopoData()
 	}
 
 	emit requestStormTopoDataSingal();
+}
+
+void WorkStationFrame::batchRequestStormData()
+{
+	CRequestManager::stopBatchCompleteDataSeq();
+
+	BatchRequestDialog dialog(this);
+	if (dialog.exec() == QDialog::Accepted)
+	{
+		emit batchRequestStormDataSingal();
+	}
 }
 
 void WorkStationFrame::requestRdbData()

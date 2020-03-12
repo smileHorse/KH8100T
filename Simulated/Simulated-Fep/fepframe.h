@@ -66,6 +66,7 @@ private:
 	QAction*	processYxTypeEventAction;
 	QAction*	processSoeTypeEventAction;
 	QAction*	processUnitTypeEventAction;
+	QAction*	processUnitChannelEventAction;
 	QAction*	processProTypeEventAction;
 	QAction*	processWaveAction;
 	QAction*	clearAction;

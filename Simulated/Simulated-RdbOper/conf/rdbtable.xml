@@ -567,6 +567,7 @@
 	<table name="DevManufacturer">
 		<field type = "string">mRID</field>
 		<field type = "string">name</field>
+		<field type = "string">type</field>
 	</table>
 	<table name="DevDeviceType">
 		<field type = "string">mRID</field>

@@ -50,32 +50,37 @@ module WarningMsg
     {
         void sendWarningMsgBinary(string title, Bytes datas);
 
+        void sendFaFileBinary(string folder, string title, Bytes datas);
+
         /**
         * 发送录波文件
         * @parameter unitNo: 单元号
         * @parameter title: 文件标题
         * @parameter datas: 文件内容
+        * @parameter append: true: 追加  false: 覆盖
         *
         **/
-        void sendRfwFileBinary(string unitNo, string title, Bytes datas);
+        void sendRfwFileBinary(string unitNo, string title, Bytes datas, bool append);
 
         /**
         * 发送历史曲线文件
         * @parameter date: 日期
         * @parameter title: 文件标题
         * @parameter datas: 文件内容
+        * @parameter append: true: 追加  false: 覆盖
         *
         **/
-        void sendCurveFileBinary(string date, string title, Bytes datas);
+        void sendCurveFileBinary(string date, string title, Bytes datas, bool append);
 
         /**
         * 发送报表文件
         * @parameter folder: 文件目录
         * @parameter title: 文件标题
         * @parameter datas: 文件内容
+        * @parameter append: true: 追加  false: 覆盖
         *
         **/
-        void sendReportFileBinary(string folder, string title, Bytes datas);
+        void sendReportFileBinary(string folder, string title, Bytes datas, bool append);
     };
 };
  

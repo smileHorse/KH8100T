@@ -103,6 +103,8 @@ string getEventType(FepData::EventType value)
 		return "终端状态";
 	case FepData::ProType:
 		return "保护事项";
+	case FepData::ChannelType:
+		return "通道事项";
 	default:
 		return "未知";
 	}
@@ -534,6 +536,38 @@ void FepServerThread::processUnitTypeEvent()
 
 	OperationInfo info(TYPE_FEP);
 	info.setOperationInfo(QStringLiteral("发布单元事项"));
+	emit executeOperation(info);
+}
+
+void FepServerThread::processUnitChannelEvent()
+{
+	// 获取发布者对象
+	if (!getFepDataPublisher())
+	{
+		return;
+	}
+
+	// 发布单元事项
+	FepData::EventPacket packet;
+	packet.id = 15;
+	packet.fepNode = "fep36";
+	packet.type = FepData::ChannelType;
+	FepData::UnitChannel unitChannel;
+	unitChannel.channelNo = 1;
+	unitChannel.type = FepData::ChannelRun;
+	unitChannel.channelNo = 1;
+	unitChannel.channelState = 0;
+	unitChannel.timeStamp = IceUtil::Time::now().toMilliSeconds();
+	packet.channels.push_back(unitChannel);
+
+	m_fepDataManagerPrx->processEvent(packet);
+
+	// 输出发送的数据
+	QString text = outputFepEvent(packet);
+	emit publishFepData(text);
+
+	OperationInfo info(TYPE_FEP);
+	info.setOperationInfo(QStringLiteral("发布通道事项"));
 	emit executeOperation(info);
 }
 

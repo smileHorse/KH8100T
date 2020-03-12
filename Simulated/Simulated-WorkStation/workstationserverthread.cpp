@@ -12,6 +12,7 @@
 #include "YkDataManagerI.h"
 #include "RequestDataDialog.h"
 #include "GlobalVariable.h"
+#include "BatchRequestDataThread.h"
 
 #include <string>
 
@@ -29,6 +30,8 @@ WorkStationServerThread::WorkStationServerThread( QObject* parent /*= 0*/ )
 	m_ykFepSubIdentity = "ykfep-subscriber";
 	m_ykAppSubIdentity = "ykapp-subscriber";
 	m_warningMsgSubIdentity = "warningmsg-subscriber";
+
+	m_batchRequestThread = 0;
 }
 
 void WorkStationServerThread::setCommunicatorPtr( Ice::CommunicatorPtr ptr )
@@ -434,6 +437,28 @@ void WorkStationServerThread::requestStormTopoData()
 	}
 }
 
+void WorkStationServerThread::batchRequestStormData()
+{
+	try 
+	{
+		if (!getRdbRealDataRequestPublisher())
+		{
+			return;
+		}
+		
+		if (!m_batchRequestThread)
+		{
+			m_batchRequestThread = new BatchRequestDataThread(m_rdbRealDataRequestPrx, this);
+			m_batchRequestThread->start();
+		}
+	}
+	catch(const Ice::Exception& ex)
+	{
+		QString error = QString().fromStdString(ex.what());
+		emit outputReceiveData(QString("请求全部实时数据失败:%1").arg(error));
+	}
+}
+
 void WorkStationServerThread::selectCompleteData()
 {
 	RdbRealData::RdbDataOptPrx rdbOptPrx = RdbRealData::RdbDataOptPrx::checkedCast(
@@ -689,7 +714,7 @@ void WorkStationServerThread::subscriberWarningMsg( bool isStop )
 	catch(const Ice::Exception& ex)
 	{
 		OperationInfo info(TYPE_CLIENT);
-		info.setOperationInfo(QStringLiteral("订阅/取消订阅遥控响应失败"), QDateTime(), false, ex.what());
+		info.setOperationInfo(QStringLiteral("订阅/取消订阅告警文件失败"), QDateTime(), false, ex.what());
 		emit executeOperation(info);
 		return;
 	}

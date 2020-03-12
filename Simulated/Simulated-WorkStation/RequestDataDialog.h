@@ -25,11 +25,19 @@ public:
 	static void stopCompleteDataSeq(const string& requestNode);
 	static void removeCompleteDataSeq(const string& requestNode);
 
+	static QList<RdbRealData::RequestCompleteDataSeq> getBatchCompleteDataSeq();
+	static void addBatchCompleteDataSeq(const RdbRealData::RequestCompleteDataSeq& seq);
+	static void stopBatchCompleteDataSeq();
+	static void removeBatchCompleteDataSeq(long requestId);
+
 	static bool isRequestChanged();
 	static void setRequestChanged(bool value);
 private:
 	static QList<RdbRealData::RequestCompleteDataSeq> m_completeDatasList;
+	static QList<RdbRealData::RequestCompleteDataSeq> m_batchCompleteDatasList;
 	static bool s_changed;
+
+	static QMutex s_mutex;
 };
 
 
