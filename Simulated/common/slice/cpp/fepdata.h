@@ -90,90 +90,7 @@ struct ChangedAnalog
     ::Ice::Long timeStamp;
     ::Ice::Short unitNo;
     ::Ice::Short index;
-    ::Ice::Int value;
-
-    bool operator==(const ChangedAnalog& __rhs) const
-    {
-        if(this == &__rhs)
-        {
-            return true;
-        }
-        if(timeStamp != __rhs.timeStamp)
-        {
-            return false;
-        }
-        if(unitNo != __rhs.unitNo)
-        {
-            return false;
-        }
-        if(index != __rhs.index)
-        {
-            return false;
-        }
-        if(value != __rhs.value)
-        {
-            return false;
-        }
-        return true;
-    }
-
-    bool operator<(const ChangedAnalog& __rhs) const
-    {
-        if(this == &__rhs)
-        {
-            return false;
-        }
-        if(timeStamp < __rhs.timeStamp)
-        {
-            return true;
-        }
-        else if(__rhs.timeStamp < timeStamp)
-        {
-            return false;
-        }
-        if(unitNo < __rhs.unitNo)
-        {
-            return true;
-        }
-        else if(__rhs.unitNo < unitNo)
-        {
-            return false;
-        }
-        if(index < __rhs.index)
-        {
-            return true;
-        }
-        else if(__rhs.index < index)
-        {
-            return false;
-        }
-        if(value < __rhs.value)
-        {
-            return true;
-        }
-        else if(__rhs.value < value)
-        {
-            return false;
-        }
-        return false;
-    }
-
-    bool operator!=(const ChangedAnalog& __rhs) const
-    {
-        return !operator==(__rhs);
-    }
-    bool operator<=(const ChangedAnalog& __rhs) const
-    {
-        return operator<(__rhs) || operator==(__rhs);
-    }
-    bool operator>(const ChangedAnalog& __rhs) const
-    {
-        return !operator<(__rhs) && !operator==(__rhs);
-    }
-    bool operator>=(const ChangedAnalog& __rhs) const
-    {
-        return !operator<(__rhs);
-    }
+    ::Ice::Double value;
 };
 
 enum State
@@ -300,11 +217,11 @@ enum DataType
 
 typedef ::std::vector< ::FepData::Unit> UnitSeq;
 
-typedef ::std::vector< ::Ice::Int> AnalogSeq;
+typedef ::std::vector< ::Ice::Double> AnalogSeq;
 
 typedef ::std::vector< ::Ice::Int> DiscreteSeq;
 
-typedef ::std::vector< ::Ice::Int> AccmulatorSeq;
+typedef ::std::vector< ::Ice::Double> AccmulatorSeq;
 
 typedef ::std::vector< ::FepData::ChangedAnalog> ChangedAnalogSeq;
 
@@ -867,7 +784,7 @@ template<>
 struct StreamableTraits< ::FepData::ChangedAnalog>
 {
     static const StreamHelperCategory helper = StreamHelperCategoryStruct;
-    static const int minWireSize = 16;
+    static const int minWireSize = 20;
     static const bool fixedLength = true;
 };
 

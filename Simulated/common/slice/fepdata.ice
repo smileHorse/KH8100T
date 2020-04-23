@@ -25,7 +25,7 @@ module FepData {
         long     timeStamp;  // 时标
         short    unitNo;     // 终端编号
         short    index;      // 点号
-        int      value;      // 值
+        double   value;      // 值
     };    
     
     // 终端状态值
@@ -62,9 +62,9 @@ module FepData {
     };
     
     sequence<Unit>  UnitSeq;        // 终端状态
-    sequence<int>   AnalogSeq;      // 遥测
+    sequence<double>   AnalogSeq;      // 遥测
     sequence<int>  DiscreteSeq;    // 遥信
-    sequence<int>   AccmulatorSeq;  // 电度
+    sequence<double>   AccmulatorSeq;  // 电度
     sequence<ChangedAnalog> ChangedAnalogSeq;  // 变化遥测
     struct DataPacket {
         byte        id;       // 数据包ID

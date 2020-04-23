@@ -34,7 +34,7 @@ Ice.Warn.Connections=1
 # 
 # IceStorm ip & port 
 #
-#IceStrom_Ip = 192.168.3.21:192.168.3.192:192.168.3.192
-#IceStrom_Port = 10000:10010:10020
-IceStrom_Ip = 192.168.3.226
-IceStrom_Port = 10000
+IceStrom_Ip = 192.168.40.212:192.168.40.211:192.168.40.211
+IceStrom_Port = 10000:10010:10020
+#IceStrom_Ip = 192.168.3.25
+#IceStrom_Port = 10000

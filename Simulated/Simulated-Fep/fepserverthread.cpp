@@ -292,6 +292,7 @@ void FepServerThread::processDataPacket( SelfDataPacket selfPacket )
 	packet.unitNo = selfPacket.unitNo;
 	packet.units.assign(selfPacket.units.begin(), selfPacket.units.end());
 	packet.analogs.assign(selfPacket.analogs.begin(), selfPacket.analogs.end());
+	//packet.analogs.assign(selfPacket.discretes.begin(), selfPacket.discretes.end());
 	packet.discretes.assign(selfPacket.discretes.begin(), selfPacket.discretes.end());
 	packet.accmulators.assign(selfPacket.accmulators.begin(), selfPacket.accmulators.end());
 	m_fepDataManagerPrx->processData(packet);
