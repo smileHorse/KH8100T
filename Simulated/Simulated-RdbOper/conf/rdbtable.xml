@@ -741,4 +741,19 @@
 		<field type = "string">installTime</field>
 		<field type = "string">runTime</field>
 	</table>
+	<table name="ProtectValue">
+		<field type = "string">mRID</field>
+		<field type = "int">unitNo</field>
+		<field type = "int">lineNo</field>
+		<field type = "int">no</field>
+		<field type = "string">name</field>
+		<field type = "string">unit</field>
+		<field type = "double">factor</field>
+		<field type = "int">index</field>
+	</table>
+	<table name="ProtectValueDesc">
+		<field type = "string">mRID</field>
+		<field type = "int">value</field>
+		<field type = "string">valueDesc</field>
+	</table>
 </rdb>
