@@ -75,6 +75,14 @@ class RdbAlarmData;
 void __read(::IceInternal::BasicStream*, ::IceInternal::ProxyHandle< ::IceProxy::RdbWarningData::RdbAlarmData>&);
 ::IceProxy::Ice::Object* upCast(::IceProxy::RdbWarningData::RdbAlarmData*);
 
+class RdbAllAlarmData;
+void __read(::IceInternal::BasicStream*, ::IceInternal::ProxyHandle< ::IceProxy::RdbWarningData::RdbAllAlarmData>&);
+::IceProxy::Ice::Object* upCast(::IceProxy::RdbWarningData::RdbAllAlarmData*);
+
+class RdbWarningBuf;
+void __read(::IceInternal::BasicStream*, ::IceInternal::ProxyHandle< ::IceProxy::RdbWarningData::RdbWarningBuf>&);
+::IceProxy::Ice::Object* upCast(::IceProxy::RdbWarningData::RdbWarningBuf*);
+
 }
 
 }
@@ -110,6 +118,18 @@ class RdbAlarmData;
 typedef ::IceInternal::Handle< ::RdbWarningData::RdbAlarmData> RdbAlarmDataPtr;
 typedef ::IceInternal::ProxyHandle< ::IceProxy::RdbWarningData::RdbAlarmData> RdbAlarmDataPrx;
 void __patch(RdbAlarmDataPtr&, const ::Ice::ObjectPtr&);
+
+class RdbAllAlarmData;
+::Ice::Object* upCast(::RdbWarningData::RdbAllAlarmData*);
+typedef ::IceInternal::Handle< ::RdbWarningData::RdbAllAlarmData> RdbAllAlarmDataPtr;
+typedef ::IceInternal::ProxyHandle< ::IceProxy::RdbWarningData::RdbAllAlarmData> RdbAllAlarmDataPrx;
+void __patch(RdbAllAlarmDataPtr&, const ::Ice::ObjectPtr&);
+
+class RdbWarningBuf;
+::Ice::Object* upCast(::RdbWarningData::RdbWarningBuf*);
+typedef ::IceInternal::Handle< ::RdbWarningData::RdbWarningBuf> RdbWarningBufPtr;
+typedef ::IceInternal::ProxyHandle< ::IceProxy::RdbWarningData::RdbWarningBuf> RdbWarningBufPrx;
+void __patch(RdbWarningBufPtr&, const ::Ice::ObjectPtr&);
 
 }
 
@@ -736,6 +756,123 @@ struct RequestTopoDataSeq
     ::RdbRealData::Strings ridSeq;
 };
 
+enum RelationValue
+{
+    Equal,
+    NonEqual,
+    Less,
+    LessEqual,
+    Greater,
+    GreaterEqual
+};
+
+enum LogicalValue
+{
+    And,
+    Or
+};
+
+struct FieldDetail
+{
+    ::std::string fieldName;
+    ::std::string fieldValue;
+    ::RdbRealData::RelationValue relation;
+    ::RdbRealData::LogicalValue logical;
+
+    bool operator==(const FieldDetail& __rhs) const
+    {
+        if(this == &__rhs)
+        {
+            return true;
+        }
+        if(fieldName != __rhs.fieldName)
+        {
+            return false;
+        }
+        if(fieldValue != __rhs.fieldValue)
+        {
+            return false;
+        }
+        if(relation != __rhs.relation)
+        {
+            return false;
+        }
+        if(logical != __rhs.logical)
+        {
+            return false;
+        }
+        return true;
+    }
+
+    bool operator<(const FieldDetail& __rhs) const
+    {
+        if(this == &__rhs)
+        {
+            return false;
+        }
+        if(fieldName < __rhs.fieldName)
+        {
+            return true;
+        }
+        else if(__rhs.fieldName < fieldName)
+        {
+            return false;
+        }
+        if(fieldValue < __rhs.fieldValue)
+        {
+            return true;
+        }
+        else if(__rhs.fieldValue < fieldValue)
+        {
+            return false;
+        }
+        if(relation < __rhs.relation)
+        {
+            return true;
+        }
+        else if(__rhs.relation < relation)
+        {
+            return false;
+        }
+        if(logical < __rhs.logical)
+        {
+            return true;
+        }
+        else if(__rhs.logical < logical)
+        {
+            return false;
+        }
+        return false;
+    }
+
+    bool operator!=(const FieldDetail& __rhs) const
+    {
+        return !operator==(__rhs);
+    }
+    bool operator<=(const FieldDetail& __rhs) const
+    {
+        return operator<(__rhs) || operator==(__rhs);
+    }
+    bool operator>(const FieldDetail& __rhs) const
+    {
+        return !operator<(__rhs) && !operator==(__rhs);
+    }
+    bool operator>=(const FieldDetail& __rhs) const
+    {
+        return !operator<(__rhs);
+    }
+};
+
+typedef ::std::vector< ::RdbRealData::FieldDetail> FieldDetailSequence;
+
+struct RequestCondition
+{
+    ::std::string tableName;
+    ::RdbRealData::FieldDetailSequence fieldDetailList;
+};
+
+typedef ::std::vector< ::RdbRealData::RequestCondition> RequestConditionSequence;
+
 struct ConNodeState
 {
     ::std::string rid;
@@ -1003,10 +1140,13 @@ typedef ::std::vector< ::std::string> Strings;
 struct WarningInfo
 {
     ::std::string id;
+    ::Ice::Int isConfirm;
+    ::std::string confirmId;
     ::RdbWarningData::RdbWarningType warnType;
     ::Ice::Long timeStamp;
     ::RdbWarningData::RdbWarningLevel warningLevel;
     ::std::string warnSource;
+    ::std::string voltage;
     ::Ice::Int columnNum;
     ::RdbWarningData::Strings contents;
 };
@@ -1014,6 +1154,253 @@ struct WarningInfo
 typedef ::std::vector< ::RdbWarningData::WarningInfo> WarningInfoSeq;
 
 const ::std::string strAlarmDataTopic = "rdb_warning_data";
+
+const ::std::string strAllAlarmDataTopic = "rdb_all_warning_data";
+
+struct OutAnalogWarningBuf
+{
+    ::Ice::Long timeStamp;
+    ::std::string name;
+    ::std::string psrRid;
+    ::std::string psrType;
+    ::Ice::Int outStatus;
+    ::Ice::Double limitVl;
+    ::Ice::Double currentVl;
+    ::Ice::Int holdFlag;
+    ::Ice::Int unitId;
+    ::Ice::Int unitSymbol;
+    ::Ice::Int ycType;
+    ::std::string rid;
+};
+
+typedef ::std::vector< ::RdbWarningData::OutAnalogWarningBuf> OutAnalogWarningBufSeq;
+
+struct ChangedUnitWarningBuf
+{
+    ::Ice::Long timeStamp;
+    ::std::string fepNode;
+    ::Ice::Int unitId;
+    ::std::string name;
+    bool fromDataSrv;
+    ::Ice::Int currentStatus;
+
+    bool operator==(const ChangedUnitWarningBuf& __rhs) const
+    {
+        if(this == &__rhs)
+        {
+            return true;
+        }
+        if(timeStamp != __rhs.timeStamp)
+        {
+            return false;
+        }
+        if(fepNode != __rhs.fepNode)
+        {
+            return false;
+        }
+        if(unitId != __rhs.unitId)
+        {
+            return false;
+        }
+        if(name != __rhs.name)
+        {
+            return false;
+        }
+        if(fromDataSrv != __rhs.fromDataSrv)
+        {
+            return false;
+        }
+        if(currentStatus != __rhs.currentStatus)
+        {
+            return false;
+        }
+        return true;
+    }
+
+    bool operator<(const ChangedUnitWarningBuf& __rhs) const
+    {
+        if(this == &__rhs)
+        {
+            return false;
+        }
+        if(timeStamp < __rhs.timeStamp)
+        {
+            return true;
+        }
+        else if(__rhs.timeStamp < timeStamp)
+        {
+            return false;
+        }
+        if(fepNode < __rhs.fepNode)
+        {
+            return true;
+        }
+        else if(__rhs.fepNode < fepNode)
+        {
+            return false;
+        }
+        if(unitId < __rhs.unitId)
+        {
+            return true;
+        }
+        else if(__rhs.unitId < unitId)
+        {
+            return false;
+        }
+        if(name < __rhs.name)
+        {
+            return true;
+        }
+        else if(__rhs.name < name)
+        {
+            return false;
+        }
+        if(fromDataSrv < __rhs.fromDataSrv)
+        {
+            return true;
+        }
+        else if(__rhs.fromDataSrv < fromDataSrv)
+        {
+            return false;
+        }
+        if(currentStatus < __rhs.currentStatus)
+        {
+            return true;
+        }
+        else if(__rhs.currentStatus < currentStatus)
+        {
+            return false;
+        }
+        return false;
+    }
+
+    bool operator!=(const ChangedUnitWarningBuf& __rhs) const
+    {
+        return !operator==(__rhs);
+    }
+    bool operator<=(const ChangedUnitWarningBuf& __rhs) const
+    {
+        return operator<(__rhs) || operator==(__rhs);
+    }
+    bool operator>(const ChangedUnitWarningBuf& __rhs) const
+    {
+        return !operator<(__rhs) && !operator==(__rhs);
+    }
+    bool operator>=(const ChangedUnitWarningBuf& __rhs) const
+    {
+        return !operator<(__rhs);
+    }
+};
+
+typedef ::std::vector< ::RdbWarningData::ChangedUnitWarningBuf> ChangedUnitWarningBufSeq;
+
+struct ChangedChannelWarningBuf
+{
+    ::Ice::Long timeStamp;
+    ::std::string fepNode;
+    ::Ice::Int unitId;
+    ::std::string name;
+    ::Ice::Int currentStatus;
+
+    bool operator==(const ChangedChannelWarningBuf& __rhs) const
+    {
+        if(this == &__rhs)
+        {
+            return true;
+        }
+        if(timeStamp != __rhs.timeStamp)
+        {
+            return false;
+        }
+        if(fepNode != __rhs.fepNode)
+        {
+            return false;
+        }
+        if(unitId != __rhs.unitId)
+        {
+            return false;
+        }
+        if(name != __rhs.name)
+        {
+            return false;
+        }
+        if(currentStatus != __rhs.currentStatus)
+        {
+            return false;
+        }
+        return true;
+    }
+
+    bool operator<(const ChangedChannelWarningBuf& __rhs) const
+    {
+        if(this == &__rhs)
+        {
+            return false;
+        }
+        if(timeStamp < __rhs.timeStamp)
+        {
+            return true;
+        }
+        else if(__rhs.timeStamp < timeStamp)
+        {
+            return false;
+        }
+        if(fepNode < __rhs.fepNode)
+        {
+            return true;
+        }
+        else if(__rhs.fepNode < fepNode)
+        {
+            return false;
+        }
+        if(unitId < __rhs.unitId)
+        {
+            return true;
+        }
+        else if(__rhs.unitId < unitId)
+        {
+            return false;
+        }
+        if(name < __rhs.name)
+        {
+            return true;
+        }
+        else if(__rhs.name < name)
+        {
+            return false;
+        }
+        if(currentStatus < __rhs.currentStatus)
+        {
+            return true;
+        }
+        else if(__rhs.currentStatus < currentStatus)
+        {
+            return false;
+        }
+        return false;
+    }
+
+    bool operator!=(const ChangedChannelWarningBuf& __rhs) const
+    {
+        return !operator==(__rhs);
+    }
+    bool operator<=(const ChangedChannelWarningBuf& __rhs) const
+    {
+        return operator<(__rhs) || operator==(__rhs);
+    }
+    bool operator>(const ChangedChannelWarningBuf& __rhs) const
+    {
+        return !operator<(__rhs) && !operator==(__rhs);
+    }
+    bool operator>=(const ChangedChannelWarningBuf& __rhs) const
+    {
+        return !operator<(__rhs);
+    }
+};
+
+typedef ::std::vector< ::RdbWarningData::ChangedChannelWarningBuf> ChangedChannelWarningBufSeq;
+
+const ::std::string strRdbWarningBufTopic = "rdb_warning_buf_data";
 
 }
 
@@ -1630,6 +2017,86 @@ struct StreamReader< ::RdbRealData::RequestTopoDataSeq, S>
 };
 
 template<>
+struct StreamableTraits< ::RdbRealData::RelationValue>
+{
+    static const StreamHelperCategory helper = StreamHelperCategoryEnum;
+    static const int minValue = 0;
+    static const int maxValue = 5;
+    static const int minWireSize = 1;
+    static const bool fixedLength = false;
+};
+
+template<>
+struct StreamableTraits< ::RdbRealData::LogicalValue>
+{
+    static const StreamHelperCategory helper = StreamHelperCategoryEnum;
+    static const int minValue = 0;
+    static const int maxValue = 1;
+    static const int minWireSize = 1;
+    static const bool fixedLength = false;
+};
+
+template<>
+struct StreamableTraits< ::RdbRealData::FieldDetail>
+{
+    static const StreamHelperCategory helper = StreamHelperCategoryStruct;
+    static const int minWireSize = 4;
+    static const bool fixedLength = false;
+};
+
+template<class S>
+struct StreamWriter< ::RdbRealData::FieldDetail, S>
+{
+    static void write(S* __os, const ::RdbRealData::FieldDetail& v)
+    {
+        __os->write(v.fieldName);
+        __os->write(v.fieldValue);
+        __os->write(v.relation);
+        __os->write(v.logical);
+    }
+};
+
+template<class S>
+struct StreamReader< ::RdbRealData::FieldDetail, S>
+{
+    static void read(S* __is, ::RdbRealData::FieldDetail& v)
+    {
+        __is->read(v.fieldName);
+        __is->read(v.fieldValue);
+        __is->read(v.relation);
+        __is->read(v.logical);
+    }
+};
+
+template<>
+struct StreamableTraits< ::RdbRealData::RequestCondition>
+{
+    static const StreamHelperCategory helper = StreamHelperCategoryStruct;
+    static const int minWireSize = 2;
+    static const bool fixedLength = false;
+};
+
+template<class S>
+struct StreamWriter< ::RdbRealData::RequestCondition, S>
+{
+    static void write(S* __os, const ::RdbRealData::RequestCondition& v)
+    {
+        __os->write(v.tableName);
+        __os->write(v.fieldDetailList);
+    }
+};
+
+template<class S>
+struct StreamReader< ::RdbRealData::RequestCondition, S>
+{
+    static void read(S* __is, ::RdbRealData::RequestCondition& v)
+    {
+        __is->read(v.tableName);
+        __is->read(v.fieldDetailList);
+    }
+};
+
+template<>
 struct StreamableTraits< ::RdbRealData::ConNodeState>
 {
     static const StreamHelperCategory helper = StreamHelperCategoryStruct;
@@ -1929,7 +2396,7 @@ template<>
 struct StreamableTraits< ::RdbWarningData::WarningInfo>
 {
     static const StreamHelperCategory helper = StreamHelperCategoryStruct;
-    static const int minWireSize = 17;
+    static const int minWireSize = 23;
     static const bool fixedLength = false;
 };
 
@@ -1939,10 +2406,13 @@ struct StreamWriter< ::RdbWarningData::WarningInfo, S>
     static void write(S* __os, const ::RdbWarningData::WarningInfo& v)
     {
         __os->write(v.id);
+        __os->write(v.isConfirm);
+        __os->write(v.confirmId);
         __os->write(v.warnType);
         __os->write(v.timeStamp);
         __os->write(v.warningLevel);
         __os->write(v.warnSource);
+        __os->write(v.voltage);
         __os->write(v.columnNum);
         __os->write(v.contents);
     }
@@ -1954,12 +2424,133 @@ struct StreamReader< ::RdbWarningData::WarningInfo, S>
     static void read(S* __is, ::RdbWarningData::WarningInfo& v)
     {
         __is->read(v.id);
+        __is->read(v.isConfirm);
+        __is->read(v.confirmId);
         __is->read(v.warnType);
         __is->read(v.timeStamp);
         __is->read(v.warningLevel);
         __is->read(v.warnSource);
+        __is->read(v.voltage);
         __is->read(v.columnNum);
         __is->read(v.contents);
+    }
+};
+
+template<>
+struct StreamableTraits< ::RdbWarningData::OutAnalogWarningBuf>
+{
+    static const StreamHelperCategory helper = StreamHelperCategoryStruct;
+    static const int minWireSize = 48;
+    static const bool fixedLength = false;
+};
+
+template<class S>
+struct StreamWriter< ::RdbWarningData::OutAnalogWarningBuf, S>
+{
+    static void write(S* __os, const ::RdbWarningData::OutAnalogWarningBuf& v)
+    {
+        __os->write(v.timeStamp);
+        __os->write(v.name);
+        __os->write(v.psrRid);
+        __os->write(v.psrType);
+        __os->write(v.outStatus);
+        __os->write(v.limitVl);
+        __os->write(v.currentVl);
+        __os->write(v.holdFlag);
+        __os->write(v.unitId);
+        __os->write(v.unitSymbol);
+        __os->write(v.ycType);
+        __os->write(v.rid);
+    }
+};
+
+template<class S>
+struct StreamReader< ::RdbWarningData::OutAnalogWarningBuf, S>
+{
+    static void read(S* __is, ::RdbWarningData::OutAnalogWarningBuf& v)
+    {
+        __is->read(v.timeStamp);
+        __is->read(v.name);
+        __is->read(v.psrRid);
+        __is->read(v.psrType);
+        __is->read(v.outStatus);
+        __is->read(v.limitVl);
+        __is->read(v.currentVl);
+        __is->read(v.holdFlag);
+        __is->read(v.unitId);
+        __is->read(v.unitSymbol);
+        __is->read(v.ycType);
+        __is->read(v.rid);
+    }
+};
+
+template<>
+struct StreamableTraits< ::RdbWarningData::ChangedUnitWarningBuf>
+{
+    static const StreamHelperCategory helper = StreamHelperCategoryStruct;
+    static const int minWireSize = 19;
+    static const bool fixedLength = false;
+};
+
+template<class S>
+struct StreamWriter< ::RdbWarningData::ChangedUnitWarningBuf, S>
+{
+    static void write(S* __os, const ::RdbWarningData::ChangedUnitWarningBuf& v)
+    {
+        __os->write(v.timeStamp);
+        __os->write(v.fepNode);
+        __os->write(v.unitId);
+        __os->write(v.name);
+        __os->write(v.fromDataSrv);
+        __os->write(v.currentStatus);
+    }
+};
+
+template<class S>
+struct StreamReader< ::RdbWarningData::ChangedUnitWarningBuf, S>
+{
+    static void read(S* __is, ::RdbWarningData::ChangedUnitWarningBuf& v)
+    {
+        __is->read(v.timeStamp);
+        __is->read(v.fepNode);
+        __is->read(v.unitId);
+        __is->read(v.name);
+        __is->read(v.fromDataSrv);
+        __is->read(v.currentStatus);
+    }
+};
+
+template<>
+struct StreamableTraits< ::RdbWarningData::ChangedChannelWarningBuf>
+{
+    static const StreamHelperCategory helper = StreamHelperCategoryStruct;
+    static const int minWireSize = 18;
+    static const bool fixedLength = false;
+};
+
+template<class S>
+struct StreamWriter< ::RdbWarningData::ChangedChannelWarningBuf, S>
+{
+    static void write(S* __os, const ::RdbWarningData::ChangedChannelWarningBuf& v)
+    {
+        __os->write(v.timeStamp);
+        __os->write(v.fepNode);
+        __os->write(v.unitId);
+        __os->write(v.name);
+        __os->write(v.currentStatus);
+    }
+};
+
+template<class S>
+struct StreamReader< ::RdbWarningData::ChangedChannelWarningBuf, S>
+{
+    static void read(S* __is, ::RdbWarningData::ChangedChannelWarningBuf& v)
+    {
+        __is->read(v.timeStamp);
+        __is->read(v.fepNode);
+        __is->read(v.unitId);
+        __is->read(v.name);
+        __is->read(v.currentStatus);
     }
 };
 
@@ -2006,6 +2597,9 @@ typedef ::IceUtil::Handle< Callback_RdbDataOpt_SelectCompleteData_Base> Callback
 
 class Callback_RdbDataOpt_BatchSelectCompleteData_Base : virtual public ::IceInternal::CallbackBase { };
 typedef ::IceUtil::Handle< Callback_RdbDataOpt_BatchSelectCompleteData_Base> Callback_RdbDataOpt_BatchSelectCompleteDataPtr;
+
+class Callback_RdbDataOpt_SelectDataWithCondition_Base : virtual public ::IceInternal::CallbackBase { };
+typedef ::IceUtil::Handle< Callback_RdbDataOpt_SelectDataWithCondition_Base> Callback_RdbDataOpt_SelectDataWithConditionPtr;
 
 class Callback_RdbDataOpt_SelectDataCount_Base : virtual public ::IceInternal::CallbackBase { };
 typedef ::IceUtil::Handle< Callback_RdbDataOpt_SelectDataCount_Base> Callback_RdbDataOpt_SelectDataCountPtr;
@@ -2080,6 +2674,18 @@ namespace RdbWarningData
 
 class Callback_RdbAlarmData_SendAlarmData_Base : virtual public ::IceInternal::CallbackBase { };
 typedef ::IceUtil::Handle< Callback_RdbAlarmData_SendAlarmData_Base> Callback_RdbAlarmData_SendAlarmDataPtr;
+
+class Callback_RdbAllAlarmData_SendAllAlarmData_Base : virtual public ::IceInternal::CallbackBase { };
+typedef ::IceUtil::Handle< Callback_RdbAllAlarmData_SendAllAlarmData_Base> Callback_RdbAllAlarmData_SendAllAlarmDataPtr;
+
+class Callback_RdbWarningBuf_SendOutAnalogWarningBufs_Base : virtual public ::IceInternal::CallbackBase { };
+typedef ::IceUtil::Handle< Callback_RdbWarningBuf_SendOutAnalogWarningBufs_Base> Callback_RdbWarningBuf_SendOutAnalogWarningBufsPtr;
+
+class Callback_RdbWarningBuf_SendChangedUnitWarningBufs_Base : virtual public ::IceInternal::CallbackBase { };
+typedef ::IceUtil::Handle< Callback_RdbWarningBuf_SendChangedUnitWarningBufs_Base> Callback_RdbWarningBuf_SendChangedUnitWarningBufsPtr;
+
+class Callback_RdbWarningBuf_SendChangedChannelWarningBufs_Base : virtual public ::IceInternal::CallbackBase { };
+typedef ::IceUtil::Handle< Callback_RdbWarningBuf_SendChangedChannelWarningBufs_Base> Callback_RdbWarningBuf_SendChangedChannelWarningBufsPtr;
 
 }
 
@@ -3260,6 +3866,82 @@ private:
 
     bool BatchSelectCompleteData(const ::RdbRealData::BatchRequestCompleteDataSeq&, ::RdbRealData::RespondCompleteDataSeq&, const ::Ice::Context*);
     ::Ice::AsyncResultPtr begin_BatchSelectCompleteData(const ::RdbRealData::BatchRequestCompleteDataSeq&, const ::Ice::Context*, const ::IceInternal::CallbackBasePtr&, const ::Ice::LocalObjectPtr& __cookie = 0);
+    
+public:
+
+    bool SelectDataWithCondition(const ::RdbRealData::RequestConditionSequence& __p_reqSeq, ::RdbRealData::RespondCompleteDataSeq& __p_repSeq)
+    {
+        return SelectDataWithCondition(__p_reqSeq, __p_repSeq, 0);
+    }
+    bool SelectDataWithCondition(const ::RdbRealData::RequestConditionSequence& __p_reqSeq, ::RdbRealData::RespondCompleteDataSeq& __p_repSeq, const ::Ice::Context& __ctx)
+    {
+        return SelectDataWithCondition(__p_reqSeq, __p_repSeq, &__ctx);
+    }
+#ifdef ICE_CPP11
+    ::Ice::AsyncResultPtr
+    begin_SelectDataWithCondition(const ::RdbRealData::RequestConditionSequence& __p_reqSeq, const ::IceInternal::Function<void (bool, const ::RdbRealData::RespondCompleteDataSeq&)>& __response, const ::IceInternal::Function<void (const ::Ice::Exception&)>& __exception = ::IceInternal::Function<void (const ::Ice::Exception&)>(), const ::IceInternal::Function<void (bool)>& __sent = ::IceInternal::Function<void (bool)>())
+    {
+        return __begin_SelectDataWithCondition(__p_reqSeq, 0, __response, __exception, __sent);
+    }
+    ::Ice::AsyncResultPtr
+    begin_SelectDataWithCondition(const ::RdbRealData::RequestConditionSequence& __p_reqSeq, const ::IceInternal::Function<void (const ::Ice::AsyncResultPtr&)>& __completed, const ::IceInternal::Function<void (const ::Ice::AsyncResultPtr&)>& __sent = ::IceInternal::Function<void (const ::Ice::AsyncResultPtr&)>())
+    {
+        return begin_SelectDataWithCondition(__p_reqSeq, 0, ::Ice::newCallback(__completed, __sent), 0);
+    }
+    ::Ice::AsyncResultPtr
+    begin_SelectDataWithCondition(const ::RdbRealData::RequestConditionSequence& __p_reqSeq, const ::Ice::Context& __ctx, const ::IceInternal::Function<void (bool, const ::RdbRealData::RespondCompleteDataSeq&)>& __response, const ::IceInternal::Function<void (const ::Ice::Exception&)>& __exception = ::IceInternal::Function<void (const ::Ice::Exception&)>(), const ::IceInternal::Function<void (bool)>& __sent = ::IceInternal::Function<void (bool)>())
+    {
+        return __begin_SelectDataWithCondition(__p_reqSeq, &__ctx, __response, __exception, __sent);
+    }
+    ::Ice::AsyncResultPtr
+    begin_SelectDataWithCondition(const ::RdbRealData::RequestConditionSequence& __p_reqSeq, const ::Ice::Context& __ctx, const ::IceInternal::Function<void (const ::Ice::AsyncResultPtr&)>& __completed, const ::IceInternal::Function<void (const ::Ice::AsyncResultPtr&)>& __sent = ::IceInternal::Function<void (const ::Ice::AsyncResultPtr&)>())
+    {
+        return begin_SelectDataWithCondition(__p_reqSeq, &__ctx, ::Ice::newCallback(__completed, __sent));
+    }
+    
+private:
+
+    ::Ice::AsyncResultPtr __begin_SelectDataWithCondition(const ::RdbRealData::RequestConditionSequence& __p_reqSeq, const ::Ice::Context* __ctx, const ::IceInternal::Function<void (bool, const ::RdbRealData::RespondCompleteDataSeq&)>& __response, const ::IceInternal::Function<void (const ::Ice::Exception&)>& __exception, const ::IceInternal::Function<void (bool)>& __sent);
+    
+public:
+#endif
+
+    ::Ice::AsyncResultPtr begin_SelectDataWithCondition(const ::RdbRealData::RequestConditionSequence& __p_reqSeq)
+    {
+        return begin_SelectDataWithCondition(__p_reqSeq, 0, ::IceInternal::__dummyCallback, 0);
+    }
+
+    ::Ice::AsyncResultPtr begin_SelectDataWithCondition(const ::RdbRealData::RequestConditionSequence& __p_reqSeq, const ::Ice::Context& __ctx)
+    {
+        return begin_SelectDataWithCondition(__p_reqSeq, &__ctx, ::IceInternal::__dummyCallback, 0);
+    }
+
+    ::Ice::AsyncResultPtr begin_SelectDataWithCondition(const ::RdbRealData::RequestConditionSequence& __p_reqSeq, const ::Ice::CallbackPtr& __del, const ::Ice::LocalObjectPtr& __cookie = 0)
+    {
+        return begin_SelectDataWithCondition(__p_reqSeq, 0, __del, __cookie);
+    }
+
+    ::Ice::AsyncResultPtr begin_SelectDataWithCondition(const ::RdbRealData::RequestConditionSequence& __p_reqSeq, const ::Ice::Context& __ctx, const ::Ice::CallbackPtr& __del, const ::Ice::LocalObjectPtr& __cookie = 0)
+    {
+        return begin_SelectDataWithCondition(__p_reqSeq, &__ctx, __del, __cookie);
+    }
+
+    ::Ice::AsyncResultPtr begin_SelectDataWithCondition(const ::RdbRealData::RequestConditionSequence& __p_reqSeq, const ::RdbRealData::Callback_RdbDataOpt_SelectDataWithConditionPtr& __del, const ::Ice::LocalObjectPtr& __cookie = 0)
+    {
+        return begin_SelectDataWithCondition(__p_reqSeq, 0, __del, __cookie);
+    }
+
+    ::Ice::AsyncResultPtr begin_SelectDataWithCondition(const ::RdbRealData::RequestConditionSequence& __p_reqSeq, const ::Ice::Context& __ctx, const ::RdbRealData::Callback_RdbDataOpt_SelectDataWithConditionPtr& __del, const ::Ice::LocalObjectPtr& __cookie = 0)
+    {
+        return begin_SelectDataWithCondition(__p_reqSeq, &__ctx, __del, __cookie);
+    }
+
+    bool end_SelectDataWithCondition(::RdbRealData::RespondCompleteDataSeq& __p_repSeq, const ::Ice::AsyncResultPtr&);
+    
+private:
+
+    bool SelectDataWithCondition(const ::RdbRealData::RequestConditionSequence&, ::RdbRealData::RespondCompleteDataSeq&, const ::Ice::Context*);
+    ::Ice::AsyncResultPtr begin_SelectDataWithCondition(const ::RdbRealData::RequestConditionSequence&, const ::Ice::Context*, const ::IceInternal::CallbackBasePtr&, const ::Ice::LocalObjectPtr& __cookie = 0);
     
 public:
 
@@ -5230,6 +5912,516 @@ private:
     virtual ::IceProxy::Ice::Object* __newInstance() const;
 };
 
+class RdbAllAlarmData : virtual public ::IceProxy::Ice::Object
+{
+public:
+
+    void SendAllAlarmData(const ::RdbWarningData::WarningInfoSeq& __p_seq)
+    {
+        SendAllAlarmData(__p_seq, 0);
+    }
+    void SendAllAlarmData(const ::RdbWarningData::WarningInfoSeq& __p_seq, const ::Ice::Context& __ctx)
+    {
+        SendAllAlarmData(__p_seq, &__ctx);
+    }
+#ifdef ICE_CPP11
+    ::Ice::AsyncResultPtr
+    begin_SendAllAlarmData(const ::RdbWarningData::WarningInfoSeq& __p_seq, const ::IceInternal::Function<void ()>& __response, const ::IceInternal::Function<void (const ::Ice::Exception&)>& __exception = ::IceInternal::Function<void (const ::Ice::Exception&)>(), const ::IceInternal::Function<void (bool)>& __sent = ::IceInternal::Function<void (bool)>())
+    {
+        return begin_SendAllAlarmData(__p_seq, 0, new ::IceInternal::Cpp11FnOnewayCallbackNC(__response, __exception, __sent));
+    }
+    ::Ice::AsyncResultPtr
+    begin_SendAllAlarmData(const ::RdbWarningData::WarningInfoSeq& __p_seq, const ::IceInternal::Function<void (const ::Ice::AsyncResultPtr&)>& __completed, const ::IceInternal::Function<void (const ::Ice::AsyncResultPtr&)>& __sent = ::IceInternal::Function<void (const ::Ice::AsyncResultPtr&)>())
+    {
+        return begin_SendAllAlarmData(__p_seq, 0, ::Ice::newCallback(__completed, __sent), 0);
+    }
+    ::Ice::AsyncResultPtr
+    begin_SendAllAlarmData(const ::RdbWarningData::WarningInfoSeq& __p_seq, const ::Ice::Context& __ctx, const ::IceInternal::Function<void ()>& __response, const ::IceInternal::Function<void (const ::Ice::Exception&)>& __exception = ::IceInternal::Function<void (const ::Ice::Exception&)>(), const ::IceInternal::Function<void (bool)>& __sent = ::IceInternal::Function<void (bool)>())
+    {
+        return begin_SendAllAlarmData(__p_seq, &__ctx, new ::IceInternal::Cpp11FnOnewayCallbackNC(__response, __exception, __sent), 0);
+    }
+    ::Ice::AsyncResultPtr
+    begin_SendAllAlarmData(const ::RdbWarningData::WarningInfoSeq& __p_seq, const ::Ice::Context& __ctx, const ::IceInternal::Function<void (const ::Ice::AsyncResultPtr&)>& __completed, const ::IceInternal::Function<void (const ::Ice::AsyncResultPtr&)>& __sent = ::IceInternal::Function<void (const ::Ice::AsyncResultPtr&)>())
+    {
+        return begin_SendAllAlarmData(__p_seq, &__ctx, ::Ice::newCallback(__completed, __sent));
+    }
+#endif
+
+    ::Ice::AsyncResultPtr begin_SendAllAlarmData(const ::RdbWarningData::WarningInfoSeq& __p_seq)
+    {
+        return begin_SendAllAlarmData(__p_seq, 0, ::IceInternal::__dummyCallback, 0);
+    }
+
+    ::Ice::AsyncResultPtr begin_SendAllAlarmData(const ::RdbWarningData::WarningInfoSeq& __p_seq, const ::Ice::Context& __ctx)
+    {
+        return begin_SendAllAlarmData(__p_seq, &__ctx, ::IceInternal::__dummyCallback, 0);
+    }
+
+    ::Ice::AsyncResultPtr begin_SendAllAlarmData(const ::RdbWarningData::WarningInfoSeq& __p_seq, const ::Ice::CallbackPtr& __del, const ::Ice::LocalObjectPtr& __cookie = 0)
+    {
+        return begin_SendAllAlarmData(__p_seq, 0, __del, __cookie);
+    }
+
+    ::Ice::AsyncResultPtr begin_SendAllAlarmData(const ::RdbWarningData::WarningInfoSeq& __p_seq, const ::Ice::Context& __ctx, const ::Ice::CallbackPtr& __del, const ::Ice::LocalObjectPtr& __cookie = 0)
+    {
+        return begin_SendAllAlarmData(__p_seq, &__ctx, __del, __cookie);
+    }
+
+    ::Ice::AsyncResultPtr begin_SendAllAlarmData(const ::RdbWarningData::WarningInfoSeq& __p_seq, const ::RdbWarningData::Callback_RdbAllAlarmData_SendAllAlarmDataPtr& __del, const ::Ice::LocalObjectPtr& __cookie = 0)
+    {
+        return begin_SendAllAlarmData(__p_seq, 0, __del, __cookie);
+    }
+
+    ::Ice::AsyncResultPtr begin_SendAllAlarmData(const ::RdbWarningData::WarningInfoSeq& __p_seq, const ::Ice::Context& __ctx, const ::RdbWarningData::Callback_RdbAllAlarmData_SendAllAlarmDataPtr& __del, const ::Ice::LocalObjectPtr& __cookie = 0)
+    {
+        return begin_SendAllAlarmData(__p_seq, &__ctx, __del, __cookie);
+    }
+
+    void end_SendAllAlarmData(const ::Ice::AsyncResultPtr&);
+    
+private:
+
+    void SendAllAlarmData(const ::RdbWarningData::WarningInfoSeq&, const ::Ice::Context*);
+    ::Ice::AsyncResultPtr begin_SendAllAlarmData(const ::RdbWarningData::WarningInfoSeq&, const ::Ice::Context*, const ::IceInternal::CallbackBasePtr&, const ::Ice::LocalObjectPtr& __cookie = 0);
+    
+public:
+    
+    ::IceInternal::ProxyHandle<RdbAllAlarmData> ice_context(const ::Ice::Context& __context) const
+    {
+        return dynamic_cast<RdbAllAlarmData*>(::IceProxy::Ice::Object::ice_context(__context).get());
+    }
+    
+    ::IceInternal::ProxyHandle<RdbAllAlarmData> ice_adapterId(const ::std::string& __id) const
+    {
+        return dynamic_cast<RdbAllAlarmData*>(::IceProxy::Ice::Object::ice_adapterId(__id).get());
+    }
+    
+    ::IceInternal::ProxyHandle<RdbAllAlarmData> ice_endpoints(const ::Ice::EndpointSeq& __endpoints) const
+    {
+        return dynamic_cast<RdbAllAlarmData*>(::IceProxy::Ice::Object::ice_endpoints(__endpoints).get());
+    }
+    
+    ::IceInternal::ProxyHandle<RdbAllAlarmData> ice_locatorCacheTimeout(int __timeout) const
+    {
+        return dynamic_cast<RdbAllAlarmData*>(::IceProxy::Ice::Object::ice_locatorCacheTimeout(__timeout).get());
+    }
+    
+    ::IceInternal::ProxyHandle<RdbAllAlarmData> ice_connectionCached(bool __cached) const
+    {
+        return dynamic_cast<RdbAllAlarmData*>(::IceProxy::Ice::Object::ice_connectionCached(__cached).get());
+    }
+    
+    ::IceInternal::ProxyHandle<RdbAllAlarmData> ice_endpointSelection(::Ice::EndpointSelectionType __est) const
+    {
+        return dynamic_cast<RdbAllAlarmData*>(::IceProxy::Ice::Object::ice_endpointSelection(__est).get());
+    }
+    
+    ::IceInternal::ProxyHandle<RdbAllAlarmData> ice_secure(bool __secure) const
+    {
+        return dynamic_cast<RdbAllAlarmData*>(::IceProxy::Ice::Object::ice_secure(__secure).get());
+    }
+    
+    ::IceInternal::ProxyHandle<RdbAllAlarmData> ice_preferSecure(bool __preferSecure) const
+    {
+        return dynamic_cast<RdbAllAlarmData*>(::IceProxy::Ice::Object::ice_preferSecure(__preferSecure).get());
+    }
+    
+    ::IceInternal::ProxyHandle<RdbAllAlarmData> ice_router(const ::Ice::RouterPrx& __router) const
+    {
+        return dynamic_cast<RdbAllAlarmData*>(::IceProxy::Ice::Object::ice_router(__router).get());
+    }
+    
+    ::IceInternal::ProxyHandle<RdbAllAlarmData> ice_locator(const ::Ice::LocatorPrx& __locator) const
+    {
+        return dynamic_cast<RdbAllAlarmData*>(::IceProxy::Ice::Object::ice_locator(__locator).get());
+    }
+    
+    ::IceInternal::ProxyHandle<RdbAllAlarmData> ice_collocationOptimized(bool __co) const
+    {
+        return dynamic_cast<RdbAllAlarmData*>(::IceProxy::Ice::Object::ice_collocationOptimized(__co).get());
+    }
+    
+    ::IceInternal::ProxyHandle<RdbAllAlarmData> ice_invocationTimeout(int __timeout) const
+    {
+        return dynamic_cast<RdbAllAlarmData*>(::IceProxy::Ice::Object::ice_invocationTimeout(__timeout).get());
+    }
+    
+    ::IceInternal::ProxyHandle<RdbAllAlarmData> ice_twoway() const
+    {
+        return dynamic_cast<RdbAllAlarmData*>(::IceProxy::Ice::Object::ice_twoway().get());
+    }
+    
+    ::IceInternal::ProxyHandle<RdbAllAlarmData> ice_oneway() const
+    {
+        return dynamic_cast<RdbAllAlarmData*>(::IceProxy::Ice::Object::ice_oneway().get());
+    }
+    
+    ::IceInternal::ProxyHandle<RdbAllAlarmData> ice_batchOneway() const
+    {
+        return dynamic_cast<RdbAllAlarmData*>(::IceProxy::Ice::Object::ice_batchOneway().get());
+    }
+    
+    ::IceInternal::ProxyHandle<RdbAllAlarmData> ice_datagram() const
+    {
+        return dynamic_cast<RdbAllAlarmData*>(::IceProxy::Ice::Object::ice_datagram().get());
+    }
+    
+    ::IceInternal::ProxyHandle<RdbAllAlarmData> ice_batchDatagram() const
+    {
+        return dynamic_cast<RdbAllAlarmData*>(::IceProxy::Ice::Object::ice_batchDatagram().get());
+    }
+    
+    ::IceInternal::ProxyHandle<RdbAllAlarmData> ice_compress(bool __compress) const
+    {
+        return dynamic_cast<RdbAllAlarmData*>(::IceProxy::Ice::Object::ice_compress(__compress).get());
+    }
+    
+    ::IceInternal::ProxyHandle<RdbAllAlarmData> ice_timeout(int __timeout) const
+    {
+        return dynamic_cast<RdbAllAlarmData*>(::IceProxy::Ice::Object::ice_timeout(__timeout).get());
+    }
+    
+    ::IceInternal::ProxyHandle<RdbAllAlarmData> ice_connectionId(const ::std::string& __id) const
+    {
+        return dynamic_cast<RdbAllAlarmData*>(::IceProxy::Ice::Object::ice_connectionId(__id).get());
+    }
+    
+    ::IceInternal::ProxyHandle<RdbAllAlarmData> ice_encodingVersion(const ::Ice::EncodingVersion& __v) const
+    {
+        return dynamic_cast<RdbAllAlarmData*>(::IceProxy::Ice::Object::ice_encodingVersion(__v).get());
+    }
+    
+    static const ::std::string& ice_staticId();
+
+private: 
+    virtual ::IceProxy::Ice::Object* __newInstance() const;
+};
+
+class RdbWarningBuf : virtual public ::IceProxy::Ice::Object
+{
+public:
+
+    void SendOutAnalogWarningBufs(const ::RdbWarningData::OutAnalogWarningBufSeq& __p_seq)
+    {
+        SendOutAnalogWarningBufs(__p_seq, 0);
+    }
+    void SendOutAnalogWarningBufs(const ::RdbWarningData::OutAnalogWarningBufSeq& __p_seq, const ::Ice::Context& __ctx)
+    {
+        SendOutAnalogWarningBufs(__p_seq, &__ctx);
+    }
+#ifdef ICE_CPP11
+    ::Ice::AsyncResultPtr
+    begin_SendOutAnalogWarningBufs(const ::RdbWarningData::OutAnalogWarningBufSeq& __p_seq, const ::IceInternal::Function<void ()>& __response, const ::IceInternal::Function<void (const ::Ice::Exception&)>& __exception = ::IceInternal::Function<void (const ::Ice::Exception&)>(), const ::IceInternal::Function<void (bool)>& __sent = ::IceInternal::Function<void (bool)>())
+    {
+        return begin_SendOutAnalogWarningBufs(__p_seq, 0, new ::IceInternal::Cpp11FnOnewayCallbackNC(__response, __exception, __sent));
+    }
+    ::Ice::AsyncResultPtr
+    begin_SendOutAnalogWarningBufs(const ::RdbWarningData::OutAnalogWarningBufSeq& __p_seq, const ::IceInternal::Function<void (const ::Ice::AsyncResultPtr&)>& __completed, const ::IceInternal::Function<void (const ::Ice::AsyncResultPtr&)>& __sent = ::IceInternal::Function<void (const ::Ice::AsyncResultPtr&)>())
+    {
+        return begin_SendOutAnalogWarningBufs(__p_seq, 0, ::Ice::newCallback(__completed, __sent), 0);
+    }
+    ::Ice::AsyncResultPtr
+    begin_SendOutAnalogWarningBufs(const ::RdbWarningData::OutAnalogWarningBufSeq& __p_seq, const ::Ice::Context& __ctx, const ::IceInternal::Function<void ()>& __response, const ::IceInternal::Function<void (const ::Ice::Exception&)>& __exception = ::IceInternal::Function<void (const ::Ice::Exception&)>(), const ::IceInternal::Function<void (bool)>& __sent = ::IceInternal::Function<void (bool)>())
+    {
+        return begin_SendOutAnalogWarningBufs(__p_seq, &__ctx, new ::IceInternal::Cpp11FnOnewayCallbackNC(__response, __exception, __sent), 0);
+    }
+    ::Ice::AsyncResultPtr
+    begin_SendOutAnalogWarningBufs(const ::RdbWarningData::OutAnalogWarningBufSeq& __p_seq, const ::Ice::Context& __ctx, const ::IceInternal::Function<void (const ::Ice::AsyncResultPtr&)>& __completed, const ::IceInternal::Function<void (const ::Ice::AsyncResultPtr&)>& __sent = ::IceInternal::Function<void (const ::Ice::AsyncResultPtr&)>())
+    {
+        return begin_SendOutAnalogWarningBufs(__p_seq, &__ctx, ::Ice::newCallback(__completed, __sent));
+    }
+#endif
+
+    ::Ice::AsyncResultPtr begin_SendOutAnalogWarningBufs(const ::RdbWarningData::OutAnalogWarningBufSeq& __p_seq)
+    {
+        return begin_SendOutAnalogWarningBufs(__p_seq, 0, ::IceInternal::__dummyCallback, 0);
+    }
+
+    ::Ice::AsyncResultPtr begin_SendOutAnalogWarningBufs(const ::RdbWarningData::OutAnalogWarningBufSeq& __p_seq, const ::Ice::Context& __ctx)
+    {
+        return begin_SendOutAnalogWarningBufs(__p_seq, &__ctx, ::IceInternal::__dummyCallback, 0);
+    }
+
+    ::Ice::AsyncResultPtr begin_SendOutAnalogWarningBufs(const ::RdbWarningData::OutAnalogWarningBufSeq& __p_seq, const ::Ice::CallbackPtr& __del, const ::Ice::LocalObjectPtr& __cookie = 0)
+    {
+        return begin_SendOutAnalogWarningBufs(__p_seq, 0, __del, __cookie);
+    }
+
+    ::Ice::AsyncResultPtr begin_SendOutAnalogWarningBufs(const ::RdbWarningData::OutAnalogWarningBufSeq& __p_seq, const ::Ice::Context& __ctx, const ::Ice::CallbackPtr& __del, const ::Ice::LocalObjectPtr& __cookie = 0)
+    {
+        return begin_SendOutAnalogWarningBufs(__p_seq, &__ctx, __del, __cookie);
+    }
+
+    ::Ice::AsyncResultPtr begin_SendOutAnalogWarningBufs(const ::RdbWarningData::OutAnalogWarningBufSeq& __p_seq, const ::RdbWarningData::Callback_RdbWarningBuf_SendOutAnalogWarningBufsPtr& __del, const ::Ice::LocalObjectPtr& __cookie = 0)
+    {
+        return begin_SendOutAnalogWarningBufs(__p_seq, 0, __del, __cookie);
+    }
+
+    ::Ice::AsyncResultPtr begin_SendOutAnalogWarningBufs(const ::RdbWarningData::OutAnalogWarningBufSeq& __p_seq, const ::Ice::Context& __ctx, const ::RdbWarningData::Callback_RdbWarningBuf_SendOutAnalogWarningBufsPtr& __del, const ::Ice::LocalObjectPtr& __cookie = 0)
+    {
+        return begin_SendOutAnalogWarningBufs(__p_seq, &__ctx, __del, __cookie);
+    }
+
+    void end_SendOutAnalogWarningBufs(const ::Ice::AsyncResultPtr&);
+    
+private:
+
+    void SendOutAnalogWarningBufs(const ::RdbWarningData::OutAnalogWarningBufSeq&, const ::Ice::Context*);
+    ::Ice::AsyncResultPtr begin_SendOutAnalogWarningBufs(const ::RdbWarningData::OutAnalogWarningBufSeq&, const ::Ice::Context*, const ::IceInternal::CallbackBasePtr&, const ::Ice::LocalObjectPtr& __cookie = 0);
+    
+public:
+
+    void SendChangedUnitWarningBufs(const ::RdbWarningData::ChangedUnitWarningBufSeq& __p_seq)
+    {
+        SendChangedUnitWarningBufs(__p_seq, 0);
+    }
+    void SendChangedUnitWarningBufs(const ::RdbWarningData::ChangedUnitWarningBufSeq& __p_seq, const ::Ice::Context& __ctx)
+    {
+        SendChangedUnitWarningBufs(__p_seq, &__ctx);
+    }
+#ifdef ICE_CPP11
+    ::Ice::AsyncResultPtr
+    begin_SendChangedUnitWarningBufs(const ::RdbWarningData::ChangedUnitWarningBufSeq& __p_seq, const ::IceInternal::Function<void ()>& __response, const ::IceInternal::Function<void (const ::Ice::Exception&)>& __exception = ::IceInternal::Function<void (const ::Ice::Exception&)>(), const ::IceInternal::Function<void (bool)>& __sent = ::IceInternal::Function<void (bool)>())
+    {
+        return begin_SendChangedUnitWarningBufs(__p_seq, 0, new ::IceInternal::Cpp11FnOnewayCallbackNC(__response, __exception, __sent));
+    }
+    ::Ice::AsyncResultPtr
+    begin_SendChangedUnitWarningBufs(const ::RdbWarningData::ChangedUnitWarningBufSeq& __p_seq, const ::IceInternal::Function<void (const ::Ice::AsyncResultPtr&)>& __completed, const ::IceInternal::Function<void (const ::Ice::AsyncResultPtr&)>& __sent = ::IceInternal::Function<void (const ::Ice::AsyncResultPtr&)>())
+    {
+        return begin_SendChangedUnitWarningBufs(__p_seq, 0, ::Ice::newCallback(__completed, __sent), 0);
+    }
+    ::Ice::AsyncResultPtr
+    begin_SendChangedUnitWarningBufs(const ::RdbWarningData::ChangedUnitWarningBufSeq& __p_seq, const ::Ice::Context& __ctx, const ::IceInternal::Function<void ()>& __response, const ::IceInternal::Function<void (const ::Ice::Exception&)>& __exception = ::IceInternal::Function<void (const ::Ice::Exception&)>(), const ::IceInternal::Function<void (bool)>& __sent = ::IceInternal::Function<void (bool)>())
+    {
+        return begin_SendChangedUnitWarningBufs(__p_seq, &__ctx, new ::IceInternal::Cpp11FnOnewayCallbackNC(__response, __exception, __sent), 0);
+    }
+    ::Ice::AsyncResultPtr
+    begin_SendChangedUnitWarningBufs(const ::RdbWarningData::ChangedUnitWarningBufSeq& __p_seq, const ::Ice::Context& __ctx, const ::IceInternal::Function<void (const ::Ice::AsyncResultPtr&)>& __completed, const ::IceInternal::Function<void (const ::Ice::AsyncResultPtr&)>& __sent = ::IceInternal::Function<void (const ::Ice::AsyncResultPtr&)>())
+    {
+        return begin_SendChangedUnitWarningBufs(__p_seq, &__ctx, ::Ice::newCallback(__completed, __sent));
+    }
+#endif
+
+    ::Ice::AsyncResultPtr begin_SendChangedUnitWarningBufs(const ::RdbWarningData::ChangedUnitWarningBufSeq& __p_seq)
+    {
+        return begin_SendChangedUnitWarningBufs(__p_seq, 0, ::IceInternal::__dummyCallback, 0);
+    }
+
+    ::Ice::AsyncResultPtr begin_SendChangedUnitWarningBufs(const ::RdbWarningData::ChangedUnitWarningBufSeq& __p_seq, const ::Ice::Context& __ctx)
+    {
+        return begin_SendChangedUnitWarningBufs(__p_seq, &__ctx, ::IceInternal::__dummyCallback, 0);
+    }
+
+    ::Ice::AsyncResultPtr begin_SendChangedUnitWarningBufs(const ::RdbWarningData::ChangedUnitWarningBufSeq& __p_seq, const ::Ice::CallbackPtr& __del, const ::Ice::LocalObjectPtr& __cookie = 0)
+    {
+        return begin_SendChangedUnitWarningBufs(__p_seq, 0, __del, __cookie);
+    }
+
+    ::Ice::AsyncResultPtr begin_SendChangedUnitWarningBufs(const ::RdbWarningData::ChangedUnitWarningBufSeq& __p_seq, const ::Ice::Context& __ctx, const ::Ice::CallbackPtr& __del, const ::Ice::LocalObjectPtr& __cookie = 0)
+    {
+        return begin_SendChangedUnitWarningBufs(__p_seq, &__ctx, __del, __cookie);
+    }
+
+    ::Ice::AsyncResultPtr begin_SendChangedUnitWarningBufs(const ::RdbWarningData::ChangedUnitWarningBufSeq& __p_seq, const ::RdbWarningData::Callback_RdbWarningBuf_SendChangedUnitWarningBufsPtr& __del, const ::Ice::LocalObjectPtr& __cookie = 0)
+    {
+        return begin_SendChangedUnitWarningBufs(__p_seq, 0, __del, __cookie);
+    }
+
+    ::Ice::AsyncResultPtr begin_SendChangedUnitWarningBufs(const ::RdbWarningData::ChangedUnitWarningBufSeq& __p_seq, const ::Ice::Context& __ctx, const ::RdbWarningData::Callback_RdbWarningBuf_SendChangedUnitWarningBufsPtr& __del, const ::Ice::LocalObjectPtr& __cookie = 0)
+    {
+        return begin_SendChangedUnitWarningBufs(__p_seq, &__ctx, __del, __cookie);
+    }
+
+    void end_SendChangedUnitWarningBufs(const ::Ice::AsyncResultPtr&);
+    
+private:
+
+    void SendChangedUnitWarningBufs(const ::RdbWarningData::ChangedUnitWarningBufSeq&, const ::Ice::Context*);
+    ::Ice::AsyncResultPtr begin_SendChangedUnitWarningBufs(const ::RdbWarningData::ChangedUnitWarningBufSeq&, const ::Ice::Context*, const ::IceInternal::CallbackBasePtr&, const ::Ice::LocalObjectPtr& __cookie = 0);
+    
+public:
+
+    void SendChangedChannelWarningBufs(const ::RdbWarningData::ChangedChannelWarningBufSeq& __p_seq)
+    {
+        SendChangedChannelWarningBufs(__p_seq, 0);
+    }
+    void SendChangedChannelWarningBufs(const ::RdbWarningData::ChangedChannelWarningBufSeq& __p_seq, const ::Ice::Context& __ctx)
+    {
+        SendChangedChannelWarningBufs(__p_seq, &__ctx);
+    }
+#ifdef ICE_CPP11
+    ::Ice::AsyncResultPtr
+    begin_SendChangedChannelWarningBufs(const ::RdbWarningData::ChangedChannelWarningBufSeq& __p_seq, const ::IceInternal::Function<void ()>& __response, const ::IceInternal::Function<void (const ::Ice::Exception&)>& __exception = ::IceInternal::Function<void (const ::Ice::Exception&)>(), const ::IceInternal::Function<void (bool)>& __sent = ::IceInternal::Function<void (bool)>())
+    {
+        return begin_SendChangedChannelWarningBufs(__p_seq, 0, new ::IceInternal::Cpp11FnOnewayCallbackNC(__response, __exception, __sent));
+    }
+    ::Ice::AsyncResultPtr
+    begin_SendChangedChannelWarningBufs(const ::RdbWarningData::ChangedChannelWarningBufSeq& __p_seq, const ::IceInternal::Function<void (const ::Ice::AsyncResultPtr&)>& __completed, const ::IceInternal::Function<void (const ::Ice::AsyncResultPtr&)>& __sent = ::IceInternal::Function<void (const ::Ice::AsyncResultPtr&)>())
+    {
+        return begin_SendChangedChannelWarningBufs(__p_seq, 0, ::Ice::newCallback(__completed, __sent), 0);
+    }
+    ::Ice::AsyncResultPtr
+    begin_SendChangedChannelWarningBufs(const ::RdbWarningData::ChangedChannelWarningBufSeq& __p_seq, const ::Ice::Context& __ctx, const ::IceInternal::Function<void ()>& __response, const ::IceInternal::Function<void (const ::Ice::Exception&)>& __exception = ::IceInternal::Function<void (const ::Ice::Exception&)>(), const ::IceInternal::Function<void (bool)>& __sent = ::IceInternal::Function<void (bool)>())
+    {
+        return begin_SendChangedChannelWarningBufs(__p_seq, &__ctx, new ::IceInternal::Cpp11FnOnewayCallbackNC(__response, __exception, __sent), 0);
+    }
+    ::Ice::AsyncResultPtr
+    begin_SendChangedChannelWarningBufs(const ::RdbWarningData::ChangedChannelWarningBufSeq& __p_seq, const ::Ice::Context& __ctx, const ::IceInternal::Function<void (const ::Ice::AsyncResultPtr&)>& __completed, const ::IceInternal::Function<void (const ::Ice::AsyncResultPtr&)>& __sent = ::IceInternal::Function<void (const ::Ice::AsyncResultPtr&)>())
+    {
+        return begin_SendChangedChannelWarningBufs(__p_seq, &__ctx, ::Ice::newCallback(__completed, __sent));
+    }
+#endif
+
+    ::Ice::AsyncResultPtr begin_SendChangedChannelWarningBufs(const ::RdbWarningData::ChangedChannelWarningBufSeq& __p_seq)
+    {
+        return begin_SendChangedChannelWarningBufs(__p_seq, 0, ::IceInternal::__dummyCallback, 0);
+    }
+
+    ::Ice::AsyncResultPtr begin_SendChangedChannelWarningBufs(const ::RdbWarningData::ChangedChannelWarningBufSeq& __p_seq, const ::Ice::Context& __ctx)
+    {
+        return begin_SendChangedChannelWarningBufs(__p_seq, &__ctx, ::IceInternal::__dummyCallback, 0);
+    }
+
+    ::Ice::AsyncResultPtr begin_SendChangedChannelWarningBufs(const ::RdbWarningData::ChangedChannelWarningBufSeq& __p_seq, const ::Ice::CallbackPtr& __del, const ::Ice::LocalObjectPtr& __cookie = 0)
+    {
+        return begin_SendChangedChannelWarningBufs(__p_seq, 0, __del, __cookie);
+    }
+
+    ::Ice::AsyncResultPtr begin_SendChangedChannelWarningBufs(const ::RdbWarningData::ChangedChannelWarningBufSeq& __p_seq, const ::Ice::Context& __ctx, const ::Ice::CallbackPtr& __del, const ::Ice::LocalObjectPtr& __cookie = 0)
+    {
+        return begin_SendChangedChannelWarningBufs(__p_seq, &__ctx, __del, __cookie);
+    }
+
+    ::Ice::AsyncResultPtr begin_SendChangedChannelWarningBufs(const ::RdbWarningData::ChangedChannelWarningBufSeq& __p_seq, const ::RdbWarningData::Callback_RdbWarningBuf_SendChangedChannelWarningBufsPtr& __del, const ::Ice::LocalObjectPtr& __cookie = 0)
+    {
+        return begin_SendChangedChannelWarningBufs(__p_seq, 0, __del, __cookie);
+    }
+
+    ::Ice::AsyncResultPtr begin_SendChangedChannelWarningBufs(const ::RdbWarningData::ChangedChannelWarningBufSeq& __p_seq, const ::Ice::Context& __ctx, const ::RdbWarningData::Callback_RdbWarningBuf_SendChangedChannelWarningBufsPtr& __del, const ::Ice::LocalObjectPtr& __cookie = 0)
+    {
+        return begin_SendChangedChannelWarningBufs(__p_seq, &__ctx, __del, __cookie);
+    }
+
+    void end_SendChangedChannelWarningBufs(const ::Ice::AsyncResultPtr&);
+    
+private:
+
+    void SendChangedChannelWarningBufs(const ::RdbWarningData::ChangedChannelWarningBufSeq&, const ::Ice::Context*);
+    ::Ice::AsyncResultPtr begin_SendChangedChannelWarningBufs(const ::RdbWarningData::ChangedChannelWarningBufSeq&, const ::Ice::Context*, const ::IceInternal::CallbackBasePtr&, const ::Ice::LocalObjectPtr& __cookie = 0);
+    
+public:
+    
+    ::IceInternal::ProxyHandle<RdbWarningBuf> ice_context(const ::Ice::Context& __context) const
+    {
+        return dynamic_cast<RdbWarningBuf*>(::IceProxy::Ice::Object::ice_context(__context).get());
+    }
+    
+    ::IceInternal::ProxyHandle<RdbWarningBuf> ice_adapterId(const ::std::string& __id) const
+    {
+        return dynamic_cast<RdbWarningBuf*>(::IceProxy::Ice::Object::ice_adapterId(__id).get());
+    }
+    
+    ::IceInternal::ProxyHandle<RdbWarningBuf> ice_endpoints(const ::Ice::EndpointSeq& __endpoints) const
+    {
+        return dynamic_cast<RdbWarningBuf*>(::IceProxy::Ice::Object::ice_endpoints(__endpoints).get());
+    }
+    
+    ::IceInternal::ProxyHandle<RdbWarningBuf> ice_locatorCacheTimeout(int __timeout) const
+    {
+        return dynamic_cast<RdbWarningBuf*>(::IceProxy::Ice::Object::ice_locatorCacheTimeout(__timeout).get());
+    }
+    
+    ::IceInternal::ProxyHandle<RdbWarningBuf> ice_connectionCached(bool __cached) const
+    {
+        return dynamic_cast<RdbWarningBuf*>(::IceProxy::Ice::Object::ice_connectionCached(__cached).get());
+    }
+    
+    ::IceInternal::ProxyHandle<RdbWarningBuf> ice_endpointSelection(::Ice::EndpointSelectionType __est) const
+    {
+        return dynamic_cast<RdbWarningBuf*>(::IceProxy::Ice::Object::ice_endpointSelection(__est).get());
+    }
+    
+    ::IceInternal::ProxyHandle<RdbWarningBuf> ice_secure(bool __secure) const
+    {
+        return dynamic_cast<RdbWarningBuf*>(::IceProxy::Ice::Object::ice_secure(__secure).get());
+    }
+    
+    ::IceInternal::ProxyHandle<RdbWarningBuf> ice_preferSecure(bool __preferSecure) const
+    {
+        return dynamic_cast<RdbWarningBuf*>(::IceProxy::Ice::Object::ice_preferSecure(__preferSecure).get());
+    }
+    
+    ::IceInternal::ProxyHandle<RdbWarningBuf> ice_router(const ::Ice::RouterPrx& __router) const
+    {
+        return dynamic_cast<RdbWarningBuf*>(::IceProxy::Ice::Object::ice_router(__router).get());
+    }
+    
+    ::IceInternal::ProxyHandle<RdbWarningBuf> ice_locator(const ::Ice::LocatorPrx& __locator) const
+    {
+        return dynamic_cast<RdbWarningBuf*>(::IceProxy::Ice::Object::ice_locator(__locator).get());
+    }
+    
+    ::IceInternal::ProxyHandle<RdbWarningBuf> ice_collocationOptimized(bool __co) const
+    {
+        return dynamic_cast<RdbWarningBuf*>(::IceProxy::Ice::Object::ice_collocationOptimized(__co).get());
+    }
+    
+    ::IceInternal::ProxyHandle<RdbWarningBuf> ice_invocationTimeout(int __timeout) const
+    {
+        return dynamic_cast<RdbWarningBuf*>(::IceProxy::Ice::Object::ice_invocationTimeout(__timeout).get());
+    }
+    
+    ::IceInternal::ProxyHandle<RdbWarningBuf> ice_twoway() const
+    {
+        return dynamic_cast<RdbWarningBuf*>(::IceProxy::Ice::Object::ice_twoway().get());
+    }
+    
+    ::IceInternal::ProxyHandle<RdbWarningBuf> ice_oneway() const
+    {
+        return dynamic_cast<RdbWarningBuf*>(::IceProxy::Ice::Object::ice_oneway().get());
+    }
+    
+    ::IceInternal::ProxyHandle<RdbWarningBuf> ice_batchOneway() const
+    {
+        return dynamic_cast<RdbWarningBuf*>(::IceProxy::Ice::Object::ice_batchOneway().get());
+    }
+    
+    ::IceInternal::ProxyHandle<RdbWarningBuf> ice_datagram() const
+    {
+        return dynamic_cast<RdbWarningBuf*>(::IceProxy::Ice::Object::ice_datagram().get());
+    }
+    
+    ::IceInternal::ProxyHandle<RdbWarningBuf> ice_batchDatagram() const
+    {
+        return dynamic_cast<RdbWarningBuf*>(::IceProxy::Ice::Object::ice_batchDatagram().get());
+    }
+    
+    ::IceInternal::ProxyHandle<RdbWarningBuf> ice_compress(bool __compress) const
+    {
+        return dynamic_cast<RdbWarningBuf*>(::IceProxy::Ice::Object::ice_compress(__compress).get());
+    }
+    
+    ::IceInternal::ProxyHandle<RdbWarningBuf> ice_timeout(int __timeout) const
+    {
+        return dynamic_cast<RdbWarningBuf*>(::IceProxy::Ice::Object::ice_timeout(__timeout).get());
+    }
+    
+    ::IceInternal::ProxyHandle<RdbWarningBuf> ice_connectionId(const ::std::string& __id) const
+    {
+        return dynamic_cast<RdbWarningBuf*>(::IceProxy::Ice::Object::ice_connectionId(__id).get());
+    }
+    
+    ::IceInternal::ProxyHandle<RdbWarningBuf> ice_encodingVersion(const ::Ice::EncodingVersion& __v) const
+    {
+        return dynamic_cast<RdbWarningBuf*>(::IceProxy::Ice::Object::ice_encodingVersion(__v).get());
+    }
+    
+    static const ::std::string& ice_staticId();
+
+private: 
+    virtual ::IceProxy::Ice::Object* __newInstance() const;
+};
+
 }
 
 }
@@ -5349,6 +6541,9 @@ public:
 
     virtual bool BatchSelectCompleteData(const ::RdbRealData::BatchRequestCompleteDataSeq&, ::RdbRealData::RespondCompleteDataSeq&, const ::Ice::Current& = ::Ice::Current()) = 0;
     ::Ice::DispatchStatus ___BatchSelectCompleteData(::IceInternal::Incoming&, const ::Ice::Current&);
+
+    virtual bool SelectDataWithCondition(const ::RdbRealData::RequestConditionSequence&, ::RdbRealData::RespondCompleteDataSeq&, const ::Ice::Current& = ::Ice::Current()) = 0;
+    ::Ice::DispatchStatus ___SelectDataWithCondition(::IceInternal::Incoming&, const ::Ice::Current&);
 
     virtual bool SelectDataCount(const ::RdbRealData::RequestDefaultDataSeq&, ::RdbRealData::RespondDataCountSequence&, const ::Ice::Current& = ::Ice::Current()) = 0;
     ::Ice::DispatchStatus ___SelectDataCount(::IceInternal::Incoming&, const ::Ice::Current&);
@@ -5470,6 +6665,80 @@ inline bool operator==(const RdbAlarmData& l, const RdbAlarmData& r)
 }
 
 inline bool operator<(const RdbAlarmData& l, const RdbAlarmData& r)
+{
+    return static_cast<const ::Ice::Object&>(l) < static_cast<const ::Ice::Object&>(r);
+}
+
+class RdbAllAlarmData : virtual public ::Ice::Object
+{
+public:
+
+    typedef RdbAllAlarmDataPrx ProxyType;
+    typedef RdbAllAlarmDataPtr PointerType;
+
+    virtual bool ice_isA(const ::std::string&, const ::Ice::Current& = ::Ice::Current()) const;
+    virtual ::std::vector< ::std::string> ice_ids(const ::Ice::Current& = ::Ice::Current()) const;
+    virtual const ::std::string& ice_id(const ::Ice::Current& = ::Ice::Current()) const;
+    static const ::std::string& ice_staticId();
+
+    virtual void SendAllAlarmData(const ::RdbWarningData::WarningInfoSeq&, const ::Ice::Current& = ::Ice::Current()) = 0;
+    ::Ice::DispatchStatus ___SendAllAlarmData(::IceInternal::Incoming&, const ::Ice::Current&);
+
+    virtual ::Ice::DispatchStatus __dispatch(::IceInternal::Incoming&, const ::Ice::Current&);
+
+protected:
+    virtual void __writeImpl(::IceInternal::BasicStream*) const;
+    virtual void __readImpl(::IceInternal::BasicStream*);
+    using ::Ice::Object::__writeImpl;
+    using ::Ice::Object::__readImpl;
+};
+
+inline bool operator==(const RdbAllAlarmData& l, const RdbAllAlarmData& r)
+{
+    return static_cast<const ::Ice::Object&>(l) == static_cast<const ::Ice::Object&>(r);
+}
+
+inline bool operator<(const RdbAllAlarmData& l, const RdbAllAlarmData& r)
+{
+    return static_cast<const ::Ice::Object&>(l) < static_cast<const ::Ice::Object&>(r);
+}
+
+class RdbWarningBuf : virtual public ::Ice::Object
+{
+public:
+
+    typedef RdbWarningBufPrx ProxyType;
+    typedef RdbWarningBufPtr PointerType;
+
+    virtual bool ice_isA(const ::std::string&, const ::Ice::Current& = ::Ice::Current()) const;
+    virtual ::std::vector< ::std::string> ice_ids(const ::Ice::Current& = ::Ice::Current()) const;
+    virtual const ::std::string& ice_id(const ::Ice::Current& = ::Ice::Current()) const;
+    static const ::std::string& ice_staticId();
+
+    virtual void SendOutAnalogWarningBufs(const ::RdbWarningData::OutAnalogWarningBufSeq&, const ::Ice::Current& = ::Ice::Current()) = 0;
+    ::Ice::DispatchStatus ___SendOutAnalogWarningBufs(::IceInternal::Incoming&, const ::Ice::Current&);
+
+    virtual void SendChangedUnitWarningBufs(const ::RdbWarningData::ChangedUnitWarningBufSeq&, const ::Ice::Current& = ::Ice::Current()) = 0;
+    ::Ice::DispatchStatus ___SendChangedUnitWarningBufs(::IceInternal::Incoming&, const ::Ice::Current&);
+
+    virtual void SendChangedChannelWarningBufs(const ::RdbWarningData::ChangedChannelWarningBufSeq&, const ::Ice::Current& = ::Ice::Current()) = 0;
+    ::Ice::DispatchStatus ___SendChangedChannelWarningBufs(::IceInternal::Incoming&, const ::Ice::Current&);
+
+    virtual ::Ice::DispatchStatus __dispatch(::IceInternal::Incoming&, const ::Ice::Current&);
+
+protected:
+    virtual void __writeImpl(::IceInternal::BasicStream*) const;
+    virtual void __readImpl(::IceInternal::BasicStream*);
+    using ::Ice::Object::__writeImpl;
+    using ::Ice::Object::__readImpl;
+};
+
+inline bool operator==(const RdbWarningBuf& l, const RdbWarningBuf& r)
+{
+    return static_cast<const ::Ice::Object&>(l) == static_cast<const ::Ice::Object&>(r);
+}
+
+inline bool operator<(const RdbWarningBuf& l, const RdbWarningBuf& r)
 {
     return static_cast<const ::Ice::Object&>(l) < static_cast<const ::Ice::Object&>(r);
 }
@@ -6663,6 +7932,112 @@ template<class T, typename CT> Callback_RdbDataOpt_BatchSelectCompleteDataPtr
 newCallback_RdbDataOpt_BatchSelectCompleteData(T* instance, void (T::*cb)(bool, const ::RdbRealData::RespondCompleteDataSeq&, const CT&), void (T::*excb)(const ::Ice::Exception&, const CT&), void (T::*sentcb)(bool, const CT&) = 0)
 {
     return new Callback_RdbDataOpt_BatchSelectCompleteData<T, CT>(instance, cb, excb, sentcb);
+}
+
+template<class T>
+class CallbackNC_RdbDataOpt_SelectDataWithCondition : public Callback_RdbDataOpt_SelectDataWithCondition_Base, public ::IceInternal::TwowayCallbackNC<T>
+{
+public:
+
+    typedef IceUtil::Handle<T> TPtr;
+
+    typedef void (T::*Exception)(const ::Ice::Exception&);
+    typedef void (T::*Sent)(bool);
+    typedef void (T::*Response)(bool, const ::RdbRealData::RespondCompleteDataSeq&);
+
+    CallbackNC_RdbDataOpt_SelectDataWithCondition(const TPtr& obj, Response cb, Exception excb, Sent sentcb)
+        : ::IceInternal::TwowayCallbackNC<T>(obj, cb != 0, excb, sentcb), _response(cb)
+    {
+    }
+
+    virtual void completed(const ::Ice::AsyncResultPtr& __result) const
+    {
+        ::RdbRealData::RdbDataOptPrx __proxy = ::RdbRealData::RdbDataOptPrx::uncheckedCast(__result->getProxy());
+        ::RdbRealData::RespondCompleteDataSeq repSeq;
+        bool __ret;
+        try
+        {
+            __ret = __proxy->end_SelectDataWithCondition(repSeq, __result);
+        }
+        catch(const ::Ice::Exception& ex)
+        {
+            ::IceInternal::CallbackNC<T>::exception(__result, ex);
+            return;
+        }
+        if(_response)
+        {
+            (::IceInternal::CallbackNC<T>::_callback.get()->*_response)(__ret, repSeq);
+        }
+    }
+
+    private:
+
+    Response _response;
+};
+
+template<class T> Callback_RdbDataOpt_SelectDataWithConditionPtr
+newCallback_RdbDataOpt_SelectDataWithCondition(const IceUtil::Handle<T>& instance, void (T::*cb)(bool, const ::RdbRealData::RespondCompleteDataSeq&), void (T::*excb)(const ::Ice::Exception&), void (T::*sentcb)(bool) = 0)
+{
+    return new CallbackNC_RdbDataOpt_SelectDataWithCondition<T>(instance, cb, excb, sentcb);
+}
+
+template<class T> Callback_RdbDataOpt_SelectDataWithConditionPtr
+newCallback_RdbDataOpt_SelectDataWithCondition(T* instance, void (T::*cb)(bool, const ::RdbRealData::RespondCompleteDataSeq&), void (T::*excb)(const ::Ice::Exception&), void (T::*sentcb)(bool) = 0)
+{
+    return new CallbackNC_RdbDataOpt_SelectDataWithCondition<T>(instance, cb, excb, sentcb);
+}
+
+template<class T, typename CT>
+class Callback_RdbDataOpt_SelectDataWithCondition : public Callback_RdbDataOpt_SelectDataWithCondition_Base, public ::IceInternal::TwowayCallback<T, CT>
+{
+public:
+
+    typedef IceUtil::Handle<T> TPtr;
+
+    typedef void (T::*Exception)(const ::Ice::Exception& , const CT&);
+    typedef void (T::*Sent)(bool , const CT&);
+    typedef void (T::*Response)(bool, const ::RdbRealData::RespondCompleteDataSeq&, const CT&);
+
+    Callback_RdbDataOpt_SelectDataWithCondition(const TPtr& obj, Response cb, Exception excb, Sent sentcb)
+        : ::IceInternal::TwowayCallback<T, CT>(obj, cb != 0, excb, sentcb), _response(cb)
+    {
+    }
+
+    virtual void completed(const ::Ice::AsyncResultPtr& __result) const
+    {
+        ::RdbRealData::RdbDataOptPrx __proxy = ::RdbRealData::RdbDataOptPrx::uncheckedCast(__result->getProxy());
+        ::RdbRealData::RespondCompleteDataSeq repSeq;
+        bool __ret;
+        try
+        {
+            __ret = __proxy->end_SelectDataWithCondition(repSeq, __result);
+        }
+        catch(const ::Ice::Exception& ex)
+        {
+            ::IceInternal::Callback<T, CT>::exception(__result, ex);
+            return;
+        }
+        if(_response)
+        {
+            (::IceInternal::Callback<T, CT>::_callback.get()->*_response)(__ret, repSeq, CT::dynamicCast(__result->getCookie()));
+        }
+    }
+
+    private:
+
+    Response _response;
+};
+
+template<class T, typename CT> Callback_RdbDataOpt_SelectDataWithConditionPtr
+newCallback_RdbDataOpt_SelectDataWithCondition(const IceUtil::Handle<T>& instance, void (T::*cb)(bool, const ::RdbRealData::RespondCompleteDataSeq&, const CT&), void (T::*excb)(const ::Ice::Exception&, const CT&), void (T::*sentcb)(bool, const CT&) = 0)
+{
+    return new Callback_RdbDataOpt_SelectDataWithCondition<T, CT>(instance, cb, excb, sentcb);
+}
+
+template<class T, typename CT> Callback_RdbDataOpt_SelectDataWithConditionPtr
+newCallback_RdbDataOpt_SelectDataWithCondition(T* instance, void (T::*cb)(bool, const ::RdbRealData::RespondCompleteDataSeq&, const CT&), void (T::*excb)(const ::Ice::Exception&, const CT&), void (T::*sentcb)(bool, const CT&) = 0)
+{
+    return new Callback_RdbDataOpt_SelectDataWithCondition<T, CT>(instance, cb, excb, sentcb);
 }
 
 template<class T>
@@ -9040,6 +10415,334 @@ template<class T, typename CT> Callback_RdbAlarmData_SendAlarmDataPtr
 newCallback_RdbAlarmData_SendAlarmData(T* instance, void (T::*excb)(const ::Ice::Exception&, const CT&), void (T::*sentcb)(bool, const CT&) = 0)
 {
     return new Callback_RdbAlarmData_SendAlarmData<T, CT>(instance, 0, excb, sentcb);
+}
+
+template<class T>
+class CallbackNC_RdbAllAlarmData_SendAllAlarmData : public Callback_RdbAllAlarmData_SendAllAlarmData_Base, public ::IceInternal::OnewayCallbackNC<T>
+{
+public:
+
+    typedef IceUtil::Handle<T> TPtr;
+
+    typedef void (T::*Exception)(const ::Ice::Exception&);
+    typedef void (T::*Sent)(bool);
+    typedef void (T::*Response)();
+
+    CallbackNC_RdbAllAlarmData_SendAllAlarmData(const TPtr& obj, Response cb, Exception excb, Sent sentcb)
+        : ::IceInternal::OnewayCallbackNC<T>(obj, cb, excb, sentcb)
+    {
+    }
+};
+
+template<class T> Callback_RdbAllAlarmData_SendAllAlarmDataPtr
+newCallback_RdbAllAlarmData_SendAllAlarmData(const IceUtil::Handle<T>& instance, void (T::*cb)(), void (T::*excb)(const ::Ice::Exception&), void (T::*sentcb)(bool) = 0)
+{
+    return new CallbackNC_RdbAllAlarmData_SendAllAlarmData<T>(instance, cb, excb, sentcb);
+}
+
+template<class T> Callback_RdbAllAlarmData_SendAllAlarmDataPtr
+newCallback_RdbAllAlarmData_SendAllAlarmData(const IceUtil::Handle<T>& instance, void (T::*excb)(const ::Ice::Exception&), void (T::*sentcb)(bool) = 0)
+{
+    return new CallbackNC_RdbAllAlarmData_SendAllAlarmData<T>(instance, 0, excb, sentcb);
+}
+
+template<class T> Callback_RdbAllAlarmData_SendAllAlarmDataPtr
+newCallback_RdbAllAlarmData_SendAllAlarmData(T* instance, void (T::*cb)(), void (T::*excb)(const ::Ice::Exception&), void (T::*sentcb)(bool) = 0)
+{
+    return new CallbackNC_RdbAllAlarmData_SendAllAlarmData<T>(instance, cb, excb, sentcb);
+}
+
+template<class T> Callback_RdbAllAlarmData_SendAllAlarmDataPtr
+newCallback_RdbAllAlarmData_SendAllAlarmData(T* instance, void (T::*excb)(const ::Ice::Exception&), void (T::*sentcb)(bool) = 0)
+{
+    return new CallbackNC_RdbAllAlarmData_SendAllAlarmData<T>(instance, 0, excb, sentcb);
+}
+
+template<class T, typename CT>
+class Callback_RdbAllAlarmData_SendAllAlarmData : public Callback_RdbAllAlarmData_SendAllAlarmData_Base, public ::IceInternal::OnewayCallback<T, CT>
+{
+public:
+
+    typedef IceUtil::Handle<T> TPtr;
+
+    typedef void (T::*Exception)(const ::Ice::Exception& , const CT&);
+    typedef void (T::*Sent)(bool , const CT&);
+    typedef void (T::*Response)(const CT&);
+
+    Callback_RdbAllAlarmData_SendAllAlarmData(const TPtr& obj, Response cb, Exception excb, Sent sentcb)
+        : ::IceInternal::OnewayCallback<T, CT>(obj, cb, excb, sentcb)
+    {
+    }
+};
+
+template<class T, typename CT> Callback_RdbAllAlarmData_SendAllAlarmDataPtr
+newCallback_RdbAllAlarmData_SendAllAlarmData(const IceUtil::Handle<T>& instance, void (T::*cb)(const CT&), void (T::*excb)(const ::Ice::Exception&, const CT&), void (T::*sentcb)(bool, const CT&) = 0)
+{
+    return new Callback_RdbAllAlarmData_SendAllAlarmData<T, CT>(instance, cb, excb, sentcb);
+}
+
+template<class T, typename CT> Callback_RdbAllAlarmData_SendAllAlarmDataPtr
+newCallback_RdbAllAlarmData_SendAllAlarmData(const IceUtil::Handle<T>& instance, void (T::*excb)(const ::Ice::Exception&, const CT&), void (T::*sentcb)(bool, const CT&) = 0)
+{
+    return new Callback_RdbAllAlarmData_SendAllAlarmData<T, CT>(instance, 0, excb, sentcb);
+}
+
+template<class T, typename CT> Callback_RdbAllAlarmData_SendAllAlarmDataPtr
+newCallback_RdbAllAlarmData_SendAllAlarmData(T* instance, void (T::*cb)(const CT&), void (T::*excb)(const ::Ice::Exception&, const CT&), void (T::*sentcb)(bool, const CT&) = 0)
+{
+    return new Callback_RdbAllAlarmData_SendAllAlarmData<T, CT>(instance, cb, excb, sentcb);
+}
+
+template<class T, typename CT> Callback_RdbAllAlarmData_SendAllAlarmDataPtr
+newCallback_RdbAllAlarmData_SendAllAlarmData(T* instance, void (T::*excb)(const ::Ice::Exception&, const CT&), void (T::*sentcb)(bool, const CT&) = 0)
+{
+    return new Callback_RdbAllAlarmData_SendAllAlarmData<T, CT>(instance, 0, excb, sentcb);
+}
+
+template<class T>
+class CallbackNC_RdbWarningBuf_SendOutAnalogWarningBufs : public Callback_RdbWarningBuf_SendOutAnalogWarningBufs_Base, public ::IceInternal::OnewayCallbackNC<T>
+{
+public:
+
+    typedef IceUtil::Handle<T> TPtr;
+
+    typedef void (T::*Exception)(const ::Ice::Exception&);
+    typedef void (T::*Sent)(bool);
+    typedef void (T::*Response)();
+
+    CallbackNC_RdbWarningBuf_SendOutAnalogWarningBufs(const TPtr& obj, Response cb, Exception excb, Sent sentcb)
+        : ::IceInternal::OnewayCallbackNC<T>(obj, cb, excb, sentcb)
+    {
+    }
+};
+
+template<class T> Callback_RdbWarningBuf_SendOutAnalogWarningBufsPtr
+newCallback_RdbWarningBuf_SendOutAnalogWarningBufs(const IceUtil::Handle<T>& instance, void (T::*cb)(), void (T::*excb)(const ::Ice::Exception&), void (T::*sentcb)(bool) = 0)
+{
+    return new CallbackNC_RdbWarningBuf_SendOutAnalogWarningBufs<T>(instance, cb, excb, sentcb);
+}
+
+template<class T> Callback_RdbWarningBuf_SendOutAnalogWarningBufsPtr
+newCallback_RdbWarningBuf_SendOutAnalogWarningBufs(const IceUtil::Handle<T>& instance, void (T::*excb)(const ::Ice::Exception&), void (T::*sentcb)(bool) = 0)
+{
+    return new CallbackNC_RdbWarningBuf_SendOutAnalogWarningBufs<T>(instance, 0, excb, sentcb);
+}
+
+template<class T> Callback_RdbWarningBuf_SendOutAnalogWarningBufsPtr
+newCallback_RdbWarningBuf_SendOutAnalogWarningBufs(T* instance, void (T::*cb)(), void (T::*excb)(const ::Ice::Exception&), void (T::*sentcb)(bool) = 0)
+{
+    return new CallbackNC_RdbWarningBuf_SendOutAnalogWarningBufs<T>(instance, cb, excb, sentcb);
+}
+
+template<class T> Callback_RdbWarningBuf_SendOutAnalogWarningBufsPtr
+newCallback_RdbWarningBuf_SendOutAnalogWarningBufs(T* instance, void (T::*excb)(const ::Ice::Exception&), void (T::*sentcb)(bool) = 0)
+{
+    return new CallbackNC_RdbWarningBuf_SendOutAnalogWarningBufs<T>(instance, 0, excb, sentcb);
+}
+
+template<class T, typename CT>
+class Callback_RdbWarningBuf_SendOutAnalogWarningBufs : public Callback_RdbWarningBuf_SendOutAnalogWarningBufs_Base, public ::IceInternal::OnewayCallback<T, CT>
+{
+public:
+
+    typedef IceUtil::Handle<T> TPtr;
+
+    typedef void (T::*Exception)(const ::Ice::Exception& , const CT&);
+    typedef void (T::*Sent)(bool , const CT&);
+    typedef void (T::*Response)(const CT&);
+
+    Callback_RdbWarningBuf_SendOutAnalogWarningBufs(const TPtr& obj, Response cb, Exception excb, Sent sentcb)
+        : ::IceInternal::OnewayCallback<T, CT>(obj, cb, excb, sentcb)
+    {
+    }
+};
+
+template<class T, typename CT> Callback_RdbWarningBuf_SendOutAnalogWarningBufsPtr
+newCallback_RdbWarningBuf_SendOutAnalogWarningBufs(const IceUtil::Handle<T>& instance, void (T::*cb)(const CT&), void (T::*excb)(const ::Ice::Exception&, const CT&), void (T::*sentcb)(bool, const CT&) = 0)
+{
+    return new Callback_RdbWarningBuf_SendOutAnalogWarningBufs<T, CT>(instance, cb, excb, sentcb);
+}
+
+template<class T, typename CT> Callback_RdbWarningBuf_SendOutAnalogWarningBufsPtr
+newCallback_RdbWarningBuf_SendOutAnalogWarningBufs(const IceUtil::Handle<T>& instance, void (T::*excb)(const ::Ice::Exception&, const CT&), void (T::*sentcb)(bool, const CT&) = 0)
+{
+    return new Callback_RdbWarningBuf_SendOutAnalogWarningBufs<T, CT>(instance, 0, excb, sentcb);
+}
+
+template<class T, typename CT> Callback_RdbWarningBuf_SendOutAnalogWarningBufsPtr
+newCallback_RdbWarningBuf_SendOutAnalogWarningBufs(T* instance, void (T::*cb)(const CT&), void (T::*excb)(const ::Ice::Exception&, const CT&), void (T::*sentcb)(bool, const CT&) = 0)
+{
+    return new Callback_RdbWarningBuf_SendOutAnalogWarningBufs<T, CT>(instance, cb, excb, sentcb);
+}
+
+template<class T, typename CT> Callback_RdbWarningBuf_SendOutAnalogWarningBufsPtr
+newCallback_RdbWarningBuf_SendOutAnalogWarningBufs(T* instance, void (T::*excb)(const ::Ice::Exception&, const CT&), void (T::*sentcb)(bool, const CT&) = 0)
+{
+    return new Callback_RdbWarningBuf_SendOutAnalogWarningBufs<T, CT>(instance, 0, excb, sentcb);
+}
+
+template<class T>
+class CallbackNC_RdbWarningBuf_SendChangedUnitWarningBufs : public Callback_RdbWarningBuf_SendChangedUnitWarningBufs_Base, public ::IceInternal::OnewayCallbackNC<T>
+{
+public:
+
+    typedef IceUtil::Handle<T> TPtr;
+
+    typedef void (T::*Exception)(const ::Ice::Exception&);
+    typedef void (T::*Sent)(bool);
+    typedef void (T::*Response)();
+
+    CallbackNC_RdbWarningBuf_SendChangedUnitWarningBufs(const TPtr& obj, Response cb, Exception excb, Sent sentcb)
+        : ::IceInternal::OnewayCallbackNC<T>(obj, cb, excb, sentcb)
+    {
+    }
+};
+
+template<class T> Callback_RdbWarningBuf_SendChangedUnitWarningBufsPtr
+newCallback_RdbWarningBuf_SendChangedUnitWarningBufs(const IceUtil::Handle<T>& instance, void (T::*cb)(), void (T::*excb)(const ::Ice::Exception&), void (T::*sentcb)(bool) = 0)
+{
+    return new CallbackNC_RdbWarningBuf_SendChangedUnitWarningBufs<T>(instance, cb, excb, sentcb);
+}
+
+template<class T> Callback_RdbWarningBuf_SendChangedUnitWarningBufsPtr
+newCallback_RdbWarningBuf_SendChangedUnitWarningBufs(const IceUtil::Handle<T>& instance, void (T::*excb)(const ::Ice::Exception&), void (T::*sentcb)(bool) = 0)
+{
+    return new CallbackNC_RdbWarningBuf_SendChangedUnitWarningBufs<T>(instance, 0, excb, sentcb);
+}
+
+template<class T> Callback_RdbWarningBuf_SendChangedUnitWarningBufsPtr
+newCallback_RdbWarningBuf_SendChangedUnitWarningBufs(T* instance, void (T::*cb)(), void (T::*excb)(const ::Ice::Exception&), void (T::*sentcb)(bool) = 0)
+{
+    return new CallbackNC_RdbWarningBuf_SendChangedUnitWarningBufs<T>(instance, cb, excb, sentcb);
+}
+
+template<class T> Callback_RdbWarningBuf_SendChangedUnitWarningBufsPtr
+newCallback_RdbWarningBuf_SendChangedUnitWarningBufs(T* instance, void (T::*excb)(const ::Ice::Exception&), void (T::*sentcb)(bool) = 0)
+{
+    return new CallbackNC_RdbWarningBuf_SendChangedUnitWarningBufs<T>(instance, 0, excb, sentcb);
+}
+
+template<class T, typename CT>
+class Callback_RdbWarningBuf_SendChangedUnitWarningBufs : public Callback_RdbWarningBuf_SendChangedUnitWarningBufs_Base, public ::IceInternal::OnewayCallback<T, CT>
+{
+public:
+
+    typedef IceUtil::Handle<T> TPtr;
+
+    typedef void (T::*Exception)(const ::Ice::Exception& , const CT&);
+    typedef void (T::*Sent)(bool , const CT&);
+    typedef void (T::*Response)(const CT&);
+
+    Callback_RdbWarningBuf_SendChangedUnitWarningBufs(const TPtr& obj, Response cb, Exception excb, Sent sentcb)
+        : ::IceInternal::OnewayCallback<T, CT>(obj, cb, excb, sentcb)
+    {
+    }
+};
+
+template<class T, typename CT> Callback_RdbWarningBuf_SendChangedUnitWarningBufsPtr
+newCallback_RdbWarningBuf_SendChangedUnitWarningBufs(const IceUtil::Handle<T>& instance, void (T::*cb)(const CT&), void (T::*excb)(const ::Ice::Exception&, const CT&), void (T::*sentcb)(bool, const CT&) = 0)
+{
+    return new Callback_RdbWarningBuf_SendChangedUnitWarningBufs<T, CT>(instance, cb, excb, sentcb);
+}
+
+template<class T, typename CT> Callback_RdbWarningBuf_SendChangedUnitWarningBufsPtr
+newCallback_RdbWarningBuf_SendChangedUnitWarningBufs(const IceUtil::Handle<T>& instance, void (T::*excb)(const ::Ice::Exception&, const CT&), void (T::*sentcb)(bool, const CT&) = 0)
+{
+    return new Callback_RdbWarningBuf_SendChangedUnitWarningBufs<T, CT>(instance, 0, excb, sentcb);
+}
+
+template<class T, typename CT> Callback_RdbWarningBuf_SendChangedUnitWarningBufsPtr
+newCallback_RdbWarningBuf_SendChangedUnitWarningBufs(T* instance, void (T::*cb)(const CT&), void (T::*excb)(const ::Ice::Exception&, const CT&), void (T::*sentcb)(bool, const CT&) = 0)
+{
+    return new Callback_RdbWarningBuf_SendChangedUnitWarningBufs<T, CT>(instance, cb, excb, sentcb);
+}
+
+template<class T, typename CT> Callback_RdbWarningBuf_SendChangedUnitWarningBufsPtr
+newCallback_RdbWarningBuf_SendChangedUnitWarningBufs(T* instance, void (T::*excb)(const ::Ice::Exception&, const CT&), void (T::*sentcb)(bool, const CT&) = 0)
+{
+    return new Callback_RdbWarningBuf_SendChangedUnitWarningBufs<T, CT>(instance, 0, excb, sentcb);
+}
+
+template<class T>
+class CallbackNC_RdbWarningBuf_SendChangedChannelWarningBufs : public Callback_RdbWarningBuf_SendChangedChannelWarningBufs_Base, public ::IceInternal::OnewayCallbackNC<T>
+{
+public:
+
+    typedef IceUtil::Handle<T> TPtr;
+
+    typedef void (T::*Exception)(const ::Ice::Exception&);
+    typedef void (T::*Sent)(bool);
+    typedef void (T::*Response)();
+
+    CallbackNC_RdbWarningBuf_SendChangedChannelWarningBufs(const TPtr& obj, Response cb, Exception excb, Sent sentcb)
+        : ::IceInternal::OnewayCallbackNC<T>(obj, cb, excb, sentcb)
+    {
+    }
+};
+
+template<class T> Callback_RdbWarningBuf_SendChangedChannelWarningBufsPtr
+newCallback_RdbWarningBuf_SendChangedChannelWarningBufs(const IceUtil::Handle<T>& instance, void (T::*cb)(), void (T::*excb)(const ::Ice::Exception&), void (T::*sentcb)(bool) = 0)
+{
+    return new CallbackNC_RdbWarningBuf_SendChangedChannelWarningBufs<T>(instance, cb, excb, sentcb);
+}
+
+template<class T> Callback_RdbWarningBuf_SendChangedChannelWarningBufsPtr
+newCallback_RdbWarningBuf_SendChangedChannelWarningBufs(const IceUtil::Handle<T>& instance, void (T::*excb)(const ::Ice::Exception&), void (T::*sentcb)(bool) = 0)
+{
+    return new CallbackNC_RdbWarningBuf_SendChangedChannelWarningBufs<T>(instance, 0, excb, sentcb);
+}
+
+template<class T> Callback_RdbWarningBuf_SendChangedChannelWarningBufsPtr
+newCallback_RdbWarningBuf_SendChangedChannelWarningBufs(T* instance, void (T::*cb)(), void (T::*excb)(const ::Ice::Exception&), void (T::*sentcb)(bool) = 0)
+{
+    return new CallbackNC_RdbWarningBuf_SendChangedChannelWarningBufs<T>(instance, cb, excb, sentcb);
+}
+
+template<class T> Callback_RdbWarningBuf_SendChangedChannelWarningBufsPtr
+newCallback_RdbWarningBuf_SendChangedChannelWarningBufs(T* instance, void (T::*excb)(const ::Ice::Exception&), void (T::*sentcb)(bool) = 0)
+{
+    return new CallbackNC_RdbWarningBuf_SendChangedChannelWarningBufs<T>(instance, 0, excb, sentcb);
+}
+
+template<class T, typename CT>
+class Callback_RdbWarningBuf_SendChangedChannelWarningBufs : public Callback_RdbWarningBuf_SendChangedChannelWarningBufs_Base, public ::IceInternal::OnewayCallback<T, CT>
+{
+public:
+
+    typedef IceUtil::Handle<T> TPtr;
+
+    typedef void (T::*Exception)(const ::Ice::Exception& , const CT&);
+    typedef void (T::*Sent)(bool , const CT&);
+    typedef void (T::*Response)(const CT&);
+
+    Callback_RdbWarningBuf_SendChangedChannelWarningBufs(const TPtr& obj, Response cb, Exception excb, Sent sentcb)
+        : ::IceInternal::OnewayCallback<T, CT>(obj, cb, excb, sentcb)
+    {
+    }
+};
+
+template<class T, typename CT> Callback_RdbWarningBuf_SendChangedChannelWarningBufsPtr
+newCallback_RdbWarningBuf_SendChangedChannelWarningBufs(const IceUtil::Handle<T>& instance, void (T::*cb)(const CT&), void (T::*excb)(const ::Ice::Exception&, const CT&), void (T::*sentcb)(bool, const CT&) = 0)
+{
+    return new Callback_RdbWarningBuf_SendChangedChannelWarningBufs<T, CT>(instance, cb, excb, sentcb);
+}
+
+template<class T, typename CT> Callback_RdbWarningBuf_SendChangedChannelWarningBufsPtr
+newCallback_RdbWarningBuf_SendChangedChannelWarningBufs(const IceUtil::Handle<T>& instance, void (T::*excb)(const ::Ice::Exception&, const CT&), void (T::*sentcb)(bool, const CT&) = 0)
+{
+    return new Callback_RdbWarningBuf_SendChangedChannelWarningBufs<T, CT>(instance, 0, excb, sentcb);
+}
+
+template<class T, typename CT> Callback_RdbWarningBuf_SendChangedChannelWarningBufsPtr
+newCallback_RdbWarningBuf_SendChangedChannelWarningBufs(T* instance, void (T::*cb)(const CT&), void (T::*excb)(const ::Ice::Exception&, const CT&), void (T::*sentcb)(bool, const CT&) = 0)
+{
+    return new Callback_RdbWarningBuf_SendChangedChannelWarningBufs<T, CT>(instance, cb, excb, sentcb);
+}
+
+template<class T, typename CT> Callback_RdbWarningBuf_SendChangedChannelWarningBufsPtr
+newCallback_RdbWarningBuf_SendChangedChannelWarningBufs(T* instance, void (T::*excb)(const ::Ice::Exception&, const CT&), void (T::*sentcb)(bool, const CT&) = 0)
+{
+    return new Callback_RdbWarningBuf_SendChangedChannelWarningBufs<T, CT>(instance, 0, excb, sentcb);
 }
 
 }

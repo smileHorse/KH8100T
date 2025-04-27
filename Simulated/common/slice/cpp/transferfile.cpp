@@ -43,7 +43,13 @@
 namespace
 {
 
+const ::std::string __TransferFileSpace__TransferFile__notifyRealdbBackup_name = "notifyRealdbBackup";
+
+const ::std::string __TransferFileSpace__TransferFile__finishRealdbBackup_name = "finishRealdbBackup";
+
 const ::std::string __TransferFileSpace__TransferFile__requestRealdb_name = "requestRealdb";
+
+const ::std::string __TransferFileSpace__TransferFile__requestTransactionLogger_name = "requestTransactionLogger";
 
 const ::std::string __TransferFileSpace__TransferFile__requestRealdbContent_name = "requestRealdbContent";
 
@@ -88,6 +94,68 @@ void
         v = new ::IceProxy::TransferFileSpace::TransferFile;
         v->__copyFrom(proxy);
     }
+}
+
+void
+IceProxy::TransferFileSpace::TransferFile::notifyRealdbBackup(const ::Ice::Context* __ctx)
+{
+    ::IceInternal::Outgoing __og(this, __TransferFileSpace__TransferFile__notifyRealdbBackup_name, ::Ice::Normal, __ctx);
+    __og.writeEmptyParams();
+    __invoke(__og);
+}
+
+::Ice::AsyncResultPtr
+IceProxy::TransferFileSpace::TransferFile::begin_notifyRealdbBackup(const ::Ice::Context* __ctx, const ::IceInternal::CallbackBasePtr& __del, const ::Ice::LocalObjectPtr& __cookie)
+{
+    ::IceInternal::OutgoingAsyncPtr __result = new ::IceInternal::OutgoingAsync(this, __TransferFileSpace__TransferFile__notifyRealdbBackup_name, __del, __cookie);
+    try
+    {
+        __result->prepare(__TransferFileSpace__TransferFile__notifyRealdbBackup_name, ::Ice::Normal, __ctx);
+        __result->writeEmptyParams();
+        __result->invoke();
+    }
+    catch(const ::Ice::Exception& __ex)
+    {
+        __result->abort(__ex);
+    }
+    return __result;
+}
+
+void
+IceProxy::TransferFileSpace::TransferFile::end_notifyRealdbBackup(const ::Ice::AsyncResultPtr& __result)
+{
+    __end(__result, __TransferFileSpace__TransferFile__notifyRealdbBackup_name);
+}
+
+void
+IceProxy::TransferFileSpace::TransferFile::finishRealdbBackup(const ::Ice::Context* __ctx)
+{
+    ::IceInternal::Outgoing __og(this, __TransferFileSpace__TransferFile__finishRealdbBackup_name, ::Ice::Normal, __ctx);
+    __og.writeEmptyParams();
+    __invoke(__og);
+}
+
+::Ice::AsyncResultPtr
+IceProxy::TransferFileSpace::TransferFile::begin_finishRealdbBackup(const ::Ice::Context* __ctx, const ::IceInternal::CallbackBasePtr& __del, const ::Ice::LocalObjectPtr& __cookie)
+{
+    ::IceInternal::OutgoingAsyncPtr __result = new ::IceInternal::OutgoingAsync(this, __TransferFileSpace__TransferFile__finishRealdbBackup_name, __del, __cookie);
+    try
+    {
+        __result->prepare(__TransferFileSpace__TransferFile__finishRealdbBackup_name, ::Ice::Normal, __ctx);
+        __result->writeEmptyParams();
+        __result->invoke();
+    }
+    catch(const ::Ice::Exception& __ex)
+    {
+        __result->abort(__ex);
+    }
+    return __result;
+}
+
+void
+IceProxy::TransferFileSpace::TransferFile::end_finishRealdbBackup(const ::Ice::AsyncResultPtr& __result)
+{
+    __end(__result, __TransferFileSpace__TransferFile__finishRealdbBackup_name);
 }
 
 bool
@@ -196,6 +264,37 @@ IceProxy::TransferFileSpace::TransferFile::end_requestRealdb(const ::Ice::AsyncR
     __is->read(__ret);
     __result->__endReadParams();
     return __ret;
+}
+
+void
+IceProxy::TransferFileSpace::TransferFile::requestTransactionLogger(const ::Ice::Context* __ctx)
+{
+    ::IceInternal::Outgoing __og(this, __TransferFileSpace__TransferFile__requestTransactionLogger_name, ::Ice::Normal, __ctx);
+    __og.writeEmptyParams();
+    __invoke(__og);
+}
+
+::Ice::AsyncResultPtr
+IceProxy::TransferFileSpace::TransferFile::begin_requestTransactionLogger(const ::Ice::Context* __ctx, const ::IceInternal::CallbackBasePtr& __del, const ::Ice::LocalObjectPtr& __cookie)
+{
+    ::IceInternal::OutgoingAsyncPtr __result = new ::IceInternal::OutgoingAsync(this, __TransferFileSpace__TransferFile__requestTransactionLogger_name, __del, __cookie);
+    try
+    {
+        __result->prepare(__TransferFileSpace__TransferFile__requestTransactionLogger_name, ::Ice::Normal, __ctx);
+        __result->writeEmptyParams();
+        __result->invoke();
+    }
+    catch(const ::Ice::Exception& __ex)
+    {
+        __result->abort(__ex);
+    }
+    return __result;
+}
+
+void
+IceProxy::TransferFileSpace::TransferFile::end_requestTransactionLogger(const ::Ice::AsyncResultPtr& __result)
+{
+    __end(__result, __TransferFileSpace__TransferFile__requestTransactionLogger_name);
 }
 
 ::TransferFileSpace::FileContent
@@ -1279,6 +1378,26 @@ TransferFileSpace::TransferFile::ice_staticId()
 }
 
 ::Ice::DispatchStatus
+TransferFileSpace::TransferFile::___notifyRealdbBackup(::IceInternal::Incoming& __inS, const ::Ice::Current& __current)
+{
+    __checkMode(::Ice::Normal, __current.mode);
+    __inS.readEmptyParams();
+    notifyRealdbBackup(__current);
+    __inS.__writeEmptyParams();
+    return ::Ice::DispatchOK;
+}
+
+::Ice::DispatchStatus
+TransferFileSpace::TransferFile::___finishRealdbBackup(::IceInternal::Incoming& __inS, const ::Ice::Current& __current)
+{
+    __checkMode(::Ice::Normal, __current.mode);
+    __inS.readEmptyParams();
+    finishRealdbBackup(__current);
+    __inS.__writeEmptyParams();
+    return ::Ice::DispatchOK;
+}
+
+::Ice::DispatchStatus
 TransferFileSpace::TransferFile::___requestRealdb(::IceInternal::Incoming& __inS, const ::Ice::Current& __current)
 {
     __checkMode(::Ice::Normal, __current.mode);
@@ -1287,6 +1406,16 @@ TransferFileSpace::TransferFile::___requestRealdb(::IceInternal::Incoming& __inS
     ::IceInternal::BasicStream* __os = __inS.__startWriteParams(::Ice::DefaultFormat);
     __os->write(__ret);
     __inS.__endWriteParams(true);
+    return ::Ice::DispatchOK;
+}
+
+::Ice::DispatchStatus
+TransferFileSpace::TransferFile::___requestTransactionLogger(::IceInternal::Incoming& __inS, const ::Ice::Current& __current)
+{
+    __checkMode(::Ice::Normal, __current.mode);
+    __inS.readEmptyParams();
+    requestTransactionLogger(__current);
+    __inS.__writeEmptyParams();
     return ::Ice::DispatchOK;
 }
 
@@ -1482,16 +1611,19 @@ namespace
 {
 const ::std::string __TransferFileSpace__TransferFile_all[] =
 {
+    "finishRealdbBackup",
     "ice_id",
     "ice_ids",
     "ice_isA",
     "ice_ping",
+    "notifyRealdbBackup",
     "requestHisCurveFile",
     "requestHisCurveFileList",
     "requestRealdb",
     "requestRealdbContent",
     "requestReportFile",
     "requestReportFileList",
+    "requestTransactionLogger",
     "requestWarningFile",
     "requestWarningFileList",
     "sendFileBinary",
@@ -1505,7 +1637,7 @@ const ::std::string __TransferFileSpace__TransferFile_all[] =
 ::Ice::DispatchStatus
 TransferFileSpace::TransferFile::__dispatch(::IceInternal::Incoming& in, const ::Ice::Current& current)
 {
-    ::std::pair< const ::std::string*, const ::std::string*> r = ::std::equal_range(__TransferFileSpace__TransferFile_all, __TransferFileSpace__TransferFile_all + 16, current.operation);
+    ::std::pair< const ::std::string*, const ::std::string*> r = ::std::equal_range(__TransferFileSpace__TransferFile_all, __TransferFileSpace__TransferFile_all + 19, current.operation);
     if(r.first == r.second)
     {
         throw ::Ice::OperationNotExistException(__FILE__, __LINE__, current.id, current.facet, current.operation);
@@ -1515,65 +1647,77 @@ TransferFileSpace::TransferFile::__dispatch(::IceInternal::Incoming& in, const :
     {
         case 0:
         {
-            return ___ice_id(in, current);
+            return ___finishRealdbBackup(in, current);
         }
         case 1:
         {
-            return ___ice_ids(in, current);
+            return ___ice_id(in, current);
         }
         case 2:
         {
-            return ___ice_isA(in, current);
+            return ___ice_ids(in, current);
         }
         case 3:
         {
-            return ___ice_ping(in, current);
+            return ___ice_isA(in, current);
         }
         case 4:
         {
-            return ___requestHisCurveFile(in, current);
+            return ___ice_ping(in, current);
         }
         case 5:
         {
-            return ___requestHisCurveFileList(in, current);
+            return ___notifyRealdbBackup(in, current);
         }
         case 6:
         {
-            return ___requestRealdb(in, current);
+            return ___requestHisCurveFile(in, current);
         }
         case 7:
         {
-            return ___requestRealdbContent(in, current);
+            return ___requestHisCurveFileList(in, current);
         }
         case 8:
         {
-            return ___requestReportFile(in, current);
+            return ___requestRealdb(in, current);
         }
         case 9:
         {
-            return ___requestReportFileList(in, current);
+            return ___requestRealdbContent(in, current);
         }
         case 10:
         {
-            return ___requestWarningFile(in, current);
+            return ___requestReportFile(in, current);
         }
         case 11:
         {
-            return ___requestWarningFileList(in, current);
+            return ___requestReportFileList(in, current);
         }
         case 12:
         {
-            return ___sendFileBinary(in, current);
+            return ___requestTransactionLogger(in, current);
         }
         case 13:
         {
-            return ___sendRdbLoggerBinary(in, current);
+            return ___requestWarningFile(in, current);
         }
         case 14:
         {
-            return ___sendRdbLoggerFinished(in, current);
+            return ___requestWarningFileList(in, current);
         }
         case 15:
+        {
+            return ___sendFileBinary(in, current);
+        }
+        case 16:
+        {
+            return ___sendRdbLoggerBinary(in, current);
+        }
+        case 17:
+        {
+            return ___sendRdbLoggerFinished(in, current);
+        }
+        case 18:
         {
             return ___syncRdbFinished(in, current);
         }

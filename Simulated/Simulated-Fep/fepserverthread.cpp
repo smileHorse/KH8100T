@@ -522,7 +522,7 @@ void FepServerThread::processUnitTypeEvent()
 	packet.type = FepData::UnitType;
 	FepData::ChangedUnit changedUnit;
 	changedUnit.unitNo = 1;
-	changedUnit.unitState = FepData::Run;
+	changedUnit.unitState = FepData::Stop;
 	changedUnit.channelState1 = FepData::Run;
 	changedUnit.channelState2 = FepData::NotInstall;
 	changedUnit.errorRate = 6;
@@ -586,18 +586,28 @@ void FepServerThread::processProTypeEvent()
 	packet.fepNode = "fep36";
 	packet.type = FepData::ProType;
 	FepData::ProtectEvent protectEvent;
-	protectEvent.unitNo = 12;
+	protectEvent.unitNo = 0;
 	protectEvent.Type = FepData::ProtectAlarm;
 	protectEvent.timeStamp = IceUtil::Time::now().toMilliSeconds();
 	protectEvent.moduleNo = 1;
-	protectEvent.moduleType = 0;
+	protectEvent.moduleType = 255;
 	protectEvent.infoNo = 1;
 	protectEvent.state = 0;
+	protectEvent.manualData = false;
 	for (int i = 0; i < 10; ++i)
 	{
 		FepData::ProValue proVal;
 		proVal.index = i;
 		proVal.value = (i + 1) * 1.0;
+		if (proVal.index == 5) {
+			proVal.value = 0;
+		}
+		if (proVal.index == 6) {
+			proVal.value = 1;
+		}
+		if (proVal.index == 7) {
+			proVal.value = 2;
+		}
 		protectEvent.values.push_back(proVal);
 
 	}
@@ -689,25 +699,38 @@ void FepServerThread::processProTypeEventImpl()
 	packet.type = FepData::ProType;
 	FepData::ProtectEvent protectEvent;
 
+	int unitNo = 0;
+	int moduleNo = 5;
+	int moduleType = 255;
+
 	for(int i = 0; i < 1; ++i) 
 	{
-		protectEvent.unitNo = getRandomUnitNo();
-		protectEvent.unitNo = (protectEvent.unitNo % 2 == 0) ? 24 : 28;
+		protectEvent.unitNo = unitNo == -1 ? getRandomUnitNo() : unitNo;
 		protectEvent.Type = FepData::ProtectAlarm;
 
-		for (int j = 0; j < 30; ++j)
+		for (int j = 0; j < 1; ++j)
 		{
-			protectEvent.moduleNo = getRandomIndex();
-			protectEvent.moduleType = getRandomIndex();
+			protectEvent.moduleNo = moduleNo == -1 ? getRandomIndex() : moduleNo;
+			protectEvent.moduleType = moduleType == -1 ? getRandomIndex() : moduleType;
 			protectEvent.infoNo = getRandomIndex();
 			protectEvent.state = getRandomIndex();
 			protectEvent.timeStamp = IceUtil::Time::now().toMilliSeconds();
+			protectEvent.manualData = false;
 			
 			for (int i = 0; i < 10; ++i)
 			{
 				FepData::ProValue proVal;
 				proVal.index = i;
 				proVal.value = (i + 1) * 1.0;
+				if (proVal.index == 5) {
+					proVal.value = 0;
+				}
+				if (proVal.index == 6) {
+					proVal.value = 1;
+				}
+				if (proVal.index == 7) {
+					proVal.value = 2;
+				}
 				protectEvent.values.push_back(proVal);
 
 			}
@@ -718,12 +741,12 @@ void FepServerThread::processProTypeEventImpl()
 	m_fepDataManagerPrx->processEvent(packet);
 
 	// 输出发送的数据
-	//QString text = outputFepEvent(packet);
-	//emit publishFepData(text);
+	QString text = outputFepEvent(packet);
+	emit publishFepData(text);
 
-	//OperationInfo info(TYPE_FEP);
-	//info.setOperationInfo(QStringLiteral("发布保护事项"));
-	//emit executeOperation(info);
+	OperationInfo info(TYPE_FEP);
+	info.setOperationInfo(QStringLiteral("发布保护事项"));
+	emit executeOperation(info);
 }
 
 void FepServerThread::processWave()

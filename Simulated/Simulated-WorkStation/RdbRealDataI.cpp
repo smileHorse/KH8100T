@@ -102,20 +102,23 @@ void RdbRealDataRespondI::RespondCompleteData( const ::RdbRealData::RespondCompl
 	m_threadPtr->outputOperationData(QString("收到数据响应 %1, requestId: %2 时间: %3").
 		arg(++count).arg(dataSeq.requestId).arg(time));
 
-	//m_threadPtr->outputOperationData(QString().fromStdString(dataSeq.requestNode));
-	//string str = "";
-	//for(size_t i = 0; i < dataSeq.seq.size(); ++i)
-	//{
-	//	::RdbRealData::RespondCompleteData data = dataSeq.seq[i];
-	//	str += "tableName: " + data.tableName;
-	//	str += "dataValues: ";
-	//	for (size_t j = 0; j < data.dataValues.size(); ++j)
-	//	{
-	//		str += data.dataValues[j] + ";";
-	//	}
-	//	str += " dataRid: " + data.dataRid;
-	//}
-	//m_threadPtr->outputOperationData(QString().fromStdString(str));
+	m_threadPtr->outputOperationData(QString().fromStdString(dataSeq.requestNode));
+	string str = "";
+	for(size_t i = 0; i < dataSeq.seq.size(); ++i)
+	{
+		::RdbRealData::RespondCompleteData data = dataSeq.seq[i];
+		if (data.tableName != "RemoteUnit") {
+			continue;
+		}
+		str += "tableName: " + data.tableName;
+		str += "dataValues: ";
+		for (size_t j = 0; j < data.dataValues.size(); ++j)
+		{
+			str += data.dataValues[j] + ";";
+		}
+		str += " dataRid: " + data.dataRid;
+	}
+	m_threadPtr->outputOperationData(QString().fromStdString(str));
 }
 
 void RdbRealDataRespondI::SendTopoDataRespond( const ::RdbRealData::ReceiveTopoDataSeq& topoData, const ::Ice::Current& /* = ::Ice::Current() */ )

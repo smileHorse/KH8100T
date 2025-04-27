@@ -122,6 +122,7 @@
 		<field type = "bool">WaveDirFlag</field>
 		<field type = "double">factorDL_I</field>
 		<field type = "double">factorJD_I</field>
+		<field type = "int">protectTypeNo</field>
 		<field type = "bool">breakerImportant</field>
 		<field type = "int">actionCount</field>
 		<field type = "string">groupNo</field>
@@ -153,6 +154,7 @@
 		<field type = "string">switchTranMode</field>
 		<field type = "string">switchCommandType</field>
 		<field type = "string">brandFlag</field>
+		<field type = "int">actionCount</field>
 		<field type = "string">groupNo</field>
 		<field type = "string">manufacturer</field>
 		<field type = "string">deviceType</field>
@@ -265,6 +267,14 @@
 		<field type = "string">graph</field>
 		<field type = "string">deviceModel</field>
 		<field type = "string">installTime</field>
+		<field type = "int">channelNum</field>
+		<field type = "int">currentNo</field>
+		<field type = "string">gateWay</field>
+		<field type = "string">rtuAddr</field>
+		<field type = "int">unitState1</field>
+		<field type = "string">gateWay1</field>
+		<field type = "string">rtuAddr1</field>
+		<field type = "int">unitState2</field>
 	</table>
 	<table name="AnalogUnitPoint">
 		<field type = "string">mRID</field>
@@ -340,6 +350,10 @@
 		<field type = "double">hlimitDead</field>
 		<field type = "double">llimitDead</field>
 		<field type = "int">dw_order</field>
+		<field type = "string">warnLevel</field>
+		<field type = "int">limitDelay</field>
+		<field type = "double">originalValue</field>
+		<field type = "double">offset</field>
 	</table>
 	<table name="Discrete">
 		<field type = "string">mRID</field>
@@ -388,6 +402,11 @@
 		<field type = "int">bilaFlag</field>
 		<field type = "bool">directControl</field>
 		<field type = "string">relatedAnalog</field>
+		<field type = "string">warnLevel</field>
+		<field type = "string">soeWarnLevel</field>
+		<field type = "string">ykWarnLevel</field>
+		<field type = "bool">specialDiscrete</field>
+		<field type = "int">specialValue</field>
 	</table>
 	<table name="Accumulator">
 		<field type = "string">mRID</field>
@@ -478,6 +497,24 @@
 		<field type = "string">min_tm_s</field>
 		<field type = "double">min_vl_s</field>
 	</table>
+	<table name="AnalogSectionData">
+		<field type = "string">mRID</field>
+		<field type = "string">name</field>
+		<field type = "string">pos</field>
+		<field type = "string">values</field>
+	</table>
+	<table name="DiscreteSectionData">
+		<field type = "string">mRID</field>
+		<field type = "string">name</field>
+		<field type = "string">pos</field>
+		<field type = "string">values</field>
+	</table>
+	<table name="AccumulatorSectionData">
+		<field type = "string">mRID</field>
+		<field type = "string">name</field>
+		<field type = "string">pos</field>
+		<field type = "string">values</field>
+	</table>
 	<table name="ConnectivityNode">
 		<field type = "string">mRID</field>
 		<field type = "string">name</field>
@@ -546,6 +583,8 @@
 		<field type = "string">formula</field>
 		<field type = "bool">value</field>
 		<field type = "string">discrete</field>
+		<field type = "int">type</field>
+		<field type = "string">tips</field>
 	</table>
 
 	<table name="ConfigFaultDesc">
@@ -557,6 +596,7 @@
 		<field type = "string">name</field>
 		<field type = "string">units</field>
 		<field type = "double">modulus</field>
+		<field type = "string">warnLevel</field>
 	</table>	
 	<table name="ConfigYxDesc">
 		<field type = "string">mRID</field>
@@ -658,6 +698,9 @@
 		<field type = "string">userPwd</field>
 		<field type = "string">roleId</field>
 		<field type = "string">userName</field>
+		<field type = "string">lastTime</field>
+		<field type = "int">failNum</field>
+		<field type = "string">lockTime</field>
 	</table>
 	<table name="SystemPhone">
 		<field type = "string">mRID</field>
@@ -755,5 +798,64 @@
 		<field type = "string">mRID</field>
 		<field type = "int">value</field>
 		<field type = "string">valueDesc</field>
+		<field type = "string">group</field>
+	</table>
+	<table name="WarnLevelConfig">
+		<field type = "string">mRID</field>
+		<field type = "int">warnType</field>
+		<field type = "int">dataType</field>
+		<field type = "string">manufactId</field>
+		<field type = "int">lineType</field>
+		<field type = "int">protectTypeNo</field>
+		<field type = "int">warnLevel</field>
+	</table>
+	<table name="ControlCard">
+		<field type = "string">mRID</field>
+		<field type = "string">name</field>
+		<field type = "int">iedId</field>
+		<field type = "int">execType</field>
+		<field type = "string">res1</field>
+		<field type = "string">res2</field>
+		<field type = "string">res3</field>
+		<field type = "string">res4</field>
+		<field type = "string">res5</field>
+	</table>
+	<table name="ControlCardDetail">
+		<field type = "string">mRID</field>
+		<field type = "string">name</field>
+		<field type = "int">no</field>
+		<field type = "string">cardId</field>
+		<field type = "int">stepType</field>
+		<field type = "int">dataType</field>
+		<field type = "string">dataId</field>
+		<field type = "string">condition</field>
+		<field type = "string">value</field>
+		<field type = "int">controlTimeout</field>
+		<field type = "string">res1</field>
+		<field type = "string">res2</field>
+		<field type = "string">res3</field>
+		<field type = "string">res4</field>
+		<field type = "string">res5</field>
+	</table>
+	<table name="InspectCard">
+		<field type = "string">mRID</field>
+		<field type = "string">name</field>
+		<field type = "int">iedId</field>
+		<field type = "string">res1</field>
+		<field type = "string">res2</field>
+		<field type = "string">res3</field>
+	</table>
+	<table name="InspectCardDetail">
+		<field type = "string">mRID</field>
+		<field type = "string">name</field>
+		<field type = "int">no</field>
+		<field type = "string">cardId</field>
+		<field type = "int">dataType</field>
+		<field type = "string">dataId</field>
+		<field type = "string">condition</field>
+		<field type = "string">value</field>
+		<field type = "string">res1</field>
+		<field type = "string">res2</field>
+		<field type = "string">res3</field>
 	</table>
 </rdb>

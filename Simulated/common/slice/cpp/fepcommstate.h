@@ -107,11 +107,15 @@ enum StateValue
 struct UnitChannel
 {
     ::Ice::Short unitNo;
-    ::Ice::Byte channelNo;
+    ::Ice::Byte channelNum;
+    ::Ice::Byte currentNo;
     ::std::string unitName;
     ::std::string gateWay;
     ::std::string rtuAddr;
     ::FepCommState::StateValue unitState;
+    ::std::string gateWay1;
+    ::std::string rtuAddr1;
+    ::FepCommState::StateValue unitState1;
 
     bool operator==(const UnitChannel& __rhs) const
     {
@@ -123,7 +127,11 @@ struct UnitChannel
         {
             return false;
         }
-        if(channelNo != __rhs.channelNo)
+        if(channelNum != __rhs.channelNum)
+        {
+            return false;
+        }
+        if(currentNo != __rhs.currentNo)
         {
             return false;
         }
@@ -140,6 +148,18 @@ struct UnitChannel
             return false;
         }
         if(unitState != __rhs.unitState)
+        {
+            return false;
+        }
+        if(gateWay1 != __rhs.gateWay1)
+        {
+            return false;
+        }
+        if(rtuAddr1 != __rhs.rtuAddr1)
+        {
+            return false;
+        }
+        if(unitState1 != __rhs.unitState1)
         {
             return false;
         }
@@ -160,11 +180,19 @@ struct UnitChannel
         {
             return false;
         }
-        if(channelNo < __rhs.channelNo)
+        if(channelNum < __rhs.channelNum)
         {
             return true;
         }
-        else if(__rhs.channelNo < channelNo)
+        else if(__rhs.channelNum < channelNum)
+        {
+            return false;
+        }
+        if(currentNo < __rhs.currentNo)
+        {
+            return true;
+        }
+        else if(__rhs.currentNo < currentNo)
         {
             return false;
         }
@@ -197,6 +225,30 @@ struct UnitChannel
             return true;
         }
         else if(__rhs.unitState < unitState)
+        {
+            return false;
+        }
+        if(gateWay1 < __rhs.gateWay1)
+        {
+            return true;
+        }
+        else if(__rhs.gateWay1 < gateWay1)
+        {
+            return false;
+        }
+        if(rtuAddr1 < __rhs.rtuAddr1)
+        {
+            return true;
+        }
+        else if(__rhs.rtuAddr1 < rtuAddr1)
+        {
+            return false;
+        }
+        if(unitState1 < __rhs.unitState1)
+        {
+            return true;
+        }
+        else if(__rhs.unitState1 < unitState1)
         {
             return false;
         }
@@ -255,7 +307,7 @@ template<>
 struct StreamableTraits< ::FepCommState::UnitChannel>
 {
     static const StreamHelperCategory helper = StreamHelperCategoryStruct;
-    static const int minWireSize = 7;
+    static const int minWireSize = 11;
     static const bool fixedLength = false;
 };
 
@@ -265,11 +317,15 @@ struct StreamWriter< ::FepCommState::UnitChannel, S>
     static void write(S* __os, const ::FepCommState::UnitChannel& v)
     {
         __os->write(v.unitNo);
-        __os->write(v.channelNo);
+        __os->write(v.channelNum);
+        __os->write(v.currentNo);
         __os->write(v.unitName);
         __os->write(v.gateWay);
         __os->write(v.rtuAddr);
         __os->write(v.unitState);
+        __os->write(v.gateWay1);
+        __os->write(v.rtuAddr1);
+        __os->write(v.unitState1);
     }
 };
 
@@ -279,11 +335,15 @@ struct StreamReader< ::FepCommState::UnitChannel, S>
     static void read(S* __is, ::FepCommState::UnitChannel& v)
     {
         __is->read(v.unitNo);
-        __is->read(v.channelNo);
+        __is->read(v.channelNum);
+        __is->read(v.currentNo);
         __is->read(v.unitName);
         __is->read(v.gateWay);
         __is->read(v.rtuAddr);
         __is->read(v.unitState);
+        __is->read(v.gateWay1);
+        __is->read(v.rtuAddr1);
+        __is->read(v.unitState1);
     }
 };
 

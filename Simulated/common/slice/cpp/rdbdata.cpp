@@ -69,6 +69,8 @@ const ::std::string __RdbRealData__RdbDataOpt__SelectCompleteData_name = "Select
 
 const ::std::string __RdbRealData__RdbDataOpt__BatchSelectCompleteData_name = "BatchSelectCompleteData";
 
+const ::std::string __RdbRealData__RdbDataOpt__SelectDataWithCondition_name = "SelectDataWithCondition";
+
 const ::std::string __RdbRealData__RdbDataOpt__SelectDataCount_name = "SelectDataCount";
 
 const ::std::string __RdbRealData__RdbDataOpt__UpdateCompleteData_name = "UpdateCompleteData";
@@ -119,6 +121,14 @@ namespace
 {
 
 const ::std::string __RdbWarningData__RdbAlarmData__SendAlarmData_name = "SendAlarmData";
+
+const ::std::string __RdbWarningData__RdbAllAlarmData__SendAllAlarmData_name = "SendAllAlarmData";
+
+const ::std::string __RdbWarningData__RdbWarningBuf__SendOutAnalogWarningBufs_name = "SendOutAnalogWarningBufs";
+
+const ::std::string __RdbWarningData__RdbWarningBuf__SendChangedUnitWarningBufs_name = "SendChangedUnitWarningBufs";
+
+const ::std::string __RdbWarningData__RdbWarningBuf__SendChangedChannelWarningBufs_name = "SendChangedChannelWarningBufs";
 
 }
 
@@ -1132,6 +1142,128 @@ bool
 IceProxy::RdbRealData::RdbDataOpt::end_BatchSelectCompleteData(::RdbRealData::RespondCompleteDataSeq& __p_repSeq, const ::Ice::AsyncResultPtr& __result)
 {
     ::Ice::AsyncResult::__check(__result, this, __RdbRealData__RdbDataOpt__BatchSelectCompleteData_name);
+    bool __ret;
+    if(!__result->__wait())
+    {
+        try
+        {
+            __result->__throwUserException();
+        }
+        catch(const ::Ice::UserException& __ex)
+        {
+            throw ::Ice::UnknownUserException(__FILE__, __LINE__, __ex.ice_name());
+        }
+    }
+    ::IceInternal::BasicStream* __is = __result->__startReadParams();
+    __is->read(__p_repSeq);
+    __is->read(__ret);
+    __result->__endReadParams();
+    return __ret;
+}
+
+bool
+IceProxy::RdbRealData::RdbDataOpt::SelectDataWithCondition(const ::RdbRealData::RequestConditionSequence& __p_reqSeq, ::RdbRealData::RespondCompleteDataSeq& __p_repSeq, const ::Ice::Context* __ctx)
+{
+    __checkTwowayOnly(__RdbRealData__RdbDataOpt__SelectDataWithCondition_name);
+    ::IceInternal::Outgoing __og(this, __RdbRealData__RdbDataOpt__SelectDataWithCondition_name, ::Ice::Normal, __ctx);
+    try
+    {
+        ::IceInternal::BasicStream* __os = __og.startWriteParams(::Ice::DefaultFormat);
+        __os->write(__p_reqSeq);
+        __og.endWriteParams();
+    }
+    catch(const ::Ice::LocalException& __ex)
+    {
+        __og.abort(__ex);
+    }
+    if(!__og.invoke())
+    {
+        try
+        {
+            __og.throwUserException();
+        }
+        catch(const ::Ice::UserException& __ex)
+        {
+            ::Ice::UnknownUserException __uue(__FILE__, __LINE__, __ex.ice_name());
+            throw __uue;
+        }
+    }
+    bool __ret;
+    ::IceInternal::BasicStream* __is = __og.startReadParams();
+    __is->read(__p_repSeq);
+    __is->read(__ret);
+    __og.endReadParams();
+    return __ret;
+}
+
+::Ice::AsyncResultPtr
+IceProxy::RdbRealData::RdbDataOpt::begin_SelectDataWithCondition(const ::RdbRealData::RequestConditionSequence& __p_reqSeq, const ::Ice::Context* __ctx, const ::IceInternal::CallbackBasePtr& __del, const ::Ice::LocalObjectPtr& __cookie)
+{
+    __checkAsyncTwowayOnly(__RdbRealData__RdbDataOpt__SelectDataWithCondition_name);
+    ::IceInternal::OutgoingAsyncPtr __result = new ::IceInternal::OutgoingAsync(this, __RdbRealData__RdbDataOpt__SelectDataWithCondition_name, __del, __cookie);
+    try
+    {
+        __result->prepare(__RdbRealData__RdbDataOpt__SelectDataWithCondition_name, ::Ice::Normal, __ctx);
+        ::IceInternal::BasicStream* __os = __result->startWriteParams(::Ice::DefaultFormat);
+        __os->write(__p_reqSeq);
+        __result->endWriteParams();
+        __result->invoke();
+    }
+    catch(const ::Ice::Exception& __ex)
+    {
+        __result->abort(__ex);
+    }
+    return __result;
+}
+
+#ifdef ICE_CPP11
+
+::Ice::AsyncResultPtr
+IceProxy::RdbRealData::RdbDataOpt::__begin_SelectDataWithCondition(const ::RdbRealData::RequestConditionSequence& __p_reqSeq, const ::Ice::Context* __ctx, const ::IceInternal::Function<void (bool, const ::RdbRealData::RespondCompleteDataSeq&)>& __response, const ::IceInternal::Function<void (const ::Ice::Exception&)>& __exception, const ::IceInternal::Function<void (bool)>& __sent)
+{
+    class Cpp11CB : public ::IceInternal::Cpp11FnCallbackNC
+    {
+    public:
+
+        Cpp11CB(const ::std::function<void (bool, const ::RdbRealData::RespondCompleteDataSeq&)>& responseFunc, const ::std::function<void (const ::Ice::Exception&)>& exceptionFunc, const ::std::function<void (bool)>& sentFunc) :
+            ::IceInternal::Cpp11FnCallbackNC(exceptionFunc, sentFunc),
+            _response(responseFunc)
+        {
+            CallbackBase::checkCallback(true, responseFunc || exceptionFunc != nullptr);
+        }
+
+        virtual void completed(const ::Ice::AsyncResultPtr& __result) const
+        {
+            ::RdbRealData::RdbDataOptPrx __proxy = ::RdbRealData::RdbDataOptPrx::uncheckedCast(__result->getProxy());
+            ::RdbRealData::RespondCompleteDataSeq __p_repSeq;
+            bool __ret;
+            try
+            {
+                __ret = __proxy->end_SelectDataWithCondition(__p_repSeq, __result);
+            }
+            catch(const ::Ice::Exception& ex)
+            {
+                Cpp11FnCallbackNC::exception(__result, ex);
+                return;
+            }
+            if(_response != nullptr)
+            {
+                _response(__ret, __p_repSeq);
+            }
+        }
+    
+    private:
+        
+        ::std::function<void (bool, const ::RdbRealData::RespondCompleteDataSeq&)> _response;
+    };
+    return begin_SelectDataWithCondition(__p_reqSeq, __ctx, new Cpp11CB(__response, __exception, __sent));
+}
+#endif
+
+bool
+IceProxy::RdbRealData::RdbDataOpt::end_SelectDataWithCondition(::RdbRealData::RespondCompleteDataSeq& __p_repSeq, const ::Ice::AsyncResultPtr& __result)
+{
+    ::Ice::AsyncResult::__check(__result, this, __RdbRealData__RdbDataOpt__SelectDataWithCondition_name);
     bool __ret;
     if(!__result->__wait())
     {
@@ -3812,6 +3944,232 @@ IceProxy::RdbWarningData::RdbAlarmData::__newInstance() const
 {
     return new RdbAlarmData;
 }
+::IceProxy::Ice::Object* ::IceProxy::RdbWarningData::upCast(::IceProxy::RdbWarningData::RdbAllAlarmData* p) { return p; }
+
+void
+::IceProxy::RdbWarningData::__read(::IceInternal::BasicStream* __is, ::IceInternal::ProxyHandle< ::IceProxy::RdbWarningData::RdbAllAlarmData>& v)
+{
+    ::Ice::ObjectPrx proxy;
+    __is->read(proxy);
+    if(!proxy)
+    {
+        v = 0;
+    }
+    else
+    {
+        v = new ::IceProxy::RdbWarningData::RdbAllAlarmData;
+        v->__copyFrom(proxy);
+    }
+}
+
+void
+IceProxy::RdbWarningData::RdbAllAlarmData::SendAllAlarmData(const ::RdbWarningData::WarningInfoSeq& __p_seq, const ::Ice::Context* __ctx)
+{
+    ::IceInternal::Outgoing __og(this, __RdbWarningData__RdbAllAlarmData__SendAllAlarmData_name, ::Ice::Normal, __ctx);
+    try
+    {
+        ::IceInternal::BasicStream* __os = __og.startWriteParams(::Ice::DefaultFormat);
+        __os->write(__p_seq);
+        __og.endWriteParams();
+    }
+    catch(const ::Ice::LocalException& __ex)
+    {
+        __og.abort(__ex);
+    }
+    __invoke(__og);
+}
+
+::Ice::AsyncResultPtr
+IceProxy::RdbWarningData::RdbAllAlarmData::begin_SendAllAlarmData(const ::RdbWarningData::WarningInfoSeq& __p_seq, const ::Ice::Context* __ctx, const ::IceInternal::CallbackBasePtr& __del, const ::Ice::LocalObjectPtr& __cookie)
+{
+    ::IceInternal::OutgoingAsyncPtr __result = new ::IceInternal::OutgoingAsync(this, __RdbWarningData__RdbAllAlarmData__SendAllAlarmData_name, __del, __cookie);
+    try
+    {
+        __result->prepare(__RdbWarningData__RdbAllAlarmData__SendAllAlarmData_name, ::Ice::Normal, __ctx);
+        ::IceInternal::BasicStream* __os = __result->startWriteParams(::Ice::DefaultFormat);
+        __os->write(__p_seq);
+        __result->endWriteParams();
+        __result->invoke();
+    }
+    catch(const ::Ice::Exception& __ex)
+    {
+        __result->abort(__ex);
+    }
+    return __result;
+}
+
+void
+IceProxy::RdbWarningData::RdbAllAlarmData::end_SendAllAlarmData(const ::Ice::AsyncResultPtr& __result)
+{
+    __end(__result, __RdbWarningData__RdbAllAlarmData__SendAllAlarmData_name);
+}
+
+const ::std::string&
+IceProxy::RdbWarningData::RdbAllAlarmData::ice_staticId()
+{
+    return ::RdbWarningData::RdbAllAlarmData::ice_staticId();
+}
+
+::IceProxy::Ice::Object*
+IceProxy::RdbWarningData::RdbAllAlarmData::__newInstance() const
+{
+    return new RdbAllAlarmData;
+}
+::IceProxy::Ice::Object* ::IceProxy::RdbWarningData::upCast(::IceProxy::RdbWarningData::RdbWarningBuf* p) { return p; }
+
+void
+::IceProxy::RdbWarningData::__read(::IceInternal::BasicStream* __is, ::IceInternal::ProxyHandle< ::IceProxy::RdbWarningData::RdbWarningBuf>& v)
+{
+    ::Ice::ObjectPrx proxy;
+    __is->read(proxy);
+    if(!proxy)
+    {
+        v = 0;
+    }
+    else
+    {
+        v = new ::IceProxy::RdbWarningData::RdbWarningBuf;
+        v->__copyFrom(proxy);
+    }
+}
+
+void
+IceProxy::RdbWarningData::RdbWarningBuf::SendOutAnalogWarningBufs(const ::RdbWarningData::OutAnalogWarningBufSeq& __p_seq, const ::Ice::Context* __ctx)
+{
+    ::IceInternal::Outgoing __og(this, __RdbWarningData__RdbWarningBuf__SendOutAnalogWarningBufs_name, ::Ice::Normal, __ctx);
+    try
+    {
+        ::IceInternal::BasicStream* __os = __og.startWriteParams(::Ice::DefaultFormat);
+        __os->write(__p_seq);
+        __og.endWriteParams();
+    }
+    catch(const ::Ice::LocalException& __ex)
+    {
+        __og.abort(__ex);
+    }
+    __invoke(__og);
+}
+
+::Ice::AsyncResultPtr
+IceProxy::RdbWarningData::RdbWarningBuf::begin_SendOutAnalogWarningBufs(const ::RdbWarningData::OutAnalogWarningBufSeq& __p_seq, const ::Ice::Context* __ctx, const ::IceInternal::CallbackBasePtr& __del, const ::Ice::LocalObjectPtr& __cookie)
+{
+    ::IceInternal::OutgoingAsyncPtr __result = new ::IceInternal::OutgoingAsync(this, __RdbWarningData__RdbWarningBuf__SendOutAnalogWarningBufs_name, __del, __cookie);
+    try
+    {
+        __result->prepare(__RdbWarningData__RdbWarningBuf__SendOutAnalogWarningBufs_name, ::Ice::Normal, __ctx);
+        ::IceInternal::BasicStream* __os = __result->startWriteParams(::Ice::DefaultFormat);
+        __os->write(__p_seq);
+        __result->endWriteParams();
+        __result->invoke();
+    }
+    catch(const ::Ice::Exception& __ex)
+    {
+        __result->abort(__ex);
+    }
+    return __result;
+}
+
+void
+IceProxy::RdbWarningData::RdbWarningBuf::end_SendOutAnalogWarningBufs(const ::Ice::AsyncResultPtr& __result)
+{
+    __end(__result, __RdbWarningData__RdbWarningBuf__SendOutAnalogWarningBufs_name);
+}
+
+void
+IceProxy::RdbWarningData::RdbWarningBuf::SendChangedUnitWarningBufs(const ::RdbWarningData::ChangedUnitWarningBufSeq& __p_seq, const ::Ice::Context* __ctx)
+{
+    ::IceInternal::Outgoing __og(this, __RdbWarningData__RdbWarningBuf__SendChangedUnitWarningBufs_name, ::Ice::Normal, __ctx);
+    try
+    {
+        ::IceInternal::BasicStream* __os = __og.startWriteParams(::Ice::DefaultFormat);
+        __os->write(__p_seq);
+        __og.endWriteParams();
+    }
+    catch(const ::Ice::LocalException& __ex)
+    {
+        __og.abort(__ex);
+    }
+    __invoke(__og);
+}
+
+::Ice::AsyncResultPtr
+IceProxy::RdbWarningData::RdbWarningBuf::begin_SendChangedUnitWarningBufs(const ::RdbWarningData::ChangedUnitWarningBufSeq& __p_seq, const ::Ice::Context* __ctx, const ::IceInternal::CallbackBasePtr& __del, const ::Ice::LocalObjectPtr& __cookie)
+{
+    ::IceInternal::OutgoingAsyncPtr __result = new ::IceInternal::OutgoingAsync(this, __RdbWarningData__RdbWarningBuf__SendChangedUnitWarningBufs_name, __del, __cookie);
+    try
+    {
+        __result->prepare(__RdbWarningData__RdbWarningBuf__SendChangedUnitWarningBufs_name, ::Ice::Normal, __ctx);
+        ::IceInternal::BasicStream* __os = __result->startWriteParams(::Ice::DefaultFormat);
+        __os->write(__p_seq);
+        __result->endWriteParams();
+        __result->invoke();
+    }
+    catch(const ::Ice::Exception& __ex)
+    {
+        __result->abort(__ex);
+    }
+    return __result;
+}
+
+void
+IceProxy::RdbWarningData::RdbWarningBuf::end_SendChangedUnitWarningBufs(const ::Ice::AsyncResultPtr& __result)
+{
+    __end(__result, __RdbWarningData__RdbWarningBuf__SendChangedUnitWarningBufs_name);
+}
+
+void
+IceProxy::RdbWarningData::RdbWarningBuf::SendChangedChannelWarningBufs(const ::RdbWarningData::ChangedChannelWarningBufSeq& __p_seq, const ::Ice::Context* __ctx)
+{
+    ::IceInternal::Outgoing __og(this, __RdbWarningData__RdbWarningBuf__SendChangedChannelWarningBufs_name, ::Ice::Normal, __ctx);
+    try
+    {
+        ::IceInternal::BasicStream* __os = __og.startWriteParams(::Ice::DefaultFormat);
+        __os->write(__p_seq);
+        __og.endWriteParams();
+    }
+    catch(const ::Ice::LocalException& __ex)
+    {
+        __og.abort(__ex);
+    }
+    __invoke(__og);
+}
+
+::Ice::AsyncResultPtr
+IceProxy::RdbWarningData::RdbWarningBuf::begin_SendChangedChannelWarningBufs(const ::RdbWarningData::ChangedChannelWarningBufSeq& __p_seq, const ::Ice::Context* __ctx, const ::IceInternal::CallbackBasePtr& __del, const ::Ice::LocalObjectPtr& __cookie)
+{
+    ::IceInternal::OutgoingAsyncPtr __result = new ::IceInternal::OutgoingAsync(this, __RdbWarningData__RdbWarningBuf__SendChangedChannelWarningBufs_name, __del, __cookie);
+    try
+    {
+        __result->prepare(__RdbWarningData__RdbWarningBuf__SendChangedChannelWarningBufs_name, ::Ice::Normal, __ctx);
+        ::IceInternal::BasicStream* __os = __result->startWriteParams(::Ice::DefaultFormat);
+        __os->write(__p_seq);
+        __result->endWriteParams();
+        __result->invoke();
+    }
+    catch(const ::Ice::Exception& __ex)
+    {
+        __result->abort(__ex);
+    }
+    return __result;
+}
+
+void
+IceProxy::RdbWarningData::RdbWarningBuf::end_SendChangedChannelWarningBufs(const ::Ice::AsyncResultPtr& __result)
+{
+    __end(__result, __RdbWarningData__RdbWarningBuf__SendChangedChannelWarningBufs_name);
+}
+
+const ::std::string&
+IceProxy::RdbWarningData::RdbWarningBuf::ice_staticId()
+{
+    return ::RdbWarningData::RdbWarningBuf::ice_staticId();
+}
+
+::IceProxy::Ice::Object*
+IceProxy::RdbWarningData::RdbWarningBuf::__newInstance() const
+{
+    return new RdbWarningBuf;
+}
 
 ::Ice::Object* RdbRealData::upCast(::RdbRealData::RdbRealDataRequest* p) { return p; }
 
@@ -4304,6 +4662,23 @@ RdbRealData::RdbDataOpt::___BatchSelectCompleteData(::IceInternal::Incoming& __i
 }
 
 ::Ice::DispatchStatus
+RdbRealData::RdbDataOpt::___SelectDataWithCondition(::IceInternal::Incoming& __inS, const ::Ice::Current& __current)
+{
+    __checkMode(::Ice::Normal, __current.mode);
+    ::IceInternal::BasicStream* __is = __inS.startReadParams();
+    ::RdbRealData::RequestConditionSequence __p_reqSeq;
+    __is->read(__p_reqSeq);
+    __inS.endReadParams();
+    ::RdbRealData::RespondCompleteDataSeq __p_repSeq;
+    bool __ret = SelectDataWithCondition(__p_reqSeq, __p_repSeq, __current);
+    ::IceInternal::BasicStream* __os = __inS.__startWriteParams(::Ice::DefaultFormat);
+    __os->write(__p_repSeq);
+    __os->write(__ret);
+    __inS.__endWriteParams(true);
+    return ::Ice::DispatchOK;
+}
+
+::Ice::DispatchStatus
 RdbRealData::RdbDataOpt::___SelectDataCount(::IceInternal::Incoming& __inS, const ::Ice::Current& __current)
 {
     __checkMode(::Ice::Normal, __current.mode);
@@ -4695,6 +5070,7 @@ const ::std::string __RdbRealData__RdbDataOpt_all[] =
     "IsInvalidDbData",
     "SelectCompleteData",
     "SelectDataCount",
+    "SelectDataWithCondition",
     "SelectDefaultData",
     "SelectSpecificData",
     "UpdateCompleteData",
@@ -4720,7 +5096,7 @@ const ::std::string __RdbRealData__RdbDataOpt_all[] =
 ::Ice::DispatchStatus
 RdbRealData::RdbDataOpt::__dispatch(::IceInternal::Incoming& in, const ::Ice::Current& current)
 {
-    ::std::pair< const ::std::string*, const ::std::string*> r = ::std::equal_range(__RdbRealData__RdbDataOpt_all, __RdbRealData__RdbDataOpt_all + 31, current.operation);
+    ::std::pair< const ::std::string*, const ::std::string*> r = ::std::equal_range(__RdbRealData__RdbDataOpt_all, __RdbRealData__RdbDataOpt_all + 32, current.operation);
     if(r.first == r.second)
     {
         throw ::Ice::OperationNotExistException(__FILE__, __LINE__, current.id, current.facet, current.operation);
@@ -4782,73 +5158,77 @@ RdbRealData::RdbDataOpt::__dispatch(::IceInternal::Incoming& in, const ::Ice::Cu
         }
         case 13:
         {
-            return ___SelectDefaultData(in, current);
+            return ___SelectDataWithCondition(in, current);
         }
         case 14:
         {
-            return ___SelectSpecificData(in, current);
+            return ___SelectDefaultData(in, current);
         }
         case 15:
         {
-            return ___UpdateCompleteData(in, current);
+            return ___SelectSpecificData(in, current);
         }
         case 16:
         {
-            return ___UpdateTopoData(in, current);
+            return ___UpdateCompleteData(in, current);
         }
         case 17:
         {
-            return ___getCurvePointDataSeq(in, current);
+            return ___UpdateTopoData(in, current);
         }
         case 18:
         {
-            return ___ice_id(in, current);
+            return ___getCurvePointDataSeq(in, current);
         }
         case 19:
         {
-            return ___ice_ids(in, current);
+            return ___ice_id(in, current);
         }
         case 20:
         {
-            return ___ice_isA(in, current);
+            return ___ice_ids(in, current);
         }
         case 21:
         {
-            return ___ice_ping(in, current);
+            return ___ice_isA(in, current);
         }
         case 22:
         {
-            return ___isEmptyNode(in, current);
+            return ___ice_ping(in, current);
         }
         case 23:
         {
-            return ___isOrphanNode(in, current);
+            return ___isEmptyNode(in, current);
         }
         case 24:
         {
-            return ___updateAccumulator(in, current);
+            return ___isOrphanNode(in, current);
         }
         case 25:
         {
-            return ___updateAnalog(in, current);
+            return ___updateAccumulator(in, current);
         }
         case 26:
         {
-            return ___updateBreaker(in, current);
+            return ___updateAnalog(in, current);
         }
         case 27:
         {
-            return ___updateDisconnector(in, current);
+            return ___updateBreaker(in, current);
         }
         case 28:
         {
-            return ___updateDiscrete(in, current);
+            return ___updateDisconnector(in, current);
         }
         case 29:
         {
-            return ___updatePowerTransformer(in, current);
+            return ___updateDiscrete(in, current);
         }
         case 30:
+        {
+            return ___updatePowerTransformer(in, current);
+        }
+        case 31:
         {
             return ___updateRemoteUnit(in, current);
         }
@@ -5007,5 +5387,297 @@ RdbWarningData::__patch(RdbAlarmDataPtr& handle, const ::Ice::ObjectPtr& v)
     if(v && !handle)
     {
         IceInternal::Ex::throwUOE(::RdbWarningData::RdbAlarmData::ice_staticId(), v);
+    }
+}
+
+::Ice::Object* RdbWarningData::upCast(::RdbWarningData::RdbAllAlarmData* p) { return p; }
+
+namespace
+{
+const ::std::string __RdbWarningData__RdbAllAlarmData_ids[2] =
+{
+    "::Ice::Object",
+    "::RdbWarningData::RdbAllAlarmData"
+};
+
+}
+
+bool
+RdbWarningData::RdbAllAlarmData::ice_isA(const ::std::string& _s, const ::Ice::Current&) const
+{
+    return ::std::binary_search(__RdbWarningData__RdbAllAlarmData_ids, __RdbWarningData__RdbAllAlarmData_ids + 2, _s);
+}
+
+::std::vector< ::std::string>
+RdbWarningData::RdbAllAlarmData::ice_ids(const ::Ice::Current&) const
+{
+    return ::std::vector< ::std::string>(&__RdbWarningData__RdbAllAlarmData_ids[0], &__RdbWarningData__RdbAllAlarmData_ids[2]);
+}
+
+const ::std::string&
+RdbWarningData::RdbAllAlarmData::ice_id(const ::Ice::Current&) const
+{
+    return __RdbWarningData__RdbAllAlarmData_ids[1];
+}
+
+const ::std::string&
+RdbWarningData::RdbAllAlarmData::ice_staticId()
+{
+#ifdef ICE_HAS_THREAD_SAFE_LOCAL_STATIC
+    static const ::std::string typeId = "::RdbWarningData::RdbAllAlarmData";
+    return typeId;
+#else
+    return __RdbWarningData__RdbAllAlarmData_ids[1];
+#endif
+}
+
+::Ice::DispatchStatus
+RdbWarningData::RdbAllAlarmData::___SendAllAlarmData(::IceInternal::Incoming& __inS, const ::Ice::Current& __current)
+{
+    __checkMode(::Ice::Normal, __current.mode);
+    ::IceInternal::BasicStream* __is = __inS.startReadParams();
+    ::RdbWarningData::WarningInfoSeq __p_seq;
+    __is->read(__p_seq);
+    __inS.endReadParams();
+    SendAllAlarmData(__p_seq, __current);
+    __inS.__writeEmptyParams();
+    return ::Ice::DispatchOK;
+}
+
+namespace
+{
+const ::std::string __RdbWarningData__RdbAllAlarmData_all[] =
+{
+    "SendAllAlarmData",
+    "ice_id",
+    "ice_ids",
+    "ice_isA",
+    "ice_ping"
+};
+
+}
+
+::Ice::DispatchStatus
+RdbWarningData::RdbAllAlarmData::__dispatch(::IceInternal::Incoming& in, const ::Ice::Current& current)
+{
+    ::std::pair< const ::std::string*, const ::std::string*> r = ::std::equal_range(__RdbWarningData__RdbAllAlarmData_all, __RdbWarningData__RdbAllAlarmData_all + 5, current.operation);
+    if(r.first == r.second)
+    {
+        throw ::Ice::OperationNotExistException(__FILE__, __LINE__, current.id, current.facet, current.operation);
+    }
+
+    switch(r.first - __RdbWarningData__RdbAllAlarmData_all)
+    {
+        case 0:
+        {
+            return ___SendAllAlarmData(in, current);
+        }
+        case 1:
+        {
+            return ___ice_id(in, current);
+        }
+        case 2:
+        {
+            return ___ice_ids(in, current);
+        }
+        case 3:
+        {
+            return ___ice_isA(in, current);
+        }
+        case 4:
+        {
+            return ___ice_ping(in, current);
+        }
+    }
+
+    assert(false);
+    throw ::Ice::OperationNotExistException(__FILE__, __LINE__, current.id, current.facet, current.operation);
+}
+
+void
+RdbWarningData::RdbAllAlarmData::__writeImpl(::IceInternal::BasicStream* __os) const
+{
+    __os->startWriteSlice(ice_staticId(), -1, true);
+    __os->endWriteSlice();
+}
+
+void
+RdbWarningData::RdbAllAlarmData::__readImpl(::IceInternal::BasicStream* __is)
+{
+    __is->startReadSlice();
+    __is->endReadSlice();
+}
+
+void 
+RdbWarningData::__patch(RdbAllAlarmDataPtr& handle, const ::Ice::ObjectPtr& v)
+{
+    handle = ::RdbWarningData::RdbAllAlarmDataPtr::dynamicCast(v);
+    if(v && !handle)
+    {
+        IceInternal::Ex::throwUOE(::RdbWarningData::RdbAllAlarmData::ice_staticId(), v);
+    }
+}
+
+::Ice::Object* RdbWarningData::upCast(::RdbWarningData::RdbWarningBuf* p) { return p; }
+
+namespace
+{
+const ::std::string __RdbWarningData__RdbWarningBuf_ids[2] =
+{
+    "::Ice::Object",
+    "::RdbWarningData::RdbWarningBuf"
+};
+
+}
+
+bool
+RdbWarningData::RdbWarningBuf::ice_isA(const ::std::string& _s, const ::Ice::Current&) const
+{
+    return ::std::binary_search(__RdbWarningData__RdbWarningBuf_ids, __RdbWarningData__RdbWarningBuf_ids + 2, _s);
+}
+
+::std::vector< ::std::string>
+RdbWarningData::RdbWarningBuf::ice_ids(const ::Ice::Current&) const
+{
+    return ::std::vector< ::std::string>(&__RdbWarningData__RdbWarningBuf_ids[0], &__RdbWarningData__RdbWarningBuf_ids[2]);
+}
+
+const ::std::string&
+RdbWarningData::RdbWarningBuf::ice_id(const ::Ice::Current&) const
+{
+    return __RdbWarningData__RdbWarningBuf_ids[1];
+}
+
+const ::std::string&
+RdbWarningData::RdbWarningBuf::ice_staticId()
+{
+#ifdef ICE_HAS_THREAD_SAFE_LOCAL_STATIC
+    static const ::std::string typeId = "::RdbWarningData::RdbWarningBuf";
+    return typeId;
+#else
+    return __RdbWarningData__RdbWarningBuf_ids[1];
+#endif
+}
+
+::Ice::DispatchStatus
+RdbWarningData::RdbWarningBuf::___SendOutAnalogWarningBufs(::IceInternal::Incoming& __inS, const ::Ice::Current& __current)
+{
+    __checkMode(::Ice::Normal, __current.mode);
+    ::IceInternal::BasicStream* __is = __inS.startReadParams();
+    ::RdbWarningData::OutAnalogWarningBufSeq __p_seq;
+    __is->read(__p_seq);
+    __inS.endReadParams();
+    SendOutAnalogWarningBufs(__p_seq, __current);
+    __inS.__writeEmptyParams();
+    return ::Ice::DispatchOK;
+}
+
+::Ice::DispatchStatus
+RdbWarningData::RdbWarningBuf::___SendChangedUnitWarningBufs(::IceInternal::Incoming& __inS, const ::Ice::Current& __current)
+{
+    __checkMode(::Ice::Normal, __current.mode);
+    ::IceInternal::BasicStream* __is = __inS.startReadParams();
+    ::RdbWarningData::ChangedUnitWarningBufSeq __p_seq;
+    __is->read(__p_seq);
+    __inS.endReadParams();
+    SendChangedUnitWarningBufs(__p_seq, __current);
+    __inS.__writeEmptyParams();
+    return ::Ice::DispatchOK;
+}
+
+::Ice::DispatchStatus
+RdbWarningData::RdbWarningBuf::___SendChangedChannelWarningBufs(::IceInternal::Incoming& __inS, const ::Ice::Current& __current)
+{
+    __checkMode(::Ice::Normal, __current.mode);
+    ::IceInternal::BasicStream* __is = __inS.startReadParams();
+    ::RdbWarningData::ChangedChannelWarningBufSeq __p_seq;
+    __is->read(__p_seq);
+    __inS.endReadParams();
+    SendChangedChannelWarningBufs(__p_seq, __current);
+    __inS.__writeEmptyParams();
+    return ::Ice::DispatchOK;
+}
+
+namespace
+{
+const ::std::string __RdbWarningData__RdbWarningBuf_all[] =
+{
+    "SendChangedChannelWarningBufs",
+    "SendChangedUnitWarningBufs",
+    "SendOutAnalogWarningBufs",
+    "ice_id",
+    "ice_ids",
+    "ice_isA",
+    "ice_ping"
+};
+
+}
+
+::Ice::DispatchStatus
+RdbWarningData::RdbWarningBuf::__dispatch(::IceInternal::Incoming& in, const ::Ice::Current& current)
+{
+    ::std::pair< const ::std::string*, const ::std::string*> r = ::std::equal_range(__RdbWarningData__RdbWarningBuf_all, __RdbWarningData__RdbWarningBuf_all + 7, current.operation);
+    if(r.first == r.second)
+    {
+        throw ::Ice::OperationNotExistException(__FILE__, __LINE__, current.id, current.facet, current.operation);
+    }
+
+    switch(r.first - __RdbWarningData__RdbWarningBuf_all)
+    {
+        case 0:
+        {
+            return ___SendChangedChannelWarningBufs(in, current);
+        }
+        case 1:
+        {
+            return ___SendChangedUnitWarningBufs(in, current);
+        }
+        case 2:
+        {
+            return ___SendOutAnalogWarningBufs(in, current);
+        }
+        case 3:
+        {
+            return ___ice_id(in, current);
+        }
+        case 4:
+        {
+            return ___ice_ids(in, current);
+        }
+        case 5:
+        {
+            return ___ice_isA(in, current);
+        }
+        case 6:
+        {
+            return ___ice_ping(in, current);
+        }
+    }
+
+    assert(false);
+    throw ::Ice::OperationNotExistException(__FILE__, __LINE__, current.id, current.facet, current.operation);
+}
+
+void
+RdbWarningData::RdbWarningBuf::__writeImpl(::IceInternal::BasicStream* __os) const
+{
+    __os->startWriteSlice(ice_staticId(), -1, true);
+    __os->endWriteSlice();
+}
+
+void
+RdbWarningData::RdbWarningBuf::__readImpl(::IceInternal::BasicStream* __is)
+{
+    __is->startReadSlice();
+    __is->endReadSlice();
+}
+
+void 
+RdbWarningData::__patch(RdbWarningBufPtr& handle, const ::Ice::ObjectPtr& v)
+{
+    handle = ::RdbWarningData::RdbWarningBufPtr::dynamicCast(v);
+    if(v && !handle)
+    {
+        IceInternal::Ex::throwUOE(::RdbWarningData::RdbWarningBuf::ice_staticId(), v);
     }
 }

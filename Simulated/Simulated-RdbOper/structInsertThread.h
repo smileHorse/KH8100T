@@ -20,8 +20,13 @@ typedef QList<DataStruct>	DataStructList;
 #define CommandSuffix			"CommandSuffix"
 #define AccumulatorSuffix		"AccumulatorSuffix"
 #define RemoteUnitParam			"RemoteUnitParam"
+#define FepChannelParam			"FepChannelParam"
 #define VALUE					"value"
 #define StartIedId				"startIedId"
+#define IP1						"ip1"
+#define IP2						"ip2"
+#define PORT1					"port1"
+#define PORT2					"port2"
 #define DevManufacturer			"DevManufacturer"
 #define DevDeviceType			"DevDeviceType"
 #define GeographicalRegion		"GeographicalRegion"
@@ -159,6 +164,12 @@ private:
 
 	int getStartIedId();
 
+	QString getChannelIp1();
+	QString getChannelIp2();
+
+	int getChannelPort1();
+	int getChannelPort2();
+
 	int getDataStructCount(const DataStruct& dataStruct);
 
 	QString createName(const QString& parentName, const QString& childName, int index);
@@ -195,6 +206,12 @@ private:
 
 	int protocolNo;
 	int channelId;
+
+	QString channelIp1;
+	QString channelIp2;
+	int channelPort1;
+	int channelPort2;
+
 
 	RespondCompleteDataSeq insertDataList;
 };

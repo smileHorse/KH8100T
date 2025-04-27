@@ -1,6 +1,7 @@
 
 #include "rdbTableFactory.h"
 #include "selectCompleteDataDialog.h"
+#include "FunctionExecTime.h"
 
 #include <Ice/LocalException.h>
 
@@ -164,7 +165,12 @@ void SelectCompleteDataDialog::queryData()
 		reqSeq.dataCount = reqSeq.seq.size();
 
 		RespondCompleteDataSeq repSeq;
-		m_rdbDataOptPrx->SelectCompleteData(reqSeq, repSeq);
+		{
+			CFunctionExecTime exec(__FUNCTION__, true);
+			m_rdbDataOptPrx->SelectCompleteData(reqSeq, repSeq);
+			QMessageBox::warning(this, QStringLiteral("查询全部数据"), 
+				QStringLiteral("查询数据耗时: %1ms").arg(exec.ellapsed()));
+		}
 
 		updateTableWidget(repSeq);
 	}

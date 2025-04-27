@@ -18,8 +18,8 @@
 // </auto-generated>
 //
 
-#ifndef __cpp_ykdata_h__
-#define __cpp_ykdata_h__
+#ifndef __ykdata_h__
+#define __ykdata_h__
 
 #include <IceUtil/PushDisableWarnings.h>
 #include <Ice/ProxyF.h>
@@ -132,6 +132,7 @@ struct YkCommand
     ::Ice::Short ykNo;
     ::Ice::Short yxIndex;
     ::Yk::YkValue value;
+    ::Ice::Int waitTime;
 
     bool operator==(const YkCommand& __rhs) const
     {
@@ -168,6 +169,10 @@ struct YkCommand
             return false;
         }
         if(value != __rhs.value)
+        {
+            return false;
+        }
+        if(waitTime != __rhs.waitTime)
         {
             return false;
         }
@@ -241,6 +246,14 @@ struct YkCommand
             return true;
         }
         else if(__rhs.value < value)
+        {
+            return false;
+        }
+        if(waitTime < __rhs.waitTime)
+        {
+            return true;
+        }
+        else if(__rhs.waitTime < waitTime)
         {
             return false;
         }
@@ -421,6 +434,320 @@ struct YkRequestMsg
     }
 };
 
+struct YtRequestMsg
+{
+    ::Ice::Int requestId;
+    ::Ice::Short unitNo;
+    ::Ice::Int step;
+    ::std::string subname;
+    ::std::string byqname;
+    ::Ice::Short curNo;
+    ::std::string oper;
+    bool isAgree;
+
+    bool operator==(const YtRequestMsg& __rhs) const
+    {
+        if(this == &__rhs)
+        {
+            return true;
+        }
+        if(requestId != __rhs.requestId)
+        {
+            return false;
+        }
+        if(unitNo != __rhs.unitNo)
+        {
+            return false;
+        }
+        if(step != __rhs.step)
+        {
+            return false;
+        }
+        if(subname != __rhs.subname)
+        {
+            return false;
+        }
+        if(byqname != __rhs.byqname)
+        {
+            return false;
+        }
+        if(curNo != __rhs.curNo)
+        {
+            return false;
+        }
+        if(oper != __rhs.oper)
+        {
+            return false;
+        }
+        if(isAgree != __rhs.isAgree)
+        {
+            return false;
+        }
+        return true;
+    }
+
+    bool operator<(const YtRequestMsg& __rhs) const
+    {
+        if(this == &__rhs)
+        {
+            return false;
+        }
+        if(requestId < __rhs.requestId)
+        {
+            return true;
+        }
+        else if(__rhs.requestId < requestId)
+        {
+            return false;
+        }
+        if(unitNo < __rhs.unitNo)
+        {
+            return true;
+        }
+        else if(__rhs.unitNo < unitNo)
+        {
+            return false;
+        }
+        if(step < __rhs.step)
+        {
+            return true;
+        }
+        else if(__rhs.step < step)
+        {
+            return false;
+        }
+        if(subname < __rhs.subname)
+        {
+            return true;
+        }
+        else if(__rhs.subname < subname)
+        {
+            return false;
+        }
+        if(byqname < __rhs.byqname)
+        {
+            return true;
+        }
+        else if(__rhs.byqname < byqname)
+        {
+            return false;
+        }
+        if(curNo < __rhs.curNo)
+        {
+            return true;
+        }
+        else if(__rhs.curNo < curNo)
+        {
+            return false;
+        }
+        if(oper < __rhs.oper)
+        {
+            return true;
+        }
+        else if(__rhs.oper < oper)
+        {
+            return false;
+        }
+        if(isAgree < __rhs.isAgree)
+        {
+            return true;
+        }
+        else if(__rhs.isAgree < isAgree)
+        {
+            return false;
+        }
+        return false;
+    }
+
+    bool operator!=(const YtRequestMsg& __rhs) const
+    {
+        return !operator==(__rhs);
+    }
+    bool operator<=(const YtRequestMsg& __rhs) const
+    {
+        return operator<(__rhs) || operator==(__rhs);
+    }
+    bool operator>(const YtRequestMsg& __rhs) const
+    {
+        return !operator<(__rhs) && !operator==(__rhs);
+    }
+    bool operator>=(const YtRequestMsg& __rhs) const
+    {
+        return !operator<(__rhs);
+    }
+};
+
+struct settingInfo
+{
+    ::Ice::Int no;
+    ::std::string name;
+    ::std::string val;
+    ::std::string dw;
+    ::std::string type;
+    ::std::string val1;
+    ::std::string val2;
+    ::std::string val3;
+    ::std::string val4;
+
+    bool operator==(const settingInfo& __rhs) const
+    {
+        if(this == &__rhs)
+        {
+            return true;
+        }
+        if(no != __rhs.no)
+        {
+            return false;
+        }
+        if(name != __rhs.name)
+        {
+            return false;
+        }
+        if(val != __rhs.val)
+        {
+            return false;
+        }
+        if(dw != __rhs.dw)
+        {
+            return false;
+        }
+        if(type != __rhs.type)
+        {
+            return false;
+        }
+        if(val1 != __rhs.val1)
+        {
+            return false;
+        }
+        if(val2 != __rhs.val2)
+        {
+            return false;
+        }
+        if(val3 != __rhs.val3)
+        {
+            return false;
+        }
+        if(val4 != __rhs.val4)
+        {
+            return false;
+        }
+        return true;
+    }
+
+    bool operator<(const settingInfo& __rhs) const
+    {
+        if(this == &__rhs)
+        {
+            return false;
+        }
+        if(no < __rhs.no)
+        {
+            return true;
+        }
+        else if(__rhs.no < no)
+        {
+            return false;
+        }
+        if(name < __rhs.name)
+        {
+            return true;
+        }
+        else if(__rhs.name < name)
+        {
+            return false;
+        }
+        if(val < __rhs.val)
+        {
+            return true;
+        }
+        else if(__rhs.val < val)
+        {
+            return false;
+        }
+        if(dw < __rhs.dw)
+        {
+            return true;
+        }
+        else if(__rhs.dw < dw)
+        {
+            return false;
+        }
+        if(type < __rhs.type)
+        {
+            return true;
+        }
+        else if(__rhs.type < type)
+        {
+            return false;
+        }
+        if(val1 < __rhs.val1)
+        {
+            return true;
+        }
+        else if(__rhs.val1 < val1)
+        {
+            return false;
+        }
+        if(val2 < __rhs.val2)
+        {
+            return true;
+        }
+        else if(__rhs.val2 < val2)
+        {
+            return false;
+        }
+        if(val3 < __rhs.val3)
+        {
+            return true;
+        }
+        else if(__rhs.val3 < val3)
+        {
+            return false;
+        }
+        if(val4 < __rhs.val4)
+        {
+            return true;
+        }
+        else if(__rhs.val4 < val4)
+        {
+            return false;
+        }
+        return false;
+    }
+
+    bool operator!=(const settingInfo& __rhs) const
+    {
+        return !operator==(__rhs);
+    }
+    bool operator<=(const settingInfo& __rhs) const
+    {
+        return operator<(__rhs) || operator==(__rhs);
+    }
+    bool operator>(const settingInfo& __rhs) const
+    {
+        return !operator<(__rhs) && !operator==(__rhs);
+    }
+    bool operator>=(const settingInfo& __rhs) const
+    {
+        return !operator<(__rhs);
+    }
+};
+
+typedef ::std::vector< ::Yk::settingInfo> settingInfoVect;
+
+struct SettingMsg
+{
+    ::Ice::Int requestId;
+    ::std::string unitName;
+    ::std::string selectFun;
+    ::std::string funType;
+    ::std::string devFactory;
+    ::std::string proectType;
+    ::std::string settingType;
+    ::Yk::settingInfoVect setInfoVect;
+    bool isAgree;
+};
+
 const ::std::string YkMmiTopic = "yk_mmi_operation";
 
 const ::std::string YkFepTopic = "yk_fep_operation";
@@ -465,7 +792,7 @@ template<>
 struct StreamableTraits< ::Yk::YkCommand>
 {
     static const StreamHelperCategory helper = StreamHelperCategoryStruct;
-    static const int minWireSize = 14;
+    static const int minWireSize = 18;
     static const bool fixedLength = false;
 };
 
@@ -482,6 +809,7 @@ struct StreamWriter< ::Yk::YkCommand, S>
         __os->write(v.ykNo);
         __os->write(v.yxIndex);
         __os->write(v.value);
+        __os->write(v.waitTime);
     }
 };
 
@@ -498,6 +826,7 @@ struct StreamReader< ::Yk::YkCommand, S>
         __is->read(v.ykNo);
         __is->read(v.yxIndex);
         __is->read(v.value);
+        __is->read(v.waitTime);
     }
 };
 
@@ -543,6 +872,130 @@ struct StreamReader< ::Yk::YkRequestMsg, S>
     }
 };
 
+template<>
+struct StreamableTraits< ::Yk::YtRequestMsg>
+{
+    static const StreamHelperCategory helper = StreamHelperCategoryStruct;
+    static const int minWireSize = 16;
+    static const bool fixedLength = false;
+};
+
+template<class S>
+struct StreamWriter< ::Yk::YtRequestMsg, S>
+{
+    static void write(S* __os, const ::Yk::YtRequestMsg& v)
+    {
+        __os->write(v.requestId);
+        __os->write(v.unitNo);
+        __os->write(v.step);
+        __os->write(v.subname);
+        __os->write(v.byqname);
+        __os->write(v.curNo);
+        __os->write(v.oper);
+        __os->write(v.isAgree);
+    }
+};
+
+template<class S>
+struct StreamReader< ::Yk::YtRequestMsg, S>
+{
+    static void read(S* __is, ::Yk::YtRequestMsg& v)
+    {
+        __is->read(v.requestId);
+        __is->read(v.unitNo);
+        __is->read(v.step);
+        __is->read(v.subname);
+        __is->read(v.byqname);
+        __is->read(v.curNo);
+        __is->read(v.oper);
+        __is->read(v.isAgree);
+    }
+};
+
+template<>
+struct StreamableTraits< ::Yk::settingInfo>
+{
+    static const StreamHelperCategory helper = StreamHelperCategoryStruct;
+    static const int minWireSize = 12;
+    static const bool fixedLength = false;
+};
+
+template<class S>
+struct StreamWriter< ::Yk::settingInfo, S>
+{
+    static void write(S* __os, const ::Yk::settingInfo& v)
+    {
+        __os->write(v.no);
+        __os->write(v.name);
+        __os->write(v.val);
+        __os->write(v.dw);
+        __os->write(v.type);
+        __os->write(v.val1);
+        __os->write(v.val2);
+        __os->write(v.val3);
+        __os->write(v.val4);
+    }
+};
+
+template<class S>
+struct StreamReader< ::Yk::settingInfo, S>
+{
+    static void read(S* __is, ::Yk::settingInfo& v)
+    {
+        __is->read(v.no);
+        __is->read(v.name);
+        __is->read(v.val);
+        __is->read(v.dw);
+        __is->read(v.type);
+        __is->read(v.val1);
+        __is->read(v.val2);
+        __is->read(v.val3);
+        __is->read(v.val4);
+    }
+};
+
+template<>
+struct StreamableTraits< ::Yk::SettingMsg>
+{
+    static const StreamHelperCategory helper = StreamHelperCategoryStruct;
+    static const int minWireSize = 12;
+    static const bool fixedLength = false;
+};
+
+template<class S>
+struct StreamWriter< ::Yk::SettingMsg, S>
+{
+    static void write(S* __os, const ::Yk::SettingMsg& v)
+    {
+        __os->write(v.requestId);
+        __os->write(v.unitName);
+        __os->write(v.selectFun);
+        __os->write(v.funType);
+        __os->write(v.devFactory);
+        __os->write(v.proectType);
+        __os->write(v.settingType);
+        __os->write(v.setInfoVect);
+        __os->write(v.isAgree);
+    }
+};
+
+template<class S>
+struct StreamReader< ::Yk::SettingMsg, S>
+{
+    static void read(S* __is, ::Yk::SettingMsg& v)
+    {
+        __is->read(v.requestId);
+        __is->read(v.unitName);
+        __is->read(v.selectFun);
+        __is->read(v.funType);
+        __is->read(v.devFactory);
+        __is->read(v.proectType);
+        __is->read(v.settingType);
+        __is->read(v.setInfoVect);
+        __is->read(v.isAgree);
+    }
+};
+
 }
 
 namespace Yk
@@ -553,6 +1006,18 @@ typedef ::IceUtil::Handle< Callback_YkMmiManager_sendYkRequest_Base> Callback_Yk
 
 class Callback_YkMmiManager_sendValidateRequest_Base : virtual public ::IceInternal::CallbackBase { };
 typedef ::IceUtil::Handle< Callback_YkMmiManager_sendValidateRequest_Base> Callback_YkMmiManager_sendValidateRequestPtr;
+
+class Callback_YkMmiManager_sendYtRequest_Base : virtual public ::IceInternal::CallbackBase { };
+typedef ::IceUtil::Handle< Callback_YkMmiManager_sendYtRequest_Base> Callback_YkMmiManager_sendYtRequestPtr;
+
+class Callback_YkMmiManager_sendValidateYtRequest_Base : virtual public ::IceInternal::CallbackBase { };
+typedef ::IceUtil::Handle< Callback_YkMmiManager_sendValidateYtRequest_Base> Callback_YkMmiManager_sendValidateYtRequestPtr;
+
+class Callback_YkMmiManager_sendSettingRequest_Base : virtual public ::IceInternal::CallbackBase { };
+typedef ::IceUtil::Handle< Callback_YkMmiManager_sendSettingRequest_Base> Callback_YkMmiManager_sendSettingRequestPtr;
+
+class Callback_YkMmiManager_sendValidateSettingRequest_Base : virtual public ::IceInternal::CallbackBase { };
+typedef ::IceUtil::Handle< Callback_YkMmiManager_sendValidateSettingRequest_Base> Callback_YkMmiManager_sendValidateSettingRequestPtr;
 
 class Callback_YkFepManager_select_Base : virtual public ::IceInternal::CallbackBase { };
 typedef ::IceUtil::Handle< Callback_YkFepManager_select_Base> Callback_YkFepManager_selectPtr;
@@ -730,6 +1195,286 @@ private:
 
     void sendValidateRequest(const ::Yk::YkRequestMsg&, const ::Ice::Context*);
     ::Ice::AsyncResultPtr begin_sendValidateRequest(const ::Yk::YkRequestMsg&, const ::Ice::Context*, const ::IceInternal::CallbackBasePtr&, const ::Ice::LocalObjectPtr& __cookie = 0);
+    
+public:
+
+    void sendYtRequest(const ::Yk::YtRequestMsg& __p_msg)
+    {
+        sendYtRequest(__p_msg, 0);
+    }
+    void sendYtRequest(const ::Yk::YtRequestMsg& __p_msg, const ::Ice::Context& __ctx)
+    {
+        sendYtRequest(__p_msg, &__ctx);
+    }
+#ifdef ICE_CPP11
+    ::Ice::AsyncResultPtr
+    begin_sendYtRequest(const ::Yk::YtRequestMsg& __p_msg, const ::IceInternal::Function<void ()>& __response, const ::IceInternal::Function<void (const ::Ice::Exception&)>& __exception = ::IceInternal::Function<void (const ::Ice::Exception&)>(), const ::IceInternal::Function<void (bool)>& __sent = ::IceInternal::Function<void (bool)>())
+    {
+        return begin_sendYtRequest(__p_msg, 0, new ::IceInternal::Cpp11FnOnewayCallbackNC(__response, __exception, __sent));
+    }
+    ::Ice::AsyncResultPtr
+    begin_sendYtRequest(const ::Yk::YtRequestMsg& __p_msg, const ::IceInternal::Function<void (const ::Ice::AsyncResultPtr&)>& __completed, const ::IceInternal::Function<void (const ::Ice::AsyncResultPtr&)>& __sent = ::IceInternal::Function<void (const ::Ice::AsyncResultPtr&)>())
+    {
+        return begin_sendYtRequest(__p_msg, 0, ::Ice::newCallback(__completed, __sent), 0);
+    }
+    ::Ice::AsyncResultPtr
+    begin_sendYtRequest(const ::Yk::YtRequestMsg& __p_msg, const ::Ice::Context& __ctx, const ::IceInternal::Function<void ()>& __response, const ::IceInternal::Function<void (const ::Ice::Exception&)>& __exception = ::IceInternal::Function<void (const ::Ice::Exception&)>(), const ::IceInternal::Function<void (bool)>& __sent = ::IceInternal::Function<void (bool)>())
+    {
+        return begin_sendYtRequest(__p_msg, &__ctx, new ::IceInternal::Cpp11FnOnewayCallbackNC(__response, __exception, __sent), 0);
+    }
+    ::Ice::AsyncResultPtr
+    begin_sendYtRequest(const ::Yk::YtRequestMsg& __p_msg, const ::Ice::Context& __ctx, const ::IceInternal::Function<void (const ::Ice::AsyncResultPtr&)>& __completed, const ::IceInternal::Function<void (const ::Ice::AsyncResultPtr&)>& __sent = ::IceInternal::Function<void (const ::Ice::AsyncResultPtr&)>())
+    {
+        return begin_sendYtRequest(__p_msg, &__ctx, ::Ice::newCallback(__completed, __sent));
+    }
+#endif
+
+    ::Ice::AsyncResultPtr begin_sendYtRequest(const ::Yk::YtRequestMsg& __p_msg)
+    {
+        return begin_sendYtRequest(__p_msg, 0, ::IceInternal::__dummyCallback, 0);
+    }
+
+    ::Ice::AsyncResultPtr begin_sendYtRequest(const ::Yk::YtRequestMsg& __p_msg, const ::Ice::Context& __ctx)
+    {
+        return begin_sendYtRequest(__p_msg, &__ctx, ::IceInternal::__dummyCallback, 0);
+    }
+
+    ::Ice::AsyncResultPtr begin_sendYtRequest(const ::Yk::YtRequestMsg& __p_msg, const ::Ice::CallbackPtr& __del, const ::Ice::LocalObjectPtr& __cookie = 0)
+    {
+        return begin_sendYtRequest(__p_msg, 0, __del, __cookie);
+    }
+
+    ::Ice::AsyncResultPtr begin_sendYtRequest(const ::Yk::YtRequestMsg& __p_msg, const ::Ice::Context& __ctx, const ::Ice::CallbackPtr& __del, const ::Ice::LocalObjectPtr& __cookie = 0)
+    {
+        return begin_sendYtRequest(__p_msg, &__ctx, __del, __cookie);
+    }
+
+    ::Ice::AsyncResultPtr begin_sendYtRequest(const ::Yk::YtRequestMsg& __p_msg, const ::Yk::Callback_YkMmiManager_sendYtRequestPtr& __del, const ::Ice::LocalObjectPtr& __cookie = 0)
+    {
+        return begin_sendYtRequest(__p_msg, 0, __del, __cookie);
+    }
+
+    ::Ice::AsyncResultPtr begin_sendYtRequest(const ::Yk::YtRequestMsg& __p_msg, const ::Ice::Context& __ctx, const ::Yk::Callback_YkMmiManager_sendYtRequestPtr& __del, const ::Ice::LocalObjectPtr& __cookie = 0)
+    {
+        return begin_sendYtRequest(__p_msg, &__ctx, __del, __cookie);
+    }
+
+    void end_sendYtRequest(const ::Ice::AsyncResultPtr&);
+    
+private:
+
+    void sendYtRequest(const ::Yk::YtRequestMsg&, const ::Ice::Context*);
+    ::Ice::AsyncResultPtr begin_sendYtRequest(const ::Yk::YtRequestMsg&, const ::Ice::Context*, const ::IceInternal::CallbackBasePtr&, const ::Ice::LocalObjectPtr& __cookie = 0);
+    
+public:
+
+    void sendValidateYtRequest(const ::Yk::YtRequestMsg& __p_msg)
+    {
+        sendValidateYtRequest(__p_msg, 0);
+    }
+    void sendValidateYtRequest(const ::Yk::YtRequestMsg& __p_msg, const ::Ice::Context& __ctx)
+    {
+        sendValidateYtRequest(__p_msg, &__ctx);
+    }
+#ifdef ICE_CPP11
+    ::Ice::AsyncResultPtr
+    begin_sendValidateYtRequest(const ::Yk::YtRequestMsg& __p_msg, const ::IceInternal::Function<void ()>& __response, const ::IceInternal::Function<void (const ::Ice::Exception&)>& __exception = ::IceInternal::Function<void (const ::Ice::Exception&)>(), const ::IceInternal::Function<void (bool)>& __sent = ::IceInternal::Function<void (bool)>())
+    {
+        return begin_sendValidateYtRequest(__p_msg, 0, new ::IceInternal::Cpp11FnOnewayCallbackNC(__response, __exception, __sent));
+    }
+    ::Ice::AsyncResultPtr
+    begin_sendValidateYtRequest(const ::Yk::YtRequestMsg& __p_msg, const ::IceInternal::Function<void (const ::Ice::AsyncResultPtr&)>& __completed, const ::IceInternal::Function<void (const ::Ice::AsyncResultPtr&)>& __sent = ::IceInternal::Function<void (const ::Ice::AsyncResultPtr&)>())
+    {
+        return begin_sendValidateYtRequest(__p_msg, 0, ::Ice::newCallback(__completed, __sent), 0);
+    }
+    ::Ice::AsyncResultPtr
+    begin_sendValidateYtRequest(const ::Yk::YtRequestMsg& __p_msg, const ::Ice::Context& __ctx, const ::IceInternal::Function<void ()>& __response, const ::IceInternal::Function<void (const ::Ice::Exception&)>& __exception = ::IceInternal::Function<void (const ::Ice::Exception&)>(), const ::IceInternal::Function<void (bool)>& __sent = ::IceInternal::Function<void (bool)>())
+    {
+        return begin_sendValidateYtRequest(__p_msg, &__ctx, new ::IceInternal::Cpp11FnOnewayCallbackNC(__response, __exception, __sent), 0);
+    }
+    ::Ice::AsyncResultPtr
+    begin_sendValidateYtRequest(const ::Yk::YtRequestMsg& __p_msg, const ::Ice::Context& __ctx, const ::IceInternal::Function<void (const ::Ice::AsyncResultPtr&)>& __completed, const ::IceInternal::Function<void (const ::Ice::AsyncResultPtr&)>& __sent = ::IceInternal::Function<void (const ::Ice::AsyncResultPtr&)>())
+    {
+        return begin_sendValidateYtRequest(__p_msg, &__ctx, ::Ice::newCallback(__completed, __sent));
+    }
+#endif
+
+    ::Ice::AsyncResultPtr begin_sendValidateYtRequest(const ::Yk::YtRequestMsg& __p_msg)
+    {
+        return begin_sendValidateYtRequest(__p_msg, 0, ::IceInternal::__dummyCallback, 0);
+    }
+
+    ::Ice::AsyncResultPtr begin_sendValidateYtRequest(const ::Yk::YtRequestMsg& __p_msg, const ::Ice::Context& __ctx)
+    {
+        return begin_sendValidateYtRequest(__p_msg, &__ctx, ::IceInternal::__dummyCallback, 0);
+    }
+
+    ::Ice::AsyncResultPtr begin_sendValidateYtRequest(const ::Yk::YtRequestMsg& __p_msg, const ::Ice::CallbackPtr& __del, const ::Ice::LocalObjectPtr& __cookie = 0)
+    {
+        return begin_sendValidateYtRequest(__p_msg, 0, __del, __cookie);
+    }
+
+    ::Ice::AsyncResultPtr begin_sendValidateYtRequest(const ::Yk::YtRequestMsg& __p_msg, const ::Ice::Context& __ctx, const ::Ice::CallbackPtr& __del, const ::Ice::LocalObjectPtr& __cookie = 0)
+    {
+        return begin_sendValidateYtRequest(__p_msg, &__ctx, __del, __cookie);
+    }
+
+    ::Ice::AsyncResultPtr begin_sendValidateYtRequest(const ::Yk::YtRequestMsg& __p_msg, const ::Yk::Callback_YkMmiManager_sendValidateYtRequestPtr& __del, const ::Ice::LocalObjectPtr& __cookie = 0)
+    {
+        return begin_sendValidateYtRequest(__p_msg, 0, __del, __cookie);
+    }
+
+    ::Ice::AsyncResultPtr begin_sendValidateYtRequest(const ::Yk::YtRequestMsg& __p_msg, const ::Ice::Context& __ctx, const ::Yk::Callback_YkMmiManager_sendValidateYtRequestPtr& __del, const ::Ice::LocalObjectPtr& __cookie = 0)
+    {
+        return begin_sendValidateYtRequest(__p_msg, &__ctx, __del, __cookie);
+    }
+
+    void end_sendValidateYtRequest(const ::Ice::AsyncResultPtr&);
+    
+private:
+
+    void sendValidateYtRequest(const ::Yk::YtRequestMsg&, const ::Ice::Context*);
+    ::Ice::AsyncResultPtr begin_sendValidateYtRequest(const ::Yk::YtRequestMsg&, const ::Ice::Context*, const ::IceInternal::CallbackBasePtr&, const ::Ice::LocalObjectPtr& __cookie = 0);
+    
+public:
+
+    void sendSettingRequest(const ::Yk::SettingMsg& __p_msg)
+    {
+        sendSettingRequest(__p_msg, 0);
+    }
+    void sendSettingRequest(const ::Yk::SettingMsg& __p_msg, const ::Ice::Context& __ctx)
+    {
+        sendSettingRequest(__p_msg, &__ctx);
+    }
+#ifdef ICE_CPP11
+    ::Ice::AsyncResultPtr
+    begin_sendSettingRequest(const ::Yk::SettingMsg& __p_msg, const ::IceInternal::Function<void ()>& __response, const ::IceInternal::Function<void (const ::Ice::Exception&)>& __exception = ::IceInternal::Function<void (const ::Ice::Exception&)>(), const ::IceInternal::Function<void (bool)>& __sent = ::IceInternal::Function<void (bool)>())
+    {
+        return begin_sendSettingRequest(__p_msg, 0, new ::IceInternal::Cpp11FnOnewayCallbackNC(__response, __exception, __sent));
+    }
+    ::Ice::AsyncResultPtr
+    begin_sendSettingRequest(const ::Yk::SettingMsg& __p_msg, const ::IceInternal::Function<void (const ::Ice::AsyncResultPtr&)>& __completed, const ::IceInternal::Function<void (const ::Ice::AsyncResultPtr&)>& __sent = ::IceInternal::Function<void (const ::Ice::AsyncResultPtr&)>())
+    {
+        return begin_sendSettingRequest(__p_msg, 0, ::Ice::newCallback(__completed, __sent), 0);
+    }
+    ::Ice::AsyncResultPtr
+    begin_sendSettingRequest(const ::Yk::SettingMsg& __p_msg, const ::Ice::Context& __ctx, const ::IceInternal::Function<void ()>& __response, const ::IceInternal::Function<void (const ::Ice::Exception&)>& __exception = ::IceInternal::Function<void (const ::Ice::Exception&)>(), const ::IceInternal::Function<void (bool)>& __sent = ::IceInternal::Function<void (bool)>())
+    {
+        return begin_sendSettingRequest(__p_msg, &__ctx, new ::IceInternal::Cpp11FnOnewayCallbackNC(__response, __exception, __sent), 0);
+    }
+    ::Ice::AsyncResultPtr
+    begin_sendSettingRequest(const ::Yk::SettingMsg& __p_msg, const ::Ice::Context& __ctx, const ::IceInternal::Function<void (const ::Ice::AsyncResultPtr&)>& __completed, const ::IceInternal::Function<void (const ::Ice::AsyncResultPtr&)>& __sent = ::IceInternal::Function<void (const ::Ice::AsyncResultPtr&)>())
+    {
+        return begin_sendSettingRequest(__p_msg, &__ctx, ::Ice::newCallback(__completed, __sent));
+    }
+#endif
+
+    ::Ice::AsyncResultPtr begin_sendSettingRequest(const ::Yk::SettingMsg& __p_msg)
+    {
+        return begin_sendSettingRequest(__p_msg, 0, ::IceInternal::__dummyCallback, 0);
+    }
+
+    ::Ice::AsyncResultPtr begin_sendSettingRequest(const ::Yk::SettingMsg& __p_msg, const ::Ice::Context& __ctx)
+    {
+        return begin_sendSettingRequest(__p_msg, &__ctx, ::IceInternal::__dummyCallback, 0);
+    }
+
+    ::Ice::AsyncResultPtr begin_sendSettingRequest(const ::Yk::SettingMsg& __p_msg, const ::Ice::CallbackPtr& __del, const ::Ice::LocalObjectPtr& __cookie = 0)
+    {
+        return begin_sendSettingRequest(__p_msg, 0, __del, __cookie);
+    }
+
+    ::Ice::AsyncResultPtr begin_sendSettingRequest(const ::Yk::SettingMsg& __p_msg, const ::Ice::Context& __ctx, const ::Ice::CallbackPtr& __del, const ::Ice::LocalObjectPtr& __cookie = 0)
+    {
+        return begin_sendSettingRequest(__p_msg, &__ctx, __del, __cookie);
+    }
+
+    ::Ice::AsyncResultPtr begin_sendSettingRequest(const ::Yk::SettingMsg& __p_msg, const ::Yk::Callback_YkMmiManager_sendSettingRequestPtr& __del, const ::Ice::LocalObjectPtr& __cookie = 0)
+    {
+        return begin_sendSettingRequest(__p_msg, 0, __del, __cookie);
+    }
+
+    ::Ice::AsyncResultPtr begin_sendSettingRequest(const ::Yk::SettingMsg& __p_msg, const ::Ice::Context& __ctx, const ::Yk::Callback_YkMmiManager_sendSettingRequestPtr& __del, const ::Ice::LocalObjectPtr& __cookie = 0)
+    {
+        return begin_sendSettingRequest(__p_msg, &__ctx, __del, __cookie);
+    }
+
+    void end_sendSettingRequest(const ::Ice::AsyncResultPtr&);
+    
+private:
+
+    void sendSettingRequest(const ::Yk::SettingMsg&, const ::Ice::Context*);
+    ::Ice::AsyncResultPtr begin_sendSettingRequest(const ::Yk::SettingMsg&, const ::Ice::Context*, const ::IceInternal::CallbackBasePtr&, const ::Ice::LocalObjectPtr& __cookie = 0);
+    
+public:
+
+    void sendValidateSettingRequest(const ::Yk::SettingMsg& __p_msg)
+    {
+        sendValidateSettingRequest(__p_msg, 0);
+    }
+    void sendValidateSettingRequest(const ::Yk::SettingMsg& __p_msg, const ::Ice::Context& __ctx)
+    {
+        sendValidateSettingRequest(__p_msg, &__ctx);
+    }
+#ifdef ICE_CPP11
+    ::Ice::AsyncResultPtr
+    begin_sendValidateSettingRequest(const ::Yk::SettingMsg& __p_msg, const ::IceInternal::Function<void ()>& __response, const ::IceInternal::Function<void (const ::Ice::Exception&)>& __exception = ::IceInternal::Function<void (const ::Ice::Exception&)>(), const ::IceInternal::Function<void (bool)>& __sent = ::IceInternal::Function<void (bool)>())
+    {
+        return begin_sendValidateSettingRequest(__p_msg, 0, new ::IceInternal::Cpp11FnOnewayCallbackNC(__response, __exception, __sent));
+    }
+    ::Ice::AsyncResultPtr
+    begin_sendValidateSettingRequest(const ::Yk::SettingMsg& __p_msg, const ::IceInternal::Function<void (const ::Ice::AsyncResultPtr&)>& __completed, const ::IceInternal::Function<void (const ::Ice::AsyncResultPtr&)>& __sent = ::IceInternal::Function<void (const ::Ice::AsyncResultPtr&)>())
+    {
+        return begin_sendValidateSettingRequest(__p_msg, 0, ::Ice::newCallback(__completed, __sent), 0);
+    }
+    ::Ice::AsyncResultPtr
+    begin_sendValidateSettingRequest(const ::Yk::SettingMsg& __p_msg, const ::Ice::Context& __ctx, const ::IceInternal::Function<void ()>& __response, const ::IceInternal::Function<void (const ::Ice::Exception&)>& __exception = ::IceInternal::Function<void (const ::Ice::Exception&)>(), const ::IceInternal::Function<void (bool)>& __sent = ::IceInternal::Function<void (bool)>())
+    {
+        return begin_sendValidateSettingRequest(__p_msg, &__ctx, new ::IceInternal::Cpp11FnOnewayCallbackNC(__response, __exception, __sent), 0);
+    }
+    ::Ice::AsyncResultPtr
+    begin_sendValidateSettingRequest(const ::Yk::SettingMsg& __p_msg, const ::Ice::Context& __ctx, const ::IceInternal::Function<void (const ::Ice::AsyncResultPtr&)>& __completed, const ::IceInternal::Function<void (const ::Ice::AsyncResultPtr&)>& __sent = ::IceInternal::Function<void (const ::Ice::AsyncResultPtr&)>())
+    {
+        return begin_sendValidateSettingRequest(__p_msg, &__ctx, ::Ice::newCallback(__completed, __sent));
+    }
+#endif
+
+    ::Ice::AsyncResultPtr begin_sendValidateSettingRequest(const ::Yk::SettingMsg& __p_msg)
+    {
+        return begin_sendValidateSettingRequest(__p_msg, 0, ::IceInternal::__dummyCallback, 0);
+    }
+
+    ::Ice::AsyncResultPtr begin_sendValidateSettingRequest(const ::Yk::SettingMsg& __p_msg, const ::Ice::Context& __ctx)
+    {
+        return begin_sendValidateSettingRequest(__p_msg, &__ctx, ::IceInternal::__dummyCallback, 0);
+    }
+
+    ::Ice::AsyncResultPtr begin_sendValidateSettingRequest(const ::Yk::SettingMsg& __p_msg, const ::Ice::CallbackPtr& __del, const ::Ice::LocalObjectPtr& __cookie = 0)
+    {
+        return begin_sendValidateSettingRequest(__p_msg, 0, __del, __cookie);
+    }
+
+    ::Ice::AsyncResultPtr begin_sendValidateSettingRequest(const ::Yk::SettingMsg& __p_msg, const ::Ice::Context& __ctx, const ::Ice::CallbackPtr& __del, const ::Ice::LocalObjectPtr& __cookie = 0)
+    {
+        return begin_sendValidateSettingRequest(__p_msg, &__ctx, __del, __cookie);
+    }
+
+    ::Ice::AsyncResultPtr begin_sendValidateSettingRequest(const ::Yk::SettingMsg& __p_msg, const ::Yk::Callback_YkMmiManager_sendValidateSettingRequestPtr& __del, const ::Ice::LocalObjectPtr& __cookie = 0)
+    {
+        return begin_sendValidateSettingRequest(__p_msg, 0, __del, __cookie);
+    }
+
+    ::Ice::AsyncResultPtr begin_sendValidateSettingRequest(const ::Yk::SettingMsg& __p_msg, const ::Ice::Context& __ctx, const ::Yk::Callback_YkMmiManager_sendValidateSettingRequestPtr& __del, const ::Ice::LocalObjectPtr& __cookie = 0)
+    {
+        return begin_sendValidateSettingRequest(__p_msg, &__ctx, __del, __cookie);
+    }
+
+    void end_sendValidateSettingRequest(const ::Ice::AsyncResultPtr&);
+    
+private:
+
+    void sendValidateSettingRequest(const ::Yk::SettingMsg&, const ::Ice::Context*);
+    ::Ice::AsyncResultPtr begin_sendValidateSettingRequest(const ::Yk::SettingMsg&, const ::Ice::Context*, const ::IceInternal::CallbackBasePtr&, const ::Ice::LocalObjectPtr& __cookie = 0);
     
 public:
     
@@ -1729,6 +2474,18 @@ public:
     virtual void sendValidateRequest(const ::Yk::YkRequestMsg&, const ::Ice::Current& = ::Ice::Current()) = 0;
     ::Ice::DispatchStatus ___sendValidateRequest(::IceInternal::Incoming&, const ::Ice::Current&);
 
+    virtual void sendYtRequest(const ::Yk::YtRequestMsg&, const ::Ice::Current& = ::Ice::Current()) = 0;
+    ::Ice::DispatchStatus ___sendYtRequest(::IceInternal::Incoming&, const ::Ice::Current&);
+
+    virtual void sendValidateYtRequest(const ::Yk::YtRequestMsg&, const ::Ice::Current& = ::Ice::Current()) = 0;
+    ::Ice::DispatchStatus ___sendValidateYtRequest(::IceInternal::Incoming&, const ::Ice::Current&);
+
+    virtual void sendSettingRequest(const ::Yk::SettingMsg&, const ::Ice::Current& = ::Ice::Current()) = 0;
+    ::Ice::DispatchStatus ___sendSettingRequest(::IceInternal::Incoming&, const ::Ice::Current&);
+
+    virtual void sendValidateSettingRequest(const ::Yk::SettingMsg&, const ::Ice::Current& = ::Ice::Current()) = 0;
+    ::Ice::DispatchStatus ___sendValidateSettingRequest(::IceInternal::Incoming&, const ::Ice::Current&);
+
     virtual ::Ice::DispatchStatus __dispatch(::IceInternal::Incoming&, const ::Ice::Current&);
 
 protected:
@@ -2004,6 +2761,334 @@ template<class T, typename CT> Callback_YkMmiManager_sendValidateRequestPtr
 newCallback_YkMmiManager_sendValidateRequest(T* instance, void (T::*excb)(const ::Ice::Exception&, const CT&), void (T::*sentcb)(bool, const CT&) = 0)
 {
     return new Callback_YkMmiManager_sendValidateRequest<T, CT>(instance, 0, excb, sentcb);
+}
+
+template<class T>
+class CallbackNC_YkMmiManager_sendYtRequest : public Callback_YkMmiManager_sendYtRequest_Base, public ::IceInternal::OnewayCallbackNC<T>
+{
+public:
+
+    typedef IceUtil::Handle<T> TPtr;
+
+    typedef void (T::*Exception)(const ::Ice::Exception&);
+    typedef void (T::*Sent)(bool);
+    typedef void (T::*Response)();
+
+    CallbackNC_YkMmiManager_sendYtRequest(const TPtr& obj, Response cb, Exception excb, Sent sentcb)
+        : ::IceInternal::OnewayCallbackNC<T>(obj, cb, excb, sentcb)
+    {
+    }
+};
+
+template<class T> Callback_YkMmiManager_sendYtRequestPtr
+newCallback_YkMmiManager_sendYtRequest(const IceUtil::Handle<T>& instance, void (T::*cb)(), void (T::*excb)(const ::Ice::Exception&), void (T::*sentcb)(bool) = 0)
+{
+    return new CallbackNC_YkMmiManager_sendYtRequest<T>(instance, cb, excb, sentcb);
+}
+
+template<class T> Callback_YkMmiManager_sendYtRequestPtr
+newCallback_YkMmiManager_sendYtRequest(const IceUtil::Handle<T>& instance, void (T::*excb)(const ::Ice::Exception&), void (T::*sentcb)(bool) = 0)
+{
+    return new CallbackNC_YkMmiManager_sendYtRequest<T>(instance, 0, excb, sentcb);
+}
+
+template<class T> Callback_YkMmiManager_sendYtRequestPtr
+newCallback_YkMmiManager_sendYtRequest(T* instance, void (T::*cb)(), void (T::*excb)(const ::Ice::Exception&), void (T::*sentcb)(bool) = 0)
+{
+    return new CallbackNC_YkMmiManager_sendYtRequest<T>(instance, cb, excb, sentcb);
+}
+
+template<class T> Callback_YkMmiManager_sendYtRequestPtr
+newCallback_YkMmiManager_sendYtRequest(T* instance, void (T::*excb)(const ::Ice::Exception&), void (T::*sentcb)(bool) = 0)
+{
+    return new CallbackNC_YkMmiManager_sendYtRequest<T>(instance, 0, excb, sentcb);
+}
+
+template<class T, typename CT>
+class Callback_YkMmiManager_sendYtRequest : public Callback_YkMmiManager_sendYtRequest_Base, public ::IceInternal::OnewayCallback<T, CT>
+{
+public:
+
+    typedef IceUtil::Handle<T> TPtr;
+
+    typedef void (T::*Exception)(const ::Ice::Exception& , const CT&);
+    typedef void (T::*Sent)(bool , const CT&);
+    typedef void (T::*Response)(const CT&);
+
+    Callback_YkMmiManager_sendYtRequest(const TPtr& obj, Response cb, Exception excb, Sent sentcb)
+        : ::IceInternal::OnewayCallback<T, CT>(obj, cb, excb, sentcb)
+    {
+    }
+};
+
+template<class T, typename CT> Callback_YkMmiManager_sendYtRequestPtr
+newCallback_YkMmiManager_sendYtRequest(const IceUtil::Handle<T>& instance, void (T::*cb)(const CT&), void (T::*excb)(const ::Ice::Exception&, const CT&), void (T::*sentcb)(bool, const CT&) = 0)
+{
+    return new Callback_YkMmiManager_sendYtRequest<T, CT>(instance, cb, excb, sentcb);
+}
+
+template<class T, typename CT> Callback_YkMmiManager_sendYtRequestPtr
+newCallback_YkMmiManager_sendYtRequest(const IceUtil::Handle<T>& instance, void (T::*excb)(const ::Ice::Exception&, const CT&), void (T::*sentcb)(bool, const CT&) = 0)
+{
+    return new Callback_YkMmiManager_sendYtRequest<T, CT>(instance, 0, excb, sentcb);
+}
+
+template<class T, typename CT> Callback_YkMmiManager_sendYtRequestPtr
+newCallback_YkMmiManager_sendYtRequest(T* instance, void (T::*cb)(const CT&), void (T::*excb)(const ::Ice::Exception&, const CT&), void (T::*sentcb)(bool, const CT&) = 0)
+{
+    return new Callback_YkMmiManager_sendYtRequest<T, CT>(instance, cb, excb, sentcb);
+}
+
+template<class T, typename CT> Callback_YkMmiManager_sendYtRequestPtr
+newCallback_YkMmiManager_sendYtRequest(T* instance, void (T::*excb)(const ::Ice::Exception&, const CT&), void (T::*sentcb)(bool, const CT&) = 0)
+{
+    return new Callback_YkMmiManager_sendYtRequest<T, CT>(instance, 0, excb, sentcb);
+}
+
+template<class T>
+class CallbackNC_YkMmiManager_sendValidateYtRequest : public Callback_YkMmiManager_sendValidateYtRequest_Base, public ::IceInternal::OnewayCallbackNC<T>
+{
+public:
+
+    typedef IceUtil::Handle<T> TPtr;
+
+    typedef void (T::*Exception)(const ::Ice::Exception&);
+    typedef void (T::*Sent)(bool);
+    typedef void (T::*Response)();
+
+    CallbackNC_YkMmiManager_sendValidateYtRequest(const TPtr& obj, Response cb, Exception excb, Sent sentcb)
+        : ::IceInternal::OnewayCallbackNC<T>(obj, cb, excb, sentcb)
+    {
+    }
+};
+
+template<class T> Callback_YkMmiManager_sendValidateYtRequestPtr
+newCallback_YkMmiManager_sendValidateYtRequest(const IceUtil::Handle<T>& instance, void (T::*cb)(), void (T::*excb)(const ::Ice::Exception&), void (T::*sentcb)(bool) = 0)
+{
+    return new CallbackNC_YkMmiManager_sendValidateYtRequest<T>(instance, cb, excb, sentcb);
+}
+
+template<class T> Callback_YkMmiManager_sendValidateYtRequestPtr
+newCallback_YkMmiManager_sendValidateYtRequest(const IceUtil::Handle<T>& instance, void (T::*excb)(const ::Ice::Exception&), void (T::*sentcb)(bool) = 0)
+{
+    return new CallbackNC_YkMmiManager_sendValidateYtRequest<T>(instance, 0, excb, sentcb);
+}
+
+template<class T> Callback_YkMmiManager_sendValidateYtRequestPtr
+newCallback_YkMmiManager_sendValidateYtRequest(T* instance, void (T::*cb)(), void (T::*excb)(const ::Ice::Exception&), void (T::*sentcb)(bool) = 0)
+{
+    return new CallbackNC_YkMmiManager_sendValidateYtRequest<T>(instance, cb, excb, sentcb);
+}
+
+template<class T> Callback_YkMmiManager_sendValidateYtRequestPtr
+newCallback_YkMmiManager_sendValidateYtRequest(T* instance, void (T::*excb)(const ::Ice::Exception&), void (T::*sentcb)(bool) = 0)
+{
+    return new CallbackNC_YkMmiManager_sendValidateYtRequest<T>(instance, 0, excb, sentcb);
+}
+
+template<class T, typename CT>
+class Callback_YkMmiManager_sendValidateYtRequest : public Callback_YkMmiManager_sendValidateYtRequest_Base, public ::IceInternal::OnewayCallback<T, CT>
+{
+public:
+
+    typedef IceUtil::Handle<T> TPtr;
+
+    typedef void (T::*Exception)(const ::Ice::Exception& , const CT&);
+    typedef void (T::*Sent)(bool , const CT&);
+    typedef void (T::*Response)(const CT&);
+
+    Callback_YkMmiManager_sendValidateYtRequest(const TPtr& obj, Response cb, Exception excb, Sent sentcb)
+        : ::IceInternal::OnewayCallback<T, CT>(obj, cb, excb, sentcb)
+    {
+    }
+};
+
+template<class T, typename CT> Callback_YkMmiManager_sendValidateYtRequestPtr
+newCallback_YkMmiManager_sendValidateYtRequest(const IceUtil::Handle<T>& instance, void (T::*cb)(const CT&), void (T::*excb)(const ::Ice::Exception&, const CT&), void (T::*sentcb)(bool, const CT&) = 0)
+{
+    return new Callback_YkMmiManager_sendValidateYtRequest<T, CT>(instance, cb, excb, sentcb);
+}
+
+template<class T, typename CT> Callback_YkMmiManager_sendValidateYtRequestPtr
+newCallback_YkMmiManager_sendValidateYtRequest(const IceUtil::Handle<T>& instance, void (T::*excb)(const ::Ice::Exception&, const CT&), void (T::*sentcb)(bool, const CT&) = 0)
+{
+    return new Callback_YkMmiManager_sendValidateYtRequest<T, CT>(instance, 0, excb, sentcb);
+}
+
+template<class T, typename CT> Callback_YkMmiManager_sendValidateYtRequestPtr
+newCallback_YkMmiManager_sendValidateYtRequest(T* instance, void (T::*cb)(const CT&), void (T::*excb)(const ::Ice::Exception&, const CT&), void (T::*sentcb)(bool, const CT&) = 0)
+{
+    return new Callback_YkMmiManager_sendValidateYtRequest<T, CT>(instance, cb, excb, sentcb);
+}
+
+template<class T, typename CT> Callback_YkMmiManager_sendValidateYtRequestPtr
+newCallback_YkMmiManager_sendValidateYtRequest(T* instance, void (T::*excb)(const ::Ice::Exception&, const CT&), void (T::*sentcb)(bool, const CT&) = 0)
+{
+    return new Callback_YkMmiManager_sendValidateYtRequest<T, CT>(instance, 0, excb, sentcb);
+}
+
+template<class T>
+class CallbackNC_YkMmiManager_sendSettingRequest : public Callback_YkMmiManager_sendSettingRequest_Base, public ::IceInternal::OnewayCallbackNC<T>
+{
+public:
+
+    typedef IceUtil::Handle<T> TPtr;
+
+    typedef void (T::*Exception)(const ::Ice::Exception&);
+    typedef void (T::*Sent)(bool);
+    typedef void (T::*Response)();
+
+    CallbackNC_YkMmiManager_sendSettingRequest(const TPtr& obj, Response cb, Exception excb, Sent sentcb)
+        : ::IceInternal::OnewayCallbackNC<T>(obj, cb, excb, sentcb)
+    {
+    }
+};
+
+template<class T> Callback_YkMmiManager_sendSettingRequestPtr
+newCallback_YkMmiManager_sendSettingRequest(const IceUtil::Handle<T>& instance, void (T::*cb)(), void (T::*excb)(const ::Ice::Exception&), void (T::*sentcb)(bool) = 0)
+{
+    return new CallbackNC_YkMmiManager_sendSettingRequest<T>(instance, cb, excb, sentcb);
+}
+
+template<class T> Callback_YkMmiManager_sendSettingRequestPtr
+newCallback_YkMmiManager_sendSettingRequest(const IceUtil::Handle<T>& instance, void (T::*excb)(const ::Ice::Exception&), void (T::*sentcb)(bool) = 0)
+{
+    return new CallbackNC_YkMmiManager_sendSettingRequest<T>(instance, 0, excb, sentcb);
+}
+
+template<class T> Callback_YkMmiManager_sendSettingRequestPtr
+newCallback_YkMmiManager_sendSettingRequest(T* instance, void (T::*cb)(), void (T::*excb)(const ::Ice::Exception&), void (T::*sentcb)(bool) = 0)
+{
+    return new CallbackNC_YkMmiManager_sendSettingRequest<T>(instance, cb, excb, sentcb);
+}
+
+template<class T> Callback_YkMmiManager_sendSettingRequestPtr
+newCallback_YkMmiManager_sendSettingRequest(T* instance, void (T::*excb)(const ::Ice::Exception&), void (T::*sentcb)(bool) = 0)
+{
+    return new CallbackNC_YkMmiManager_sendSettingRequest<T>(instance, 0, excb, sentcb);
+}
+
+template<class T, typename CT>
+class Callback_YkMmiManager_sendSettingRequest : public Callback_YkMmiManager_sendSettingRequest_Base, public ::IceInternal::OnewayCallback<T, CT>
+{
+public:
+
+    typedef IceUtil::Handle<T> TPtr;
+
+    typedef void (T::*Exception)(const ::Ice::Exception& , const CT&);
+    typedef void (T::*Sent)(bool , const CT&);
+    typedef void (T::*Response)(const CT&);
+
+    Callback_YkMmiManager_sendSettingRequest(const TPtr& obj, Response cb, Exception excb, Sent sentcb)
+        : ::IceInternal::OnewayCallback<T, CT>(obj, cb, excb, sentcb)
+    {
+    }
+};
+
+template<class T, typename CT> Callback_YkMmiManager_sendSettingRequestPtr
+newCallback_YkMmiManager_sendSettingRequest(const IceUtil::Handle<T>& instance, void (T::*cb)(const CT&), void (T::*excb)(const ::Ice::Exception&, const CT&), void (T::*sentcb)(bool, const CT&) = 0)
+{
+    return new Callback_YkMmiManager_sendSettingRequest<T, CT>(instance, cb, excb, sentcb);
+}
+
+template<class T, typename CT> Callback_YkMmiManager_sendSettingRequestPtr
+newCallback_YkMmiManager_sendSettingRequest(const IceUtil::Handle<T>& instance, void (T::*excb)(const ::Ice::Exception&, const CT&), void (T::*sentcb)(bool, const CT&) = 0)
+{
+    return new Callback_YkMmiManager_sendSettingRequest<T, CT>(instance, 0, excb, sentcb);
+}
+
+template<class T, typename CT> Callback_YkMmiManager_sendSettingRequestPtr
+newCallback_YkMmiManager_sendSettingRequest(T* instance, void (T::*cb)(const CT&), void (T::*excb)(const ::Ice::Exception&, const CT&), void (T::*sentcb)(bool, const CT&) = 0)
+{
+    return new Callback_YkMmiManager_sendSettingRequest<T, CT>(instance, cb, excb, sentcb);
+}
+
+template<class T, typename CT> Callback_YkMmiManager_sendSettingRequestPtr
+newCallback_YkMmiManager_sendSettingRequest(T* instance, void (T::*excb)(const ::Ice::Exception&, const CT&), void (T::*sentcb)(bool, const CT&) = 0)
+{
+    return new Callback_YkMmiManager_sendSettingRequest<T, CT>(instance, 0, excb, sentcb);
+}
+
+template<class T>
+class CallbackNC_YkMmiManager_sendValidateSettingRequest : public Callback_YkMmiManager_sendValidateSettingRequest_Base, public ::IceInternal::OnewayCallbackNC<T>
+{
+public:
+
+    typedef IceUtil::Handle<T> TPtr;
+
+    typedef void (T::*Exception)(const ::Ice::Exception&);
+    typedef void (T::*Sent)(bool);
+    typedef void (T::*Response)();
+
+    CallbackNC_YkMmiManager_sendValidateSettingRequest(const TPtr& obj, Response cb, Exception excb, Sent sentcb)
+        : ::IceInternal::OnewayCallbackNC<T>(obj, cb, excb, sentcb)
+    {
+    }
+};
+
+template<class T> Callback_YkMmiManager_sendValidateSettingRequestPtr
+newCallback_YkMmiManager_sendValidateSettingRequest(const IceUtil::Handle<T>& instance, void (T::*cb)(), void (T::*excb)(const ::Ice::Exception&), void (T::*sentcb)(bool) = 0)
+{
+    return new CallbackNC_YkMmiManager_sendValidateSettingRequest<T>(instance, cb, excb, sentcb);
+}
+
+template<class T> Callback_YkMmiManager_sendValidateSettingRequestPtr
+newCallback_YkMmiManager_sendValidateSettingRequest(const IceUtil::Handle<T>& instance, void (T::*excb)(const ::Ice::Exception&), void (T::*sentcb)(bool) = 0)
+{
+    return new CallbackNC_YkMmiManager_sendValidateSettingRequest<T>(instance, 0, excb, sentcb);
+}
+
+template<class T> Callback_YkMmiManager_sendValidateSettingRequestPtr
+newCallback_YkMmiManager_sendValidateSettingRequest(T* instance, void (T::*cb)(), void (T::*excb)(const ::Ice::Exception&), void (T::*sentcb)(bool) = 0)
+{
+    return new CallbackNC_YkMmiManager_sendValidateSettingRequest<T>(instance, cb, excb, sentcb);
+}
+
+template<class T> Callback_YkMmiManager_sendValidateSettingRequestPtr
+newCallback_YkMmiManager_sendValidateSettingRequest(T* instance, void (T::*excb)(const ::Ice::Exception&), void (T::*sentcb)(bool) = 0)
+{
+    return new CallbackNC_YkMmiManager_sendValidateSettingRequest<T>(instance, 0, excb, sentcb);
+}
+
+template<class T, typename CT>
+class Callback_YkMmiManager_sendValidateSettingRequest : public Callback_YkMmiManager_sendValidateSettingRequest_Base, public ::IceInternal::OnewayCallback<T, CT>
+{
+public:
+
+    typedef IceUtil::Handle<T> TPtr;
+
+    typedef void (T::*Exception)(const ::Ice::Exception& , const CT&);
+    typedef void (T::*Sent)(bool , const CT&);
+    typedef void (T::*Response)(const CT&);
+
+    Callback_YkMmiManager_sendValidateSettingRequest(const TPtr& obj, Response cb, Exception excb, Sent sentcb)
+        : ::IceInternal::OnewayCallback<T, CT>(obj, cb, excb, sentcb)
+    {
+    }
+};
+
+template<class T, typename CT> Callback_YkMmiManager_sendValidateSettingRequestPtr
+newCallback_YkMmiManager_sendValidateSettingRequest(const IceUtil::Handle<T>& instance, void (T::*cb)(const CT&), void (T::*excb)(const ::Ice::Exception&, const CT&), void (T::*sentcb)(bool, const CT&) = 0)
+{
+    return new Callback_YkMmiManager_sendValidateSettingRequest<T, CT>(instance, cb, excb, sentcb);
+}
+
+template<class T, typename CT> Callback_YkMmiManager_sendValidateSettingRequestPtr
+newCallback_YkMmiManager_sendValidateSettingRequest(const IceUtil::Handle<T>& instance, void (T::*excb)(const ::Ice::Exception&, const CT&), void (T::*sentcb)(bool, const CT&) = 0)
+{
+    return new Callback_YkMmiManager_sendValidateSettingRequest<T, CT>(instance, 0, excb, sentcb);
+}
+
+template<class T, typename CT> Callback_YkMmiManager_sendValidateSettingRequestPtr
+newCallback_YkMmiManager_sendValidateSettingRequest(T* instance, void (T::*cb)(const CT&), void (T::*excb)(const ::Ice::Exception&, const CT&), void (T::*sentcb)(bool, const CT&) = 0)
+{
+    return new Callback_YkMmiManager_sendValidateSettingRequest<T, CT>(instance, cb, excb, sentcb);
+}
+
+template<class T, typename CT> Callback_YkMmiManager_sendValidateSettingRequestPtr
+newCallback_YkMmiManager_sendValidateSettingRequest(T* instance, void (T::*excb)(const ::Ice::Exception&, const CT&), void (T::*sentcb)(bool, const CT&) = 0)
+{
+    return new Callback_YkMmiManager_sendValidateSettingRequest<T, CT>(instance, 0, excb, sentcb);
 }
 
 template<class T>

@@ -47,6 +47,14 @@ const ::std::string __Yk__YkMmiManager__sendYkRequest_name = "sendYkRequest";
 
 const ::std::string __Yk__YkMmiManager__sendValidateRequest_name = "sendValidateRequest";
 
+const ::std::string __Yk__YkMmiManager__sendYtRequest_name = "sendYtRequest";
+
+const ::std::string __Yk__YkMmiManager__sendValidateYtRequest_name = "sendValidateYtRequest";
+
+const ::std::string __Yk__YkMmiManager__sendSettingRequest_name = "sendSettingRequest";
+
+const ::std::string __Yk__YkMmiManager__sendValidateSettingRequest_name = "sendValidateSettingRequest";
+
 const ::std::string __Yk__YkFepManager__select_name = "select";
 
 const ::std::string __Yk__YkFepManager__execute_name = "execute";
@@ -170,6 +178,174 @@ void
 IceProxy::Yk::YkMmiManager::end_sendValidateRequest(const ::Ice::AsyncResultPtr& __result)
 {
     __end(__result, __Yk__YkMmiManager__sendValidateRequest_name);
+}
+
+void
+IceProxy::Yk::YkMmiManager::sendYtRequest(const ::Yk::YtRequestMsg& __p_msg, const ::Ice::Context* __ctx)
+{
+    ::IceInternal::Outgoing __og(this, __Yk__YkMmiManager__sendYtRequest_name, ::Ice::Normal, __ctx);
+    try
+    {
+        ::IceInternal::BasicStream* __os = __og.startWriteParams(::Ice::DefaultFormat);
+        __os->write(__p_msg);
+        __og.endWriteParams();
+    }
+    catch(const ::Ice::LocalException& __ex)
+    {
+        __og.abort(__ex);
+    }
+    __invoke(__og);
+}
+
+::Ice::AsyncResultPtr
+IceProxy::Yk::YkMmiManager::begin_sendYtRequest(const ::Yk::YtRequestMsg& __p_msg, const ::Ice::Context* __ctx, const ::IceInternal::CallbackBasePtr& __del, const ::Ice::LocalObjectPtr& __cookie)
+{
+    ::IceInternal::OutgoingAsyncPtr __result = new ::IceInternal::OutgoingAsync(this, __Yk__YkMmiManager__sendYtRequest_name, __del, __cookie);
+    try
+    {
+        __result->prepare(__Yk__YkMmiManager__sendYtRequest_name, ::Ice::Normal, __ctx);
+        ::IceInternal::BasicStream* __os = __result->startWriteParams(::Ice::DefaultFormat);
+        __os->write(__p_msg);
+        __result->endWriteParams();
+        __result->invoke();
+    }
+    catch(const ::Ice::Exception& __ex)
+    {
+        __result->abort(__ex);
+    }
+    return __result;
+}
+
+void
+IceProxy::Yk::YkMmiManager::end_sendYtRequest(const ::Ice::AsyncResultPtr& __result)
+{
+    __end(__result, __Yk__YkMmiManager__sendYtRequest_name);
+}
+
+void
+IceProxy::Yk::YkMmiManager::sendValidateYtRequest(const ::Yk::YtRequestMsg& __p_msg, const ::Ice::Context* __ctx)
+{
+    ::IceInternal::Outgoing __og(this, __Yk__YkMmiManager__sendValidateYtRequest_name, ::Ice::Normal, __ctx);
+    try
+    {
+        ::IceInternal::BasicStream* __os = __og.startWriteParams(::Ice::DefaultFormat);
+        __os->write(__p_msg);
+        __og.endWriteParams();
+    }
+    catch(const ::Ice::LocalException& __ex)
+    {
+        __og.abort(__ex);
+    }
+    __invoke(__og);
+}
+
+::Ice::AsyncResultPtr
+IceProxy::Yk::YkMmiManager::begin_sendValidateYtRequest(const ::Yk::YtRequestMsg& __p_msg, const ::Ice::Context* __ctx, const ::IceInternal::CallbackBasePtr& __del, const ::Ice::LocalObjectPtr& __cookie)
+{
+    ::IceInternal::OutgoingAsyncPtr __result = new ::IceInternal::OutgoingAsync(this, __Yk__YkMmiManager__sendValidateYtRequest_name, __del, __cookie);
+    try
+    {
+        __result->prepare(__Yk__YkMmiManager__sendValidateYtRequest_name, ::Ice::Normal, __ctx);
+        ::IceInternal::BasicStream* __os = __result->startWriteParams(::Ice::DefaultFormat);
+        __os->write(__p_msg);
+        __result->endWriteParams();
+        __result->invoke();
+    }
+    catch(const ::Ice::Exception& __ex)
+    {
+        __result->abort(__ex);
+    }
+    return __result;
+}
+
+void
+IceProxy::Yk::YkMmiManager::end_sendValidateYtRequest(const ::Ice::AsyncResultPtr& __result)
+{
+    __end(__result, __Yk__YkMmiManager__sendValidateYtRequest_name);
+}
+
+void
+IceProxy::Yk::YkMmiManager::sendSettingRequest(const ::Yk::SettingMsg& __p_msg, const ::Ice::Context* __ctx)
+{
+    ::IceInternal::Outgoing __og(this, __Yk__YkMmiManager__sendSettingRequest_name, ::Ice::Normal, __ctx);
+    try
+    {
+        ::IceInternal::BasicStream* __os = __og.startWriteParams(::Ice::DefaultFormat);
+        __os->write(__p_msg);
+        __og.endWriteParams();
+    }
+    catch(const ::Ice::LocalException& __ex)
+    {
+        __og.abort(__ex);
+    }
+    __invoke(__og);
+}
+
+::Ice::AsyncResultPtr
+IceProxy::Yk::YkMmiManager::begin_sendSettingRequest(const ::Yk::SettingMsg& __p_msg, const ::Ice::Context* __ctx, const ::IceInternal::CallbackBasePtr& __del, const ::Ice::LocalObjectPtr& __cookie)
+{
+    ::IceInternal::OutgoingAsyncPtr __result = new ::IceInternal::OutgoingAsync(this, __Yk__YkMmiManager__sendSettingRequest_name, __del, __cookie);
+    try
+    {
+        __result->prepare(__Yk__YkMmiManager__sendSettingRequest_name, ::Ice::Normal, __ctx);
+        ::IceInternal::BasicStream* __os = __result->startWriteParams(::Ice::DefaultFormat);
+        __os->write(__p_msg);
+        __result->endWriteParams();
+        __result->invoke();
+    }
+    catch(const ::Ice::Exception& __ex)
+    {
+        __result->abort(__ex);
+    }
+    return __result;
+}
+
+void
+IceProxy::Yk::YkMmiManager::end_sendSettingRequest(const ::Ice::AsyncResultPtr& __result)
+{
+    __end(__result, __Yk__YkMmiManager__sendSettingRequest_name);
+}
+
+void
+IceProxy::Yk::YkMmiManager::sendValidateSettingRequest(const ::Yk::SettingMsg& __p_msg, const ::Ice::Context* __ctx)
+{
+    ::IceInternal::Outgoing __og(this, __Yk__YkMmiManager__sendValidateSettingRequest_name, ::Ice::Normal, __ctx);
+    try
+    {
+        ::IceInternal::BasicStream* __os = __og.startWriteParams(::Ice::DefaultFormat);
+        __os->write(__p_msg);
+        __og.endWriteParams();
+    }
+    catch(const ::Ice::LocalException& __ex)
+    {
+        __og.abort(__ex);
+    }
+    __invoke(__og);
+}
+
+::Ice::AsyncResultPtr
+IceProxy::Yk::YkMmiManager::begin_sendValidateSettingRequest(const ::Yk::SettingMsg& __p_msg, const ::Ice::Context* __ctx, const ::IceInternal::CallbackBasePtr& __del, const ::Ice::LocalObjectPtr& __cookie)
+{
+    ::IceInternal::OutgoingAsyncPtr __result = new ::IceInternal::OutgoingAsync(this, __Yk__YkMmiManager__sendValidateSettingRequest_name, __del, __cookie);
+    try
+    {
+        __result->prepare(__Yk__YkMmiManager__sendValidateSettingRequest_name, ::Ice::Normal, __ctx);
+        ::IceInternal::BasicStream* __os = __result->startWriteParams(::Ice::DefaultFormat);
+        __os->write(__p_msg);
+        __result->endWriteParams();
+        __result->invoke();
+    }
+    catch(const ::Ice::Exception& __ex)
+    {
+        __result->abort(__ex);
+    }
+    return __result;
+}
+
+void
+IceProxy::Yk::YkMmiManager::end_sendValidateSettingRequest(const ::Ice::AsyncResultPtr& __result)
+{
+    __end(__result, __Yk__YkMmiManager__sendValidateSettingRequest_name);
 }
 
 const ::std::string&
@@ -711,6 +887,58 @@ Yk::YkMmiManager::___sendValidateRequest(::IceInternal::Incoming& __inS, const :
     return ::Ice::DispatchOK;
 }
 
+::Ice::DispatchStatus
+Yk::YkMmiManager::___sendYtRequest(::IceInternal::Incoming& __inS, const ::Ice::Current& __current)
+{
+    __checkMode(::Ice::Normal, __current.mode);
+    ::IceInternal::BasicStream* __is = __inS.startReadParams();
+    ::Yk::YtRequestMsg __p_msg;
+    __is->read(__p_msg);
+    __inS.endReadParams();
+    sendYtRequest(__p_msg, __current);
+    __inS.__writeEmptyParams();
+    return ::Ice::DispatchOK;
+}
+
+::Ice::DispatchStatus
+Yk::YkMmiManager::___sendValidateYtRequest(::IceInternal::Incoming& __inS, const ::Ice::Current& __current)
+{
+    __checkMode(::Ice::Normal, __current.mode);
+    ::IceInternal::BasicStream* __is = __inS.startReadParams();
+    ::Yk::YtRequestMsg __p_msg;
+    __is->read(__p_msg);
+    __inS.endReadParams();
+    sendValidateYtRequest(__p_msg, __current);
+    __inS.__writeEmptyParams();
+    return ::Ice::DispatchOK;
+}
+
+::Ice::DispatchStatus
+Yk::YkMmiManager::___sendSettingRequest(::IceInternal::Incoming& __inS, const ::Ice::Current& __current)
+{
+    __checkMode(::Ice::Normal, __current.mode);
+    ::IceInternal::BasicStream* __is = __inS.startReadParams();
+    ::Yk::SettingMsg __p_msg;
+    __is->read(__p_msg);
+    __inS.endReadParams();
+    sendSettingRequest(__p_msg, __current);
+    __inS.__writeEmptyParams();
+    return ::Ice::DispatchOK;
+}
+
+::Ice::DispatchStatus
+Yk::YkMmiManager::___sendValidateSettingRequest(::IceInternal::Incoming& __inS, const ::Ice::Current& __current)
+{
+    __checkMode(::Ice::Normal, __current.mode);
+    ::IceInternal::BasicStream* __is = __inS.startReadParams();
+    ::Yk::SettingMsg __p_msg;
+    __is->read(__p_msg);
+    __inS.endReadParams();
+    sendValidateSettingRequest(__p_msg, __current);
+    __inS.__writeEmptyParams();
+    return ::Ice::DispatchOK;
+}
+
 namespace
 {
 const ::std::string __Yk__YkMmiManager_all[] =
@@ -719,8 +947,12 @@ const ::std::string __Yk__YkMmiManager_all[] =
     "ice_ids",
     "ice_isA",
     "ice_ping",
+    "sendSettingRequest",
     "sendValidateRequest",
-    "sendYkRequest"
+    "sendValidateSettingRequest",
+    "sendValidateYtRequest",
+    "sendYkRequest",
+    "sendYtRequest"
 };
 
 }
@@ -728,7 +960,7 @@ const ::std::string __Yk__YkMmiManager_all[] =
 ::Ice::DispatchStatus
 Yk::YkMmiManager::__dispatch(::IceInternal::Incoming& in, const ::Ice::Current& current)
 {
-    ::std::pair< const ::std::string*, const ::std::string*> r = ::std::equal_range(__Yk__YkMmiManager_all, __Yk__YkMmiManager_all + 6, current.operation);
+    ::std::pair< const ::std::string*, const ::std::string*> r = ::std::equal_range(__Yk__YkMmiManager_all, __Yk__YkMmiManager_all + 10, current.operation);
     if(r.first == r.second)
     {
         throw ::Ice::OperationNotExistException(__FILE__, __LINE__, current.id, current.facet, current.operation);
@@ -754,11 +986,27 @@ Yk::YkMmiManager::__dispatch(::IceInternal::Incoming& in, const ::Ice::Current& 
         }
         case 4:
         {
-            return ___sendValidateRequest(in, current);
+            return ___sendSettingRequest(in, current);
         }
         case 5:
         {
+            return ___sendValidateRequest(in, current);
+        }
+        case 6:
+        {
+            return ___sendValidateSettingRequest(in, current);
+        }
+        case 7:
+        {
+            return ___sendValidateYtRequest(in, current);
+        }
+        case 8:
+        {
             return ___sendYkRequest(in, current);
+        }
+        case 9:
+        {
+            return ___sendYtRequest(in, current);
         }
     }
 

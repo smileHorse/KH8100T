@@ -188,6 +188,9 @@
     <ClCompile Include="GeneratedFiles\Release\moc_selectEquipTreeDialog.cpp">
       <Filter>Generated Files\Release</Filter>
     </ClCompile>
+    <ClCompile Include="FunctionExecTime.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <CustomBuild Include="rdboperframe.h">
@@ -256,6 +259,9 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="configXmlHandler.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="FunctionExecTime.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>

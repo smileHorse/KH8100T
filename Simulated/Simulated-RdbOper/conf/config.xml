@@ -1,15 +1,15 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <config>
     <ice-storm>
-        <ip>192.168.3.226</ip>
+        <ip>192.168.25.130</ip>
         <port>10000</port>
     </ice-storm>
     <off-ice>
-        <ip>192.168.3.25</ip>
-        <port>10002</port>
+        <ip>192.168.3.208</ip>
+        <port>11002</port>
     </off-ice>
     <self-ice>
-        <ip>192.168.3.25</ip>
-        <port>10011</port>
+        <ip>192.168.0.25</ip>
+        <port>10023</port>
     </self-ice>
 </config>

@@ -34,9 +34,9 @@ WorkStation.Proxypoints=-h 192.168.3.25 -p 10002 -t 5000
 # 
 # IceStorm ip & port 
 #
-#IceStrom_Ip = 192.168.40.211:192.168.40.212:192.168.40.211
-#IceStrom_Port = 10010:10000:10020
-#IceStrom_Ip = 192.168.3.18:192.168.3.35:192.168.3.37
-#IceStrom_Port = 10000:10000:10000
-IceStrom_Ip = 192.168.40.212
-IceStrom_Port = 10000
+IceStrom_Ip = 192.168.3.209:192.168.3.208:192.168.3.207
+IceStrom_Port = 10010:10000:10020
+#IceStrom_Ip = 192.168.3.228:192.168.3.228:192.168.3.228
+#IceStrom_Port = 10000:10010:10020
+#IceStrom_Ip = 192.168.3.209
+#IceStrom_Port = 10000

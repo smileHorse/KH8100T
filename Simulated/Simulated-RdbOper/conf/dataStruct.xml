@@ -11,9 +11,14 @@
 			<value>Uab</value>
 			<value>Uac</value>
 			<value>Ubc</value>
+			<value>3I0</value>
 			<value>3U0</value>
 			<value>P</value>
 			<value>Q</value>
+			<value>S</value>
+			<value>cosφ</value>
+			<value>F</value>
+			<value>Phase</value>
 		</AnalogSuffix>
 		<DiscreteSuffix>
 			<value>开关位置</value>
@@ -34,41 +39,48 @@
 			<value>反向无功电度</value>
 		</AccumulatorSuffix>
 		<RemoteUnitParam>
-			<startIedId>288</startIedId>
+			<startIedId>400</startIedId>
 		</RemoteUnitParam>
+		<FepChannelParam>
+			<ip1>192.168.3.33</ip1>
+			<port1>5001</port1>
+			<ip2>192.168.3.229</ip2>
+			<port2>5001</port2>
+		</FepChannelParam>
 	</GlobalParam>
 
-	<DevManufacturer name="山东科汇">
-		<DevDeviceType name="设备类型" count="500">
+<!-- 	<DevManufacturer name="山东科汇">
+		<DevDeviceType name="TDJ-410A" count="1">
 		</DevDeviceType>
-	</DevManufacturer>
-	<DevManufacturer name="南京南瑞">
-		<DevDeviceType name="设备类型" count="500">
+	</DevManufacturer> -->
+<!-- 	<DevManufacturer name="交大许继">
+		<DevDeviceType name="PRO" count="">
 		</DevDeviceType>
-	</DevManufacturer>
+	</DevManufacturer> -->
 	
-	<GeographicalRegion name="区域">
-		<SubGeographicalRegion name="子区域" count="1">
-			<Substation name="配电所" count="500">
-				<RemoteUnit name="单元" count="1">
+	<GeographicalRegion name="区域" count="1" insert="false">
+		<SubGeographicalRegion name="子区域" count="1" insert="false">
+			<Substation name="配电所" count="200" no="200" ec_rid="ded59854-1361-4a7d-83a6-68f5b8ccd98f">
+				<RemoteUnit name="单元" count="1" unitType="9" ycNum="408" yxNum="480" manufacturer="baae2193-7133-49f7-8aa2-7650f9e15e11" deviceType="08e2d932-7280-422e-acf4-594c390f19d0">
 				</RemoteUnit>
 
-<!-- 				<BusbarSection name="母线" count="4">
+				<BusbarSection name="母线" count="4" powerPoint="1" base_voltage="9C9E5C7D-57D8-422A-BC23-56F293828B74">
 					<Analog maxValue="200" minValue="50" normalValue="100" hhLimitValue="220" hLimitValue="210" lLimitValue="40" llLimitValue="30"></Analog>
-				</BusbarSection> -->
-				<Line name="线路" count="170">					
+				</BusbarSection>
+				<Line name="线路" count="20">					
 					<Analog maxValue="200" minValue="50" normalValue="100" hhLimitValue="220" hLimitValue="210" lLimitValue="40" llLimitValue="30"></Analog>
-					<Accumulator></Accumulator>
+					<!-- <Accumulator></Accumulator> -->
+					<Discrete></Discrete>
 				</Line>
-				<Breaker name="开关" count="340">
+				<Breaker name="开关" count="30">
 					<Discrete></Discrete>
 				</Breaker>
-<!-- 				<Disconnector name="刀闸" count="20">
-					<Analog maxValue="200" minValue="50" normalValue="100" hhLimitValue="220" hLimitValue="210" lLimitValue="40" llLimitValue="30"></Analog>
+				<Disconnector name="刀闸" count="30">
+					<!-- <Analog maxValue="200" minValue="50" normalValue="100" hhLimitValue="220" hLimitValue="210" lLimitValue="40" llLimitValue="30"></Analog> -->
 					<Discrete></Discrete>
-					<Command></Command>
-					<Accumulator></Accumulator>
-				</Disconnector> -->
+<!-- 					<Command></Command>
+					<Accumulator></Accumulator> -->
+				</Disconnector>
 <!-- 				<PowerTransformer name="变压器" count="2">
 					<TransformerWinding name="绕组" count="2">						
 						<Analog maxValue="200" minValue="50" normalValue="100" hhLimitValue="220" hLimitValue="210" lLimitValue="40" llLimitValue="30"></Analog>
@@ -79,28 +91,33 @@
 				</PowerTransformer> -->
 			</Substation>
 
-			<Area name="区间" count="2">
-				<Substation name="车站" count="100">
-					<RemoteUnit name="单元" count="1">					
+			<Area name="区间" count="0" insert="false" no="10" ec_rid="ded59854-1361-4a7d-83a6-68f5b8ccd98f">
+				<Substation name="车站" count="0" ec_rid="">
+					<RemoteUnit name="单元" count="1" unitType="9" ycNum="238" yxNum="240">					
 					</RemoteUnit>
 
-					<Line name="线路" count="25">									
-						<Analog maxValue="200" minValue="50" normalValue="100" hhLimitValue="220" hLimitValue="210" lLimitValue="40" llLimitValue="30"></Analog>
-						<Accumulator></Accumulator>
+					<BusbarSection name="母线" count="4" powerPoint="1" base_voltage="9C9E5C7D-57D8-422A-BC23-56F293828B74">
+						<Analog maxValue="200" minValue="50" normalValue="100" hhLimitValue="220" hLimitValue="210" lLimitValue="40" llLimitValue="30" ratioFactor="1"></Analog>
+					</BusbarSection>
+					<Line name="线路" count="10">									
+						<Analog maxValue="200" minValue="50" normalValue="100" hhLimitValue="220" hLimitValue="210" lLimitValue="40" llLimitValue="30" ratioFactor="1"></Analog>
+						<!-- <Accumulator></Accumulator> -->
 					</Line>
-					<Breaker name="开关" count="50">
+					<Breaker name="开关" count="20">
 						<Discrete></Discrete>
-					</Breaker>				
+					</Breaker>	
+					<Disconnector name="刀闸" count="20">
+						<Discrete></Discrete>
+					</Disconnector>			
 				</Substation>
 			</Area>
 		</SubGeographicalRegion>
 	</GeographicalRegion>
 
-	<FepPartition name="分区一">
-		<FepSection name="分段" count="2">
-			<FepProtocol name="规约" count="500" type="76" isUse="1" commCount="1" unitCount="1">
-				<FepChannel name="通道" count="1" param="CommType=TCP;LocalPort=;LocalIP=;RemotePort=5314;RemoteIP=192.168.3.197;Server=0">
-					
+	<FepPartition name="分区一" insert="false">
+		<FepSection name="分段" count="1" insert="false">
+			<FepProtocol name="规约" count="200" startNo="401" type="76" isUse="1" commCount="1" unitCount="1" partition="3de95c3f-6141-4b71-9144-2c6e1b9cce3f" section="c9748405-10a3-4108-a202-75f8b85220b7">
+				<FepChannel name="通道" count="1" param="CommType=TCP;LocalPort=;LocalIP=;RemotePort=5001;RemoteIP=192.168.3.178;Server=0">
 				</FepChannel>
 			</FepProtocol>
 		</FepSection>

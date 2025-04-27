@@ -15,6 +15,8 @@
 #define REGION				"region"
 #define EC_TYPE				"ec_type"
 #define EC_RID				"ec_rid"
+#define LINE_NO				"lineNo"
+#define LINE_TYPE			"lineType"
 #define IEDID				"IEDID"
 #define IEDNAME				"IEDName"
 #define DEVICETYPE			"deviceType"
@@ -32,6 +34,14 @@
 #define FTUUNITID			"ftuUnitId"
 #define FTUPOINTID			"ftuPointId"
 #define REPLYTIMEOUTS		"replyTimeouts"
+#define FAULTJUDGECOUNT		"faultJudgeCount"
+#define MANUGETRFW			"manuGetRFW"
+#define STATNO				"statNo"
+#define HOLDFALG			"holdFlag"
+#define HOLDFAFLAG			"holdFaFlag"
+#define FACTIME				"facTime"
+#define RUNTIME				"runTime"
+#define UNITTYPE			"unitType"
 #define PARTITION			"partition"
 #define SECTION				"section"
 #define PROTOCOL			"protocol"
@@ -39,6 +49,9 @@
 #define CHANNELID			"channelId"
 #define PROTOCOLID			"protocolId"
 #define DEVICEID			"deviceId"
+#define YX_NUM				"yxNum"
+#define YC_NUM				"ycNum"
+#define INSERT				"insert"
 
 
 DataStruct::DataStruct()
@@ -174,6 +187,8 @@ void StructInsertThread::run()
 
 	// 插入分区
 	insertFepPartition();
+
+	insertRdbData("", vector<std::string>());
 }
 
 bool StructInsertThread::loadRdbDataStruct()
@@ -270,15 +285,21 @@ bool StructInsertThread::insertArea( const DataStruct& parent )
 	{
 		int count = getDataStructCount(temp);
 		QString name = temp.getSepecificAttribute(NAME);
+		QString ecRid = temp.getSepecificAttribute(EC_RID);
+		if (ecRid.isEmpty()) {
+			ecRid = parentMrid;
+		}
+		QString no = temp.getSepecificAttribute("no");
+		int suffix = no.isEmpty() ? 0 : no.toInt();
 		for (int i = 0; i < count; ++i)
 		{
 			DataStruct dataStruct = temp;
-			QString childName = createName(parentName, name, i + 1);
+			QString childName = createName(parentName, name, suffix + i + 1);
 			dataStruct.modifyAttribute(NAME, childName);
 			QString pathName = createPathName(parentPath, childName);
 			dataStruct.modifyAttribute(PATHNAME, pathName);
 			dataStruct.modifyAttribute(EC_TYPE, parent.name);
-			dataStruct.modifyAttribute(EC_RID, parentMrid);
+			dataStruct.modifyAttribute(EC_RID, ecRid);
 
 			insertSelf(dataStruct);
 		}
@@ -298,15 +319,21 @@ bool StructInsertThread::insertSubstation( const DataStruct& parent )
 	{
 		int count = getDataStructCount(temp);
 		QString name = temp.getSepecificAttribute(NAME);
+		QString ecRid = temp.getSepecificAttribute(EC_RID);
+		if (ecRid.isEmpty()) {
+			ecRid = parentMrid;
+		}
+		QString no = temp.getSepecificAttribute("no");
+		int suffix = no.isEmpty() ? 0 : no.toInt();
 		for (int i = 0; i < count; ++i)
 		{
 			DataStruct dataStruct = temp;
-			QString childName = createName(parentName, name, i + 1);
+			QString childName = createName(parentName, name, suffix + i + 1);
 			dataStruct.modifyAttribute(NAME, childName);
 			QString pathName = createPathName(parentPath, childName);
 			dataStruct.modifyAttribute(PATHNAME, pathName);
 			dataStruct.modifyAttribute(EC_TYPE, parent.name);
-			dataStruct.modifyAttribute(EC_RID, parentMrid);
+			dataStruct.modifyAttribute(EC_RID, ecRid);
 
 			insertSelf(dataStruct);
 		}
@@ -337,12 +364,23 @@ bool StructInsertThread::insertRemoteUnit( const DataStruct& parent )
 			dataStruct.modifyAttribute(IEDNAME, childName);
 
 			QString manufacturer, deviceType;
-			getRandomDeviceTypeInfo(manufacturer, deviceType);
+			manufacturer = dataStruct.getSepecificAttribute(MANUFACTURER);
+			deviceType = dataStruct.getSepecificAttribute(DEVICETYPE);
+			if (manufacturer.isEmpty() || deviceType.isEmpty()) {
+				getRandomDeviceTypeInfo(manufacturer, deviceType);
+			}
 			dataStruct.modifyAttribute(MANUFACTURER, manufacturer);
 			dataStruct.modifyAttribute(DEVICETYPE, deviceType);
 			dataStruct.modifyAttribute(EC_TYPE, parent.name);
 			dataStruct.modifyAttribute(EC_RID, parentMrid);
 			dataStruct.modifyAttribute(REPLYTIMEOUTS, "3000");
+			dataStruct.modifyAttribute(FAULTJUDGECOUNT, "5");
+			dataStruct.modifyAttribute(STATNO, "1");
+			dataStruct.modifyAttribute(MANUGETRFW, "1");
+			dataStruct.modifyAttribute(HOLDFALG, "1");
+			dataStruct.modifyAttribute(HOLDFAFLAG, "1");
+			dataStruct.modifyAttribute(FACTIME, "2024-01-01");
+			dataStruct.modifyAttribute(RUNTIME, "2024-01-01");
 
 			insertSelf(dataStruct);
 		}
@@ -405,6 +443,8 @@ bool StructInsertThread::insertLine( const DataStruct& parent )
 
 			dataStruct.modifyAttribute(EC_TYPE, parent.name);
 			dataStruct.modifyAttribute(EC_RID, parent.getSepecificAttribute(MRID));
+			dataStruct.modifyAttribute(LINE_TYPE, QString("%1").arg(30));
+			dataStruct.modifyAttribute(LINE_NO, QString("%1").arg(i + 1));
 
 			insertSelf(dataStruct);
 		}
@@ -436,6 +476,12 @@ bool StructInsertThread::insertBreaker( const DataStruct& parent )
 
 			dataStruct.modifyAttribute(EC_TYPE, parent.name);
 			dataStruct.modifyAttribute(EC_RID, parent.getSepecificAttribute(MRID));
+			QString iedId = getUnitId();
+			dataStruct.modifyAttribute("FTUNo", iedId);
+			dataStruct.modifyAttribute("EventID", QString("%1").arg((i % 8) + 1));
+			dataStruct.modifyAttribute("switchTranMode", "1");
+			dataStruct.modifyAttribute("switchCommandType", "1");
+			dataStruct.modifyAttribute("base_voltage", "7F24B357-41D0-4069-ADA1-24AA26525A29");
 
 			insertSelf(dataStruct);
 		}
@@ -467,6 +513,9 @@ bool StructInsertThread::insertDisconnector( const DataStruct& parent )
 
 			dataStruct.modifyAttribute(EC_TYPE, parent.name);
 			dataStruct.modifyAttribute(EC_RID, parent.getSepecificAttribute(MRID));
+			dataStruct.modifyAttribute("switchTranMode", "1");
+			dataStruct.modifyAttribute("switchCommandType", "1");
+			dataStruct.modifyAttribute("base_voltage", "7F24B357-41D0-4069-ADA1-24AA26525A29");
 
 			insertSelf(dataStruct);
 		}
@@ -634,7 +683,7 @@ bool StructInsertThread::insertAnalog( const DataStruct& parent )
 			QString point = getYcPointId();
 
 			DataStruct dataStruct = temp;
-			QString childName = QString("%1.%2").arg(name).arg(values.at(i));
+			QString childName = QString("%1%2").arg(name).arg(values.at(i));
 			dataStruct.modifyAttribute(NAME, childName);
 
 			QString pathName = QString("%1/%2").arg(parent.getSepecificAttribute(PATHNAME)).arg(childName);
@@ -671,7 +720,7 @@ bool StructInsertThread::insertDiscrete( const DataStruct& parent )
 			QString point = getYxPointId();
 
 			DataStruct dataStruct = temp;
-			QString childName = QString("%1.%2").arg(name).arg(values.at(i));
+			QString childName = QString("%1%2").arg(name).arg(values.at(i));
 			dataStruct.modifyAttribute(NAME, childName);
 
 			QString pathName = QString("%1/%2").arg(parent.getSepecificAttribute(PATHNAME)).arg(childName);
@@ -707,7 +756,7 @@ bool StructInsertThread::insertCommand( const DataStruct& parent )
 			QString point = getYkPointId();
 
 			DataStruct dataStruct = temp;
-			QString childName = QString("%1.%2").arg(name).arg(values.at(i));
+			QString childName = QString("%1%2").arg(name).arg(values.at(i));
 			dataStruct.modifyAttribute(NAME, childName);
 
 			QString pathName = QString("%1/%2").arg(parent.getSepecificAttribute(PATHNAME)).arg(childName);
@@ -743,7 +792,7 @@ bool StructInsertThread::insertAccumulator( const DataStruct& parent )
 			QString point = getDdPointId();
 
 			DataStruct dataStruct = temp;
-			QString childName = QString("%1.%2").arg(name).arg(values.at(i));
+			QString childName = QString("%1%2").arg(name).arg(values.at(i));
 			dataStruct.modifyAttribute(NAME, childName);
 
 			QString pathName = QString("%1/%2").arg(parent.getSepecificAttribute(PATHNAME)).arg(childName);
@@ -764,7 +813,10 @@ bool StructInsertThread::insertAccumulator( const DataStruct& parent )
 
 bool StructInsertThread::insertFepPartition()
 {
-	// 获取设备厂家信息
+	getChannelIp1();
+	getChannelIp2();
+	getChannelPort1();
+	getChannelPort2();
 	DataStructList dataStructs = rdbDataStruct.getSpecificChildrens(FepPartition);
 	foreach(DataStruct dataStruct, dataStructs)
 	{
@@ -803,8 +855,15 @@ bool StructInsertThread::insertFepProtocol( const DataStruct& parent )
 	QString parentMrid = parent.getSepecificAttribute(MRID);
 	QString parentName = parent.getSepecificAttribute(NAME);
 	DataStructList dataStructs = parent.getSpecificChildrens(FepProtocol);
+
 	foreach(DataStruct temp, dataStructs)
 	{
+		QString partition = temp.getSepecificAttribute(PARTITION);
+		partition = partition.isEmpty() ? partitionId : partition;
+		QString section = temp.getSepecificAttribute(SECTION);
+		section = section.isEmpty() ? parentMrid : section; 
+
+		int startProNo = temp.getSepecificAttribute("startNo").toInt();
 		int count = getDataStructCount(temp);
 		QString name = temp.getSepecificAttribute(NAME);
 		for (int i = 0; i < count; ++i)
@@ -813,12 +872,13 @@ bool StructInsertThread::insertFepProtocol( const DataStruct& parent )
 			createNewProtocolNo();
 
 			QString proNo = getProtocolNo();
+			proNo = QString("%1").arg(startProNo++);
 			dataStruct.modifyAttribute(PROTOCOLNO, proNo);
 
-			QString childName = createName(parentName, name, i + 1);
+			QString childName = createName(parentName, name, startProNo - 1);
 			dataStruct.modifyAttribute(NAME, childName);
-			dataStruct.modifyAttribute(PARTITION, partitionId);
-			dataStruct.modifyAttribute(SECTION, parentMrid);
+			dataStruct.modifyAttribute(PARTITION, partition);
+			dataStruct.modifyAttribute(SECTION, section);
 
 			insertSelf(dataStruct);
 			insertFepProtocolUnit(dataStruct);
@@ -833,6 +893,8 @@ bool StructInsertThread::insertFepChannel( const DataStruct& parent )
 	// 获取信息
 	QString parentMrid = parent.getSepecificAttribute(MRID);
 	DataStructList dataStructs = parent.getSpecificChildrens(FepChannel);
+	QString strProtocolNo = parent.getSepecificAttribute(PROTOCOLNO);
+	int protocolNo = strProtocolNo.toInt();
 	foreach(DataStruct temp, dataStructs)
 	{
 		int count = getDataStructCount(temp);
@@ -843,11 +905,19 @@ bool StructInsertThread::insertFepChannel( const DataStruct& parent )
 			createNewChannelId();
 
 			QString chanId = getChannelId();
-			dataStruct.modifyAttribute(CHANNELID, chanId);
+			dataStruct.modifyAttribute(CHANNELID, QString("%1").arg(i));
 
 			QString childName = createName(name, i + 1);
 			dataStruct.modifyAttribute(NAME, childName);
 			dataStruct.modifyAttribute(PROTOCOL, parentMrid);
+
+			QString param = dataStruct.getSepecificAttribute("param");
+			if (protocolNo < 100) {
+				param = QString("CommType=TCP;LocalPort=;LocalIP=;RemotePort=%1;RemoteIP=%2;Server=0").arg(channelPort1++).arg(channelIp1);
+			} else {
+				param = QString("CommType=TCP;LocalPort=;LocalIP=;RemotePort=%1;RemoteIP=%2;Server=0").arg(channelPort2++).arg(channelIp2);
+			}
+			dataStruct.modifyAttribute("param", param);
 
 			insertSelf(dataStruct);
 		}
@@ -879,7 +949,13 @@ bool StructInsertThread::insertSelf( DataStruct& dataStruct )
 	vector<string> fieldValues;
 	dataStruct.getFieldValues(fieldValues);
 	dataStruct.modifyAttribute(MRID, QString::fromStdString(fieldValues[0]));
-	bool result = insertRdbData(dataStruct.name, fieldValues);
+
+	bool result = true;
+	QString insert = dataStruct.getSepecificAttribute(INSERT);
+	if (insert != "false") {
+		result = insertRdbData(dataStruct.name, fieldValues);
+	}
+ 
 	if (result)
 	{
 		insertChildren(dataStruct);
@@ -1006,14 +1082,16 @@ void StructInsertThread::insertChildren( const DataStruct& parent )
 //}
 bool StructInsertThread::insertRdbData( const QString& tableName, const vector<string>& fieldValues )
 {
-	RespondCompleteData data;
-	data.tableName = tableName.toStdString();
-	data.dataValues.assign(fieldValues.begin(), fieldValues.end());
+	if (!tableName.isEmpty()) {
+		RespondCompleteData data;
+		data.tableName = tableName.toStdString();
+		data.dataValues.assign(fieldValues.begin(), fieldValues.end());
 
-	insertDataList.seq.push_back(data);
-	insertDataList.dataCount = insertDataList.seq.size();
+		insertDataList.seq.push_back(data);
+		insertDataList.dataCount = insertDataList.seq.size();
+	}
 
-	if (insertDataList.seq.size() > 300)
+	if (tableName.isEmpty() || insertDataList.seq.size() > 300)
 	{
 		RespondCompleteDataSequence repSequence;
 		try
@@ -1171,10 +1249,94 @@ int StructInsertThread::getStartIedId()
 	return iedId;
 }
 
+QString StructInsertThread::getChannelIp1()
+{
+	DataStructList globalStructs = rdbDataStruct.getSpecificChildrens(GlobalParam);
+	if (globalStructs.isEmpty())
+	{
+		return channelIp1;
+	}
+
+	DataStruct globalStruct = globalStructs.at(0);
+	DataStructList dataStructs = globalStruct.getSpecificChildrens(FepChannelParam);
+	foreach(DataStruct dataStruct, dataStructs)
+	{
+		DataStructList values = dataStruct.getSpecificChildrens(IP1);
+		if (!values.isEmpty())
+		{
+			channelIp1 = values.at(0).value;
+		}
+	}
+	return channelIp1;
+}
+
+QString StructInsertThread::getChannelIp2()
+{
+	DataStructList globalStructs = rdbDataStruct.getSpecificChildrens(GlobalParam);
+	if (globalStructs.isEmpty())
+	{
+		return channelIp2;
+	}
+
+	DataStruct globalStruct = globalStructs.at(0);
+	DataStructList dataStructs = globalStruct.getSpecificChildrens(FepChannelParam);
+	foreach(DataStruct dataStruct, dataStructs)
+	{
+		DataStructList values = dataStruct.getSpecificChildrens(IP2);
+		if (!values.isEmpty())
+		{
+			channelIp2 = values.at(0).value;
+		}
+	}
+	return channelIp2;
+}
+
+int StructInsertThread::getChannelPort1()
+{
+	DataStructList globalStructs = rdbDataStruct.getSpecificChildrens(GlobalParam);
+	if (globalStructs.isEmpty())
+	{
+		return channelPort1;
+	}
+
+	DataStruct globalStruct = globalStructs.at(0);
+	DataStructList dataStructs = globalStruct.getSpecificChildrens(FepChannelParam);
+	foreach(DataStruct dataStruct, dataStructs)
+	{
+		DataStructList values = dataStruct.getSpecificChildrens(PORT1);
+		if (!values.isEmpty())
+		{
+			channelPort1 = values.at(0).value.toInt();
+		}
+	}
+	return channelPort1;
+}
+
+int StructInsertThread::getChannelPort2()
+{
+	DataStructList globalStructs = rdbDataStruct.getSpecificChildrens(GlobalParam);
+	if (globalStructs.isEmpty())
+	{
+		return channelPort2;
+	}
+
+	DataStruct globalStruct = globalStructs.at(0);
+	DataStructList dataStructs = globalStruct.getSpecificChildrens(FepChannelParam);
+	foreach(DataStruct dataStruct, dataStructs)
+	{
+		DataStructList values = dataStruct.getSpecificChildrens(PORT2);
+		if (!values.isEmpty())
+		{
+			channelPort2 = values.at(0).value.toInt();
+		}
+	}
+	return channelPort2;
+}
+
 int StructInsertThread::getDataStructCount(const DataStruct& dataStruct)
 {
 	int count = dataStruct.getSepecificAttribute(COUNT).toInt();
-	return count <=0 ? 1 : count;
+	return count <=0 ? 0 : count;
 }
 
 QString StructInsertThread::createName( const QString& parentName, const QString& childName, int index )

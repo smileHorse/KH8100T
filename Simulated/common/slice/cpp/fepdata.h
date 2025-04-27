@@ -103,12 +103,28 @@ enum State
     HighErrorRate
 };
 
+enum StateValue
+{
+    disconnection,
+    cutoff,
+    connection,
+    unknown2
+};
+
 struct Unit
 {
     ::Ice::Short unitNo;
     ::FepData::State unitState;
     ::FepData::State channelState1;
     ::FepData::State channelState2;
+    ::Ice::Byte channelNum;
+    ::Ice::Byte currentNo;
+    ::std::string gateWay;
+    ::std::string rtuAddr;
+    ::FepData::StateValue unitState1;
+    ::std::string gateWay1;
+    ::std::string rtuAddr1;
+    ::FepData::StateValue unitState2;
     ::Ice::Byte errorRate;
 
     bool operator==(const Unit& __rhs) const
@@ -130,6 +146,38 @@ struct Unit
             return false;
         }
         if(channelState2 != __rhs.channelState2)
+        {
+            return false;
+        }
+        if(channelNum != __rhs.channelNum)
+        {
+            return false;
+        }
+        if(currentNo != __rhs.currentNo)
+        {
+            return false;
+        }
+        if(gateWay != __rhs.gateWay)
+        {
+            return false;
+        }
+        if(rtuAddr != __rhs.rtuAddr)
+        {
+            return false;
+        }
+        if(unitState1 != __rhs.unitState1)
+        {
+            return false;
+        }
+        if(gateWay1 != __rhs.gateWay1)
+        {
+            return false;
+        }
+        if(rtuAddr1 != __rhs.rtuAddr1)
+        {
+            return false;
+        }
+        if(unitState2 != __rhs.unitState2)
         {
             return false;
         }
@@ -175,6 +223,70 @@ struct Unit
             return true;
         }
         else if(__rhs.channelState2 < channelState2)
+        {
+            return false;
+        }
+        if(channelNum < __rhs.channelNum)
+        {
+            return true;
+        }
+        else if(__rhs.channelNum < channelNum)
+        {
+            return false;
+        }
+        if(currentNo < __rhs.currentNo)
+        {
+            return true;
+        }
+        else if(__rhs.currentNo < currentNo)
+        {
+            return false;
+        }
+        if(gateWay < __rhs.gateWay)
+        {
+            return true;
+        }
+        else if(__rhs.gateWay < gateWay)
+        {
+            return false;
+        }
+        if(rtuAddr < __rhs.rtuAddr)
+        {
+            return true;
+        }
+        else if(__rhs.rtuAddr < rtuAddr)
+        {
+            return false;
+        }
+        if(unitState1 < __rhs.unitState1)
+        {
+            return true;
+        }
+        else if(__rhs.unitState1 < unitState1)
+        {
+            return false;
+        }
+        if(gateWay1 < __rhs.gateWay1)
+        {
+            return true;
+        }
+        else if(__rhs.gateWay1 < gateWay1)
+        {
+            return false;
+        }
+        if(rtuAddr1 < __rhs.rtuAddr1)
+        {
+            return true;
+        }
+        else if(__rhs.rtuAddr1 < rtuAddr1)
+        {
+            return false;
+        }
+        if(unitState2 < __rhs.unitState2)
+        {
+            return true;
+        }
+        else if(__rhs.unitState2 < unitState2)
         {
             return false;
         }
@@ -229,6 +341,7 @@ struct DataPacket
 {
     ::Ice::Byte id;
     ::std::string fepNode;
+    ::std::string fepIP;
     ::FepData::DataType type;
     ::Ice::Short unitNo;
     ::FepData::UnitSeq units;
@@ -365,6 +478,7 @@ struct Soe
     ::Ice::Short index;
     ::FepData::DiscreteValue value;
     ::Ice::Long timeStamp;
+    bool IsYK;
 
     bool operator==(const Soe& __rhs) const
     {
@@ -385,6 +499,10 @@ struct Soe
             return false;
         }
         if(timeStamp != __rhs.timeStamp)
+        {
+            return false;
+        }
+        if(IsYK != __rhs.IsYK)
         {
             return false;
         }
@@ -426,6 +544,14 @@ struct Soe
             return true;
         }
         else if(__rhs.timeStamp < timeStamp)
+        {
+            return false;
+        }
+        if(IsYK < __rhs.IsYK)
+        {
+            return true;
+        }
+        else if(__rhs.IsYK < IsYK)
         {
             return false;
         }
@@ -474,6 +600,7 @@ struct ProtectEvent
     ::Ice::Short infoNo;
     ::Ice::Short state;
     ::FepData::ProValues values;
+    bool manualData;
 };
 
 struct ChangedUnit
@@ -726,6 +853,7 @@ struct EventPacket
 {
     ::Ice::Int id;
     ::std::string fepNode;
+    ::std::string fepIP;
     ::FepData::EventType type;
     ::FepData::ChangedDigitalSeq digitals;
     ::FepData::SoeSeq soes;
@@ -823,10 +951,20 @@ struct StreamableTraits< ::FepData::State>
 };
 
 template<>
+struct StreamableTraits< ::FepData::StateValue>
+{
+    static const StreamHelperCategory helper = StreamHelperCategoryEnum;
+    static const int minValue = 0;
+    static const int maxValue = 3;
+    static const int minWireSize = 1;
+    static const bool fixedLength = false;
+};
+
+template<>
 struct StreamableTraits< ::FepData::Unit>
 {
     static const StreamHelperCategory helper = StreamHelperCategoryStruct;
-    static const int minWireSize = 6;
+    static const int minWireSize = 14;
     static const bool fixedLength = false;
 };
 
@@ -839,6 +977,14 @@ struct StreamWriter< ::FepData::Unit, S>
         __os->write(v.unitState);
         __os->write(v.channelState1);
         __os->write(v.channelState2);
+        __os->write(v.channelNum);
+        __os->write(v.currentNo);
+        __os->write(v.gateWay);
+        __os->write(v.rtuAddr);
+        __os->write(v.unitState1);
+        __os->write(v.gateWay1);
+        __os->write(v.rtuAddr1);
+        __os->write(v.unitState2);
         __os->write(v.errorRate);
     }
 };
@@ -852,6 +998,14 @@ struct StreamReader< ::FepData::Unit, S>
         __is->read(v.unitState);
         __is->read(v.channelState1);
         __is->read(v.channelState2);
+        __is->read(v.channelNum);
+        __is->read(v.currentNo);
+        __is->read(v.gateWay);
+        __is->read(v.rtuAddr);
+        __is->read(v.unitState1);
+        __is->read(v.gateWay1);
+        __is->read(v.rtuAddr1);
+        __is->read(v.unitState2);
         __is->read(v.errorRate);
     }
 };
@@ -870,7 +1024,7 @@ template<>
 struct StreamableTraits< ::FepData::DataPacket>
 {
     static const StreamHelperCategory helper = StreamHelperCategoryStruct;
-    static const int minWireSize = 10;
+    static const int minWireSize = 11;
     static const bool fixedLength = false;
 };
 
@@ -881,6 +1035,7 @@ struct StreamWriter< ::FepData::DataPacket, S>
     {
         __os->write(v.id);
         __os->write(v.fepNode);
+        __os->write(v.fepIP);
         __os->write(v.type);
         __os->write(v.unitNo);
         __os->write(v.units);
@@ -898,6 +1053,7 @@ struct StreamReader< ::FepData::DataPacket, S>
     {
         __is->read(v.id);
         __is->read(v.fepNode);
+        __is->read(v.fepIP);
         __is->read(v.type);
         __is->read(v.unitNo);
         __is->read(v.units);
@@ -1028,7 +1184,7 @@ template<>
 struct StreamableTraits< ::FepData::Soe>
 {
     static const StreamHelperCategory helper = StreamHelperCategoryStruct;
-    static const int minWireSize = 13;
+    static const int minWireSize = 14;
     static const bool fixedLength = false;
 };
 
@@ -1041,6 +1197,7 @@ struct StreamWriter< ::FepData::Soe, S>
         __os->write(v.index);
         __os->write(v.value);
         __os->write(v.timeStamp);
+        __os->write(v.IsYK);
     }
 };
 
@@ -1053,6 +1210,7 @@ struct StreamReader< ::FepData::Soe, S>
         __is->read(v.index);
         __is->read(v.value);
         __is->read(v.timeStamp);
+        __is->read(v.IsYK);
     }
 };
 
@@ -1098,7 +1256,7 @@ template<>
 struct StreamableTraits< ::FepData::ProtectEvent>
 {
     static const StreamHelperCategory helper = StreamHelperCategoryStruct;
-    static const int minWireSize = 20;
+    static const int minWireSize = 21;
     static const bool fixedLength = false;
 };
 
@@ -1115,6 +1273,7 @@ struct StreamWriter< ::FepData::ProtectEvent, S>
         __os->write(v.infoNo);
         __os->write(v.state);
         __os->write(v.values);
+        __os->write(v.manualData);
     }
 };
 
@@ -1131,6 +1290,7 @@ struct StreamReader< ::FepData::ProtectEvent, S>
         __is->read(v.infoNo);
         __is->read(v.state);
         __is->read(v.values);
+        __is->read(v.manualData);
     }
 };
 
@@ -1228,7 +1388,7 @@ template<>
 struct StreamableTraits< ::FepData::EventPacket>
 {
     static const StreamHelperCategory helper = StreamHelperCategoryStruct;
-    static const int minWireSize = 11;
+    static const int minWireSize = 12;
     static const bool fixedLength = false;
 };
 
@@ -1239,6 +1399,7 @@ struct StreamWriter< ::FepData::EventPacket, S>
     {
         __os->write(v.id);
         __os->write(v.fepNode);
+        __os->write(v.fepIP);
         __os->write(v.type);
         __os->write(v.digitals);
         __os->write(v.soes);
@@ -1255,6 +1416,7 @@ struct StreamReader< ::FepData::EventPacket, S>
     {
         __is->read(v.id);
         __is->read(v.fepNode);
+        __is->read(v.fepIP);
         __is->read(v.type);
         __is->read(v.digitals);
         __is->read(v.soes);

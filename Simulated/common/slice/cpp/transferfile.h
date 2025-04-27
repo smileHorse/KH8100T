@@ -126,8 +126,17 @@ struct StreamReader< ::TransferFileSpace::FileContent, S>
 namespace TransferFileSpace
 {
 
+class Callback_TransferFile_notifyRealdbBackup_Base : virtual public ::IceInternal::CallbackBase { };
+typedef ::IceUtil::Handle< Callback_TransferFile_notifyRealdbBackup_Base> Callback_TransferFile_notifyRealdbBackupPtr;
+
+class Callback_TransferFile_finishRealdbBackup_Base : virtual public ::IceInternal::CallbackBase { };
+typedef ::IceUtil::Handle< Callback_TransferFile_finishRealdbBackup_Base> Callback_TransferFile_finishRealdbBackupPtr;
+
 class Callback_TransferFile_requestRealdb_Base : virtual public ::IceInternal::CallbackBase { };
 typedef ::IceUtil::Handle< Callback_TransferFile_requestRealdb_Base> Callback_TransferFile_requestRealdbPtr;
+
+class Callback_TransferFile_requestTransactionLogger_Base : virtual public ::IceInternal::CallbackBase { };
+typedef ::IceUtil::Handle< Callback_TransferFile_requestTransactionLogger_Base> Callback_TransferFile_requestTransactionLoggerPtr;
 
 class Callback_TransferFile_requestRealdbContent_Base : virtual public ::IceInternal::CallbackBase { };
 typedef ::IceUtil::Handle< Callback_TransferFile_requestRealdbContent_Base> Callback_TransferFile_requestRealdbContentPtr;
@@ -172,6 +181,146 @@ namespace TransferFileSpace
 
 class TransferFile : virtual public ::IceProxy::Ice::Object
 {
+public:
+
+    void notifyRealdbBackup()
+    {
+        notifyRealdbBackup(0);
+    }
+    void notifyRealdbBackup(const ::Ice::Context& __ctx)
+    {
+        notifyRealdbBackup(&__ctx);
+    }
+#ifdef ICE_CPP11
+    ::Ice::AsyncResultPtr
+    begin_notifyRealdbBackup(const ::IceInternal::Function<void ()>& __response, const ::IceInternal::Function<void (const ::Ice::Exception&)>& __exception = ::IceInternal::Function<void (const ::Ice::Exception&)>(), const ::IceInternal::Function<void (bool)>& __sent = ::IceInternal::Function<void (bool)>())
+    {
+        return begin_notifyRealdbBackup(0, new ::IceInternal::Cpp11FnOnewayCallbackNC(__response, __exception, __sent));
+    }
+    ::Ice::AsyncResultPtr
+    begin_notifyRealdbBackup(const ::IceInternal::Function<void (const ::Ice::AsyncResultPtr&)>& __completed, const ::IceInternal::Function<void (const ::Ice::AsyncResultPtr&)>& __sent = ::IceInternal::Function<void (const ::Ice::AsyncResultPtr&)>())
+    {
+        return begin_notifyRealdbBackup(0, ::Ice::newCallback(__completed, __sent), 0);
+    }
+    ::Ice::AsyncResultPtr
+    begin_notifyRealdbBackup(const ::Ice::Context& __ctx, const ::IceInternal::Function<void ()>& __response, const ::IceInternal::Function<void (const ::Ice::Exception&)>& __exception = ::IceInternal::Function<void (const ::Ice::Exception&)>(), const ::IceInternal::Function<void (bool)>& __sent = ::IceInternal::Function<void (bool)>())
+    {
+        return begin_notifyRealdbBackup(&__ctx, new ::IceInternal::Cpp11FnOnewayCallbackNC(__response, __exception, __sent), 0);
+    }
+    ::Ice::AsyncResultPtr
+    begin_notifyRealdbBackup(const ::Ice::Context& __ctx, const ::IceInternal::Function<void (const ::Ice::AsyncResultPtr&)>& __completed, const ::IceInternal::Function<void (const ::Ice::AsyncResultPtr&)>& __sent = ::IceInternal::Function<void (const ::Ice::AsyncResultPtr&)>())
+    {
+        return begin_notifyRealdbBackup(&__ctx, ::Ice::newCallback(__completed, __sent));
+    }
+#endif
+
+    ::Ice::AsyncResultPtr begin_notifyRealdbBackup()
+    {
+        return begin_notifyRealdbBackup(0, ::IceInternal::__dummyCallback, 0);
+    }
+
+    ::Ice::AsyncResultPtr begin_notifyRealdbBackup(const ::Ice::Context& __ctx)
+    {
+        return begin_notifyRealdbBackup(&__ctx, ::IceInternal::__dummyCallback, 0);
+    }
+
+    ::Ice::AsyncResultPtr begin_notifyRealdbBackup(const ::Ice::CallbackPtr& __del, const ::Ice::LocalObjectPtr& __cookie = 0)
+    {
+        return begin_notifyRealdbBackup(0, __del, __cookie);
+    }
+
+    ::Ice::AsyncResultPtr begin_notifyRealdbBackup(const ::Ice::Context& __ctx, const ::Ice::CallbackPtr& __del, const ::Ice::LocalObjectPtr& __cookie = 0)
+    {
+        return begin_notifyRealdbBackup(&__ctx, __del, __cookie);
+    }
+
+    ::Ice::AsyncResultPtr begin_notifyRealdbBackup(const ::TransferFileSpace::Callback_TransferFile_notifyRealdbBackupPtr& __del, const ::Ice::LocalObjectPtr& __cookie = 0)
+    {
+        return begin_notifyRealdbBackup(0, __del, __cookie);
+    }
+
+    ::Ice::AsyncResultPtr begin_notifyRealdbBackup(const ::Ice::Context& __ctx, const ::TransferFileSpace::Callback_TransferFile_notifyRealdbBackupPtr& __del, const ::Ice::LocalObjectPtr& __cookie = 0)
+    {
+        return begin_notifyRealdbBackup(&__ctx, __del, __cookie);
+    }
+
+    void end_notifyRealdbBackup(const ::Ice::AsyncResultPtr&);
+    
+private:
+
+    void notifyRealdbBackup(const ::Ice::Context*);
+    ::Ice::AsyncResultPtr begin_notifyRealdbBackup(const ::Ice::Context*, const ::IceInternal::CallbackBasePtr&, const ::Ice::LocalObjectPtr& __cookie = 0);
+    
+public:
+
+    void finishRealdbBackup()
+    {
+        finishRealdbBackup(0);
+    }
+    void finishRealdbBackup(const ::Ice::Context& __ctx)
+    {
+        finishRealdbBackup(&__ctx);
+    }
+#ifdef ICE_CPP11
+    ::Ice::AsyncResultPtr
+    begin_finishRealdbBackup(const ::IceInternal::Function<void ()>& __response, const ::IceInternal::Function<void (const ::Ice::Exception&)>& __exception = ::IceInternal::Function<void (const ::Ice::Exception&)>(), const ::IceInternal::Function<void (bool)>& __sent = ::IceInternal::Function<void (bool)>())
+    {
+        return begin_finishRealdbBackup(0, new ::IceInternal::Cpp11FnOnewayCallbackNC(__response, __exception, __sent));
+    }
+    ::Ice::AsyncResultPtr
+    begin_finishRealdbBackup(const ::IceInternal::Function<void (const ::Ice::AsyncResultPtr&)>& __completed, const ::IceInternal::Function<void (const ::Ice::AsyncResultPtr&)>& __sent = ::IceInternal::Function<void (const ::Ice::AsyncResultPtr&)>())
+    {
+        return begin_finishRealdbBackup(0, ::Ice::newCallback(__completed, __sent), 0);
+    }
+    ::Ice::AsyncResultPtr
+    begin_finishRealdbBackup(const ::Ice::Context& __ctx, const ::IceInternal::Function<void ()>& __response, const ::IceInternal::Function<void (const ::Ice::Exception&)>& __exception = ::IceInternal::Function<void (const ::Ice::Exception&)>(), const ::IceInternal::Function<void (bool)>& __sent = ::IceInternal::Function<void (bool)>())
+    {
+        return begin_finishRealdbBackup(&__ctx, new ::IceInternal::Cpp11FnOnewayCallbackNC(__response, __exception, __sent), 0);
+    }
+    ::Ice::AsyncResultPtr
+    begin_finishRealdbBackup(const ::Ice::Context& __ctx, const ::IceInternal::Function<void (const ::Ice::AsyncResultPtr&)>& __completed, const ::IceInternal::Function<void (const ::Ice::AsyncResultPtr&)>& __sent = ::IceInternal::Function<void (const ::Ice::AsyncResultPtr&)>())
+    {
+        return begin_finishRealdbBackup(&__ctx, ::Ice::newCallback(__completed, __sent));
+    }
+#endif
+
+    ::Ice::AsyncResultPtr begin_finishRealdbBackup()
+    {
+        return begin_finishRealdbBackup(0, ::IceInternal::__dummyCallback, 0);
+    }
+
+    ::Ice::AsyncResultPtr begin_finishRealdbBackup(const ::Ice::Context& __ctx)
+    {
+        return begin_finishRealdbBackup(&__ctx, ::IceInternal::__dummyCallback, 0);
+    }
+
+    ::Ice::AsyncResultPtr begin_finishRealdbBackup(const ::Ice::CallbackPtr& __del, const ::Ice::LocalObjectPtr& __cookie = 0)
+    {
+        return begin_finishRealdbBackup(0, __del, __cookie);
+    }
+
+    ::Ice::AsyncResultPtr begin_finishRealdbBackup(const ::Ice::Context& __ctx, const ::Ice::CallbackPtr& __del, const ::Ice::LocalObjectPtr& __cookie = 0)
+    {
+        return begin_finishRealdbBackup(&__ctx, __del, __cookie);
+    }
+
+    ::Ice::AsyncResultPtr begin_finishRealdbBackup(const ::TransferFileSpace::Callback_TransferFile_finishRealdbBackupPtr& __del, const ::Ice::LocalObjectPtr& __cookie = 0)
+    {
+        return begin_finishRealdbBackup(0, __del, __cookie);
+    }
+
+    ::Ice::AsyncResultPtr begin_finishRealdbBackup(const ::Ice::Context& __ctx, const ::TransferFileSpace::Callback_TransferFile_finishRealdbBackupPtr& __del, const ::Ice::LocalObjectPtr& __cookie = 0)
+    {
+        return begin_finishRealdbBackup(&__ctx, __del, __cookie);
+    }
+
+    void end_finishRealdbBackup(const ::Ice::AsyncResultPtr&);
+    
+private:
+
+    void finishRealdbBackup(const ::Ice::Context*);
+    ::Ice::AsyncResultPtr begin_finishRealdbBackup(const ::Ice::Context*, const ::IceInternal::CallbackBasePtr&, const ::Ice::LocalObjectPtr& __cookie = 0);
+    
 public:
 
     bool requestRealdb()
@@ -247,6 +396,76 @@ private:
 
     bool requestRealdb(const ::Ice::Context*);
     ::Ice::AsyncResultPtr begin_requestRealdb(const ::Ice::Context*, const ::IceInternal::CallbackBasePtr&, const ::Ice::LocalObjectPtr& __cookie = 0);
+    
+public:
+
+    void requestTransactionLogger()
+    {
+        requestTransactionLogger(0);
+    }
+    void requestTransactionLogger(const ::Ice::Context& __ctx)
+    {
+        requestTransactionLogger(&__ctx);
+    }
+#ifdef ICE_CPP11
+    ::Ice::AsyncResultPtr
+    begin_requestTransactionLogger(const ::IceInternal::Function<void ()>& __response, const ::IceInternal::Function<void (const ::Ice::Exception&)>& __exception = ::IceInternal::Function<void (const ::Ice::Exception&)>(), const ::IceInternal::Function<void (bool)>& __sent = ::IceInternal::Function<void (bool)>())
+    {
+        return begin_requestTransactionLogger(0, new ::IceInternal::Cpp11FnOnewayCallbackNC(__response, __exception, __sent));
+    }
+    ::Ice::AsyncResultPtr
+    begin_requestTransactionLogger(const ::IceInternal::Function<void (const ::Ice::AsyncResultPtr&)>& __completed, const ::IceInternal::Function<void (const ::Ice::AsyncResultPtr&)>& __sent = ::IceInternal::Function<void (const ::Ice::AsyncResultPtr&)>())
+    {
+        return begin_requestTransactionLogger(0, ::Ice::newCallback(__completed, __sent), 0);
+    }
+    ::Ice::AsyncResultPtr
+    begin_requestTransactionLogger(const ::Ice::Context& __ctx, const ::IceInternal::Function<void ()>& __response, const ::IceInternal::Function<void (const ::Ice::Exception&)>& __exception = ::IceInternal::Function<void (const ::Ice::Exception&)>(), const ::IceInternal::Function<void (bool)>& __sent = ::IceInternal::Function<void (bool)>())
+    {
+        return begin_requestTransactionLogger(&__ctx, new ::IceInternal::Cpp11FnOnewayCallbackNC(__response, __exception, __sent), 0);
+    }
+    ::Ice::AsyncResultPtr
+    begin_requestTransactionLogger(const ::Ice::Context& __ctx, const ::IceInternal::Function<void (const ::Ice::AsyncResultPtr&)>& __completed, const ::IceInternal::Function<void (const ::Ice::AsyncResultPtr&)>& __sent = ::IceInternal::Function<void (const ::Ice::AsyncResultPtr&)>())
+    {
+        return begin_requestTransactionLogger(&__ctx, ::Ice::newCallback(__completed, __sent));
+    }
+#endif
+
+    ::Ice::AsyncResultPtr begin_requestTransactionLogger()
+    {
+        return begin_requestTransactionLogger(0, ::IceInternal::__dummyCallback, 0);
+    }
+
+    ::Ice::AsyncResultPtr begin_requestTransactionLogger(const ::Ice::Context& __ctx)
+    {
+        return begin_requestTransactionLogger(&__ctx, ::IceInternal::__dummyCallback, 0);
+    }
+
+    ::Ice::AsyncResultPtr begin_requestTransactionLogger(const ::Ice::CallbackPtr& __del, const ::Ice::LocalObjectPtr& __cookie = 0)
+    {
+        return begin_requestTransactionLogger(0, __del, __cookie);
+    }
+
+    ::Ice::AsyncResultPtr begin_requestTransactionLogger(const ::Ice::Context& __ctx, const ::Ice::CallbackPtr& __del, const ::Ice::LocalObjectPtr& __cookie = 0)
+    {
+        return begin_requestTransactionLogger(&__ctx, __del, __cookie);
+    }
+
+    ::Ice::AsyncResultPtr begin_requestTransactionLogger(const ::TransferFileSpace::Callback_TransferFile_requestTransactionLoggerPtr& __del, const ::Ice::LocalObjectPtr& __cookie = 0)
+    {
+        return begin_requestTransactionLogger(0, __del, __cookie);
+    }
+
+    ::Ice::AsyncResultPtr begin_requestTransactionLogger(const ::Ice::Context& __ctx, const ::TransferFileSpace::Callback_TransferFile_requestTransactionLoggerPtr& __del, const ::Ice::LocalObjectPtr& __cookie = 0)
+    {
+        return begin_requestTransactionLogger(&__ctx, __del, __cookie);
+    }
+
+    void end_requestTransactionLogger(const ::Ice::AsyncResultPtr&);
+    
+private:
+
+    void requestTransactionLogger(const ::Ice::Context*);
+    ::Ice::AsyncResultPtr begin_requestTransactionLogger(const ::Ice::Context*, const ::IceInternal::CallbackBasePtr&, const ::Ice::LocalObjectPtr& __cookie = 0);
     
 public:
 
@@ -1192,8 +1411,17 @@ public:
     virtual const ::std::string& ice_id(const ::Ice::Current& = ::Ice::Current()) const;
     static const ::std::string& ice_staticId();
 
+    virtual void notifyRealdbBackup(const ::Ice::Current& = ::Ice::Current()) = 0;
+    ::Ice::DispatchStatus ___notifyRealdbBackup(::IceInternal::Incoming&, const ::Ice::Current&);
+
+    virtual void finishRealdbBackup(const ::Ice::Current& = ::Ice::Current()) = 0;
+    ::Ice::DispatchStatus ___finishRealdbBackup(::IceInternal::Incoming&, const ::Ice::Current&);
+
     virtual bool requestRealdb(const ::Ice::Current& = ::Ice::Current()) = 0;
     ::Ice::DispatchStatus ___requestRealdb(::IceInternal::Incoming&, const ::Ice::Current&);
+
+    virtual void requestTransactionLogger(const ::Ice::Current& = ::Ice::Current()) = 0;
+    ::Ice::DispatchStatus ___requestTransactionLogger(::IceInternal::Incoming&, const ::Ice::Current&);
 
     virtual ::TransferFileSpace::FileContent requestRealdbContent(const ::std::string&, ::Ice::Long, const ::Ice::Current& = ::Ice::Current()) = 0;
     ::Ice::DispatchStatus ___requestRealdbContent(::IceInternal::Incoming&, const ::Ice::Current&);
@@ -1251,6 +1479,170 @@ inline bool operator<(const TransferFile& l, const TransferFile& r)
 
 namespace TransferFileSpace
 {
+
+template<class T>
+class CallbackNC_TransferFile_notifyRealdbBackup : public Callback_TransferFile_notifyRealdbBackup_Base, public ::IceInternal::OnewayCallbackNC<T>
+{
+public:
+
+    typedef IceUtil::Handle<T> TPtr;
+
+    typedef void (T::*Exception)(const ::Ice::Exception&);
+    typedef void (T::*Sent)(bool);
+    typedef void (T::*Response)();
+
+    CallbackNC_TransferFile_notifyRealdbBackup(const TPtr& obj, Response cb, Exception excb, Sent sentcb)
+        : ::IceInternal::OnewayCallbackNC<T>(obj, cb, excb, sentcb)
+    {
+    }
+};
+
+template<class T> Callback_TransferFile_notifyRealdbBackupPtr
+newCallback_TransferFile_notifyRealdbBackup(const IceUtil::Handle<T>& instance, void (T::*cb)(), void (T::*excb)(const ::Ice::Exception&), void (T::*sentcb)(bool) = 0)
+{
+    return new CallbackNC_TransferFile_notifyRealdbBackup<T>(instance, cb, excb, sentcb);
+}
+
+template<class T> Callback_TransferFile_notifyRealdbBackupPtr
+newCallback_TransferFile_notifyRealdbBackup(const IceUtil::Handle<T>& instance, void (T::*excb)(const ::Ice::Exception&), void (T::*sentcb)(bool) = 0)
+{
+    return new CallbackNC_TransferFile_notifyRealdbBackup<T>(instance, 0, excb, sentcb);
+}
+
+template<class T> Callback_TransferFile_notifyRealdbBackupPtr
+newCallback_TransferFile_notifyRealdbBackup(T* instance, void (T::*cb)(), void (T::*excb)(const ::Ice::Exception&), void (T::*sentcb)(bool) = 0)
+{
+    return new CallbackNC_TransferFile_notifyRealdbBackup<T>(instance, cb, excb, sentcb);
+}
+
+template<class T> Callback_TransferFile_notifyRealdbBackupPtr
+newCallback_TransferFile_notifyRealdbBackup(T* instance, void (T::*excb)(const ::Ice::Exception&), void (T::*sentcb)(bool) = 0)
+{
+    return new CallbackNC_TransferFile_notifyRealdbBackup<T>(instance, 0, excb, sentcb);
+}
+
+template<class T, typename CT>
+class Callback_TransferFile_notifyRealdbBackup : public Callback_TransferFile_notifyRealdbBackup_Base, public ::IceInternal::OnewayCallback<T, CT>
+{
+public:
+
+    typedef IceUtil::Handle<T> TPtr;
+
+    typedef void (T::*Exception)(const ::Ice::Exception& , const CT&);
+    typedef void (T::*Sent)(bool , const CT&);
+    typedef void (T::*Response)(const CT&);
+
+    Callback_TransferFile_notifyRealdbBackup(const TPtr& obj, Response cb, Exception excb, Sent sentcb)
+        : ::IceInternal::OnewayCallback<T, CT>(obj, cb, excb, sentcb)
+    {
+    }
+};
+
+template<class T, typename CT> Callback_TransferFile_notifyRealdbBackupPtr
+newCallback_TransferFile_notifyRealdbBackup(const IceUtil::Handle<T>& instance, void (T::*cb)(const CT&), void (T::*excb)(const ::Ice::Exception&, const CT&), void (T::*sentcb)(bool, const CT&) = 0)
+{
+    return new Callback_TransferFile_notifyRealdbBackup<T, CT>(instance, cb, excb, sentcb);
+}
+
+template<class T, typename CT> Callback_TransferFile_notifyRealdbBackupPtr
+newCallback_TransferFile_notifyRealdbBackup(const IceUtil::Handle<T>& instance, void (T::*excb)(const ::Ice::Exception&, const CT&), void (T::*sentcb)(bool, const CT&) = 0)
+{
+    return new Callback_TransferFile_notifyRealdbBackup<T, CT>(instance, 0, excb, sentcb);
+}
+
+template<class T, typename CT> Callback_TransferFile_notifyRealdbBackupPtr
+newCallback_TransferFile_notifyRealdbBackup(T* instance, void (T::*cb)(const CT&), void (T::*excb)(const ::Ice::Exception&, const CT&), void (T::*sentcb)(bool, const CT&) = 0)
+{
+    return new Callback_TransferFile_notifyRealdbBackup<T, CT>(instance, cb, excb, sentcb);
+}
+
+template<class T, typename CT> Callback_TransferFile_notifyRealdbBackupPtr
+newCallback_TransferFile_notifyRealdbBackup(T* instance, void (T::*excb)(const ::Ice::Exception&, const CT&), void (T::*sentcb)(bool, const CT&) = 0)
+{
+    return new Callback_TransferFile_notifyRealdbBackup<T, CT>(instance, 0, excb, sentcb);
+}
+
+template<class T>
+class CallbackNC_TransferFile_finishRealdbBackup : public Callback_TransferFile_finishRealdbBackup_Base, public ::IceInternal::OnewayCallbackNC<T>
+{
+public:
+
+    typedef IceUtil::Handle<T> TPtr;
+
+    typedef void (T::*Exception)(const ::Ice::Exception&);
+    typedef void (T::*Sent)(bool);
+    typedef void (T::*Response)();
+
+    CallbackNC_TransferFile_finishRealdbBackup(const TPtr& obj, Response cb, Exception excb, Sent sentcb)
+        : ::IceInternal::OnewayCallbackNC<T>(obj, cb, excb, sentcb)
+    {
+    }
+};
+
+template<class T> Callback_TransferFile_finishRealdbBackupPtr
+newCallback_TransferFile_finishRealdbBackup(const IceUtil::Handle<T>& instance, void (T::*cb)(), void (T::*excb)(const ::Ice::Exception&), void (T::*sentcb)(bool) = 0)
+{
+    return new CallbackNC_TransferFile_finishRealdbBackup<T>(instance, cb, excb, sentcb);
+}
+
+template<class T> Callback_TransferFile_finishRealdbBackupPtr
+newCallback_TransferFile_finishRealdbBackup(const IceUtil::Handle<T>& instance, void (T::*excb)(const ::Ice::Exception&), void (T::*sentcb)(bool) = 0)
+{
+    return new CallbackNC_TransferFile_finishRealdbBackup<T>(instance, 0, excb, sentcb);
+}
+
+template<class T> Callback_TransferFile_finishRealdbBackupPtr
+newCallback_TransferFile_finishRealdbBackup(T* instance, void (T::*cb)(), void (T::*excb)(const ::Ice::Exception&), void (T::*sentcb)(bool) = 0)
+{
+    return new CallbackNC_TransferFile_finishRealdbBackup<T>(instance, cb, excb, sentcb);
+}
+
+template<class T> Callback_TransferFile_finishRealdbBackupPtr
+newCallback_TransferFile_finishRealdbBackup(T* instance, void (T::*excb)(const ::Ice::Exception&), void (T::*sentcb)(bool) = 0)
+{
+    return new CallbackNC_TransferFile_finishRealdbBackup<T>(instance, 0, excb, sentcb);
+}
+
+template<class T, typename CT>
+class Callback_TransferFile_finishRealdbBackup : public Callback_TransferFile_finishRealdbBackup_Base, public ::IceInternal::OnewayCallback<T, CT>
+{
+public:
+
+    typedef IceUtil::Handle<T> TPtr;
+
+    typedef void (T::*Exception)(const ::Ice::Exception& , const CT&);
+    typedef void (T::*Sent)(bool , const CT&);
+    typedef void (T::*Response)(const CT&);
+
+    Callback_TransferFile_finishRealdbBackup(const TPtr& obj, Response cb, Exception excb, Sent sentcb)
+        : ::IceInternal::OnewayCallback<T, CT>(obj, cb, excb, sentcb)
+    {
+    }
+};
+
+template<class T, typename CT> Callback_TransferFile_finishRealdbBackupPtr
+newCallback_TransferFile_finishRealdbBackup(const IceUtil::Handle<T>& instance, void (T::*cb)(const CT&), void (T::*excb)(const ::Ice::Exception&, const CT&), void (T::*sentcb)(bool, const CT&) = 0)
+{
+    return new Callback_TransferFile_finishRealdbBackup<T, CT>(instance, cb, excb, sentcb);
+}
+
+template<class T, typename CT> Callback_TransferFile_finishRealdbBackupPtr
+newCallback_TransferFile_finishRealdbBackup(const IceUtil::Handle<T>& instance, void (T::*excb)(const ::Ice::Exception&, const CT&), void (T::*sentcb)(bool, const CT&) = 0)
+{
+    return new Callback_TransferFile_finishRealdbBackup<T, CT>(instance, 0, excb, sentcb);
+}
+
+template<class T, typename CT> Callback_TransferFile_finishRealdbBackupPtr
+newCallback_TransferFile_finishRealdbBackup(T* instance, void (T::*cb)(const CT&), void (T::*excb)(const ::Ice::Exception&, const CT&), void (T::*sentcb)(bool, const CT&) = 0)
+{
+    return new Callback_TransferFile_finishRealdbBackup<T, CT>(instance, cb, excb, sentcb);
+}
+
+template<class T, typename CT> Callback_TransferFile_finishRealdbBackupPtr
+newCallback_TransferFile_finishRealdbBackup(T* instance, void (T::*excb)(const ::Ice::Exception&, const CT&), void (T::*sentcb)(bool, const CT&) = 0)
+{
+    return new Callback_TransferFile_finishRealdbBackup<T, CT>(instance, 0, excb, sentcb);
+}
 
 template<class T>
 class CallbackNC_TransferFile_requestRealdb : public Callback_TransferFile_requestRealdb_Base, public ::IceInternal::TwowayCallbackNC<T>
@@ -1354,6 +1746,88 @@ template<class T, typename CT> Callback_TransferFile_requestRealdbPtr
 newCallback_TransferFile_requestRealdb(T* instance, void (T::*cb)(bool, const CT&), void (T::*excb)(const ::Ice::Exception&, const CT&), void (T::*sentcb)(bool, const CT&) = 0)
 {
     return new Callback_TransferFile_requestRealdb<T, CT>(instance, cb, excb, sentcb);
+}
+
+template<class T>
+class CallbackNC_TransferFile_requestTransactionLogger : public Callback_TransferFile_requestTransactionLogger_Base, public ::IceInternal::OnewayCallbackNC<T>
+{
+public:
+
+    typedef IceUtil::Handle<T> TPtr;
+
+    typedef void (T::*Exception)(const ::Ice::Exception&);
+    typedef void (T::*Sent)(bool);
+    typedef void (T::*Response)();
+
+    CallbackNC_TransferFile_requestTransactionLogger(const TPtr& obj, Response cb, Exception excb, Sent sentcb)
+        : ::IceInternal::OnewayCallbackNC<T>(obj, cb, excb, sentcb)
+    {
+    }
+};
+
+template<class T> Callback_TransferFile_requestTransactionLoggerPtr
+newCallback_TransferFile_requestTransactionLogger(const IceUtil::Handle<T>& instance, void (T::*cb)(), void (T::*excb)(const ::Ice::Exception&), void (T::*sentcb)(bool) = 0)
+{
+    return new CallbackNC_TransferFile_requestTransactionLogger<T>(instance, cb, excb, sentcb);
+}
+
+template<class T> Callback_TransferFile_requestTransactionLoggerPtr
+newCallback_TransferFile_requestTransactionLogger(const IceUtil::Handle<T>& instance, void (T::*excb)(const ::Ice::Exception&), void (T::*sentcb)(bool) = 0)
+{
+    return new CallbackNC_TransferFile_requestTransactionLogger<T>(instance, 0, excb, sentcb);
+}
+
+template<class T> Callback_TransferFile_requestTransactionLoggerPtr
+newCallback_TransferFile_requestTransactionLogger(T* instance, void (T::*cb)(), void (T::*excb)(const ::Ice::Exception&), void (T::*sentcb)(bool) = 0)
+{
+    return new CallbackNC_TransferFile_requestTransactionLogger<T>(instance, cb, excb, sentcb);
+}
+
+template<class T> Callback_TransferFile_requestTransactionLoggerPtr
+newCallback_TransferFile_requestTransactionLogger(T* instance, void (T::*excb)(const ::Ice::Exception&), void (T::*sentcb)(bool) = 0)
+{
+    return new CallbackNC_TransferFile_requestTransactionLogger<T>(instance, 0, excb, sentcb);
+}
+
+template<class T, typename CT>
+class Callback_TransferFile_requestTransactionLogger : public Callback_TransferFile_requestTransactionLogger_Base, public ::IceInternal::OnewayCallback<T, CT>
+{
+public:
+
+    typedef IceUtil::Handle<T> TPtr;
+
+    typedef void (T::*Exception)(const ::Ice::Exception& , const CT&);
+    typedef void (T::*Sent)(bool , const CT&);
+    typedef void (T::*Response)(const CT&);
+
+    Callback_TransferFile_requestTransactionLogger(const TPtr& obj, Response cb, Exception excb, Sent sentcb)
+        : ::IceInternal::OnewayCallback<T, CT>(obj, cb, excb, sentcb)
+    {
+    }
+};
+
+template<class T, typename CT> Callback_TransferFile_requestTransactionLoggerPtr
+newCallback_TransferFile_requestTransactionLogger(const IceUtil::Handle<T>& instance, void (T::*cb)(const CT&), void (T::*excb)(const ::Ice::Exception&, const CT&), void (T::*sentcb)(bool, const CT&) = 0)
+{
+    return new Callback_TransferFile_requestTransactionLogger<T, CT>(instance, cb, excb, sentcb);
+}
+
+template<class T, typename CT> Callback_TransferFile_requestTransactionLoggerPtr
+newCallback_TransferFile_requestTransactionLogger(const IceUtil::Handle<T>& instance, void (T::*excb)(const ::Ice::Exception&, const CT&), void (T::*sentcb)(bool, const CT&) = 0)
+{
+    return new Callback_TransferFile_requestTransactionLogger<T, CT>(instance, 0, excb, sentcb);
+}
+
+template<class T, typename CT> Callback_TransferFile_requestTransactionLoggerPtr
+newCallback_TransferFile_requestTransactionLogger(T* instance, void (T::*cb)(const CT&), void (T::*excb)(const ::Ice::Exception&, const CT&), void (T::*sentcb)(bool, const CT&) = 0)
+{
+    return new Callback_TransferFile_requestTransactionLogger<T, CT>(instance, cb, excb, sentcb);
+}
+
+template<class T, typename CT> Callback_TransferFile_requestTransactionLoggerPtr
+newCallback_TransferFile_requestTransactionLogger(T* instance, void (T::*excb)(const ::Ice::Exception&, const CT&), void (T::*sentcb)(bool, const CT&) = 0)
+{
+    return new Callback_TransferFile_requestTransactionLogger<T, CT>(instance, 0, excb, sentcb);
 }
 
 template<class T>
